@@ -1,0 +1,1209 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+#app{background:#f0f7f0;font-family:'Share Tech Mono',monospace;color:#1a4a2e;border-radius:14px;overflow:hidden;position:relative;min-height:760px}
+canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.shell{position:relative;z-index:10}
+.hdr{text-align:center;padding:16px 16px 10px;border-bottom:2px solid rgba(0,120,60,0.18);background:rgba(255,255,255,0.72)}
+.hdr-logo{font-family:'VT323',monospace;font-size:34px;letter-spacing:8px;color:#0a7a3a;line-height:1}
+.hdr-sub{font-size:10px;letter-spacing:5px;color:#2d8a50;margin-top:2px}
+.live-bar{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:6px;font-size:12px;letter-spacing:2px;color:#0a7a3a;font-family:'Share Tech Mono',monospace}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#0a7a3a;display:inline-block;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.blink{animation:bl 1s step-end infinite}
+@keyframes bl{50%{opacity:0}}
+
+.nav{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:16px 18px 0}
+.nav-card{border:2px solid rgba(0,120,60,0.2);padding:16px;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.78);position:relative;overflow:hidden;border-radius:10px}
+.nav-card.active{border-color:#0a7a3a;background:#fff;box-shadow:0 4px 18px rgba(10,122,58,0.13)}
+.nav-card:hover:not(.active){border-color:rgba(0,120,60,0.5);background:rgba(255,255,255,0.92)}
+.nav-indicator{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 8px 8px;background:transparent;transition:background .25s}
+.nav-card.active .nav-indicator{background:#0a7a3a}
+.nav-badge{font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:3px;border:1px solid rgba(0,120,60,0.25);color:#2d8a50;display:inline-block;margin-bottom:7px;background:rgba(0,120,60,0.05)}
+.nav-card.active .nav-badge{color:#0a7a3a;border-color:#0a7a3a;background:rgba(10,122,58,0.09)}
+.nav-icon{font-family:'VT323',monospace;font-size:30px;color:#b0d4b8;line-height:1;margin-bottom:3px}
+.nav-card.active .nav-icon{color:#0a7a3a}
+.nav-title{font-family:'VT323',monospace;font-size:21px;letter-spacing:3px;color:#4a8a60}
+.nav-card.active .nav-title{color:#0a7a3a}
+.nav-desc{font-size:9px;letter-spacing:1px;color:#7aaa88;margin-top:3px}
+.nav-card.active .nav-desc{color:#2d8a50}
+
+.content{margin:0 18px 20px;border:2px solid rgba(0,120,60,0.15);border-top:none;border-radius:0 0 10px 10px;background:rgba(255,255,255,0.82);padding:20px;min-height:480px}
+.panel{display:none}.panel.on{display:block}
+
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.flabel{font-size:9px;letter-spacing:3px;color:#2d8a50;display:block;margin-bottom:5px}
+.rsel{width:100%;background:#f8fff8;border:1.5px solid rgba(0,120,60,0.3);color:#1a4a2e;font-family:'Share Tech Mono',monospace;font-size:12px;padding:9px 10px;border-radius:6px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' fill='none' stroke='%230a7a3a' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center}
+.rsel:focus{border-color:#0a7a3a}
+.rsel:disabled{opacity:.45;cursor:not-allowed}
+.go{font-family:'VT323',monospace;font-size:20px;letter-spacing:3px;padding:10px 32px;background:#0a7a3a;border:none;color:#fff;cursor:pointer;border-radius:6px;margin-bottom:18px;transition:all .2s;display:block}
+.go:hover{background:#0d9a4a}.go:active{transform:scale(.97)}
+
+.tbl{width:100%;border-collapse:collapse;table-layout:fixed}
+.tbl th{background:#e8f5ec;color:#0a7a3a;font-size:10px;letter-spacing:2px;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.2)}
+.tbl td{padding:10px 12px;border:1px solid rgba(0,120,60,0.12);font-size:12px;color:#1a4a2e}
+.tbl tr:hover td{background:#f0fff4;color:#0a7a3a}
+.tbl tr:nth-child(even) td{background:#f8fff8}
+.empty{text-align:center;padding:30px;color:#7aaa88;font-size:12px;letter-spacing:2px}
+
+.step-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.step-box{background:#fff;border:1.5px solid rgba(0,120,60,0.2);border-radius:8px;padding:14px 14px 12px;flex:1;min-width:120px;transition:border-color .2s}
+.step-box.active-step{border-color:#0a7a3a;box-shadow:0 2px 12px rgba(10,122,58,0.1)}
+.step-num{font-family:'VT323',monospace;font-size:11px;letter-spacing:2px;color:#7aaa88;margin-bottom:4px}
+.step-box.active-step .step-num{color:#0a7a3a}
+
+.time-banner{display:flex;align-items:center;justify-content:space-between;background:#e8f5ec;border:1.5px solid rgba(0,120,60,0.25);border-radius:8px;padding:12px 16px;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.time-banner-left{display:flex;align-items:center;gap:10px}
+.time-big{font-family:'VT323',monospace;font-size:32px;color:#0a7a3a;letter-spacing:3px;line-height:1}
+.time-day-txt{font-size:10px;letter-spacing:2px;color:#2d8a50;margin-top:2px}
+.time-slot{font-size:10px;letter-spacing:1px;color:#2d8a50;background:#fff;border:1px solid rgba(0,120,60,0.2);border-radius:4px;padding:4px 10px}
+
+/* ── Room cards ── */
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:6px}
+.result-label{font-size:10px;letter-spacing:2px;color:#2d8a50}
+.result-count{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px}
+.result-count.green{color:#0a7a3a}.result-count.red{color:#c05020}
+.rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+
+/* Base card */
+.room-card{position:relative;border-radius:10px;overflow:hidden;transition:transform .15s,box-shadow .15s}
+.room-card:hover{transform:translateY(-2px)}
+.room-card-head{padding:14px 14px 10px;border-bottom:1px solid rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:space-between;gap:6px}
+.room-card-name{font-family:'VT323',monospace;font-size:30px;letter-spacing:2px;line-height:1;color:#fff}
+.room-card-body{padding:8px 12px 10px}
+
+/* FREE NOW — full green */
+.room-card.free-now{background:#0e8f42;border:2px solid #0a7a3a;box-shadow:0 4px 18px rgba(10,122,58,0.30)}
+.room-card.free-now .room-card-head{background:rgba(0,0,0,0.10)}
+
+/* BUSY NOW — full red */
+.room-card.busy-now{background:#c93322;border:2px solid #a82a1a;box-shadow:0 4px 18px rgba(180,40,20,0.30)}
+.room-card.busy-now .room-card-head{background:rgba(0,0,0,0.12)}
+
+/* Status badge in header */
+.status-now{font-size:8px;letter-spacing:.5px;padding:3px 8px;border-radius:4px;white-space:nowrap;font-family:'Share Tech Mono',monospace;flex-shrink:0;color:#fff;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.32);max-width:110px;overflow:hidden;text-overflow:ellipsis}
+
+/* Slot timeline rows — white text on coloured background */
+.slot-row{display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.15);position:relative}
+.slot-row:last-child{border-bottom:none}
+.slot-row.is-current{background:rgba(0,0,0,0.12);border-radius:5px;padding:4px 6px;margin:2px -6px;border-bottom:none}
+.slot-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.5);flex-shrink:0}
+.slot-dot.current-free,.slot-dot.current-busy{width:8px;height:8px;background:#fff;animation:pulse 1.4s ease-in-out infinite}
+.slot-time-lbl{font-size:8.5px;letter-spacing:.5px;color:rgba(255,255,255,0.75);min-width:82px;font-family:'Share Tech Mono',monospace;flex-shrink:0}
+.slot-status-free{font-size:8px;letter-spacing:1px;color:#fff;background:rgba(255,255,255,0.2);padding:2px 6px;border-radius:3px;border:1px solid rgba(255,255,255,0.35);white-space:nowrap}
+.slot-status-busy{font-size:8px;letter-spacing:.3px;color:#fff;background:rgba(0,0,0,0.18);padding:2px 6px;border-radius:3px;border:1px solid rgba(255,255,255,0.2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px;display:block}
+.now-badge{font-size:7px;letter-spacing:1px;color:#fff;background:rgba(255,255,255,0.25);padding:1px 5px;border-radius:3px;flex-shrink:0;margin-left:auto;border:1px solid rgba(255,255,255,0.4)}
+.no-rooms{text-align:center;padding:40px 20px;color:#7aaa88}
+.no-rooms-icon{font-family:'VT323',monospace;font-size:48px;color:#b0d4b8;display:block;margin-bottom:8px}
+.no-rooms-txt{font-size:12px;letter-spacing:2px}
+
+/* ── Coming Events ── */
+.events-date-banner{background:#e8f5ec;border:1.5px solid rgba(0,120,60,0.25);border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.events-date-big{font-family:'VT323',monospace;font-size:28px;color:#0a7a3a;letter-spacing:3px}
+.events-date-sub{font-size:10px;letter-spacing:2px;color:#2d8a50}
+.events-range{font-size:9px;letter-spacing:1px;color:#2d8a50;background:#fff;border:1px solid rgba(0,120,60,0.2);border-radius:4px;padding:4px 10px;margin-left:auto}
+.events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.ev-card{background:#fff;border:2px solid rgba(0,120,60,0.2);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .2s}
+.ev-card:hover{border-color:#0a7a3a;transform:translateY(-2px);box-shadow:0 6px 20px rgba(10,122,58,0.15)}
+/* Per-type colour themes */
+.ev-card.ev-hackathon .ev-card-top{background:#1a3a8a}
+.ev-card.ev-hackathon{border-color:rgba(26,58,138,0.3)}
+.ev-card.ev-hackathon:hover{border-color:#1a3a8a;box-shadow:0 6px 20px rgba(26,58,138,0.18)}
+.ev-card.ev-hackathon .ev-card-price{color:#1a3a8a}
+.ev-card.ev-hackathon .ev-card-venue{color:#3a5aaa}
+
+.ev-card.ev-conference .ev-card-top{background:#7a1a6a}
+.ev-card.ev-conference{border-color:rgba(122,26,106,0.3)}
+.ev-card.ev-conference:hover{border-color:#7a1a6a;box-shadow:0 6px 20px rgba(122,26,106,0.18)}
+.ev-card.ev-conference .ev-card-price{color:#7a1a6a}
+.ev-card.ev-conference .ev-card-venue{color:#9a3a8a}
+
+.ev-card.ev-expo .ev-card-top{background:#b05a00}
+.ev-card.ev-expo{border-color:rgba(176,90,0,0.3)}
+.ev-card.ev-expo:hover{border-color:#b05a00;box-shadow:0 6px 20px rgba(176,90,0,0.18)}
+.ev-card.ev-expo .ev-card-price{color:#b05a00}
+.ev-card.ev-expo .ev-card-venue{color:#c06a10}
+
+.ev-card.ev-competition .ev-card-top{background:#8a1a1a}
+.ev-card.ev-competition{border-color:rgba(138,26,26,0.3)}
+.ev-card.ev-competition:hover{border-color:#8a1a1a;box-shadow:0 6px 20px rgba(138,26,26,0.18)}
+.ev-card.ev-competition .ev-card-price{color:#8a1a1a}
+.ev-card.ev-competition .ev-card-venue{color:#aa3a3a}
+
+.ev-card.ev-gala .ev-card-top{background:#4a1a6a}
+.ev-card.ev-gala{border-color:rgba(74,26,106,0.3)}
+.ev-card.ev-gala:hover{border-color:#4a1a6a;box-shadow:0 6px 20px rgba(74,26,106,0.18)}
+.ev-card.ev-gala .ev-card-price{color:#4a1a6a}
+.ev-card.ev-gala .ev-card-venue{color:#6a3a8a}
+
+.ev-card.ev-workshop .ev-card-top{background:#1a6a5a}
+.ev-card.ev-workshop{border-color:rgba(26,106,90,0.3)}
+.ev-card.ev-workshop:hover{border-color:#1a6a5a;box-shadow:0 6px 20px rgba(26,106,90,0.18)}
+.ev-card.ev-workshop .ev-card-price{color:#1a6a5a}
+.ev-card.ev-workshop .ev-card-venue{color:#2a8a72}
+
+/* Modal header colours per type */
+.ev-modal-head.ev-hackathon{background:#1a3a8a}
+.ev-modal-head.ev-conference{background:#7a1a6a}
+.ev-modal-head.ev-expo{background:#b05a00}
+.ev-modal-head.ev-competition{background:#8a1a1a}
+.ev-modal-head.ev-gala{background:#4a1a6a}
+.ev-modal-head.ev-workshop{background:#1a6a5a}
+
+/* Buy button colours per type */
+.ev-buy-btn.ev-hackathon{background:#1a3a8a}.ev-buy-btn.ev-hackathon:hover{background:#2a4aaa}
+.ev-buy-btn.ev-conference{background:#7a1a6a}.ev-buy-btn.ev-conference:hover{background:#9a2a8a}
+.ev-buy-btn.ev-expo{background:#b05a00}.ev-buy-btn.ev-expo:hover{background:#d07000}
+.ev-buy-btn.ev-competition{background:#8a1a1a}.ev-buy-btn.ev-competition:hover{background:#aa2a2a}
+.ev-buy-btn.ev-gala{background:#4a1a6a}.ev-buy-btn.ev-gala:hover{background:#6a2a8a}
+.ev-buy-btn.ev-workshop{background:#1a6a5a}.ev-buy-btn.ev-workshop:hover{background:#2a8a72}
+
+/* Info box accent */
+.ev-info-val.ev-hackathon{color:#1a3a8a}
+.ev-info-val.ev-conference{color:#7a1a6a}
+.ev-info-val.ev-expo{color:#b05a00}
+.ev-info-val.ev-competition{color:#8a1a1a}
+.ev-info-val.ev-gala{color:#4a1a6a}
+.ev-info-val.ev-workshop{color:#1a6a5a}
+
+.ev-highlight-dot.ev-hackathon{background:#1a3a8a}
+.ev-highlight-dot.ev-conference{background:#7a1a6a}
+.ev-highlight-dot.ev-expo{background:#b05a00}
+.ev-highlight-dot.ev-competition{background:#8a1a1a}
+.ev-highlight-dot.ev-gala{background:#4a1a6a}
+.ev-highlight-dot.ev-workshop{background:#1a6a5a}
+
+.ev-card-top{background:#0a7a3a;padding:12px 14px;position:relative}
+.ev-card-date{font-family:'VT323',monospace;font-size:13px;letter-spacing:2px;color:rgba(255,255,255,0.75);margin-bottom:2px}
+.ev-card-title{font-family:'VT323',monospace;font-size:22px;color:#fff;letter-spacing:1px;line-height:1.1}
+.ev-card-type{font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.6);margin-top:4px;background:rgba(255,255,255,0.15);display:inline-block;padding:2px 7px;border-radius:3px}
+.ev-card-body{padding:10px 14px 12px}
+.ev-card-venue{font-size:10px;letter-spacing:1px;color:#2d8a50;margin-bottom:4px}
+.ev-card-price{font-family:'VT323',monospace;font-size:18px;color:#0a7a3a;letter-spacing:2px}
+.ev-card-cta{font-size:9px;letter-spacing:2px;color:#7aaa88;margin-top:6px}
+.ev-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:999;display:flex;align-items:center;justify-content:center;padding:16px}
+.ev-modal{background:#fff;border:2px solid #0a7a3a;border-radius:14px;width:100%;max-width:420px;max-height:88vh;overflow-y:auto;font-family:'Share Tech Mono',monospace;color:#1a4a2e;position:relative}
+.ev-modal-head{background:#0a7a3a;padding:18px 20px 14px;border-radius:11px 11px 0 0}
+.ev-modal-type{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,0.65);margin-bottom:4px}
+.ev-modal-title{font-family:'VT323',monospace;font-size:30px;color:#fff;letter-spacing:2px;line-height:1}
+.ev-modal-date{font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.75);margin-top:6px}
+.ev-modal-body{padding:18px 20px}
+.ev-info-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.ev-info-box{flex:1;min-width:110px;background:#f0fff4;border:1px solid rgba(0,120,60,0.2);border-radius:7px;padding:10px 12px}
+.ev-info-label{font-size:8px;letter-spacing:3px;color:#7aaa88;margin-bottom:4px}
+.ev-info-val{font-family:'VT323',monospace;font-size:20px;color:#0a7a3a;letter-spacing:1px}
+.ev-highlights-title{font-size:9px;letter-spacing:3px;color:#2d8a50;margin-bottom:8px}
+.ev-highlight-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;font-size:11px;letter-spacing:.5px;color:#1a4a2e;line-height:1.4}
+.ev-highlight-dot{width:6px;height:6px;border-radius:50%;background:#0a7a3a;flex-shrink:0;margin-top:4px}
+.ev-buy-btn{display:block;width:100%;font-family:'VT323',monospace;font-size:22px;letter-spacing:4px;padding:13px;background:#0a7a3a;color:#fff;border:none;border-radius:7px;cursor:pointer;margin-top:16px;transition:all .2s}
+.ev-buy-btn:hover{background:#0d9a4a}
+.ev-close-btn{position:absolute;top:12px;right:14px;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.35);color:#fff;font-family:'VT323',monospace;font-size:18px;padding:2px 10px;border-radius:4px;cursor:pointer;letter-spacing:1px}
+.ev-buy-confirm{display:none;text-align:center;padding:18px 0 4px}
+.ev-buy-confirm .ev-confirm-icon{font-family:'VT323',monospace;font-size:48px;color:#0a7a3a;display:block}
+.no-events{text-align:center;padding:40px 20px;color:#7aaa88;font-size:12px;letter-spacing:2px}
+
+/* ── Exam Schedule ── */
+.exam-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.exam-type-row{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.exam-type-btn{flex:1;min-width:90px;font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;padding:10px 8px;border:2px solid rgba(0,120,60,0.25);background:#fff;color:#4a8a60;border-radius:8px;cursor:pointer;transition:all .2s;text-align:center}
+.exam-type-btn:hover{border-color:#0a7a3a;color:#0a7a3a;background:#f0fff4}
+.exam-type-btn.s1-active{background:#1a3a8a;border-color:#1a3a8a;color:#fff}
+.exam-type-btn.s2-active{background:#7a1a6a;border-color:#7a1a6a;color:#fff}
+.exam-type-btn.fin-active{background:#8a1a1a;border-color:#8a1a1a;color:#fff}
+.exam-header-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:6px}
+.exam-header-label{font-size:10px;letter-spacing:2px;color:#2d8a50}
+.exam-header-badge{font-family:'VT323',monospace;font-size:16px;letter-spacing:2px;padding:3px 12px;border-radius:5px;color:#fff}
+.exam-header-badge.s1{background:#1a3a8a}
+.exam-header-badge.s2{background:#7a1a6a}
+.exam-header-badge.fin{background:#8a1a1a}
+.exam-table-wrap{overflow-x:auto}
+.exam-tbl{width:100%;border-collapse:collapse;table-layout:auto}
+.exam-tbl th{font-size:9px;letter-spacing:2px;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.2)}
+.exam-tbl td{padding:11px 12px;border:1px solid rgba(0,120,60,0.1);font-size:11px;color:#1a4a2e;vertical-align:top}
+.exam-tbl tr:hover td{background:#f0fff4}
+.exam-tbl tr:nth-child(even) td{background:#f8fff8}
+.exam-tbl th.s1{background:#dde3f5;color:#1a3a8a}
+.exam-tbl th.s2{background:#f0ddf0;color:#7a1a6a}
+.exam-tbl th.fin{background:#f5dddd;color:#8a1a1a}
+.exam-course-name{font-weight:normal;letter-spacing:.5px}
+.exam-date-pill{display:inline-block;font-family:'VT323',monospace;font-size:15px;letter-spacing:1px;padding:2px 10px;border-radius:4px;color:#fff}
+.exam-date-pill.s1{background:#1a3a8a}
+.exam-date-pill.s2{background:#7a1a6a}
+.exam-date-pill.fin{background:#8a1a1a}
+.exam-time-txt{font-size:10px;letter-spacing:1px;color:#2d8a50;margin-top:3px}
+.exam-room-txt{font-family:'VT323',monospace;font-size:15px;letter-spacing:1px;color:#0a7a3a}
+.exam-countdown{font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:3px;display:inline-block;margin-top:3px}
+.exam-countdown.soon{background:#fff3cd;color:#856404;border:1px solid #ffc107}
+.exam-countdown.upcoming{background:#e8f5ec;color:#0a7a3a;border:1px solid rgba(0,120,60,0.25)}
+.exam-countdown.past{background:#f5f5f5;color:#999;border:1px solid #ddd}
+.exam-no-data{text-align:center;padding:40px 20px;color:#7aaa88;font-size:12px;letter-spacing:2px}
+
+/* ── To-Do List ── */
+.todo-input-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.todo-text-input{flex:1;min-width:140px;background:#f8fff8;border:1.5px solid rgba(0,120,60,0.3);color:#1a4a2e;font-family:'Share Tech Mono',monospace;font-size:12px;padding:9px 12px;border-radius:6px;outline:none}
+.todo-text-input:focus{border-color:#0a7a3a}
+.todo-text-input::placeholder{color:#a0c8a8;letter-spacing:1px}
+.todo-priority-sel{background:#f8fff8;border:1.5px solid rgba(0,120,60,0.3);color:#1a4a2e;font-family:'Share Tech Mono',monospace;font-size:11px;padding:9px 10px;border-radius:6px;outline:none;cursor:pointer;min-width:100px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' fill='none' stroke='%230a7a3a' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;padding-right:28px}
+.todo-add-btn{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;padding:9px 20px;background:#0a7a3a;border:none;color:#fff;cursor:pointer;border-radius:6px;transition:all .2s;white-space:nowrap}
+.todo-add-btn:hover{background:#0d9a4a}
+.todo-filter-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.todo-filter-btn{font-family:'VT323',monospace;font-size:14px;letter-spacing:1px;padding:5px 14px;border:1.5px solid rgba(0,120,60,0.25);background:#fff;color:#4a8a60;border-radius:5px;cursor:pointer;transition:all .15s}
+.todo-filter-btn:hover{border-color:#0a7a3a;color:#0a7a3a}
+.todo-filter-btn.active{background:#0a7a3a;border-color:#0a7a3a;color:#fff}
+.todo-stats{font-size:9px;letter-spacing:2px;color:#7aaa88;margin-left:auto}
+.todo-list{display:flex;flex-direction:column;gap:7px}
+.todo-item{display:flex;align-items:flex-start;gap:10px;background:#fff;border:1.5px solid rgba(0,120,60,0.18);border-radius:8px;padding:11px 13px;transition:all .2s;position:relative}
+.todo-item:hover{border-color:rgba(0,120,60,0.4);box-shadow:0 2px 10px rgba(10,122,58,0.08)}
+.todo-item.done{opacity:.55;background:#f8fff8}
+.todo-item.done .todo-item-text{text-decoration:line-through;color:#7aaa88}
+.todo-check{width:18px;height:18px;border:2px solid rgba(0,120,60,0.35);border-radius:4px;cursor:pointer;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s;background:#fff}
+.todo-check.checked{background:#0a7a3a;border-color:#0a7a3a}
+.todo-check.checked::after{content:'✓';color:#fff;font-size:11px;line-height:1}
+.todo-item-body{flex:1;min-width:0}
+.todo-item-text{font-size:12px;letter-spacing:.5px;color:#1a4a2e;word-break:break-word;line-height:1.4}
+.todo-item-meta{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap}
+.todo-priority-tag{font-size:8px;letter-spacing:1.5px;padding:1px 7px;border-radius:3px;font-family:'Share Tech Mono',monospace}
+.todo-priority-tag.high{background:#fde8e8;color:#8a1a1a;border:1px solid rgba(138,26,26,0.2)}
+.todo-priority-tag.medium{background:#fff3cd;color:#856404;border:1px solid rgba(133,100,4,0.2)}
+.todo-priority-tag.low{background:#e8f5ec;color:#0a7a3a;border:1px solid rgba(0,120,60,0.2)}
+.todo-item-date{font-size:8px;letter-spacing:1px;color:#a0c8a8}
+.todo-del-btn{font-family:'VT323',monospace;font-size:16px;color:#c0c0c0;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0;margin-top:0;transition:color .15s;background:none;border:none}
+.todo-del-btn:hover{color:#8a1a1a}
+.todo-empty{text-align:center;padding:36px 20px;color:#b0d4b8}
+.todo-empty-icon{font-family:'VT323',monospace;font-size:52px;color:#b0d4b8;display:block;margin-bottom:6px}
+.todo-empty-txt{font-size:11px;letter-spacing:2px;color:#a0c8a8}
+.todo-clear-done{font-family:'VT323',monospace;font-size:13px;letter-spacing:1px;padding:4px 12px;border:1.5px solid rgba(138,26,26,0.3);background:#fff;color:#8a1a1a;border-radius:5px;cursor:pointer;transition:all .15s;margin-left:auto}
+.todo-clear-done:hover{background:#fde8e8}
+
+.corner{position:absolute;width:12px;height:12px;border-color:rgba(0,120,60,0.2);border-style:solid;z-index:6}
+.c-tl{top:8px;left:8px;border-width:2px 0 0 2px;border-radius:2px 0 0 0}
+.c-tr{top:8px;right:8px;border-width:2px 2px 0 0;border-radius:0 2px 0 0}
+.c-bl{bottom:8px;left:8px;border-width:0 0 2px 2px;border-radius:0 0 0 2px}
+.c-br{bottom:8px;right:8px;border-width:0 2px 2px 0;border-radius:0 0 2px 0}
+.divider{width:2px;background:rgba(0,120,60,0.12);border-radius:2px;align-self:stretch;display:none}
+@media(min-width:420px){.divider{display:block}}
+</style>
+
+<div id="app">
+<canvas id="bg3d"></canvas>
+<div class="corner c-tl"></div><div class="corner c-tr"></div>
+<div class="corner c-bl"></div><div class="corner c-br"></div>
+<div class="shell">
+
+  <div class="hdr">
+    <div class="hdr-brand">
+      <img src="data:image/jpeg;base64,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" alt="Compiler Society" class="hdr-logo-img">
+      <div class="hdr-brand-text">
+        <div class="hdr-org">COMPILER SOCIETY</div>
+        <div class="hdr-logo">FAST NUCES</div>
+      </div>
+    </div>
+    <div class="hdr-sub">ISB CAMPUS — ACADEMIC TERMINAL v5.0</div>
+    <div class="live-bar">
+      <span class="live-dot"></span>
+      <span id="clk">--:-- --</span>
+      <span style="opacity:.4">|</span>
+      <span id="clk-day">---</span>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="nav-card active" id="nc0" onclick="sw(0)">
+      <div class="nav-badge">PANEL 01</div>
+      <div class="nav-icon">&#9632;</div>
+      <div class="nav-title">CLASS TIMETABLE</div>
+      <div class="nav-desc">DEPT / BATCH / SECTION / DAY</div>
+      <div class="nav-indicator"></div>
+    </div>
+    <div class="nav-card" id="nc1" onclick="sw(1)">
+      <div class="nav-badge">PANEL 02</div>
+      <div class="nav-icon">&#9633;</div>
+      <div class="nav-title">FREE ROOMS</div>
+      <div class="nav-desc">BLOCK / FLOOR — SLOT TIMELINE</div>
+      <div class="nav-indicator"></div>
+    </div>
+    <div class="nav-card" id="nc2" onclick="sw(2)">
+      <div class="nav-badge">PANEL 03</div>
+      <div class="nav-icon">&#9670;</div>
+      <div class="nav-title">COMING EVENTS</div>
+      <div class="nav-desc">NEXT 30 DAYS — TICKETS</div>
+      <div class="nav-indicator"></div>
+    </div>
+    <div class="nav-card" id="nc3" onclick="sw(3)">
+      <div class="nav-badge">PANEL 04</div>
+      <div class="nav-icon">&#9956;</div>
+      <div class="nav-title">EXAM SCHEDULE</div>
+      <div class="nav-desc">S1 / S2 / FINAL EXAMS</div>
+      <div class="nav-indicator"></div>
+    </div>
+    <div class="nav-card" id="nc4" onclick="sw(4)">
+      <div class="nav-badge">PANEL 05</div>
+      <div class="nav-icon">&#9998;</div>
+      <div class="nav-title">TO-DO LIST</div>
+      <div class="nav-desc">TASKS &amp; PRIORITIES</div>
+      <div class="nav-indicator"></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- PANEL 0: Class Timetable -->
+    <div class="panel on" id="p0">
+      <div class="fields">
+        <div><label class="flabel">DEPARTMENT</label>
+          <select class="rsel" id="dept"><option value="CS">BS CS</option><option value="AI">BS AI</option></select></div>
+        <div><label class="flabel">BATCH YEAR</label>
+          <select class="rsel" id="batch"><option>2023</option><option>2024</option><option>2025</option><option>2026</option></select></div>
+        <div><label class="flabel">SECTION</label>
+          <select class="rsel" id="sec"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+        <div><label class="flabel">DAY</label>
+          <select class="rsel" id="day"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option></select></div>
+      </div>
+      <button class="go" onclick="loadTT()">&#9658; GET TIMETABLE</button>
+      <div id="tt-out"></div>
+    </div>
+
+    <!-- PANEL 1: Free Rooms -->
+    <div class="panel" id="p1">
+      <div class="time-banner">
+        <div class="time-banner-left">
+          <div class="live-dot"></div>
+          <div>
+            <div class="time-big" id="r-time">--:--</div>
+            <div class="time-day-txt" id="r-day-div">LOADING...</div>
+          </div>
+        </div>
+        <div class="time-slot" id="r-slot">CURRENT SLOT: --</div>
+      </div>
+
+      <div class="step-row">
+        <div class="step-box active-step" id="sb1">
+          <div class="step-num">STEP 01 — BLOCK</div>
+          <label class="flabel" style="margin-top:6px">SELECT BLOCK</label>
+          <select class="rsel" id="r-block" onchange="onBlockChange()">
+            <option value="">-- Choose --</option>
+            <option value="C">Block C</option>
+            <option value="D">Block D</option>
+          </select>
+        </div>
+        <div class="divider"></div>
+        <div class="step-box" id="sb2">
+          <div class="step-num">STEP 02 — FLOOR</div>
+          <label class="flabel" style="margin-top:6px">SELECT FLOOR</label>
+          <select class="rsel" id="r-floor" onchange="onFloorChange()" disabled>
+            <option value="">-- Choose Block First --</option>
+          </select>
+        </div>
+        <div class="divider"></div>
+        <div class="step-box" id="sb3">
+          <div class="step-num">STEP 03 — DAY</div>
+          <label class="flabel" style="margin-top:6px">SELECT DAY</label>
+          <select class="rsel" id="r-day-sel" onchange="onDayChange()" disabled>
+            <option value="">-- Choose Floor First --</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="rooms-result"></div>
+    </div>
+
+    <!-- PANEL 2: Coming Events -->
+    <div class="panel" id="p2">
+      <div class="events-date-banner">
+        <div class="live-dot"></div>
+        <div>
+          <div class="events-date-big" id="ev-today-date">-- --- ----</div>
+          <div class="events-date-sub">TODAY</div>
+        </div>
+        <div class="events-range" id="ev-range">SHOWING NEXT 30 DAYS</div>
+      </div>
+      <div class="events-grid" id="events-grid"></div>
+    </div>
+
+    <!-- PANEL 3: Exam Schedule -->
+    <div class="panel" id="p3">
+      <div class="exam-filters">
+        <div>
+          <label class="flabel">DEPARTMENT</label>
+          <select class="rsel" id="ex-dept">
+            <option value="CS">BS CS</option>
+            <option value="AI">BS AI</option>
+          </select>
+        </div>
+        <div>
+          <label class="flabel">BATCH YEAR</label>
+          <select class="rsel" id="ex-batch">
+            <option>2023</option><option>2024</option><option>2025</option><option>2026</option>
+          </select>
+        </div>
+        <div>
+          <label class="flabel">SECTION</label>
+          <select class="rsel" id="ex-sec">
+            <option>A</option><option>B</option><option>C</option><option>D</option>
+          </select>
+        </div>
+      </div>
+      <div class="exam-type-row">
+        <div class="exam-type-btn" id="exbtn-s1" onclick="selectExamType('S1')">&#9632; SESSIONAL 1</div>
+        <div class="exam-type-btn" id="exbtn-s2" onclick="selectExamType('S2')">&#9632; SESSIONAL 2</div>
+        <div class="exam-type-btn" id="exbtn-fin" onclick="selectExamType('FIN')">&#9956; FINAL EXAM</div>
+      </div>
+      <div id="exam-out"></div>
+    </div>
+
+    <!-- PANEL 4: To-Do List -->
+    <div class="panel" id="p4">
+      <div class="todo-input-row">
+        <input class="todo-text-input" id="todo-input" type="text" placeholder="ADD A NEW TASK..." maxlength="120" onkeydown="if(event.key==='Enter')addTodo()">
+        <select class="todo-priority-sel" id="todo-priority">
+          <option value="high">🔴 HIGH</option>
+          <option value="medium" selected>🟡 MEDIUM</option>
+          <option value="low">🟢 LOW</option>
+        </select>
+        <button class="todo-add-btn" onclick="addTodo()">&#9658; ADD</button>
+      </div>
+      <div class="todo-filter-row">
+        <div class="todo-filter-btn active" id="tf-all" onclick="setTodoFilter('all')">ALL</div>
+        <div class="todo-filter-btn" id="tf-active" onclick="setTodoFilter('active')">ACTIVE</div>
+        <div class="todo-filter-btn" id="tf-done" onclick="setTodoFilter('done')">DONE</div>
+        <div class="todo-filter-btn" id="tf-high" onclick="setTodoFilter('high')">🔴 HIGH</div>
+        <div class="todo-filter-btn" id="tf-medium" onclick="setTodoFilter('medium')">🟡 MEDIUM</div>
+        <div class="todo-filter-btn" id="tf-low" onclick="setTodoFilter('low')">🟢 LOW</div>
+        <button class="todo-clear-done" onclick="clearDone()">✕ CLEAR DONE</button>
+        <span class="todo-stats" id="todo-stats"></span>
+      </div>
+      <div class="todo-list" id="todo-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Events Modal -->
+<div class="ev-modal-overlay" id="ev-overlay" style="display:none" onclick="closeEvModal(event)">
+  <div class="ev-modal" id="ev-modal">
+    <div class="ev-modal-head">
+      <button class="ev-close-btn" onclick="closeEvModalBtn()">✕ CLOSE</button>
+      <div class="ev-modal-type" id="em-type"></div>
+      <div class="ev-modal-title" id="em-title"></div>
+      <div class="ev-modal-date" id="em-date"></div>
+    </div>
+    <div class="ev-modal-body">
+      <div class="ev-info-row">
+        <div class="ev-info-box"><div class="ev-info-label">VENUE</div><div class="ev-info-val" id="em-venue"></div></div>
+        <div class="ev-info-box"><div class="ev-info-label">TICKET PRICE</div><div class="ev-info-val" id="em-price"></div></div>
+        <div class="ev-info-box"><div class="ev-info-label">SEATS LEFT</div><div class="ev-info-val" id="em-seats"></div></div>
+      </div>
+      <div class="ev-highlights-title">KEY HIGHLIGHTS</div>
+      <div id="em-highlights"></div>
+      <div class="ev-buy-confirm" id="em-confirm">
+        <span class="ev-confirm-icon">✔</span>
+        <div style="font-family:'VT323',monospace;font-size:22px;color:#0a7a3a;letter-spacing:3px;margin-top:6px">TICKET RESERVED!</div>
+        <div style="font-size:10px;letter-spacing:1px;color:#2d8a50;margin-top:4px">Check your email for confirmation.</div>
+      </div>
+      <button class="ev-buy-btn" id="em-buy-btn" onclick="buyTicket()">&#9658; BUY TICKET</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   TIMETABLE DATA
+══════════════════════════════════════════ */
+const TT={CS:{"2023":{A:{Monday:[{c:"Data Structures",l:"D-201",t:"08:30-09:50"},{c:"Digital Logic Design",l:"D-301",t:"10:00-11:20"},{c:"Calculus-II",l:"D-101",t:"01:00-02:20"}],Tuesday:[{c:"OOP [G-I]",l:"D-Lab1",t:"08:30-09:50"},{c:"Islamic Studies",l:"D-201",t:"11:30-12:50"}],Wednesday:[{c:"Data Structures",l:"D-201",t:"10:00-11:20"},{c:"Communication Skills",l:"D-302",t:"01:00-02:20"}],Thursday:[{c:"DLD Lab",l:"D-Lab2",t:"08:30-09:50"},{c:"Linear Algebra",l:"D-101",t:"11:30-12:50"}],Friday:[{c:"Friday Lecture",l:"D-Audi",t:"01:30-02:20"}]},B:{Monday:[{c:"Programming Fundamentals",l:"D-101",t:"08:30-09:50"},{c:"Calculus-I",l:"D-201",t:"10:00-11:20"}],Tuesday:[{c:"MLOPs [G-I]",l:"D-401",t:"10:00-11:20"},{c:"Entre",l:"D-313",t:"11:30-12:50"},{c:"Fund of SPM [G-I]",l:"D-316",t:"01:00-02:20"},{c:"Agentic AI [G-I]",l:"D-402",t:"01:00-02:20"}],Wednesday:[{c:"OOP",l:"D-Lab1",t:"10:00-11:20"}],Thursday:[{c:"Discrete Structures",l:"D-301",t:"08:30-09:50"}],Friday:[{c:"Pakistan Studies",l:"D-201",t:"11:00-12:00"}]},C:{Monday:[{c:"Web Engineering",l:"D-301",t:"10:00-11:20"}],Tuesday:[{c:"Database Systems",l:"D-313",t:"08:30-09:50"}],Wednesday:[{c:"Computer Networks",l:"D-402",t:"01:00-02:20"}],Thursday:[{c:"Software Engineering",l:"D-316",t:"11:30-12:50"}],Friday:[]},D:{Monday:[{c:"Compiler Construction",l:"D-401",t:"01:00-02:20"}],Tuesday:[{c:"Operating Systems",l:"D-302",t:"10:00-11:20"}],Wednesday:[],Thursday:[{c:"Theory of Automata",l:"D-201",t:"08:30-09:50"}],Friday:[{c:"Elective",l:"D-501",t:"11:30-12:50"}]}},"2024":{A:{Monday:[{c:"Programming Fundamentals",l:"D-101",t:"08:30-09:50"},{c:"Calculus-I",l:"D-201",t:"10:00-11:20"}],Tuesday:[{c:"PF Lab",l:"D-Lab1",t:"08:30-09:50"}],Wednesday:[{c:"Discrete Structures",l:"D-301",t:"11:30-12:50"}],Thursday:[{c:"English Composition",l:"D-102",t:"10:00-11:20"}],Friday:[]},B:{Monday:[{c:"Calculus-I",l:"D-202",t:"10:00-11:20"}],Tuesday:[{c:"Programming Fundamentals",l:"D-102",t:"08:30-09:50"}],Wednesday:[{c:"PF Lab",l:"D-Lab2",t:"08:30-09:50"}],Thursday:[{c:"Islamic Studies",l:"D-201",t:"11:30-12:50"}],Friday:[]},C:{Monday:[],Tuesday:[{c:"Intro to Computing",l:"D-101",t:"10:00-11:20"}],Wednesday:[],Thursday:[],Friday:[]},D:{Monday:[{c:"Linear Algebra",l:"D-301",t:"01:00-02:20"}],Tuesday:[],Wednesday:[{c:"Applied Physics",l:"D-201",t:"10:00-11:20"}],Thursday:[],Friday:[]}},"2025":{A:{Monday:[{c:"Machine Learning",l:"D-402",t:"10:00-11:20"}],Tuesday:[{c:"Deep Learning",l:"D-401",t:"01:00-02:20"}],Wednesday:[{c:"CV Lab",l:"D-Lab1",t:"08:30-09:50"}],Thursday:[{c:"NLP",l:"D-313",t:"11:30-12:50"}],Friday:[]},B:{Monday:[{c:"Big Data",l:"D-316",t:"01:00-02:20"}],Tuesday:[{c:"Cloud Computing",l:"D-501",t:"10:00-11:20"}],Wednesday:[],Thursday:[{c:"Cyber Security",l:"D-302",t:"08:30-09:50"}],Friday:[]},C:{Monday:[],Tuesday:[{c:"Mobile App Dev",l:"D-Lab2",t:"10:00-11:20"}],Wednesday:[{c:"Game Dev",l:"D-401",t:"01:00-02:20"}],Thursday:[],Friday:[]},D:{Monday:[{c:"Blockchain",l:"D-402",t:"08:30-09:50"}],Tuesday:[],Wednesday:[{c:"AR/VR Dev",l:"D-501",t:"11:30-12:50"}],Thursday:[{c:"IoT",l:"D-316",t:"01:00-02:20"}],Friday:[]}},"2026":{A:{Monday:[{c:"Senior Project I",l:"D-502",t:"10:00-11:20"}],Tuesday:[{c:"Research Methods",l:"D-313",t:"08:30-09:50"}],Wednesday:[],Thursday:[{c:"Tech Entrepreneurship",l:"D-401",t:"01:00-02:20"}],Friday:[]},B:{Monday:[],Tuesday:[{c:"Capstone Design",l:"D-502",t:"10:00-11:20"}],Wednesday:[{c:"Industry Seminar",l:"D-Audi",t:"02:30-03:30"}],Thursday:[],Friday:[]},C:{Monday:[{c:"Final Year Project",l:"D-Lab1",t:"08:30-09:50"}],Tuesday:[],Wednesday:[],Thursday:[{c:"Business Communication",l:"D-201",t:"10:00-11:20"}],Friday:[]},D:{Monday:[],Tuesday:[{c:"Professional Ethics",l:"D-302",t:"11:30-12:50"}],Wednesday:[{c:"Project Management",l:"D-313",t:"01:00-02:20"}],Thursday:[],Friday:[]}}},AI:{"2023":{A:{Monday:[{c:"Machine Learning",l:"D-402",t:"10:00-11:20"},{c:"Data Mining",l:"D-313",t:"01:00-02:20"}],Tuesday:[{c:"Deep Learning",l:"D-401",t:"08:30-09:50"}],Wednesday:[{c:"ML Lab",l:"D-Lab1",t:"10:00-11:20"}],Thursday:[{c:"Computer Vision",l:"D-402",t:"11:30-12:50"}],Friday:[]},B:{Monday:[{c:"NLP",l:"D-316",t:"08:30-09:50"}],Tuesday:[{c:"Reinforcement Learning",l:"D-401",t:"10:00-11:20"},{c:"AI Ethics",l:"D-313",t:"01:00-02:20"}],Wednesday:[],Thursday:[{c:"Robot Programming",l:"D-Lab2",t:"08:30-09:50"}],Friday:[]},C:{Monday:[],Tuesday:[{c:"Bayesian ML",l:"D-501",t:"10:00-11:20"}],Wednesday:[{c:"Graph Neural Nets",l:"D-402",t:"01:00-02:20"}],Thursday:[],Friday:[]},D:{Monday:[{c:"Generative AI",l:"D-401",t:"01:00-02:20"}],Tuesday:[],Wednesday:[{c:"Agentic Systems",l:"D-402",t:"10:00-11:20"}],Thursday:[{c:"LLM Fine-tuning",l:"D-316",t:"11:30-12:50"}],Friday:[]}},"2024":{A:{Monday:[{c:"Intro to AI",l:"D-201",t:"10:00-11:20"}],Tuesday:[{c:"Python for AI",l:"D-Lab1",t:"08:30-09:50"}],Wednesday:[{c:"Stats for ML",l:"D-301",t:"11:30-12:50"}],Thursday:[],Friday:[]},B:{Monday:[{c:"Linear Algebra for AI",l:"D-101",t:"08:30-09:50"}],Tuesday:[{c:"AI Lab",l:"D-Lab2",t:"10:00-11:20"}],Wednesday:[],Thursday:[{c:"Probability Theory",l:"D-201",t:"01:00-02:20"}],Friday:[]},C:{Monday:[],Tuesday:[],Wednesday:[{c:"Data Analysis",l:"D-313",t:"10:00-11:20"}],Thursday:[],Friday:[]},D:{Monday:[{c:"Foundations of AI",l:"D-302",t:"11:30-12:50"}],Tuesday:[],Wednesday:[],Thursday:[],Friday:[]}},"2025":{A:{Monday:[{c:"Advanced ML",l:"D-402",t:"10:00-11:20"}],Tuesday:[{c:"Transformer Models",l:"D-401",t:"01:00-02:20"}],Wednesday:[],Thursday:[{c:"MLOps",l:"D-316",t:"08:30-09:50"}],Friday:[]},B:{Monday:[],Tuesday:[{c:"Speech Recognition",l:"D-313",t:"10:00-11:20"}],Wednesday:[{c:"AI for Healthcare",l:"D-501",t:"01:00-02:20"}],Thursday:[],Friday:[]},C:{Monday:[{c:"Robotics",l:"D-Lab1",t:"08:30-09:50"}],Tuesday:[],Wednesday:[],Thursday:[{c:"Autonomous Vehicles",l:"D-402",t:"10:00-11:20"}],Friday:[]},D:{Monday:[],Tuesday:[{c:"AI Security",l:"D-302",t:"08:30-09:50"}],Wednesday:[{c:"Explainable AI",l:"D-313",t:"11:30-12:50"}],Thursday:[],Friday:[]}},"2026":{A:{Monday:[{c:"AI Research Project",l:"D-502",t:"10:00-11:20"}],Tuesday:[{c:"AI Seminar",l:"D-Audi",t:"01:00-02:20"}],Wednesday:[],Thursday:[],Friday:[]},B:{Monday:[],Tuesday:[{c:"Capstone AI",l:"D-Lab1",t:"08:30-09:50"}],Wednesday:[{c:"AI Product Dev",l:"D-501",t:"10:00-11:20"}],Thursday:[],Friday:[]},C:{Monday:[],Tuesday:[],Wednesday:[{c:"Final Project",l:"D-502",t:"08:30-09:50"}],Thursday:[{c:"Innovation Lab",l:"D-Lab2",t:"01:00-02:20"}],Friday:[]},D:{Monday:[{c:"Thesis Writing",l:"D-313",t:"11:30-12:50"}],Tuesday:[],Wednesday:[],Thursday:[],Friday:[]}}}};
+
+const BLOCK_FLOORS={
+  C:{1:["C-101","C-102","C-103"],2:["C-201","C-202","C-203"],3:["C-301","C-302","C-303"]},
+  D:{1:["D-101","D-102"],2:["D-201","D-202"],3:["D-301","D-302","D-313","D-316"],4:["D-401","D-402"],5:["D-501","D-502"],Lab:["D-Lab1","D-Lab2"],Audi:["D-Audi"]}
+};
+
+const DAYS=["Monday","Tuesday","Wednesday","Thursday","Friday"];
+const DAYNAMES=["SUN","MON","TUE","WED","THU","FRI","SAT"];
+const SLOTS=["08:30-09:50","10:00-11:20","11:30-12:50","01:00-02:20","02:30-03:30"];
+
+/* ── Time helpers ── */
+// University slots use 12-hr style: "01:00" = 1 PM, "08:30" = 8 AM
+// Hours 1–6 are treated as PM (13–18). Hours 7–12 are AM/noon as-is.
+function slotToMinutes(timeStr){
+  const[hh,mm]=timeStr.split(":").map(Number);
+  const hour=(hh>=1&&hh<=6)?hh+12:hh;
+  return hour*60+mm;
+}
+
+function fmtTime(timeStr){
+  // "01:00" → "1:00 PM"   "08:30" → "8:30 AM"
+  const[hh,mm]=timeStr.split(":").map(Number);
+  const isPM=(hh>=1&&hh<=6)||(hh===12);
+  const hour=(hh>=1&&hh<=6)?hh:(hh>12?hh-12:hh);
+  const ampm=isPM?'PM':'AM';
+  return `${hour}:${mm.toString().padStart(2,'0')} ${ampm}`;
+}
+
+function fmtSlot(slot){
+  const[s,e]=slot.split("-");
+  return `${fmtTime(s)}–${fmtTime(e)}`;
+}
+
+function nowMinutes(){
+  const n=new Date();return n.getHours()*60+n.getMinutes();
+}
+
+function getCurrentSlot(){
+  const cur=nowMinutes();
+  for(const s of SLOTS){
+    const[start,end]=s.split("-");
+    if(cur>=slotToMinutes(start)&&cur<=slotToMinutes(end)) return s;
+  }
+  return null;
+}
+
+// Returns only slots whose end time is still in the future (includes current slot)
+function getUpcomingSlots(){
+  const cur=nowMinutes();
+  return SLOTS.filter(s=>slotToMinutes(s.split("-")[1])>cur);
+}
+
+// Returns per-slot schedule for a room on a given day (upcoming slots only)
+function getRoomSlotInfo(room,day){
+  return getUpcomingSlots().map(slot=>{
+    let occupiedBy=null;
+    ['CS','AI'].forEach(dep=>{
+      Object.entries(TT[dep]).forEach(([bat,batches])=>{
+        Object.entries(batches).forEach(([sec,sections])=>{
+          (sections[day]||[]).forEach(c=>{
+            if(c.l===room&&c.t===slot){
+              occupiedBy={course:c.c,dept:dep,batch:bat,section:sec};
+            }
+          });
+        });
+      });
+    });
+    return{slot,occupiedBy};
+  });
+}
+
+/* ── UI handlers ── */
+function onBlockChange(){
+  const block=document.getElementById('r-block').value;
+  const floorSel=document.getElementById('r-floor');
+  const daySel=document.getElementById('r-day-sel');
+  document.getElementById('sb2').className='step-box'+(block?' active-step':'');
+  document.getElementById('sb3').className='step-box';
+  document.getElementById('rooms-result').innerHTML='';
+  floorSel.innerHTML='<option value="">-- Choose Floor --</option>';
+  daySel.innerHTML='<option value="">-- Choose Floor First --</option>';
+  daySel.disabled=true;
+  if(!block){floorSel.disabled=true;return;}
+  floorSel.disabled=false;
+  Object.keys(BLOCK_FLOORS[block]).forEach(f=>{
+    const opt=document.createElement('option');
+    opt.value=f;
+    opt.textContent=isNaN(f)?`${f} (Special)`:`Floor ${f}`;
+    floorSel.appendChild(opt);
+  });
+}
+
+function onFloorChange(){
+  const block=document.getElementById('r-block').value;
+  const floor=document.getElementById('r-floor').value;
+  const daySel=document.getElementById('r-day-sel');
+  document.getElementById('sb3').className='step-box'+(floor?' active-step':'');
+  document.getElementById('rooms-result').innerHTML='';
+  daySel.innerHTML='<option value="">-- Choose Day --</option>';
+  if(!floor){daySel.disabled=true;return;}
+  daySel.disabled=false;
+  DAYS.forEach(d=>{
+    const opt=document.createElement('option');
+    opt.value=d;opt.textContent=d;
+    daySel.appendChild(opt);
+  });
+  // Auto-select today if it's a weekday
+  const todayName=DAYS[new Date().getDay()-1];
+  if(todayName){daySel.value=todayName;onDayChange();}
+}
+
+function onDayChange(){
+  const block=document.getElementById('r-block').value;
+  const floor=document.getElementById('r-floor').value;
+  const day=document.getElementById('r-day-sel').value;
+  const res=document.getElementById('rooms-result');
+  if(!block||!floor||!day){res.innerHTML='';return;}
+
+  const allRooms=BLOCK_FLOORS[block][floor]||[];
+  const upcomingSlots=getUpcomingSlots();
+  const currentSlot=getCurrentSlot();
+
+  if(!allRooms.length){
+    res.innerHTML=`<div class="no-rooms"><span class="no-rooms-icon">&#9633;</span><div class="no-rooms-txt">NO ROOMS ON THIS FLOOR</div></div>`;
+    return;
+  }
+  if(!upcomingSlots.length){
+    res.innerHTML=`<div class="no-rooms"><span class="no-rooms-icon">&#9633;</span><div class="no-rooms-txt"><span class="blink">_</span> ALL SLOTS HAVE PASSED FOR TODAY<br>COME BACK TOMORROW</div></div>`;
+    return;
+  }
+
+  // Build per-room data with current-slot status
+  const roomData=allRooms.map(room=>{
+    const slotInfo=getRoomSlotInfo(room,day);
+    const currentEntry=currentSlot?slotInfo.find(s=>s.slot===currentSlot):null;
+    const busyNow=currentEntry?currentEntry.occupiedBy:null;
+    return{room,slotInfo,busyNow};
+  });
+
+  // Free-now rooms first, then busy-now
+  roomData.sort((a,b)=>(!a.busyNow&&b.busyNow)?-1:(a.busyNow&&!b.busyNow)?1:0);
+
+  const freeNowCount=roomData.filter(r=>!r.busyNow).length;
+
+  const cards=roomData.map(({room,slotInfo,busyNow})=>{
+    const cardClass=busyNow?'room-card busy-now':'room-card free-now';
+
+    const statusBadge=busyNow
+      ?`<span class="status-now busy" title="${busyNow.course} · ${busyNow.dept} ${busyNow.batch}-${busyNow.section}">${busyNow.course}</span>`
+      :`<span class="status-now free">FREE NOW</span>`;
+
+    const slotsHTML=slotInfo.map(({slot,occupiedBy})=>{
+      const isCurrent=slot===currentSlot;
+      let dotClass,statusHTML,nowBadge='';
+      if(isCurrent){
+        dotClass=occupiedBy?'current-busy':'current-free';
+        nowBadge=`<span class="now-badge${occupiedBy?' busy':''}">NOW</span>`;
+      } else {
+        dotClass=occupiedBy?'busy':'free';
+      }
+      statusHTML=occupiedBy
+        ?`<span class="slot-status-busy" title="${occupiedBy.course} · ${occupiedBy.dept} ${occupiedBy.batch}-${occupiedBy.section}">${occupiedBy.course}</span>`
+        :`<span class="slot-status-free">FREE</span>`;
+      return `<div class="slot-row${isCurrent?' is-current':''}">
+        <div class="slot-dot ${dotClass}"></div>
+        <span class="slot-time-lbl">${fmtSlot(slot)}</span>
+        ${statusHTML}
+        ${nowBadge}
+      </div>`;
+    }).join('');
+
+    return `<div class="${cardClass}">
+      <div class="room-card-head">
+        <span class="room-card-name">${room}</span>
+        ${statusBadge}
+      </div>
+      <div class="room-card-body">${slotsHTML}</div>
+    </div>`;
+  }).join('');
+
+  const countClass=freeNowCount>0?'result-count green':'result-count red';
+  res.innerHTML=`<div class="result-header">
+    <span class="result-label">BLOCK ${block} &nbsp;&#9656;&nbsp; FLOOR ${floor} &nbsp;&#9656;&nbsp; ${day.toUpperCase()}</span>
+    <span class="${countClass}">${freeNowCount}/${allRooms.length} FREE NOW</span>
+  </div>
+  <div class="rooms-grid">${cards}</div>`;
+}
+
+/* ── Tab switch ── */
+function sw(i){
+  ['nc0','nc1','nc2','nc3','nc4'].forEach((id,j)=>document.getElementById(id).className='nav-card'+(j===i?' active':''));
+  ['p0','p1','p2','p3','p4'].forEach((id,j)=>document.getElementById(id).className='panel'+(j===i?' on':''));
+  if(i===2) renderEvents();
+  if(i===4) renderTodos();
+}
+
+/* ── Timetable panel ── */
+function loadTT(){
+  const dep=document.getElementById('dept').value;
+  const bat=document.getElementById('batch').value;
+  const sec=document.getElementById('sec').value;
+  const day=document.getElementById('day').value;
+  const data=(TT[dep]&&TT[dep][bat]&&TT[dep][bat][sec]&&TT[dep][bat][sec][day])||[];
+  const out=document.getElementById('tt-out');
+  if(!data.length){out.innerHTML='<div class="empty"><span class="blink">_</span> NO CLASSES SCHEDULED</div>';return;}
+  out.innerHTML='<table class="tbl"><thead><tr><th style="width:52%">COURSE</th><th style="width:20%">ROOM</th><th style="width:28%">TIME</th></tr></thead><tbody>'+
+    data.map(r=>`<tr><td>${r.c}</td><td>${r.l}</td><td>${fmtSlot(r.t)}</td></tr>`).join('')+'</tbody></table>';
+}
+
+/* ── Live clock + auto-refresh rooms when slot changes ── */
+let _lastSlot=null;
+function tickBanner(){
+  const n=new Date();
+  const t=n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const d=DAYNAMES[n.getDay()];
+  const dateStr=n.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const slot=getCurrentSlot();
+
+  const hc=document.getElementById('clk');if(hc)hc.textContent=t;
+  const hd=document.getElementById('clk-day');if(hd)hd.textContent=d+' — '+dateStr;
+  const rt=document.getElementById('r-time');if(rt)rt.textContent=t;
+  const rd=document.getElementById('r-day-div');if(rd)rd.textContent=d+' · '+dateStr;
+  const rs=document.getElementById('r-slot');if(rs)rs.textContent=slot?`CURRENT SLOT: ${fmtSlot(slot)}`:'NO ACTIVE SLOT RIGHT NOW';
+
+  // Auto-refresh rooms view whenever the active slot changes
+  if(slot!==_lastSlot){
+    _lastSlot=slot;
+    const p1=document.getElementById('p1');
+    if(p1&&p1.classList.contains('on')){
+      const daySel=document.getElementById('r-day-sel');
+      if(daySel&&daySel.value) onDayChange();
+    }
+  }
+}
+setInterval(tickBanner,1000);
+tickBanner();
+
+/* ── Coming Events Data ── */
+const EVENTS=[
+  {
+    title:"Compiler Hackathon 2026",type:"HACKATHON",
+    date:new Date(new Date().getTime()+3*24*60*60*1000),
+    venue:"D-Block Audi",price:"PKR 500",seats:80,
+    highlights:["24-hour non-stop coding challenge","Cash prizes worth PKR 150,000","Industry mentors from leading tech firms","Free meals and refreshments throughout","Certificates for all participants"]
+  },
+  {
+    title:"AI & ML Summit",type:"CONFERENCE",
+    date:new Date(new Date().getTime()+7*24*60*60*1000),
+    venue:"Main Auditorium",price:"PKR 300",seats:200,
+    highlights:["Keynote by FAST alumnus — Google AI researcher","Live demos of generative AI tools","Panel discussion on AI in Pakistan","Networking session with industry leaders","Best project showcase competition"]
+  },
+  {
+    title:"Tech Startup Expo",type:"EXPO",
+    date:new Date(new Date().getTime()+12*24*60*60*1000),
+    venue:"Sports Complex Hall",price:"FREE",seats:500,
+    highlights:["30+ student startup booths","Investor pitch competition — PKR 200K prize","Product demos open to public","Workshop: From Idea to MVP in 30 Days","Merchandise and giveaways"]
+  },
+  {
+    title:"Cybersecurity CTF",type:"COMPETITION",
+    date:new Date(new Date().getTime()+15*24*60*60*1000),
+    venue:"C-Block Labs",price:"PKR 200",seats:60,
+    highlights:["Capture The Flag challenge — 6 hours","Categories: Web, Crypto, Forensics, Reverse Eng.","Top team wins PKR 50,000","Open to all batches and departments","Team of 2–4 members per entry"]
+  },
+  {
+    title:"Annual Compiler Dinner",type:"GALA",
+    date:new Date(new Date().getTime()+20*24*60*60*1000),
+    venue:"Marriott Hotel, ISB",price:"PKR 2,500",seats:150,
+    highlights:["Formal dinner with faculty and alumni","Annual awards: Best Developer, Innovator of the Year","Live music and entertainment","Photo booth and memorabilia","Exclusive limited seating — book early"]
+  },
+  {
+    title:"Open Source Workshop",type:"WORKSHOP",
+    date:new Date(new Date().getTime()+25*24*60*60*1000),
+    venue:"D-401",price:"PKR 100",seats:40,
+    highlights:["Contributing to real GitHub projects","Git workflow and PR best practices","Getting started with open source maintainship","Hands-on session with Linux Foundation repos","Completion certificate provided"]
+  }
+];
+
+function fmtEventDate(d){
+  const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+function fmtEventShort(d){
+  const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return `${d.getDate()} ${months[d.getMonth()]}`;
+}
+function daysFromNow(d){
+  const diff=Math.ceil((d-new Date())/(1000*60*60*24));
+  if(diff===0) return 'TODAY';
+  if(diff===1) return 'TOMORROW';
+  return `IN ${diff} DAYS`;
+}
+
+function typeClass(type){
+  return({HACKATHON:'ev-hackathon',CONFERENCE:'ev-conference',EXPO:'ev-expo',COMPETITION:'ev-competition',GALA:'ev-gala',WORKSHOP:'ev-workshop'})[type]||'ev-workshop';
+}
+
+function renderEvents(){
+  const now=new Date();
+  const cutoff=new Date(now.getTime()+30*24*60*60*1000);
+  const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  document.getElementById('ev-today-date').textContent=`${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+  const upcoming=EVENTS.filter(e=>e.date>=now&&e.date<=cutoff).sort((a,b)=>a.date-b.date);
+  const grid=document.getElementById('events-grid');
+  if(!upcoming.length){
+    grid.innerHTML='<div class="no-events"><span style="font-family:VT323,monospace;font-size:48px;color:#b0d4b8;display:block;margin-bottom:8px">&#9670;</span>NO EVENTS IN THE NEXT 30 DAYS</div>';
+    return;
+  }
+  grid.innerHTML=upcoming.map((ev,i)=>`
+    <div class="ev-card ${typeClass(ev.type)}" onclick="openEvModal(${i})">
+      <div class="ev-card-top">
+        <div class="ev-card-date">${fmtEventShort(ev.date)} &nbsp;·&nbsp; ${daysFromNow(ev.date)}</div>
+        <div class="ev-card-title">${ev.title}</div>
+        <div class="ev-card-type">${ev.type}</div>
+      </div>
+      <div class="ev-card-body">
+        <div class="ev-card-venue">&#9632; ${ev.venue}</div>
+        <div class="ev-card-price">${ev.price}</div>
+        <div class="ev-card-cta">TAP FOR DETAILS &amp; TICKETS &#9658;</div>
+      </div>
+    </div>`).join('');
+
+  // store filtered list for modal access
+  window._evList=upcoming;
+}
+
+function openEvModal(i){
+  const ev=window._evList[i];
+  const tc=typeClass(ev.type);
+  document.getElementById('em-type').textContent=ev.type;
+  document.getElementById('em-title').textContent=ev.title;
+  document.getElementById('em-date').textContent=fmtEventDate(ev.date)+' · '+daysFromNow(ev.date);
+  document.getElementById('em-venue').textContent=ev.venue;
+  document.getElementById('em-price').textContent=ev.price;
+  document.getElementById('em-seats').textContent=ev.seats;
+  // Apply colour class to modal head
+  const head=document.getElementById('ev-modal').querySelector('.ev-modal-head');
+  head.className='ev-modal-head '+tc;
+  // Colour info vals
+  ['em-venue','em-price','em-seats'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.className='ev-info-val '+tc;
+  });
+  document.getElementById('em-highlights').innerHTML=ev.highlights.map(h=>`<div class="ev-highlight-item"><div class="ev-highlight-dot ${tc}"></div><span>${h}</span></div>`).join('');
+  document.getElementById('em-confirm').style.display='none';
+  const btn=document.getElementById('em-buy-btn');
+  btn.className='ev-buy-btn '+tc;
+  btn.style.display='block';
+  btn.textContent=ev.price==='FREE'?'▶ REGISTER FREE':'▶ BUY TICKET';
+  document.getElementById('ev-overlay').style.display='flex';
+}
+
+function closeEvModal(e){if(e.target===document.getElementById('ev-overlay')) closeEvModalBtn();}
+function closeEvModalBtn(){document.getElementById('ev-overlay').style.display='none';}
+
+function buyTicket(){
+  document.getElementById('em-buy-btn').style.display='none';
+  document.getElementById('em-confirm').style.display='block';
+}
+
+/* ══════════════════════════════════════════
+   EXAM SCHEDULE DATA
+══════════════════════════════════════════ */
+// Dates are relative to today for demo purposes
+function dOff(d){const x=new Date();x.setDate(x.getDate()+d);return x;}
+function dFmt(d){const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return `${d.getDate()} ${M[d.getMonth()]} ${d.getFullYear()}`;}
+function dDay(d){return["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()];}
+
+const EXAM_SCHEDULE={
+  CS:{
+    "2023":{
+      A:{
+        S1:[
+          {course:"Data Structures",date:dOff(-20),time:"09:00 AM",room:"D-Audi",duration:"2 hrs"},
+          {course:"Digital Logic Design",date:dOff(-18),time:"02:00 PM",room:"D-301",duration:"2 hrs"},
+          {course:"Calculus-II",date:dOff(-16),time:"11:00 AM",room:"D-201",duration:"2 hrs"},
+          {course:"OOP",date:dOff(-14),time:"09:00 AM",room:"D-Lab1",duration:"1.5 hrs"},
+          {course:"Communication Skills",date:dOff(-12),time:"02:00 PM",room:"D-102",duration:"1.5 hrs"},
+        ],
+        S2:[
+          {course:"Data Structures",date:dOff(5),time:"09:00 AM",room:"D-Audi",duration:"2 hrs"},
+          {course:"Digital Logic Design",date:dOff(7),time:"02:00 PM",room:"D-301",duration:"2 hrs"},
+          {course:"Calculus-II",date:dOff(9),time:"11:00 AM",room:"D-201",duration:"2 hrs"},
+          {course:"OOP",date:dOff(11),time:"09:00 AM",room:"D-Lab1",duration:"1.5 hrs"},
+          {course:"Islamic Studies",date:dOff(13),time:"02:00 PM",room:"D-102",duration:"1.5 hrs"},
+        ],
+        FIN:[
+          {course:"Data Structures",date:dOff(35),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},
+          {course:"Digital Logic Design",date:dOff(37),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"},
+          {course:"Calculus-II",date:dOff(39),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},
+          {course:"OOP",date:dOff(41),time:"02:00 PM",room:"D-Lab1",duration:"2.5 hrs"},
+          {course:"Communication Skills",date:dOff(43),time:"11:00 AM",room:"D-201",duration:"2 hrs"},
+          {course:"Linear Algebra",date:dOff(45),time:"09:00 AM",room:"D-301",duration:"3 hrs"},
+        ]
+      },
+      B:{
+        S1:[
+          {course:"Programming Fundamentals",date:dOff(-19),time:"09:00 AM",room:"D-101",duration:"2 hrs"},
+          {course:"Calculus-I",date:dOff(-17),time:"11:00 AM",room:"D-201",duration:"2 hrs"},
+          {course:"MLOPs",date:dOff(-15),time:"02:00 PM",room:"D-401",duration:"1.5 hrs"},
+          {course:"Entrepreneurship",date:dOff(-13),time:"09:00 AM",room:"D-313",duration:"1.5 hrs"},
+        ],
+        S2:[
+          {course:"Programming Fundamentals",date:dOff(6),time:"09:00 AM",room:"D-101",duration:"2 hrs"},
+          {course:"Calculus-I",date:dOff(8),time:"11:00 AM",room:"D-201",duration:"2 hrs"},
+          {course:"MLOPs",date:dOff(10),time:"02:00 PM",room:"D-401",duration:"1.5 hrs"},
+          {course:"Fund of SPM",date:dOff(12),time:"09:00 AM",room:"D-316",duration:"1.5 hrs"},
+          {course:"Agentic AI",date:dOff(14),time:"02:00 PM",room:"D-402",duration:"1.5 hrs"},
+        ],
+        FIN:[
+          {course:"Programming Fundamentals",date:dOff(36),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},
+          {course:"Calculus-I",date:dOff(38),time:"11:00 AM",room:"D-Audi",duration:"3 hrs"},
+          {course:"MLOPs",date:dOff(40),time:"02:00 PM",room:"D-401",duration:"2.5 hrs"},
+          {course:"Discrete Structures",date:dOff(42),time:"09:00 AM",room:"D-301",duration:"3 hrs"},
+          {course:"Pakistan Studies",date:dOff(44),time:"11:00 AM",room:"D-201",duration:"2 hrs"},
+        ]
+      },
+      C:{
+        S1:[{course:"Web Engineering",date:dOff(-18),time:"09:00 AM",room:"D-301",duration:"2 hrs"},{course:"Database Systems",date:dOff(-16),time:"02:00 PM",room:"D-313",duration:"2 hrs"}],
+        S2:[{course:"Web Engineering",date:dOff(7),time:"09:00 AM",room:"D-301",duration:"2 hrs"},{course:"Computer Networks",date:dOff(9),time:"11:00 AM",room:"D-402",duration:"2 hrs"},{course:"Software Engineering",date:dOff(11),time:"02:00 PM",room:"D-316",duration:"1.5 hrs"}],
+        FIN:[{course:"Web Engineering",date:dOff(37),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Database Systems",date:dOff(39),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"},{course:"Computer Networks",date:dOff(41),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Software Engineering",date:dOff(43),time:"11:00 AM",room:"D-316",duration:"2.5 hrs"}]
+      },
+      D:{
+        S1:[{course:"Compiler Construction",date:dOff(-17),time:"02:00 PM",room:"D-401",duration:"2 hrs"},{course:"Operating Systems",date:dOff(-15),time:"09:00 AM",room:"D-302",duration:"2 hrs"}],
+        S2:[{course:"Compiler Construction",date:dOff(6),time:"02:00 PM",room:"D-401",duration:"2 hrs"},{course:"Theory of Automata",date:dOff(8),time:"09:00 AM",room:"D-201",duration:"2 hrs"},{course:"Elective",date:dOff(10),time:"11:00 AM",room:"D-501",duration:"2 hrs"}],
+        FIN:[{course:"Compiler Construction",date:dOff(36),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"},{course:"Operating Systems",date:dOff(38),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Theory of Automata",date:dOff(40),time:"11:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Elective",date:dOff(42),time:"02:00 PM",room:"D-501",duration:"2.5 hrs"}]
+      }
+    },
+    "2024":{
+      A:{
+        S1:[{course:"Programming Fundamentals",date:dOff(-15),time:"09:00 AM",room:"D-101",duration:"2 hrs"},{course:"Calculus-I",date:dOff(-13),time:"11:00 AM",room:"D-201",duration:"2 hrs"},{course:"Discrete Structures",date:dOff(-11),time:"02:00 PM",room:"D-301",duration:"2 hrs"}],
+        S2:[{course:"Programming Fundamentals",date:dOff(8),time:"09:00 AM",room:"D-101",duration:"2 hrs"},{course:"Calculus-I",date:dOff(10),time:"11:00 AM",room:"D-201",duration:"2 hrs"},{course:"English Composition",date:dOff(12),time:"02:00 PM",room:"D-102",duration:"1.5 hrs"}],
+        FIN:[{course:"Programming Fundamentals",date:dOff(38),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Calculus-I",date:dOff(40),time:"11:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Discrete Structures",date:dOff(42),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"},{course:"English Composition",date:dOff(44),time:"09:00 AM",room:"D-301",duration:"2 hrs"}]
+      },
+      B:{
+        S1:[{course:"Calculus-I",date:dOff(-14),time:"10:00 AM",room:"D-202",duration:"2 hrs"},{course:"Programming Fundamentals",date:dOff(-12),time:"09:00 AM",room:"D-102",duration:"2 hrs"}],
+        S2:[{course:"Calculus-I",date:dOff(9),time:"10:00 AM",room:"D-202",duration:"2 hrs"},{course:"Programming Fundamentals",date:dOff(11),time:"09:00 AM",room:"D-102",duration:"2 hrs"},{course:"Islamic Studies",date:dOff(13),time:"02:00 PM",room:"D-201",duration:"1.5 hrs"}],
+        FIN:[{course:"Calculus-I",date:dOff(39),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Programming Fundamentals",date:dOff(41),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Islamic Studies",date:dOff(43),time:"02:00 PM",room:"D-201",duration:"2 hrs"}]
+      },
+      C:{S1:[{course:"Intro to Computing",date:dOff(-13),time:"10:00 AM",room:"D-101",duration:"2 hrs"}],S2:[{course:"Intro to Computing",date:dOff(10),time:"10:00 AM",room:"D-101",duration:"2 hrs"}],FIN:[{course:"Intro to Computing",date:dOff(40),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"}]},
+      D:{S1:[{course:"Linear Algebra",date:dOff(-12),time:"02:00 PM",room:"D-301",duration:"2 hrs"}],S2:[{course:"Linear Algebra",date:dOff(11),time:"02:00 PM",room:"D-301",duration:"2 hrs"},{course:"Applied Physics",date:dOff(13),time:"10:00 AM",room:"D-201",duration:"2 hrs"}],FIN:[{course:"Linear Algebra",date:dOff(41),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"},{course:"Applied Physics",date:dOff(43),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"}]}
+    },
+    "2025":{
+      A:{S1:[{course:"Machine Learning",date:dOff(-10),time:"10:00 AM",room:"D-402",duration:"2 hrs"},{course:"Deep Learning",date:dOff(-8),time:"02:00 PM",room:"D-401",duration:"2 hrs"},{course:"NLP",date:dOff(-6),time:"11:00 AM",room:"D-313",duration:"2 hrs"}],S2:[{course:"Machine Learning",date:dOff(12),time:"10:00 AM",room:"D-402",duration:"2 hrs"},{course:"Deep Learning",date:dOff(14),time:"02:00 PM",room:"D-401",duration:"2 hrs"},{course:"NLP",date:dOff(16),time:"11:00 AM",room:"D-313",duration:"2 hrs"}],FIN:[{course:"Machine Learning",date:dOff(42),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Deep Learning",date:dOff(44),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"},{course:"NLP",date:dOff(46),time:"11:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Computer Vision",date:dOff(48),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"}]},
+      B:{S1:[{course:"Big Data",date:dOff(-9),time:"02:00 PM",room:"D-316",duration:"2 hrs"},{course:"Cloud Computing",date:dOff(-7),time:"10:00 AM",room:"D-501",duration:"2 hrs"}],S2:[{course:"Big Data",date:dOff(13),time:"02:00 PM",room:"D-316",duration:"2 hrs"},{course:"Cloud Computing",date:dOff(15),time:"10:00 AM",room:"D-501",duration:"2 hrs"},{course:"Cyber Security",date:dOff(17),time:"09:00 AM",room:"D-302",duration:"2 hrs"}],FIN:[{course:"Big Data",date:dOff(43),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"},{course:"Cloud Computing",date:dOff(45),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Cyber Security",date:dOff(47),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"}]},
+      C:{S1:[{course:"Mobile App Dev",date:dOff(-8),time:"10:00 AM",room:"D-Lab2",duration:"1.5 hrs"}],S2:[{course:"Mobile App Dev",date:dOff(14),time:"10:00 AM",room:"D-Lab2",duration:"1.5 hrs"},{course:"Game Dev",date:dOff(16),time:"02:00 PM",room:"D-401",duration:"2 hrs"}],FIN:[{course:"Mobile App Dev",date:dOff(44),time:"10:00 AM",room:"D-Audi",duration:"2.5 hrs"},{course:"Game Dev",date:dOff(46),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"}]},
+      D:{S1:[{course:"Blockchain",date:dOff(-7),time:"09:00 AM",room:"D-402",duration:"2 hrs"}],S2:[{course:"Blockchain",date:dOff(15),time:"09:00 AM",room:"D-402",duration:"2 hrs"},{course:"AR/VR Dev",date:dOff(17),time:"11:00 AM",room:"D-501",duration:"2 hrs"},{course:"IoT",date:dOff(19),time:"02:00 PM",room:"D-316",duration:"2 hrs"}],FIN:[{course:"Blockchain",date:dOff(45),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"AR/VR Dev",date:dOff(47),time:"11:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"IoT",date:dOff(49),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"}]}
+    },
+    "2026":{
+      A:{S1:[{course:"Senior Project I",date:dOff(-5),time:"10:00 AM",room:"D-502",duration:"2 hrs"},{course:"Research Methods",date:dOff(-3),time:"09:00 AM",room:"D-313",duration:"2 hrs"}],S2:[{course:"Senior Project I",date:dOff(18),time:"10:00 AM",room:"D-502",duration:"2 hrs"},{course:"Tech Entrepreneurship",date:dOff(20),time:"02:00 PM",room:"D-401",duration:"2 hrs"}],FIN:[{course:"Senior Project I",date:dOff(48),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Research Methods",date:dOff(50),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Tech Entrepreneurship",date:dOff(52),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"}]},
+      B:{S1:[{course:"Capstone Design",date:dOff(-4),time:"10:00 AM",room:"D-502",duration:"2 hrs"}],S2:[{course:"Capstone Design",date:dOff(19),time:"10:00 AM",room:"D-502",duration:"2 hrs"},{course:"Industry Seminar",date:dOff(21),time:"02:30 PM",room:"D-Audi",duration:"1.5 hrs"}],FIN:[{course:"Capstone Design",date:dOff(49),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Industry Seminar",date:dOff(51),time:"02:30 PM",room:"D-Audi",duration:"2 hrs"}]},
+      C:{S1:[{course:"Final Year Project",date:dOff(-3),time:"09:00 AM",room:"D-Lab1",duration:"2 hrs"}],S2:[{course:"Final Year Project",date:dOff(20),time:"09:00 AM",room:"D-Lab1",duration:"2 hrs"},{course:"Business Communication",date:dOff(22),time:"10:00 AM",room:"D-201",duration:"1.5 hrs"}],FIN:[{course:"Final Year Project",date:dOff(50),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Business Communication",date:dOff(52),time:"10:00 AM",room:"D-Audi",duration:"2 hrs"}]},
+      D:{S1:[{course:"Professional Ethics",date:dOff(-2),time:"11:30 AM",room:"D-302",duration:"1.5 hrs"}],S2:[{course:"Professional Ethics",date:dOff(21),time:"11:30 AM",room:"D-302",duration:"1.5 hrs"},{course:"Project Management",date:dOff(23),time:"02:00 PM",room:"D-313",duration:"2 hrs"}],FIN:[{course:"Professional Ethics",date:dOff(51),time:"11:30 AM",room:"D-Audi",duration:"2 hrs"},{course:"Project Management",date:dOff(53),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"}]}
+    }
+  },
+  AI:{
+    "2023":{
+      A:{S1:[{course:"Machine Learning",date:dOff(-20),time:"10:00 AM",room:"D-402",duration:"2 hrs"},{course:"Data Mining",date:dOff(-18),time:"02:00 PM",room:"D-313",duration:"2 hrs"},{course:"Deep Learning",date:dOff(-16),time:"09:00 AM",room:"D-401",duration:"2 hrs"}],S2:[{course:"Machine Learning",date:dOff(5),time:"10:00 AM",room:"D-402",duration:"2 hrs"},{course:"Data Mining",date:dOff(7),time:"02:00 PM",room:"D-313",duration:"2 hrs"},{course:"Computer Vision",date:dOff(9),time:"11:00 AM",room:"D-402",duration:"2 hrs"}],FIN:[{course:"Machine Learning",date:dOff(35),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Data Mining",date:dOff(37),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"},{course:"Deep Learning",date:dOff(39),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Computer Vision",date:dOff(41),time:"11:00 AM",room:"D-Audi",duration:"3 hrs"}]},
+      B:{S1:[{course:"NLP",date:dOff(-19),time:"09:00 AM",room:"D-316",duration:"2 hrs"},{course:"Reinforcement Learning",date:dOff(-17),time:"10:00 AM",room:"D-401",duration:"2 hrs"}],S2:[{course:"NLP",date:dOff(6),time:"09:00 AM",room:"D-316",duration:"2 hrs"},{course:"Reinforcement Learning",date:dOff(8),time:"10:00 AM",room:"D-401",duration:"2 hrs"},{course:"AI Ethics",date:dOff(10),time:"02:00 PM",room:"D-313",duration:"1.5 hrs"}],FIN:[{course:"NLP",date:dOff(36),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Reinforcement Learning",date:dOff(38),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"AI Ethics",date:dOff(40),time:"02:00 PM",room:"D-Audi",duration:"2 hrs"},{course:"Robot Programming",date:dOff(42),time:"09:00 AM",room:"D-Lab2",duration:"2.5 hrs"}]},
+      C:{S1:[{course:"Bayesian ML",date:dOff(-18),time:"10:00 AM",room:"D-501",duration:"2 hrs"}],S2:[{course:"Bayesian ML",date:dOff(7),time:"10:00 AM",room:"D-501",duration:"2 hrs"},{course:"Graph Neural Nets",date:dOff(9),time:"02:00 PM",room:"D-402",duration:"2 hrs"}],FIN:[{course:"Bayesian ML",date:dOff(37),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Graph Neural Nets",date:dOff(39),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"}]},
+      D:{S1:[{course:"Generative AI",date:dOff(-17),time:"02:00 PM",room:"D-401",duration:"2 hrs"}],S2:[{course:"Generative AI",date:dOff(8),time:"02:00 PM",room:"D-401",duration:"2 hrs"},{course:"Agentic Systems",date:dOff(10),time:"10:00 AM",room:"D-402",duration:"2 hrs"},{course:"LLM Fine-tuning",date:dOff(12),time:"11:00 AM",room:"D-316",duration:"2 hrs"}],FIN:[{course:"Generative AI",date:dOff(38),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"},{course:"Agentic Systems",date:dOff(40),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"LLM Fine-tuning",date:dOff(42),time:"11:00 AM",room:"D-Audi",duration:"3 hrs"}]}
+    },
+    "2024":{
+      A:{S1:[{course:"Intro to AI",date:dOff(-15),time:"10:00 AM",room:"D-201",duration:"2 hrs"},{course:"Python for AI",date:dOff(-13),time:"09:00 AM",room:"D-Lab1",duration:"1.5 hrs"}],S2:[{course:"Intro to AI",date:dOff(8),time:"10:00 AM",room:"D-201",duration:"2 hrs"},{course:"Stats for ML",date:dOff(10),time:"11:00 AM",room:"D-301",duration:"2 hrs"}],FIN:[{course:"Intro to AI",date:dOff(38),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Python for AI",date:dOff(40),time:"09:00 AM",room:"D-Lab1",duration:"2 hrs"},{course:"Stats for ML",date:dOff(42),time:"11:00 AM",room:"D-Audi",duration:"3 hrs"}]},
+      B:{S1:[{course:"Linear Algebra for AI",date:dOff(-14),time:"09:00 AM",room:"D-101",duration:"2 hrs"}],S2:[{course:"Linear Algebra for AI",date:dOff(9),time:"09:00 AM",room:"D-101",duration:"2 hrs"},{course:"Probability Theory",date:dOff(11),time:"02:00 PM",room:"D-201",duration:"2 hrs"}],FIN:[{course:"Linear Algebra for AI",date:dOff(39),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Probability Theory",date:dOff(41),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"}]},
+      C:{S1:[{course:"Data Analysis",date:dOff(-13),time:"10:00 AM",room:"D-313",duration:"2 hrs"}],S2:[{course:"Data Analysis",date:dOff(10),time:"10:00 AM",room:"D-313",duration:"2 hrs"}],FIN:[{course:"Data Analysis",date:dOff(40),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"}]},
+      D:{S1:[{course:"Foundations of AI",date:dOff(-12),time:"11:00 AM",room:"D-302",duration:"2 hrs"}],S2:[{course:"Foundations of AI",date:dOff(11),time:"11:00 AM",room:"D-302",duration:"2 hrs"}],FIN:[{course:"Foundations of AI",date:dOff(41),time:"11:00 AM",room:"D-Audi",duration:"3 hrs"}]}
+    },
+    "2025":{
+      A:{S1:[{course:"Advanced ML",date:dOff(-10),time:"10:00 AM",room:"D-402",duration:"2 hrs"},{course:"Transformer Models",date:dOff(-8),time:"02:00 PM",room:"D-401",duration:"2 hrs"}],S2:[{course:"Advanced ML",date:dOff(12),time:"10:00 AM",room:"D-402",duration:"2 hrs"},{course:"Transformer Models",date:dOff(14),time:"02:00 PM",room:"D-401",duration:"2 hrs"},{course:"MLOps",date:dOff(16),time:"09:00 AM",room:"D-316",duration:"2 hrs"}],FIN:[{course:"Advanced ML",date:dOff(42),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Transformer Models",date:dOff(44),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"},{course:"MLOps",date:dOff(46),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"}]},
+      B:{S1:[{course:"Speech Recognition",date:dOff(-9),time:"10:00 AM",room:"D-313",duration:"2 hrs"}],S2:[{course:"Speech Recognition",date:dOff(13),time:"10:00 AM",room:"D-313",duration:"2 hrs"},{course:"AI for Healthcare",date:dOff(15),time:"02:00 PM",room:"D-501",duration:"2 hrs"}],FIN:[{course:"Speech Recognition",date:dOff(43),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"AI for Healthcare",date:dOff(45),time:"02:00 PM",room:"D-Audi",duration:"3 hrs"}]},
+      C:{S1:[{course:"Robotics",date:dOff(-8),time:"09:00 AM",room:"D-Lab1",duration:"1.5 hrs"}],S2:[{course:"Robotics",date:dOff(14),time:"09:00 AM",room:"D-Lab1",duration:"1.5 hrs"},{course:"Autonomous Vehicles",date:dOff(16),time:"10:00 AM",room:"D-402",duration:"2 hrs"}],FIN:[{course:"Robotics",date:dOff(44),time:"09:00 AM",room:"D-Lab1",duration:"2.5 hrs"},{course:"Autonomous Vehicles",date:dOff(46),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"}]},
+      D:{S1:[{course:"AI Security",date:dOff(-7),time:"09:00 AM",room:"D-302",duration:"2 hrs"}],S2:[{course:"AI Security",date:dOff(15),time:"09:00 AM",room:"D-302",duration:"2 hrs"},{course:"Explainable AI",date:dOff(17),time:"11:00 AM",room:"D-313",duration:"2 hrs"}],FIN:[{course:"AI Security",date:dOff(45),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Explainable AI",date:dOff(47),time:"11:00 AM",room:"D-Audi",duration:"3 hrs"}]}
+    },
+    "2026":{
+      A:{S1:[{course:"AI Research Project",date:dOff(-5),time:"10:00 AM",room:"D-502",duration:"2 hrs"}],S2:[{course:"AI Research Project",date:dOff(18),time:"10:00 AM",room:"D-502",duration:"2 hrs"},{course:"AI Seminar",date:dOff(20),time:"02:00 PM",room:"D-Audi",duration:"1.5 hrs"}],FIN:[{course:"AI Research Project",date:dOff(48),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"AI Seminar",date:dOff(50),time:"02:00 PM",room:"D-Audi",duration:"2 hrs"}]},
+      B:{S1:[{course:"Capstone AI",date:dOff(-4),time:"09:00 AM",room:"D-Lab1",duration:"2 hrs"}],S2:[{course:"Capstone AI",date:dOff(19),time:"09:00 AM",room:"D-Lab1",duration:"2 hrs"},{course:"AI Product Dev",date:dOff(21),time:"10:00 AM",room:"D-501",duration:"2 hrs"}],FIN:[{course:"Capstone AI",date:dOff(49),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"AI Product Dev",date:dOff(51),time:"10:00 AM",room:"D-Audi",duration:"3 hrs"}]},
+      C:{S1:[{course:"Final Project",date:dOff(-3),time:"09:00 AM",room:"D-502",duration:"2 hrs"}],S2:[{course:"Final Project",date:dOff(20),time:"09:00 AM",room:"D-502",duration:"2 hrs"},{course:"Innovation Lab",date:dOff(22),time:"02:00 PM",room:"D-Lab2",duration:"2 hrs"}],FIN:[{course:"Final Project",date:dOff(50),time:"09:00 AM",room:"D-Audi",duration:"3 hrs"},{course:"Innovation Lab",date:dOff(52),time:"02:00 PM",room:"D-Audi",duration:"2 hrs"}]},
+      D:{S1:[{course:"Thesis Writing",date:dOff(-2),time:"11:00 AM",room:"D-313",duration:"2 hrs"}],S2:[{course:"Thesis Writing",date:dOff(21),time:"11:00 AM",room:"D-313",duration:"2 hrs"}],FIN:[{course:"Thesis Writing",date:dOff(51),time:"11:00 AM",room:"D-Audi",duration:"3 hrs"}]}
+    }
+  }
+};
+
+let _currentExamType=null;
+
+function selectExamType(type){
+  _currentExamType=type;
+  // Update button active states
+  document.getElementById('exbtn-s1').className='exam-type-btn'+(type==='S1'?' s1-active':'');
+  document.getElementById('exbtn-s2').className='exam-type-btn'+(type==='S2'?' s2-active':'');
+  document.getElementById('exbtn-fin').className='exam-type-btn'+(type==='FIN'?' fin-active':'');
+  renderExamSchedule();
+}
+
+function examCountdown(date){
+  const now=new Date();
+  now.setHours(0,0,0,0);
+  const d=new Date(date);d.setHours(0,0,0,0);
+  const diff=Math.round((d-now)/(1000*60*60*24));
+  if(diff<0) return{label:`${Math.abs(diff)}d ago`,cls:'past'};
+  if(diff===0) return{label:'TODAY',cls:'soon'};
+  if(diff<=3) return{label:`IN ${diff}d`,cls:'soon'};
+  return{label:`IN ${diff}d`,cls:'upcoming'};
+}
+
+function renderExamSchedule(){
+  const dept=document.getElementById('ex-dept').value;
+  const batch=document.getElementById('ex-batch').value;
+  const sec=document.getElementById('ex-sec').value;
+  const type=_currentExamType;
+  const out=document.getElementById('exam-out');
+  if(!type){out.innerHTML='<div class="exam-no-data"><span style="font-family:VT323,monospace;font-size:42px;color:#b0d4b8;display:block;margin-bottom:8px">&#9956;</span>SELECT AN EXAM TYPE ABOVE</div>';return;}
+
+  const data=(EXAM_SCHEDULE[dept]&&EXAM_SCHEDULE[dept][batch]&&EXAM_SCHEDULE[dept][batch][sec]&&EXAM_SCHEDULE[dept][batch][sec][type])||[];
+  const typeNames={S1:'SESSIONAL 1',S2:'SESSIONAL 2',FIN:'FINAL EXAM'};
+  const typeCls={S1:'s1',S2:'s2',FIN:'fin'};
+  const tc=typeCls[type];
+
+  if(!data.length){
+    out.innerHTML=`<div class="exam-no-data"><span style="font-family:VT323,monospace;font-size:42px;color:#b0d4b8;display:block;margin-bottom:8px">&#9956;</span>NO EXAM DATA FOR THIS SELECTION</div>`;
+    return;
+  }
+
+  const sorted=[...data].sort((a,b)=>a.date-b.date);
+  const rows=sorted.map(e=>{
+    const cd=examCountdown(e.date);
+    return `<tr>
+      <td><div class="exam-course-name">${e.course}</div></td>
+      <td>
+        <div class="exam-date-pill ${tc}">${dDay(e.date)}, ${dFmt(e.date)}</div>
+        <div class="exam-time-txt">${e.time} &nbsp;·&nbsp; ${e.duration}</div>
+        <span class="exam-countdown ${cd.cls}">${cd.label}</span>
+      </td>
+      <td><div class="exam-room-txt">${e.room}</div></td>
+    </tr>`;
+  }).join('');
+
+  out.innerHTML=`
+    <div class="exam-header-bar">
+      <span class="exam-header-label">${dept} &nbsp;·&nbsp; BATCH ${batch} &nbsp;·&nbsp; SEC ${sec}</span>
+      <span class="exam-header-badge ${tc}">${typeNames[type]}</span>
+    </div>
+    <div class="exam-table-wrap">
+      <table class="exam-tbl">
+        <thead><tr>
+          <th class="${tc}" style="width:42%">COURSE</th>
+          <th class="${tc}" style="width:38%">DATE &amp; TIME</th>
+          <th class="${tc}" style="width:20%">ROOM</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════
+   TO-DO LIST
+══════════════════════════════════════════ */
+let _todos=[];
+let _todoFilter='all';
+
+function todoLoad(){
+  try{const s=localStorage.getItem('fast_todos');if(s)_todos=JSON.parse(s);}catch(e){_todos=[];}
+}
+function todoSave(){
+  try{localStorage.setItem('fast_todos',JSON.stringify(_todos));}catch(e){}
+}
+
+function addTodo(){
+  const inp=document.getElementById('todo-input');
+  const pri=document.getElementById('todo-priority').value;
+  const text=inp.value.trim();
+  if(!text) return;
+  const now=new Date();
+  _todos.unshift({
+    id:Date.now(),
+    text,
+    priority:pri,
+    done:false,
+    created:now.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})
+  });
+  todoSave();
+  inp.value='';
+  inp.focus();
+  renderTodos();
+}
+
+function toggleTodo(id){
+  const t=_todos.find(x=>x.id===id);
+  if(t) t.done=!t.done;
+  todoSave();
+  renderTodos();
+}
+
+function deleteTodo(id){
+  _todos=_todos.filter(x=>x.id!==id);
+  todoSave();
+  renderTodos();
+}
+
+function clearDone(){
+  _todos=_todos.filter(x=>!x.done);
+  todoSave();
+  renderTodos();
+}
+
+function setTodoFilter(f){
+  _todoFilter=f;
+  ['all','active','done','high','medium','low'].forEach(k=>{
+    const el=document.getElementById('tf-'+k);
+    if(el) el.className='todo-filter-btn'+(k===f?' active':'');
+  });
+  renderTodos();
+}
+
+function renderTodos(){
+  todoLoad();
+  const total=_todos.length;
+  const doneCount=_todos.filter(x=>x.done).length;
+  document.getElementById('todo-stats').textContent=`${total-doneCount} ACTIVE · ${doneCount} DONE`;
+
+  let visible=_todos;
+  if(_todoFilter==='active') visible=_todos.filter(x=>!x.done);
+  else if(_todoFilter==='done') visible=_todos.filter(x=>x.done);
+  else if(['high','medium','low'].includes(_todoFilter)) visible=_todos.filter(x=>x.priority===_todoFilter);
+
+  const list=document.getElementById('todo-list');
+  if(!visible.length){
+    const msgs={all:'NO TASKS YET — ADD ONE ABOVE',active:'NO ACTIVE TASKS',done:'NO COMPLETED TASKS',high:'NO HIGH PRIORITY TASKS',medium:'NO MEDIUM PRIORITY TASKS',low:'NO LOW PRIORITY TASKS'};
+    list.innerHTML=`<div class="todo-empty"><span class="todo-empty-icon">&#9998;</span><div class="todo-empty-txt">${msgs[_todoFilter]||'NO TASKS'}</div></div>`;
+    return;
+  }
+
+  // Sort: undone first within same priority, then by priority weight, then by id desc
+  const pw={high:0,medium:1,low:2};
+  visible=[...visible].sort((a,b)=>{
+    if(a.done!==b.done) return a.done?1:-1;
+    if(pw[a.priority]!==pw[b.priority]) return pw[a.priority]-pw[b.priority];
+    return b.id-a.id;
+  });
+
+  const priLabel={high:'HIGH',medium:'MEDIUM',low:'LOW'};
+  list.innerHTML=visible.map(t=>`
+    <div class="todo-item${t.done?' done':''}" id="ti-${t.id}">
+      <div class="todo-check${t.done?' checked':''}" onclick="toggleTodo(${t.id})"></div>
+      <div class="todo-item-body">
+        <div class="todo-item-text">${escHtml(t.text)}</div>
+        <div class="todo-item-meta">
+          <span class="todo-priority-tag ${t.priority}">${priLabel[t.priority]}</span>
+          <span class="todo-item-date">Added ${t.created}</span>
+        </div>
+      </div>
+      <button class="todo-del-btn" onclick="deleteTodo(${t.id})" title="Delete">✕</button>
+    </div>`).join('');
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// Init todos
+todoLoad();
+
+/* ── Background 3D grid ── */
+(function bg(){
+  const cv=document.getElementById('bg3d'),ctx=cv.getContext('2d');
+  function resize(){cv.width=cv.offsetWidth;cv.height=Math.max(cv.offsetHeight,760)}
+  resize();window.addEventListener('resize',resize);
+  const pts=Array.from({length:28},()=>({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.0005,vy:(Math.random()-.5)*.0005}));
+  let t=0;
+  function draw(){
+    const W=cv.width,H=cv.height;
+    ctx.fillStyle='#f0f7f0';ctx.fillRect(0,0,W,H);
+    const pers=260,fov=0.5,camz=t*.00022;
+    for(let i=0;i<=10;i++){
+      const x=i/10;
+      for(let d=0;d<2;d++){
+        const z0=camz+d,z1=camz+d+1;
+        ctx.strokeStyle=`rgba(0,140,70,${0.065*(1-Math.abs(x-.5)*1.4)})`;ctx.lineWidth=.7;
+        ctx.beginPath();ctx.moveTo((x-.5)*pers/(z0*fov)+W/2,(0-.5)*pers/(z0*fov)+H/2);ctx.lineTo((x-.5)*pers/(z1*fov)+W/2,(0-.5)*pers/(z1*fov)+H/2);ctx.stroke();
+        ctx.beginPath();ctx.moveTo((x-.5)*pers/(z0*fov)+W/2,(1-.5)*pers/(z0*fov)+H/2);ctx.lineTo((x-.5)*pers/(z1*fov)+W/2,(1-.5)*pers/(z1*fov)+H/2);ctx.stroke();
+        for(let j=0;j<=10;j++){const y=j/10;ctx.strokeStyle='rgba(0,140,70,0.05)';ctx.beginPath();ctx.moveTo((0-.5)*pers/(z0*fov)+W/2,(y-.5)*pers/(z0*fov)+H/2);ctx.lineTo((1-.5)*pers/(z0*fov)+W/2,(y-.5)*pers/(z0*fov)+H/2);ctx.stroke();}
+      }
+    }
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>1)p.vx*=-1;if(p.y<0||p.y>1)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x*W,p.y*H,1.4,0,Math.PI*2);ctx.fillStyle='rgba(0,140,70,0.15)';ctx.fill();
+    });
+    pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{
+      const dx=(a.x-b.x)*W,dy=(a.y-b.y)*H,dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<72){ctx.beginPath();ctx.moveTo(a.x*W,a.y*H);ctx.lineTo(b.x*W,b.y*H);ctx.strokeStyle=`rgba(0,140,70,${0.07*(1-dist/72)})`;ctx.lineWidth=.5;ctx.stroke();}
+    }));
+    t++;requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
