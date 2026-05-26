@@ -14,7 +14,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .blink{animation:bl 1s step-end infinite}
 @keyframes bl{50%{opacity:0}}
 
-.nav{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:16px 18px 0}
+.nav{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin:16px 18px 0}
 .nav-card{border:2px solid rgba(0,120,60,0.2);padding:16px;cursor:pointer;transition:all .25s;background:rgba(255,255,255,0.78);position:relative;overflow:hidden;border-radius:10px}
 .nav-card.active{border-color:#0a7a3a;background:#fff;box-shadow:0 4px 18px rgba(10,122,58,0.13)}
 .nav-card:hover:not(.active){border-color:rgba(0,120,60,0.5);background:rgba(255,255,255,0.92)}
@@ -276,6 +276,58 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .todo-clear-done{font-family:'VT323',monospace;font-size:13px;letter-spacing:1px;padding:4px 12px;border:1.5px solid rgba(138,26,26,0.3);background:#fff;color:#8a1a1a;border-radius:5px;cursor:pointer;transition:all .15s;margin-left:auto}
 .todo-clear-done:hover{background:#fde8e8}
 
+/* ── Announcements ── */
+.ann-top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.ann-top-label{font-size:10px;letter-spacing:2px;color:#2d8a50}
+.ann-add-open-btn{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;padding:8px 18px;background:#0a7a3a;border:none;color:#fff;cursor:pointer;border-radius:6px;transition:all .2s}
+.ann-add-open-btn:hover{background:#0d9a4a}
+.ann-compose{background:#f0fff4;border:1.5px solid rgba(0,120,60,0.3);border-radius:10px;padding:16px;margin-bottom:16px;display:none}
+.ann-compose.open{display:block}
+.ann-compose-title{font-size:9px;letter-spacing:3px;color:#0a7a3a;margin-bottom:12px}
+.ann-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.ann-field-full{grid-column:1/-1}
+.ann-label{font-size:8px;letter-spacing:2px;color:#2d8a50;display:block;margin-bottom:4px}
+.ann-input{width:100%;background:#fff;border:1.5px solid rgba(0,120,60,0.3);color:#1a4a2e;font-family:'Share Tech Mono',monospace;font-size:12px;padding:9px 12px;border-radius:6px;outline:none}
+.ann-input:focus{border-color:#0a7a3a}
+.ann-input::placeholder{color:#a0c8a8;letter-spacing:1px}
+.ann-textarea{min-height:72px;resize:vertical}
+.ann-select{width:100%;background:#f8fff8;border:1.5px solid rgba(0,120,60,0.3);color:#1a4a2e;font-family:'Share Tech Mono',monospace;font-size:11px;padding:9px 10px;border-radius:6px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' fill='none' stroke='%230a7a3a' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;padding-right:28px}
+.ann-select:focus{border-color:#0a7a3a}
+.ann-compose-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+.ann-save-btn{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;padding:9px 20px;background:#0a7a3a;border:none;color:#fff;cursor:pointer;border-radius:6px;transition:all .2s}
+.ann-save-btn:hover{background:#0d9a4a}
+.ann-cancel-btn{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;padding:9px 16px;background:#fff;border:1.5px solid rgba(0,120,60,0.3);color:#4a8a60;cursor:pointer;border-radius:6px;transition:all .2s}
+.ann-cancel-btn:hover{border-color:#0a7a3a;color:#0a7a3a}
+.ann-filter-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.ann-filter-btn{font-family:'VT323',monospace;font-size:14px;letter-spacing:1px;padding:5px 14px;border:1.5px solid rgba(0,120,60,0.25);background:#fff;color:#4a8a60;border-radius:5px;cursor:pointer;transition:all .15s}
+.ann-filter-btn:hover{border-color:#0a7a3a;color:#0a7a3a}
+.ann-filter-btn.active{background:#0a7a3a;border-color:#0a7a3a;color:#fff}
+.ann-count{font-size:9px;letter-spacing:2px;color:#7aaa88;margin-left:auto}
+.ann-list{display:flex;flex-direction:column;gap:10px}
+.ann-card{background:#fff;border:1.5px solid rgba(0,120,60,0.18);border-radius:10px;overflow:hidden;transition:all .2s}
+.ann-card:hover{border-color:rgba(0,120,60,0.4);box-shadow:0 2px 10px rgba(10,122,58,0.08)}
+.ann-card-head{padding:12px 14px 10px;border-bottom:1px solid rgba(0,120,60,0.1);display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.ann-card-head-left{flex:1;min-width:0}
+.ann-card-tag{font-size:8px;letter-spacing:2px;padding:2px 8px;border-radius:3px;display:inline-block;margin-bottom:5px}
+.ann-card-tag.assignment{background:#fde8e8;color:#8a1a1a;border:1px solid rgba(138,26,26,0.2)}
+.ann-card-tag.event{background:#e8edf5;color:#1a3a8a;border:1px solid rgba(26,58,138,0.2)}
+.ann-card-tag.notice{background:#fff3cd;color:#856404;border:1px solid rgba(133,100,4,0.2)}
+.ann-card-tag.general{background:#e8f5ec;color:#0a7a3a;border:1px solid rgba(0,120,60,0.2)}
+.ann-card-title{font-family:'VT323',monospace;font-size:22px;letter-spacing:2px;color:#0a7a3a;line-height:1.1;word-break:break-word}
+.ann-card-body{padding:10px 14px 12px}
+.ann-card-text{font-size:11px;letter-spacing:.4px;color:#1a4a2e;line-height:1.55;word-break:break-word}
+.ann-card-meta{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+.ann-card-date{font-size:8px;letter-spacing:1px;color:#a0c8a8}
+.ann-card-due{font-size:8px;letter-spacing:1px;padding:2px 8px;border-radius:3px;background:#fde8e8;color:#8a1a1a;border:1px solid rgba(138,26,26,0.15)}
+.ann-todo-btn{font-family:'VT323',monospace;font-size:14px;letter-spacing:1px;padding:4px 12px;border:1.5px solid rgba(0,120,60,0.3);background:#f0fff4;color:#0a7a3a;border-radius:5px;cursor:pointer;transition:all .15s;margin-left:auto;white-space:nowrap}
+.ann-todo-btn:hover{background:#0a7a3a;color:#fff;border-color:#0a7a3a}
+.ann-todo-btn.added{background:#e8f5ec;color:#2d8a50;border-color:rgba(0,120,60,0.2);cursor:default}
+.ann-del-btn{font-family:'VT323',monospace;font-size:16px;color:#c0c0c0;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0;transition:color .15s;background:none;border:none}
+.ann-del-btn:hover{color:#8a1a1a}
+.ann-empty{text-align:center;padding:36px 20px;color:#b0d4b8}
+.ann-empty-icon{font-family:'VT323',monospace;font-size:52px;color:#b0d4b8;display:block;margin-bottom:6px}
+.ann-empty-txt{font-size:11px;letter-spacing:2px;color:#a0c8a8}
+
 .corner{position:absolute;width:12px;height:12px;border-color:rgba(0,120,60,0.2);border-style:solid;z-index:6}
 .c-tl{top:8px;left:8px;border-width:2px 0 0 2px;border-radius:2px 0 0 0}
 .c-tr{top:8px;right:8px;border-width:2px 2px 0 0;border-radius:0 2px 0 0}
@@ -344,6 +396,13 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
       <div class="nav-icon">&#9998;</div>
       <div class="nav-title">TO-DO LIST</div>
       <div class="nav-desc">TASKS &amp; PRIORITIES</div>
+      <div class="nav-indicator"></div>
+    </div>
+    <div class="nav-card" id="nc5" onclick="sw(5)">
+      <div class="nav-badge">PANEL 06</div>
+      <div class="nav-icon">&#128227;</div>
+      <div class="nav-title">ANNOUNCEMENTS</div>
+      <div class="nav-desc">NOTICES &amp; ASSIGNMENTS</div>
       <div class="nav-indicator"></div>
     </div>
   </div>
@@ -476,6 +535,53 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
         <span class="todo-stats" id="todo-stats"></span>
       </div>
       <div class="todo-list" id="todo-list"></div>
+    </div>
+
+    <!-- PANEL 5: Announcements -->
+    <div class="panel" id="p5">
+      <div class="ann-top-bar">
+        <span class="ann-top-label">&#128227; ANNOUNCEMENT BOARD</span>
+        <button class="ann-add-open-btn" onclick="toggleAnnCompose()">&#9658; POST ANNOUNCEMENT</button>
+      </div>
+      <div class="ann-compose" id="ann-compose">
+        <div class="ann-compose-title">&#9656; NEW ANNOUNCEMENT</div>
+        <div class="ann-fields">
+          <div class="ann-field-full">
+            <label class="ann-label">TITLE</label>
+            <input class="ann-input" id="ann-title" type="text" placeholder="ANNOUNCEMENT TITLE..." maxlength="100" onkeydown="if(event.key==='Enter')saveAnn()">
+          </div>
+          <div>
+            <label class="ann-label">TAG / TYPE</label>
+            <select class="ann-select" id="ann-tag">
+              <option value="assignment">&#128203; ASSIGNMENT</option>
+              <option value="event">&#128197; EVENT</option>
+              <option value="notice">&#128204; NOTICE</option>
+              <option value="general" selected>&#128226; GENERAL</option>
+            </select>
+          </div>
+          <div>
+            <label class="ann-label">DUE DATE (OPTIONAL)</label>
+            <input class="ann-input" id="ann-due" type="date">
+          </div>
+          <div class="ann-field-full">
+            <label class="ann-label">DETAILS</label>
+            <textarea class="ann-input ann-textarea" id="ann-body" placeholder="WRITE ANNOUNCEMENT DETAILS HERE..." maxlength="500"></textarea>
+          </div>
+        </div>
+        <div class="ann-compose-btns">
+          <button class="ann-cancel-btn" onclick="toggleAnnCompose()">CANCEL</button>
+          <button class="ann-save-btn" onclick="saveAnn()">&#9658; POST</button>
+        </div>
+      </div>
+      <div class="ann-filter-row">
+        <div class="ann-filter-btn active" id="af-all" onclick="setAnnFilter('all')">ALL</div>
+        <div class="ann-filter-btn" id="af-assignment" onclick="setAnnFilter('assignment')">ASSIGNMENTS</div>
+        <div class="ann-filter-btn" id="af-event" onclick="setAnnFilter('event')">EVENTS</div>
+        <div class="ann-filter-btn" id="af-notice" onclick="setAnnFilter('notice')">NOTICES</div>
+        <div class="ann-filter-btn" id="af-general" onclick="setAnnFilter('general')">GENERAL</div>
+        <span class="ann-count" id="ann-count"></span>
+      </div>
+      <div class="ann-list" id="ann-list"></div>
     </div>
 
   </div>
@@ -1214,10 +1320,11 @@ function onDayChange(){
 
 /* ── Tab switch ── */
 function sw(i){
-  ['nc0','nc1','nc2','nc3','nc4'].forEach((id,j)=>document.getElementById(id).className='nav-card'+(j===i?' active':''));
-  ['p0','p1','p2','p3','p4'].forEach((id,j)=>document.getElementById(id).className='panel'+(j===i?' on':''));
+  ['nc0','nc1','nc2','nc3','nc4','nc5'].forEach((id,j)=>document.getElementById(id).className='nav-card'+(j===i?' active':''));
+  ['p0','p1','p2','p3','p4','p5'].forEach((id,j)=>document.getElementById(id).className='panel'+(j===i?' on':''));
   if(i===2) renderEvents();
   if(i===4) renderTodos();
+  if(i===5) renderAnns();
 }
 
 /* ── Timetable panel ── */
@@ -1685,6 +1792,149 @@ function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(
 
 // Init todos
 todoLoad();
+
+/* ══════════════════════════════════════════
+   ANNOUNCEMENTS
+══════════════════════════════════════════ */
+let _anns=[];
+let _annFilter='all';
+let _annComposeOpen=false;
+
+function annLoad(){
+  try{const s=localStorage.getItem('fast_announcements');if(s)_anns=JSON.parse(s);}catch(e){_anns=[];}
+  // Seed with sample announcements if empty
+  if(!_anns.length){
+    const now=new Date();
+    _anns=[
+      {id:1,title:"Assignment 3 Submission Deadline",tag:"assignment",body:"Submit your C++ dynamic memory allocation assignment (Assignment #3) on LMS before midnight. Ensure your code compiles without warnings and follows the no-globals constraint.",due:new Date(now.getTime()+3*24*60*60*1000).toISOString().split('T')[0],created:new Date(now.getTime()-1*24*60*60*1000).toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'}),addedToTodo:false},
+      {id:2,title:"Compiler Hackathon 2026 — Registration Open",tag:"event",body:"Register your team (2–4 members) for the 24-hour Compiler Hackathon. Cash prizes worth PKR 150,000. Registration closes 48 hours before the event.",due:new Date(now.getTime()+2*24*60*60*1000).toISOString().split('T')[0],created:new Date(now.getTime()-2*24*60*60*1000).toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'}),addedToTodo:false},
+      {id:3,title:"Mid-Term Schedule Released",tag:"notice",body:"The Sessional 2 exam schedule is now live on the Exam Schedule panel. Please check your department, batch, and section. Bring your student ID card to all exams.",due:null,created:now.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'}),addedToTodo:false},
+    ];
+    annSave();
+  }
+}
+function annSave(){
+  try{localStorage.setItem('fast_announcements',JSON.stringify(_anns));}catch(e){}
+}
+
+function toggleAnnCompose(){
+  _annComposeOpen=!_annComposeOpen;
+  const el=document.getElementById('ann-compose');
+  if(el) el.className='ann-compose'+(_annComposeOpen?' open':'');
+  if(_annComposeOpen){
+    setTimeout(()=>{const t=document.getElementById('ann-title');if(t)t.focus();},50);
+  }
+}
+
+function saveAnn(){
+  const title=(document.getElementById('ann-title').value||'').trim();
+  const tag=document.getElementById('ann-tag').value;
+  const body=(document.getElementById('ann-body').value||'').trim();
+  const due=document.getElementById('ann-due').value||null;
+  if(!title) return;
+  annLoad();
+  _anns.unshift({
+    id:Date.now(),
+    title,tag,body,due,
+    addedToTodo:false,
+    created:new Date().toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})
+  });
+  annSave();
+  // Reset form
+  document.getElementById('ann-title').value='';
+  document.getElementById('ann-body').value='';
+  document.getElementById('ann-due').value='';
+  document.getElementById('ann-tag').value='general';
+  _annComposeOpen=false;
+  const el=document.getElementById('ann-compose');
+  if(el) el.className='ann-compose';
+  renderAnns();
+}
+
+function deleteAnn(id){
+  annLoad();
+  _anns=_anns.filter(x=>x.id!==id);
+  annSave();
+  renderAnns();
+}
+
+function addAnnToTodo(id){
+  annLoad();
+  const ann=_anns.find(x=>x.id===id);
+  if(!ann||ann.addedToTodo) return;
+  // Build the to-do text
+  const todoText=ann.due
+    ? `${ann.title} — Due: ${ann.due}`
+    : ann.title;
+  // Determine priority by tag
+  const pri=ann.tag==='assignment'?'high':ann.tag==='event'?'medium':'low';
+  todoLoad();
+  _todos.unshift({
+    id:Date.now(),
+    text:todoText,
+    priority:pri,
+    done:false,
+    created:new Date().toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})
+  });
+  todoSave();
+  // Mark as added
+  ann.addedToTodo=true;
+  annSave();
+  renderAnns();
+  // Visual flash on the To-Do nav card
+  const nc=document.getElementById('nc4');
+  if(nc){nc.style.background='#e8f5ec';setTimeout(()=>{nc.style.background='';},900);}
+}
+
+function setAnnFilter(f){
+  _annFilter=f;
+  ['all','assignment','event','notice','general'].forEach(k=>{
+    const el=document.getElementById('af-'+k);
+    if(el) el.className='ann-filter-btn'+(k===f?' active':'');
+  });
+  renderAnns();
+}
+
+function renderAnns(){
+  annLoad();
+  let visible=_anns;
+  if(_annFilter!=='all') visible=_anns.filter(x=>x.tag===_annFilter);
+
+  const countEl=document.getElementById('ann-count');
+  if(countEl) countEl.textContent=`${visible.length} ITEM${visible.length!==1?'S':''}`;
+
+  const tagLabels={assignment:'ASSIGNMENT',event:'EVENT',notice:'NOTICE',general:'GENERAL'};
+  const tagIcons={assignment:'&#128203;',event:'&#128197;',notice:'&#128204;',general:'&#128226;'};
+
+  const list=document.getElementById('ann-list');
+  if(!list) return;
+
+  if(!visible.length){
+    list.innerHTML=`<div class="ann-empty"><span class="ann-empty-icon">&#128227;</span><div class="ann-empty-txt">NO ANNOUNCEMENTS${_annFilter!=='all'?' IN THIS CATEGORY':''}</div></div>`;
+    return;
+  }
+
+  list.innerHTML=visible.map(a=>{
+    const dueHtml=a.due?`<span class="ann-card-due">DUE: ${a.due}</span>`:'';
+    const bodyHtml=a.body?`<div class="ann-card-text">${escHtml(a.body)}</div>`:'';
+    const todoBtnHtml=a.addedToTodo
+      ?`<button class="ann-todo-btn added" disabled>&#10003; IN TO-DO</button>`
+      :`<button class="ann-todo-btn" onclick="addAnnToTodo(${a.id})">&#9650; ADD TO TO-DO</button>`;
+    return `<div class="ann-card" id="ac-${a.id}">
+      <div class="ann-card-head">
+        <div class="ann-card-head-left">
+          <div class="ann-card-tag ${a.tag}">${tagIcons[a.tag]||''} ${tagLabels[a.tag]||a.tag.toUpperCase()}</div>
+          <div class="ann-card-title">${escHtml(a.title)}</div>
+        </div>
+        <button class="ann-del-btn" onclick="deleteAnn(${a.id})" title="Delete">✕</button>
+      </div>
+      ${bodyHtml?`<div class="ann-card-body">${bodyHtml}<div class="ann-card-meta"><span class="ann-card-date">Posted ${a.created}</span>${dueHtml}${todoBtnHtml}</div></div>`:`<div class="ann-card-body"><div class="ann-card-meta"><span class="ann-card-date">Posted ${a.created}</span>${dueHtml}${todoBtnHtml}</div></div>`}
+    </div>`;
+  }).join('');
+}
+
+// Init announcements
+annLoad();
 
 /* ── Background 3D grid ── */
 (function bg(){
