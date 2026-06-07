@@ -52,7 +52,7 @@ Our mission is to streamline the FAST experience across all campuses and program
 
 
 
-<img src="../Visuals/HomePage.png">
+<img src="../Visuals/HomepageCompiler.png">
 
 
 
