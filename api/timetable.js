@@ -2,7 +2,7 @@
 // Replace your GitHub file api/timetable.js with this file.
 // It fetches your public Google Sheet on Vercel's server and converts it into the TT object used by index.html.
 
-const GOOGLE_SHEET_ID = "1cmDXt7UTIKBVXBHhtZ0E4qMnJrRoexl2GmDFfTBl0Z4";
+const GOOGLE_SHEET_ID = "1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY";
 
 // Weekday tabs in the linked sheet.
 const GOOGLE_SHEET_TABS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
