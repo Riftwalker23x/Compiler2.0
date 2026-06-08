@@ -501,7 +501,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
         <div>
           <label class="flabel">SECTION</label>
           <select class="rsel" id="ex-sec">
-            <option>A</option><option>B</option><option>C</option><option>D</option>
+            <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option><option>K</option>
           </select>
         </div>
       </div>
@@ -650,7 +650,13 @@ let BLOCK_FLOORS=cloneFloors(DEFAULT_BLOCK_FLOORS);
 
 const DAYS=["Monday","Tuesday","Wednesday","Thursday","Friday"];
 const DAYNAMES=["SUN","MON","TUE","WED","THU","FRI","SAT"];
-const SLOTS=["08:30-09:50","10:00-11:20","11:30-12:50","01:00-02:20","02:30-03:50","03:55-05:15","05:20-06:40","06:45-08:05","08:30-11:15","11:30-02:15","02:30-05:15"];
+const CLASSROOM_SLOTS=["08:30-09:50","10:00-11:20","11:30-12:50","01:00-02:20","02:30-03:50","03:55-05:15","05:20-06:40","06:45-08:05"];
+const LAB_SLOTS=["08:30-11:15","11:30-02:15","02:30-05:15"];
+const SLOTS=CLASSROOM_SLOTS.concat(LAB_SLOTS);
+function isLabFloor(floorName){
+  if(!floorName) return false;
+  return /^(lab|margala|rawal|gpu)$/i.test(floorName);
+}
 
 
 /* ══════════════════════════════════════════
@@ -671,6 +677,7 @@ const DEPT_ORDER=["CS","DS","AI","CY","SE"];
 function cloneFloors(obj){return JSON.parse(JSON.stringify(obj));}
 function cleanTxt(v){return String(v??'').replace(/\u00a0/g,' ').replace(/[\t ]+/g,' ').trim();}
 function normKey(v){return cleanTxt(v).toLowerCase().replace(/[^a-z0-9]+/g,'');}
+function oneLine(v){return cleanTxt(v).replace(/\s+/g,' ');}
 function gvizUrl(sheetName){
   return `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}&cachebust=${Date.now()}`;
 }
@@ -1155,7 +1162,7 @@ function refreshRoomSelectorsAfterDataUpdate(){
 }
 
 function selectedDayIsToday(day){return DAYS[new Date().getDay()-1]===day;}
-function getSlotsForDay(day){return selectedDayIsToday(day)?getUpcomingSlots():[...SLOTS];}
+function getSlotsForDay(day,slots){return selectedDayIsToday(day)?getUpcomingSlots(slots):[...(slots||CLASSROOM_SLOTS)];}
 
 /* ═══════════════════════════════════════════════════════════════
    NEW PARSER — room×slot matrix, correct cell format
@@ -1175,16 +1182,23 @@ const LAB_SLOT_COLS={
 const BATCH_MAP={"25":"2025","24":"2024","22":"2022"};
 
 // Cell regex: "OOP (CS-E)" or "PF (CS-C, 25)" or "AI Lab (AI/DS-A, 24)"
-const CELL_REGEX=/^(.+?)\s*\(([A-Z]+(?:\/[A-Z]+)*)-([A-Z0-9]+)(?:,\s*(?:G-([IV]+)|(\d{2})))?\)/;
+// or "NLP (DS, Gp-I)" or "Civics (CS-D) 09:00-10:45 Extended till 11:20"
+// Section is optional: "(DS, Gp-I)" has dept DS, no section, group Gp-I
+const CELL_REGEX=/(.+?)\s*\(([A-Z]+(?:\/[A-Z]+)*)(?:-([A-Z0-9]+))?(?:,\s*(?:Gp?-([IV]+)|(\d{2})))?\s*\)/i;
 
 function parseTimetableCell(text){
   const t=oneLine(text);
   if(!t) return null;
-  const m=t.match(CELL_REGEX);
+  // Strip everything after the first ) to handle trailing room/time info
+  const parenEnd=t.indexOf(')');
+  const core=parenEnd>=0?t.slice(0,parenEnd+1):t;
+  const m=core.match(CELL_REGEX);
   if(!m) return null;
   const course=m[1].trim();
   const deptStr=m[2];
-  const section=m[3];
+  const section=m[3]; // May be undefined (e.g. "NLP (DS, Gp-I)")
+  // Skip entries without a section letter — can't assign to a specific section
+  if(!section) return null;
   const batchShort=m[5];
   const batch=batchShort?(BATCH_MAP[batchShort]||"20"+batchShort):"2023";
   const depts=deptStr.includes("/")?deptStr.split("/"):[deptStr];
@@ -1192,21 +1206,35 @@ function parseTimetableCell(text){
 }
 
 function findHeaderRow(grid){
+  // First try row index 4 (0-indexed), which is the expected "Room" header row
+  // Then try scanning the first 10 rows with looser matching
+  const candidates=[];
   for(let r=0;r<Math.min(grid.length,10);r++){
-    if(/^room$/i.test(oneLine(grid[r][0]||""))){
-      const hasSlots=Object.keys(SLOT_COLS).some(c=>normalizeTimeSlot(oneLine(grid[r][c]||"")));
-      if(hasSlots) return r;
+    const cell=oneLine(grid[r][0]||"");
+    if(/room/i.test(cell)){
+      // Check that at least 4 slot columns have valid time strings
+      let slotsFound=0;
+      for(const cIdx of Object.keys(SLOT_COLS)){
+        const v=oneLine(grid[r][parseInt(cIdx)]||"");
+        if(normalizeTimeSlot(v)) slotsFound++;
+      }
+      if(slotsFound>=4) return r;
+      candidates.push(r);
     }
   }
+  // Fallback: return first candidate that looked like a room header
+  if(candidates.length) return candidates[0];
   return -1;
 }
 
 function findLabHeaderRow(grid,afterRow){
   for(let r=afterRow;r<grid.length;r++){
     const colA=oneLine(grid[r][0]||"").toLowerCase();
-    if(colA==="lab"||colA.startsWith("lab ")) return r;
+    // Lab row has "Lab" or "Lab ..." in col A
+    if(colA.includes("lab")) return r;
+    // Or col B has a 3-hour time range like "08:30-11:15" indicating lab header
     const colB=oneLine(grid[r][1]||"");
-    if(/^\d{1,2}:\d{2}-(?:1[0-5]|0\d):\d{2}$/.test(colB)&&grid[r].filter(c=>oneLine(c)).length<=6) return r;
+    if(/^\d{1,2}:\d{2}-(?:1[0-5]|0\d|2[0-3]):\d{2}$/.test(colB)&&grid[r].filter(c=>oneLine(c)).length<=6) return r;
   }
   return -1;
 }
@@ -1216,7 +1244,7 @@ function parseSlotRows(grid,startRow,endRow,slotMap,day,target){
   for(let r=startRow;r<Math.min(endRow,grid.length);r++){
     const row=grid[r]||[];
     const room=normalizeRoomName(oneLine(row[0]||""));
-    if(!room||room.length<2||/^(reserved|tutorial|fsm|fsa|fcss|fyp|travel|admin|room)$/i.test(room)) continue;
+    if(!room||room.length<2||/reserved|tutorial|fsm|fsa|fcss|fyp|travel|admin|room/i.test(room)) continue;
     for(const[cIdx,timeSlot]of Object.entries(slotMap)){
       const col=parseInt(cIdx);
       if(col>=row.length) continue;
@@ -1256,6 +1284,13 @@ async function refreshTimetableFromGoogleSheet(){
   try{
     const tabs=GOOGLE_SHEET_TABS;
     const grids=await Promise.all(tabs.map(tab=>loadSheetGrid(tab).catch(()=>null)));
+
+    // Debug: verify grid column count to confirm SLOT_COLS indices are correct
+    grids.forEach((grid,i)=>{
+      if(grid&&grid.length>0){
+        console.log(`[Sheet] ${DAYS[i]} grid: ${grid.length} rows × ${grid[0].length} cols, row[4][0]=`,JSON.stringify(grid[4]?.[0]));
+      }
+    });
 
     const next={};
     let total=0;
@@ -1322,12 +1357,19 @@ function slotToMinutes(timeStr){
 }
 
 function fmtTime(timeStr){
-  // "01:00" → "1:00 PM"   "08:30" → "8:30 AM"
+  // Convert to minutes first, then derive AM/PM from total minutes
+  if(timeStr in SLOT_MINUTE_MAP){
+    const mins=SLOT_MINUTE_MAP[timeStr];
+    const h=Math.floor(mins/60),m=mins%60;
+    const isPM=h>=12;
+    const hour=h>12?h-12:(h===0?12:h);
+    return `${hour}:${String(m).padStart(2,'0')} ${isPM?'PM':'AM'}`;
+  }
+  // Fallback heuristic for unknown times
   const[hh,mm]=timeStr.split(":").map(Number);
-  const isPM=(hh>=1&&hh<=6)||(hh===12);
+  const isPM=(hh>=1&&hh<=6)||hh===12;
   const hour=(hh>=1&&hh<=6)?hh:(hh>12?hh-12:hh);
-  const ampm=isPM?'PM':'AM';
-  return `${hour}:${mm.toString().padStart(2,'0')} ${ampm}`;
+  return `${hour}:${String(mm).padStart(2,'0')} ${isPM?'PM':'AM'}`;
 }
 
 function fmtSlot(slot){
@@ -1349,14 +1391,15 @@ function getCurrentSlot(){
 }
 
 // Returns only slots whose end time is still in the future (includes current slot)
-function getUpcomingSlots(){
+function getUpcomingSlots(slots){
   const cur=nowMinutes();
-  return SLOTS.filter(s=>slotToMinutes(s.split("-")[1])>cur);
+  return (slots||SLOTS).filter(s=>slotToMinutes(s.split("-")[1])>cur);
 }
 
 // Returns per-slot schedule for a room on a given day (upcoming slots only)
-function getRoomSlotInfo(room,day){
-  return getUpcomingSlots().map(slot=>{
+function getRoomSlotInfo(room,day,slotsForFloor){
+  const slotList=slotsForFloor||(isLabFloor(inferRoomLocation(room)?.floor)?LAB_SLOTS:CLASSROOM_SLOTS);
+  return getUpcomingSlots(slotList).map(slot=>{
     let occupiedBy=null;
     Object.entries(TT).forEach(([dep,batches])=>{
       Object.entries(batches||{}).forEach(([bat,sections])=>{
@@ -1421,7 +1464,8 @@ function onDayChange(){
   if(!block||!floor||!day){res.innerHTML='';return;}
 
   const allRooms=BLOCK_FLOORS[block][floor]||[];
-  const upcomingSlots=getSlotsForDay(day);
+  const floorSlots=isLabFloor(floor)?LAB_SLOTS:CLASSROOM_SLOTS;
+  const upcomingSlots=getSlotsForDay(day,floorSlots);
   const currentSlot=selectedDayIsToday(day)?getCurrentSlot():null;
 
   if(!allRooms.length){
@@ -1435,7 +1479,7 @@ function onDayChange(){
 
   // Build per-room data with current-slot status
   const roomData=allRooms.map(room=>{
-    const slotInfo=getRoomSlotInfo(room,day);
+    const slotInfo=getRoomSlotInfo(room,day,floorSlots);
     const currentEntry=currentSlot?slotInfo.find(s=>s.slot===currentSlot):null;
     const busyNow=currentEntry?currentEntry.occupiedBy:null;
     return{room,slotInfo,busyNow};

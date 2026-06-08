@@ -192,16 +192,20 @@ const LAB_SLOT_COLS = {
 };
 
 const BATCH_MAP = { "25": "2025", "24": "2024", "22": "2022" };
-const CELL_REGEX = /^(.+?)\s*\(([A-Z]+(?:\/[A-Z]+)*)-([A-Z0-9]+)(?:,\s*(?:G-([IV]+)|(\d{2})))?\)/;
+const CELL_REGEX = /(.+?)\s*\(([A-Z]+(?:\/[A-Z]+)*)(?:-([A-Z0-9]+))?(?:,\s*(?:Gp?-([IV]+)|(\d{2})))?\s*\)/i;
 
 function parseTimetableCell(text) {
   const t = oneLine(text);
   if (!t) return null;
-  const m = t.match(CELL_REGEX);
+  // Strip everything after the first ) to handle trailing room/time info
+  const parenEnd = t.indexOf(")");
+  const core = parenEnd >= 0 ? t.slice(0, parenEnd + 1) : t;
+  const m = core.match(CELL_REGEX);
   if (!m) return null;
   const course = m[1].trim();
   const deptStr = m[2];
   const section = m[3];
+  if (!section) return null;
   const batchShort = m[5];
   const batch = batchShort ? (BATCH_MAP[batchShort] || "20" + batchShort) : "2023";
   const depts = deptStr.includes("/") ? deptStr.split("/") : [deptStr];
@@ -209,21 +213,29 @@ function parseTimetableCell(text) {
 }
 
 function findHeaderRow(grid) {
+  const candidates = [];
   for (let r = 0; r < Math.min(grid.length, 10); r++) {
-    if (/^room$/i.test(oneLine(grid[r][0] || ""))) {
-      const hasSlots = Object.keys(SLOT_COLS).some(c => normalizeTimeSlot(oneLine(grid[r][c] || "")));
-      if (hasSlots) return r;
+    const cell = oneLine(grid[r][0] || "");
+    if (/room/i.test(cell)) {
+      let slotsFound = 0;
+      for (const cIdx of Object.keys(SLOT_COLS)) {
+        const v = oneLine(grid[r][parseInt(cIdx)] || "");
+        if (normalizeTimeSlot(v)) slotsFound++;
+      }
+      if (slotsFound >= 4) return r;
+      candidates.push(r);
     }
   }
+  if (candidates.length) return candidates[0];
   return -1;
 }
 
 function findLabHeaderRow(grid, afterRow) {
   for (let r = afterRow; r < grid.length; r++) {
     const colA = oneLine(grid[r][0] || "").toLowerCase();
-    if (colA === "lab" || colA.startsWith("lab ")) return r;
+    if (colA.includes("lab")) return r;
     const colB = oneLine(grid[r][1] || "");
-    if (/^\d{1,2}:\d{2}-(?:1[0-5]|0\d):\d{2}$/.test(colB) && grid[r].filter(c => oneLine(c)).length <= 6) return r;
+    if (/^\d{1,2}:\d{2}-(?:1[0-5]|0\d|2[0-3]):\d{2}$/.test(colB) && grid[r].filter(c => oneLine(c)).length <= 6) return r;
   }
   return -1;
 }
@@ -233,7 +245,7 @@ function parseSlotRows(grid, startRow, endRow, slotMap, day, target) {
   for (let r = startRow; r < Math.min(endRow, grid.length); r++) {
     const row = grid[r] || [];
     const room = normalizeRoomName(oneLine(row[0] || ""));
-    if (!room || room.length < 2 || /^(reserved|tutorial|fsm|fsa|fcss|fyp|travel|admin|room)$/i.test(room)) continue;
+    if (!room || room.length < 2 || /reserved|tutorial|fsm|fsa|fcss|fyp|travel|admin|room/i.test(room)) continue;
     for (const [cIdx, timeSlot] of Object.entries(slotMap)) {
       const col = parseInt(cIdx);
       if (col >= row.length) continue;
