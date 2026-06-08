@@ -413,16 +413,16 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     <div class="panel on" id="p0">
       <div class="fields">
         <div><label class="flabel">DEPARTMENT</label>
-          <select class="rsel" id="dept"><option value="CS">BS CS</option><option value="AI">BS AI</option></select></div>
+          <select class="rsel" id="dept"><option value="">-- Loading --</option></select></div>
         <div><label class="flabel">BATCH YEAR</label>
-          <select class="rsel" id="batch"><option>2023</option><option>2024</option><option>2025</option><option>2026</option></select></div>
+          <select class="rsel" id="batch"><option value="">-- Loading --</option></select></div>
         <div><label class="flabel">SECTION</label>
-          <select class="rsel" id="sec"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+          <select class="rsel" id="sec"><option value="">-- Loading --</option></select></div>
         <div><label class="flabel">DAY</label>
           <select class="rsel" id="day"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option></select></div>
       </div>
       <button class="go" onclick="loadTT()">&#9658; GET TIMETABLE</button>
-      <div id="tt-out"></div>
+      <div id="tt-out"><div class="empty">WAITING FOR DATA...</div></div>
     </div>
 
     <!-- PANEL 1: Free Rooms -->
@@ -1073,7 +1073,7 @@ function setupTTFilterListeners(){
   [secSel,daySel].forEach(sel=>{
     if(sel&&!sel.dataset.liveBound){sel.dataset.liveBound='1';sel.addEventListener('change',loadTT);}
   });
-  refreshTTFilters();
+  // Don't populate here — wait for API or fallback
 }
 
 function refreshRoomSelectorsAfterDataUpdate(){
@@ -1139,21 +1139,22 @@ async function refreshTimetableFromGoogleSheet(){
     console.warn('Live timetable API sync failed:',err);
     const message=(err&&err.message)?err.message:String(err);
     setSheetStatus((_sheetHadSuccessfulLoad?'SHEET: LAST LIVE DATA · ':'SHEET API ERROR · ')+message,false);
-    const p0=document.getElementById('p0');
-    const out=document.getElementById('tt-out');
-    if(!_sheetHadSuccessfulLoad&&p0&&p0.classList.contains('on')&&out){
-      out.innerHTML=`<div class="empty" style="color:#b05a00;text-align:left;line-height:1.6">
-        <b>LIVE SHEET API DID NOT LOAD.</b><br>
-        ${message}<br><br>
-        This version needs the <b>/api/timetable.js</b> file deployed with your Vercel project. If you uploaded only index.html, it will still show fallback data.
-      </div>`;
+    if(!_sheetHadSuccessfulLoad){
+      if(Object.keys(TT).length>0){
+        refreshTTFilters();
+        rebuildBlockFloorsFromTT();
+        refreshRoomSelectorsAfterDataUpdate();
+      }
+      const p0=document.getElementById('p0'),out=document.getElementById('tt-out');
+      if(p0&&p0.classList.contains('on')&&out){
+        loadTT();
+      }
     }
   }
 }
 function initLiveSheetSync(){
   setupTTFilterListeners();
-  rebuildBlockFloorsFromTT();
-  refreshRoomSelectorsAfterDataUpdate();
+  // Wait for API response to populate filters and room data
   refreshTimetableFromGoogleSheet();
   clearInterval(_sheetTimer);
   _sheetTimer=setInterval(refreshTimetableFromGoogleSheet,GOOGLE_SHEET_REFRESH_MS);

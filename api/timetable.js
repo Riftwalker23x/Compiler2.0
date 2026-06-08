@@ -1,15 +1,18 @@
 // Vercel Serverless Function: /api/timetable
-// Replace your GitHub file api/timetable.js with this file.
-// It fetches your public Google Sheet on Vercel's server and converts it into the TT object used by index.html.
+// Parses the Compiler Society timetable Google Sheet using the actual layout:
+//   Rows 1-4  → Column-group headers (dept+batch per column group)
+//   Row 5     → Time slot headers per column group
+//   Rows 6-57 → Classroom rows (Col A = Room, course cells in slot columns)
+//   Row 58    → Lab divider
+//   Row 59+   → Lab rows (same structure, 3-hour slot widths)
+//   ~Col AE   → Second "Room" column = evening section
 
 const GOOGLE_SHEET_ID = "1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY";
-
-// Weekday tabs in the linked sheet.
 const GOOGLE_SHEET_TABS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-
-const SEMESTER_BASE_YEAR = 2026; // Spring 2026: sem 2 -> batch 2025, sem 4 -> 2024, sem 6 -> 2023
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-let SLOTS = ["08:30-09:50", "10:00-11:20", "11:30-12:50", "01:00-02:20", "02:30-03:50", "03:55-05:15"];
+const SECTION_PATTERN = /\(([A-Z]{2,3})-([A-Z0-9]{1,3})\)/;
+
+/* ── Text helpers ── */
 
 function cleanTxt(v) {
   return String(v ?? "")
@@ -27,53 +30,7 @@ function normKey(v) {
   return oneLine(v).toLowerCase().replace(/[^a-z0-9]+/g, "");
 }
 
-function normalizeDay(v) {
-  const t = oneLine(v).toLowerCase();
-  return DAYS.find((d) => t.includes(d.toLowerCase())) || null;
-}
-
-function extractDeptCodes(text) {
-  const t = oneLine(text).toUpperCase();
-  const codes = [];
-  const seen = new Set();
-  const re = /\b(CS|DS|AI|CY|SE)\b/g;
-  let match;
-
-  while ((match = re.exec(t))) {
-    if (seen.has(match[1])) continue;
-    seen.add(match[1]);
-    codes.push(match[1]);
-  }
-
-  return codes;
-}
-
-function extractBatch(text) {
-  const t = oneLine(text).toUpperCase();
-  const fullYear = t.match(/\b20\d{2}\b/);
-  if (fullYear) return fullYear[0];
-
-  const shortYear = t.match(/(?:\(|,|\s)(2[0-9])(?:\)|\b)/);
-  if (shortYear) return `20${shortYear[1]}`;
-
-  return null;
-}
-
-function extractSection(text) {
-  const t = oneLine(text).toUpperCase();
-  const patterns = [
-    /\b(?:SECTION|SEC)\s*[-:]?\s*([A-Z])\b/,
-    /\b(?:CS|DS|AI|CY|SE)(?:\/(?:CS|DS|AI|CY|SE))+[-, ]\s*([A-Z])(?:\d+)?\b/,
-    /\b(?:CS|DS|AI|CY|SE)\s*[-, ]\s*([A-Z])(?:\d+)?\b/
-  ];
-
-  for (const pattern of patterns) {
-    const match = t.match(pattern);
-    if (match) return match[1].toUpperCase();
-  }
-
-  return null;
-}
+/* ── Google Sheets fetch ── */
 
 function gvizUrl(sheetName) {
   return `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}&cachebust=${Date.now()}`;
@@ -82,14 +39,9 @@ function gvizUrl(sheetName) {
 function parseGVizText(text) {
   const raw = String(text || "").trim();
   if (raw.startsWith("{")) return JSON.parse(raw);
-
-  const start = raw.indexOf("(");
-  const end = raw.lastIndexOf(")");
-
-  if (start < 0 || end < 0 || end <= start) {
+  const start = raw.indexOf("("), end = raw.lastIndexOf(")");
+  if (start < 0 || end < 0 || end <= start)
     throw new Error("Google Sheets returned an unexpected response. Make sure sharing is: Anyone with the link can view.");
-  }
-
   return JSON.parse(raw.slice(start + 1, end));
 }
 
@@ -98,15 +50,10 @@ async function loadSheetGrid(sheetName) {
     cache: "no-store",
     headers: { "user-agent": "Mozilla/5.0 Vercel Timetable Sync" }
   });
-
-  if (!res.ok) {
-    throw new Error(`Google Sheets HTTP ${res.status} for tab ${sheetName}`);
-  }
-
+  if (!res.ok) throw new Error(`Google Sheets HTTP ${res.status} for tab ${sheetName}`);
   const data = parseGVizText(await res.text());
   const rows = data?.table?.rows || [];
   const colCount = Math.max(data?.table?.cols?.length || 0, ...rows.map((r) => (r.c || []).length), 0);
-
   return rows.map((r) =>
     Array.from({ length: colCount }, (_, i) => {
       const cell = (r.c || [])[i];
@@ -116,23 +63,19 @@ async function loadSheetGrid(sheetName) {
   );
 }
 
-function parseClock(h, mm, ampm) {
-  let hour = Number(h);
-  const minute = Number(mm || 0);
-  const ap = String(ampm || "").toUpperCase();
+/* ── Time helpers ── */
 
+function parseClock(h, mm, ampm) {
+  let hour = Number(h), minute = Number(mm || 0);
+  const ap = (ampm || "").toUpperCase();
   if (ap === "PM" && hour < 12) hour += 12;
   if (ap === "AM" && hour === 12) hour = 0;
-
-  // FAST sheets often write 01:00 without PM. Treat 1-6 as afternoon.
   if (!ap && hour >= 1 && hour <= 6) hour += 12;
-
   return hour * 60 + minute;
 }
 
 function minutesToSlotLabel(min) {
-  let h = Math.floor(min / 60);
-  const m = min % 60;
+  let h = Math.floor(min / 60), m = min % 60;
   if (h > 12) h -= 12;
   if (h === 0) h = 12;
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
@@ -142,11 +85,9 @@ function normalizeTimeSlot(text) {
   const t = oneLine(text).replace(/[–—]/g, "-");
   const m = t.match(/(\d{1,2})[:.](\d{2})\s*(AM|PM)?\s*(?:-|to)\s*(\d{1,2})[:.](\d{2})\s*(AM|PM)?/i);
   if (!m) return null;
-
   const start = parseClock(m[1], m[2], m[3] || m[6]);
   const end = parseClock(m[4], m[5], m[6] || m[3]);
   if (!Number.isFinite(start) || !Number.isFinite(end)) return null;
-
   return `${minutesToSlotLabel(start)}-${minutesToSlotLabel(end)}`;
 }
 
@@ -157,69 +98,7 @@ function slotToMinutes(slot) {
   return parseClock(m[1], m[2], "");
 }
 
-function registerSlot(slot) {
-  if (!slot || SLOTS.includes(slot)) return;
-  SLOTS.push(slot);
-  SLOTS.sort((a, b) => slotToMinutes(a) - slotToMinutes(b));
-}
-
-function deptFromText(text) {
-  return extractDeptCodes(text)[0] || null;
-}
-
-function batchFromSemester(sem) {
-  const n = Number(sem);
-  if (!n || n < 1 || n > 12) return null;
-  return String(SEMESTER_BASE_YEAR - Math.ceil(n / 2));
-}
-
-function parseClassContext(text) {
-  const raw = oneLine(text);
-  if (!raw) return null;
-
-  const depts = extractDeptCodes(raw);
-  let batch = extractBatch(raw);
-  let section = extractSection(raw);
-  let semester = null;
-
-  const patterns = [
-    /\b(?:CS|DS|AI|CY|SE)\s*[- ]?(20\d{2}|2[0-9])\s*[- ]?([A-Z])\b/i,
-    /\b(?:CS|DS|AI|CY|SE)\s*[- ]?([0-9]{1,2})\s*[- ]?([A-Z])\b/i,
-    /\b(?:BS|MS)\s*\(?\s*(CS|DS|AI|CY|SE)\s*\)?\s*[- ]?([0-9]{1,2})\s*[- ]?([A-Z])\b/i,
-    /\bSEM(?:ESTER)?\s*[-:]?\s*([0-9]{1,2})\b.*?\bSEC(?:TION)?\s*[-:]?\s*([A-Z])\b/i,
-    /\b([0-9]{1,2})\s*[- ]?([A-Z])\b/i
-  ];
-
-  for (const p of patterns) {
-    const m = raw.match(p);
-    if (!m) continue;
-
-    if (!depts.length && m[1] && /^(CS|DS|AI|CY|SE)$/i.test(m[1])) depts.push(m[1].toUpperCase());
-
-    if (!batch) {
-      if (m[1] && /^20\d{2}$/.test(m[1])) batch = m[1];
-      else if (m[2] && /^20\d{2}$/.test(m[2])) batch = m[2];
-      else if (m[2] && /^\d{2}$/.test(m[2])) batch = `20${m[2]}`;
-      else if (m[3] && /^20\d{2}$/.test(m[3])) batch = m[3];
-      else if (m[3] && /^\d{2}$/.test(m[3])) batch = `20${m[3]}`;
-      else if (m[1] && /^\d{1,2}$/.test(m[1])) semester = semester || m[1];
-      else if (m[2] && /^\d{1,2}$/.test(m[2])) semester = semester || m[2];
-    }
-
-    if (!section) {
-      const possibleSection = [m[4], m[3], m[2], m[1]].find((x) => /^[A-Z]$/i.test(String(x || "")));
-      if (possibleSection) section = possibleSection.toUpperCase();
-    }
-  }
-
-  if (!batch && semester) batch = batchFromSemester(semester);
-
-  if (depts.length && batch && section && /^[A-Z]$/.test(section)) {
-    return { dept: depts, batch, section };
-  }
-
-  return null;
-}
+/* ── Room helpers ── */
 
 function normalizeRoomName(room) {
   return oneLine(room).toUpperCase().replace(/\s+/g, " ");
@@ -229,108 +108,249 @@ function sameRoom(a, b) {
   return normalizeRoomName(a) === normalizeRoomName(b);
 }
 
-function extractRoom(text) {
-  const t = oneLine(text);
-
-  const patterns = [
-    /\b([A-D])\s*[- ]\s*(\d{3})\b/i,
-    /\b([A-D])\s*[- ]?\s*Lab\s*[-#]?\s*(\d+)\b/i,
-    /\bD\s*[- ]?\s*(?:IT\s*)?Lab\s*[-#]?\s*(\d+)\b/i,
-    /\b(Margala|Rawal|Mehran|Khyber|Call|DLD|GPU)\s+Labs?\s*\(?\s*(\d+)?\s*\)?/i,
-    /\bAudi(?:torium)?\b/i
-  ];
-
-  for (const re of patterns) {
-    const m = t.match(re);
-    if (!m) continue;
-
-    if (re === patterns[0]) return `${m[1].toUpperCase()}-${m[2]}`;
-    if (re === patterns[1]) return `${m[1].toUpperCase()}-Lab${m[2]}`;
-    if (re === patterns[2]) return `D-IT Lab ${m[1]}`;
-    if (re === patterns[3]) return `${m[1][0].toUpperCase() + m[1].slice(1)} Lab${m[2] ? " " + m[2] : ""}`;
-    return "D-Audi";
-  }
-
-  return null;
-}
-
-function stripRoomTimeClass(text) {
-  return cleanTxt(text)
-    .replace(/\b[A-D]\s*[- ]\s*\d{3}\b/gi, " ")
-    .replace(/\b[A-D]\s*[- ]?\s*Lab\s*[-#]?\s*\d+\b/gi, " ")
-    .replace(/\bD\s*[- ]?\s*(?:IT\s*)?Lab\s*[-#]?\s*\d+\b/gi, " ")
-    .replace(/\b(Margala|Rawal|Mehran|Khyber|Call|DLD|GPU)\s+Labs?\s*\(?\s*\d*\s*\)?/gi, " ")
-    .replace(/\bAudi(?:torium)?\b/gi, " ")
-    .replace(/\d{1,2}[:.]\d{2}\s*(AM|PM)?\s*(?:-|–|—|to)\s*\d{1,2}[:.]\d{2}\s*(AM|PM)?/gi, " ")
-    .replace(/\bBS\s*\(?\s*(CS|AI)\s*\)?\s*[- ]?\d{1,2}\s*[- ]?[A-Z]\b/gi, " ")
-    .replace(/\bB(CS|AI)\s*[- ]?\d{1,2}\s*[- ]?[A-Z]\b/gi, " ")
-    .replace(/\b(CS|AI)\s*[- ]?\d{1,2}\s*[- ]?[A-Z]\b/gi, " ")
-    .replace(/\bSEC(?:TION)?\s*[-:]?\s*[A-Z]\b/gi, " ")
-    .replace(/\bSEM(?:ESTER)?\s*[-:]?\s*\d{1,2}\b/gi, " ")
-    .trim();
-}
-
-function looksLikeHeaderOnly(text) {
-  const t = oneLine(text).toUpperCase();
-  if (!t) return true;
-  if (normalizeTimeSlot(t)) return true;
-  if (extractRoom(t) && stripRoomTimeClass(t).length < 3) return true;
-  if (parseClassContext(t) && stripRoomTimeClass(t).length < 3) return true;
-  return /^(CLASS|SECTION|ROOM|VENUE|LOCATION|TIME|SLOT|COURSE|SUBJECT|TEACHER|INSTRUCTOR|FACULTY|THEORY|LAB|BREAK|LUNCH)$/i.test(t);
-}
-
-function extractCourse(cell) {
-  const cleaned = stripRoomTimeClass(cell);
-  const parts = cleaned
-    .split(/\n|\r|;|\|/)
-    .map(oneLine)
-    .map((p) => p.replace(/^[-–—]+|[-–—]+$/g, "").trim())
-    .filter(Boolean)
-    .filter((p) => !looksLikeHeaderOnly(p));
-
-  // Usually the course name is the first meaningful line before teacher/room lines.
-  return parts[0] || "";
-}
-
-function addCourseToTT(target, item) {
-  const { dept, batch, section, day, course, room, time } = item;
-  if (!dept || !batch || !section || !day || !course || !room || !time) return false;
-
-  const depts = Array.isArray(dept) ? dept : [dept];
-  let added = false;
-
-  registerSlot(time);
-
-  for (const deptCode of depts) {
-    if (!deptCode) continue;
-
-    target[deptCode] = target[deptCode] || {};
-    target[deptCode][batch] = target[deptCode][batch] || {};
-    target[deptCode][batch][section] = target[deptCode][batch][section] || {};
-    target[deptCode][batch][section][day] = target[deptCode][batch][section][day] || [];
-
-    const arr = target[deptCode][batch][section][day];
-    if (!arr.some((x) => x.c === course && sameRoom(x.l, room) && x.t === time)) {
-      arr.push({ c: course, l: room, t: time });
-      added = true;
-    }
-  }
-
-  return added;
-}
+/* ── TT building ── */
 
 function countTTEntries(tt) {
   let n = 0;
   Object.values(tt).forEach((batches) =>
     Object.values(batches).forEach((sections) =>
       Object.values(sections).forEach((days) =>
-        Object.values(days).forEach((arr) => {
-          n += arr.length;
-        })
+        Object.values(days).forEach((arr) => { n += arr.length; })
       )
     )
   );
   return n;
+}
+
+const SLOTS = [];
+
+function registerSlot(slot) {
+  if (!slot || SLOTS.includes(slot)) return;
+  SLOTS.push(slot);
+  SLOTS.sort((a, b) => slotToMinutes(a) - slotToMinutes(b));
+}
+
+function addCourseToTT(target, { dept, batch, section, day, course, room, time }) {
+  if (!dept || !batch || !section || !day || !course || !room || !time) return false;
+  registerSlot(time);
+  const depts = Array.isArray(dept) ? dept : [dept];
+  let added = false;
+  for (const deptCode of depts) {
+    if (!deptCode) continue;
+    target[deptCode] = target[deptCode] || {};
+    target[deptCode][batch] = target[deptCode][batch] || {};
+    target[deptCode][batch][section] = target[deptCode][batch][section] || {};
+    target[deptCode][batch][section][day] = target[deptCode][batch][section][day] || [];
+    const arr = target[deptCode][batch][section][day];
+    if (!arr.some((x) => x.c === course && sameRoom(x.l, room) && x.t === time)) {
+      arr.push({ c: course, l: room, t: time });
+      added = true;
+    }
+  }
+  return added;
+}
+
+/* ══════════════════════════════════════════
+   PHASE 1 — Build Column Map from Header Rows
+   ══════════════════════════════════════════ */
+
+function buildColRangesFromRow(row) {
+  const ranges = [];
+  let start = -1, slot = null;
+  for (let c = 0; c < row.length; c++) {
+    const cell = oneLine(row[c]);
+    if (!cell) continue;
+    const timeSlot = normalizeTimeSlot(cell);
+    if (timeSlot) {
+      if (start >= 0) ranges.push({ startCol: start, endCol: c - 1, slot });
+      start = c;
+      slot = timeSlot;
+    }
+  }
+  if (start >= 0) ranges.push({ startCol: start, endCol: row.length - 1, slot });
+  return ranges;
+}
+
+const BATCH_PATTERN = /BS\s+(CS|DS|AI|CY|SE)\s+\((\d{4})\)/i;
+
+function buildBatchLayers(grid) {
+  const layers = [];
+  for (let r = 0; r < Math.min(4, grid.length); r++) {
+    const row = grid[r] || [];
+    for (let c = 0; c < row.length; c++) {
+      const m = oneLine(row[c]).match(BATCH_PATTERN);
+      if (!m) continue;
+      const dept = m[1].toUpperCase();
+      const batch = m[2];
+      // Determine group end: look right until next label or gap
+      let endCol = c;
+      for (let cc = c + 1; cc < Math.min(c + 8, row.length); cc++) {
+        const v = oneLine(row[cc]);
+        if (!v && cc - c >= 4) break;
+        if (v.match(BATCH_PATTERN) || /^room$/i.test(v)) break;
+        endCol = cc;
+      }
+      layers.push({ colStart: c, colEnd: endCol, dept, batch });
+    }
+  }
+  return layers;
+}
+
+/* ══════════════════════════════════════════
+   PHASE 2 — Parse Cell Text
+   ══════════════════════════════════════════ */
+
+function parseCellText(cell) {
+  const t = oneLine(cell);
+  if (!t) return null;
+  const sectionMatch = t.match(SECTION_PATTERN);
+  if (!sectionMatch) return null;
+  return {
+    dept: sectionMatch[1].toUpperCase(),
+    section: sectionMatch[2].toUpperCase(),
+    courseName: t.split("(")[0].trim(),
+    customTime: (t.match(/(\d{1,2}:\d{2}-\d{1,2}:\d{2})/) || [])[1] || null
+  };
+}
+
+/* ══════════════════════════════════════════
+   PHASE 3 — Map Section to Batch via Column
+   ══════════════════════════════════════════ */
+
+function getBatchForCol(colIndex, dept, batchLayers) {
+  for (const l of batchLayers) {
+    if (l.dept === dept && colIndex >= l.colStart && colIndex <= l.colEnd) return l.batch;
+  }
+  return null;
+}
+
+/* ══════════════════════════════════════════
+   PHASE 4 — Detect Evening Section
+   ══════════════════════════════════════════ */
+
+function detectSections(headerRow) {
+  const roomCols = [];
+  for (let c = 0; c < headerRow.length; c++) {
+    if (/^room$/i.test(oneLine(headerRow[c]))) roomCols.push(c);
+  }
+  const allRanges = buildColRangesFromRow(headerRow);
+  if (roomCols.length < 2) {
+    return {
+      leftRanges: allRanges,
+      leftRoomCol: roomCols[0] || 0,
+      rightRanges: [],
+      rightRoomCol: -1
+    };
+  }
+  const splitCol = roomCols[1];
+  return {
+    leftRanges: allRanges.filter(r => r.startCol < splitCol),
+    leftRoomCol: roomCols[0],
+    rightRanges: allRanges.filter(r => r.startCol >= splitCol),
+    rightRoomCol: splitCol
+  };
+}
+
+/* ══════════════════════════════════════════
+   PHASE 5 — Lab Section Detection
+   ══════════════════════════════════════════ */
+
+function findLabStart(grid) {
+  // Lab header rows have a 3-hour time-span label in column B (e.g. "08:30-11:15")
+  // Classroom rows have course names in column B, not bare time labels
+  // Col A in a lab header is empty or "Room" — not a room code
+  const labTimePattern = /^\d{1,2}:\d{2}-(?:1[0-5]|0\d):\d{2}$/;
+  for (let r = 5; r < grid.length; r++) {
+    const row = grid[r] || [];
+    const colB = oneLine(row[1] || "");
+    if (labTimePattern.test(colB)) {
+      const colA = oneLine(row[0] || "").toLowerCase();
+      // Header rows have few non-empty cells. Also colA should not be a room code.
+      const nonEmpty = row.filter(c => oneLine(c)).length;
+      if (nonEmpty <= 6 && (!colA || colA === 'room')) return r;
+    }
+  }
+  return -1;
+}
+
+/* ══════════════════════════════════════════
+   PHASE 6 — Skip Patterns
+   ══════════════════════════════════════════ */
+
+const SKIP_PATTERNS = [
+  /^reserved/i, /^tutorial$/i, /^fsm$/i, /^fsa$/i, /^fcss$/i,
+  /^fyp/i, /^travel/i, /^admin$/i, /^break$/i, /^lunch$/i,
+  /^room$/i, /^(monday|tuesday|wednesday|thursday|friday)$/i,
+  /^08:30-11:15$/, /^11:30-02:15$/, /^02:30-05:15$/, /^05:20-08:05$/,
+  /^$/
+];
+
+function shouldSkip(cell) {
+  const t = oneLine(cell).toLowerCase().replace(/[\s]+/g, " ").trim();
+  if (!t) return true;
+  return SKIP_PATTERNS.some(p => p.test(t));
+}
+
+function looksLikeRoomHeader(cell) {
+  return /^(room|venue|location|class\s*room|lab\s*room)$/i.test(oneLine(cell));
+}
+
+/* ══════════════════════════════════════════
+   PHASE 7 — Parse Data Rows
+   ══════════════════════════════════════════ */
+
+function parseRows({ grid, startRow, endRow, roomCol, colRanges, batchLayers, day, target }) {
+  let added = 0;
+  for (let r = startRow; r < Math.min(endRow, grid.length); r++) {
+    const row = grid[r] || [];
+    const roomCell = oneLine(row[roomCol] || "");
+    if (!roomCell || shouldSkip(roomCell) || looksLikeRoomHeader(roomCell)) continue;
+
+    const room = normalizeRoomName(roomCell);
+    if (!room || room.length < 2) continue;
+
+    for (const range of colRanges) {
+      // Scan all columns in range, use first meaningful cell
+      let cellContent = "";
+      for (let c = range.startCol; c <= Math.min(range.endCol, row.length - 1); c++) {
+        const v = oneLine(row[c] || "");
+        if (v && !shouldSkip(v)) { cellContent = v; break; }
+      }
+      if (!cellContent) continue;
+
+      const parsed = parseCellText(cellContent);
+      if (!parsed) continue;
+
+      const batch = getBatchForCol(range.startCol, parsed.dept, batchLayers);
+      if (!batch) continue;
+
+      const time = parsed.customTime || range.slot;
+      if (!time) continue;
+
+      const course = parsed.courseName;
+      if (!course || course.length < 1) continue;
+
+      if (addCourseToTT(target, {
+        dept: parsed.dept,
+        batch,
+        section: parsed.section,
+        day,
+        course,
+        room,
+        time
+      })) added++;
+    }
+  }
+  return added;
+}
+
+/* ══════════════════════════════════════════
+   Main Parsing Orchestrator
+   ══════════════════════════════════════════ */
+
+function normalizeDay(v) {
+  const t = oneLine(v).toLowerCase();
+  return DAYS.find((d) => t.includes(d.toLowerCase())) || null;
 }
 
 function nonEmptySamples(grid, max = 30) {
@@ -344,168 +364,10 @@ function nonEmptySamples(grid, max = 30) {
   return samples;
 }
 
-function findHeaderIndex(header, names) {
-  return header.findIndex((h) => names.some((n) => h.includes(n)));
-}
-
-function parseDatabaseRows(grid, tabName, target) {
-  let added = 0;
-
-  for (let r = 0; r < Math.min(grid.length, 25); r++) {
-    const header = (grid[r] || []).map(normKey);
-
-    const idx = {
-      dept: findHeaderIndex(header, ["department", "dept", "program", "degree"]),
-      batch: findHeaderIndex(header, ["batch", "year", "session"]),
-      section: findHeaderIndex(header, ["section", "sec"]),
-      klass: findHeaderIndex(header, ["class", "group"]),
-      day: findHeaderIndex(header, ["day"]),
-      time: findHeaderIndex(header, ["time", "slot"]),
-      course: findHeaderIndex(header, ["course", "subject", "title"]),
-      room: findHeaderIndex(header, ["room", "venue", "location", "classroom"])
-    };
-
-    if (idx.time < 0 || idx.course < 0 || idx.room < 0) continue;
-
-    for (let i = r + 1; i < grid.length; i++) {
-      const row = grid[i] || [];
-      const time = normalizeTimeSlot(row[idx.time]);
-      const day = (idx.day >= 0 ? normalizeDay(row[idx.day]) : null) || normalizeDay(tabName);
-      const room = extractRoom(row[idx.room]) || oneLine(row[idx.room]);
-      const course = extractCourse(row[idx.course]) || oneLine(row[idx.course]);
-      const metaText = [row[idx.klass], row[idx.dept], row[idx.batch], row[idx.section], row.join(" ")].filter(Boolean).join(" ");
-      const meta = parseClassContext(metaText);
-
-      if (meta && addCourseToTT(target, { ...meta, day, time, room, course })) added++;
-    }
-    break;
-  }
-
-  return added;
-}
-
-function rowHasSeveralTimes(row) {
-  return (row || []).filter((x) => normalizeTimeSlot(x)).length >= 2;
-}
-
-function timeFromNearbyHeaders(grid, row, col) {
-  // Same row: useful for room-wise layouts where the first column is the time slot.
-  const sameRowTimes = (grid[row] || []).map((v, c) => ({ c, slot: normalizeTimeSlot(v) })).filter((x) => x.slot);
-  if (sameRowTimes.length === 1) return sameRowTimes[0].slot;
-  const leftSameRow = sameRowTimes.filter((x) => x.c <= col).sort((a, b) => b.c - a.c)[0];
-  if (leftSameRow && col - leftSameRow.c <= 3) return leftSameRow.slot;
-
-  // Above rows: time headers often use merged cells, so Google returns the time only in the left-most merged cell.
-  for (let rr = row - 1; rr >= Math.max(0, row - 35); rr--) {
-    const headerRow = grid[rr] || [];
-    const times = headerRow.map((v, c) => ({ c, slot: normalizeTimeSlot(v) })).filter((x) => x.slot);
-    if (!times.length) continue;
-
-    const exact = times.find((x) => x.c === col);
-    if (exact) return exact.slot;
-
-    const left = times.filter((x) => x.c <= col).sort((a, b) => b.c - a.c)[0];
-    const right = times.filter((x) => x.c > col).sort((a, b) => a.c - b.c)[0];
-
-    // Use the nearest time on the left. This fixes merged header cells.
-    if (left && (!right || col - left.c <= right.c - col || col - left.c <= 8)) return left.slot;
-    if (right && right.c - col <= 2) return right.slot;
-  }
-
-  return null;
-}
-
-function roomFromNearby(grid, row, col, cell) {
-  let room = extractRoom(cell);
-  if (room) return room;
-
-  const rowVals = grid[row] || [];
-
-  // Search nearby same row.
-  for (let cc = Math.max(0, col - 8); cc <= Math.min(rowVals.length - 1, col + 3); cc++) {
-    room = extractRoom(rowVals[cc]);
-    if (room) return room;
-  }
-
-  // Search above same/nearby columns for room headers.
-  for (let rr = row - 1; rr >= Math.max(0, row - 25); rr--) {
-    const r = grid[rr] || [];
-    for (let offset = 0; offset <= 5; offset++) {
-      for (const cc of [col - offset, col + offset]) {
-        if (cc < 0 || cc >= r.length) continue;
-        room = extractRoom(r[cc]);
-        if (room) return room;
-      }
-    }
-  }
-
-  return null;
-}
-
-function rowMetaList(grid) {
-  const metas = [];
-  let current = null;
-
-  for (let r = 0; r < grid.length; r++) {
-    const row = grid[r] || [];
-    const leftText = row.slice(0, Math.min(10, row.length)).join(" ");
-    const direct = parseClassContext(leftText);
-
-    if (direct) current = direct;
-
-    // Reset carry when the row is clearly a header/title row.
-    if (rowHasSeveralTimes(row) || /\b(class|time|room|venue)\b/i.test(oneLine(leftText))) {
-      if (!direct) current = null;
-    }
-
-    metas[r] = direct || current;
-  }
-
-  return metas;
-}
-
-function parseMatrixRows(grid, tabName, target) {
-  const day = normalizeDay(tabName);
-  if (!day) return 0;
-
-  const rowMetas = rowMetaList(grid);
-  let added = 0;
-
-  for (let r = 0; r < grid.length; r++) {
-    const row = grid[r] || [];
-
-    for (let c = 0; c < row.length; c++) {
-      const cell = cleanTxt(row[c]);
-      if (!cell || looksLikeHeaderOnly(cell)) continue;
-
-      const time = normalizeTimeSlot(cell) || timeFromNearbyHeaders(grid, r, c);
-      if (!time) continue;
-
-      const localContext = [
-        row.slice(0, Math.min(10, row.length)).join(" "),
-        cell,
-        ...Array.from({ length: Math.min(r, 8) }, (_, k) => (grid[r - 1 - k] || [])[c] || "")
-      ].join(" ");
-
-      const meta = parseClassContext(localContext) || rowMetas[r];
-      if (!meta) continue;
-
-      const room = roomFromNearby(grid, r, c, cell);
-      if (!room) continue;
-
-      const course = extractCourse(cell);
-      if (!course || course.length < 3) continue;
-
-      if (addCourseToTT(target, { ...meta, day, time, room, course })) added++;
-    }
-  }
-
-  return added;
-}
-
 function buildTTWithDiagnostics(sheets) {
   const tt = {};
   const diagnostics = [];
+  SLOTS.length = 0;
 
   for (const sheet of sheets) {
     if (sheet.error) {
@@ -514,21 +376,98 @@ function buildTTWithDiagnostics(sheets) {
     }
 
     const before = countTTEntries(tt);
-    const database = parseDatabaseRows(sheet.grid, sheet.name, tt);
-    const matrix = parseMatrixRows(sheet.grid, sheet.name, tt);
-    const after = countTTEntries(tt);
+    const grid = sheet.grid;
+    const day = normalizeDay(sheet.name);
+    if (!day) continue;
 
+    // Phase 1a: Build batch layers from header rows 1-4
+    const batchLayers = buildBatchLayers(grid);
+
+    // Phase 1b+4: Detect sections and build column ranges from row 5
+    const headerRow = grid[4] || [];
+    const { leftRanges, leftRoomCol, rightRanges, rightRoomCol } = detectSections(headerRow);
+
+    // Phase 5: Find lab section
+    const labStart = findLabStart(grid);
+    const classroomEnd = labStart > 0 ? labStart : grid.length;
+
+    // Parse left side (day classrooms, rows 6–57)
+    parseRows({
+      grid,
+      startRow: 5,
+      endRow: classroomEnd,
+      roomCol: leftRoomCol,
+      colRanges: leftRanges,
+      batchLayers,
+      day,
+      target: tt
+    });
+
+    // Parse right side (evening section) if present
+    if (rightRanges.length > 0 && rightRoomCol >= 0) {
+      parseRows({
+        grid,
+        startRow: 5,
+        endRow: classroomEnd,
+        roomCol: rightRoomCol,
+        colRanges: rightRanges,
+        batchLayers,
+        day,
+        target: tt
+      });
+    }
+
+    // Parse lab section (rows after lab divider)
+    if (labStart > 0) {
+      const labHeaderRow = grid[labStart] || [];
+      const labRanges = buildColRangesFromRow(labHeaderRow);
+
+      if (labRanges.length > 0) {
+        // Parse left side labs
+        parseRows({
+          grid,
+          startRow: labStart + 1,
+          endRow: grid.length,
+          roomCol: leftRoomCol,
+          colRanges: labRanges,
+          batchLayers,
+          day,
+          target: tt
+        });
+
+        // Parse right side evening labs
+        if (rightRanges.length > 0 && rightRoomCol >= 0) {
+          parseRows({
+            grid,
+            startRow: labStart + 1,
+            endRow: grid.length,
+            roomCol: rightRoomCol,
+            colRanges: labRanges.filter(r => r.startCol >= rightRoomCol),
+            batchLayers,
+            day,
+            target: tt
+          });
+        }
+      }
+    }
+
+    const after = countTTEntries(tt);
     diagnostics.push({
       name: sheet.name,
-      rows: sheet.grid.length,
-      cols: Math.max(0, ...sheet.grid.map((r) => r.length)),
+      rows: grid.length,
+      cols: Math.max(0, ...grid.map((r) => r.length)),
       added: after - before,
-      database,
-      matrix,
-      samples: nonEmptySamples(sheet.grid, 12)
+      sections: {
+        leftRanges: leftRanges.length,
+        rightRanges: rightRanges.length,
+        labStart,
+        batchLayers: batchLayers.length
+      },
+      samples: nonEmptySamples(grid, 12)
     });
   }
 
+  // Sort entries by time
   Object.values(tt).forEach((batches) =>
     Object.values(batches).forEach((sections) =>
       Object.values(sections).forEach((days) =>
@@ -539,6 +478,10 @@ function buildTTWithDiagnostics(sheets) {
 
   return { tt, diagnostics };
 }
+
+/* ══════════════════════════════════════════
+   Vercel Handler
+   ══════════════════════════════════════════ */
 
 module.exports = async (req, res) => {
   res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
@@ -583,7 +526,7 @@ module.exports = async (req, res) => {
     if (!count) {
       return res.status(500).json({
         ok: false,
-        error: "Parsed 0 classes from Google Sheet. API is deployed, but the parser does not match the sheet layout yet. Open /api/timetable?raw=1 and send me the JSON preview.",
+        error: "Parsed 0 classes from Google Sheet. The parser does not match the sheet layout yet. Open /api/timetable?raw=1 and send the JSON preview to debug.",
         diagnostics
       });
     }
@@ -591,7 +534,7 @@ module.exports = async (req, res) => {
     return res.status(200).json({
       ok: true,
       count,
-      slots: SLOTS,
+      slots: [...SLOTS],
       tt,
       diagnostics,
       updatedAt: new Date().toISOString()
