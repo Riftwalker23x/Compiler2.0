@@ -623,26 +623,34 @@ let TT={CS:{"2023":{A:{Monday:[{c:"Data Structures",l:"D-201",t:"08:30-09:50"},{
 const DEFAULT_BLOCK_FLOORS={
   C:{
     1:["C-110"],
-    3:["C-301","C-302","C-303","C-304","C-305","C-306","C-307","C-308","C-309","C-310","C-311"],
-    4:["C-401","C-402","C-403","C-404","C-405","C-406","C-407","C-408","C-409","C-410"],
-    Margala:["Margala Lab 1","Margala Lab 2","Margala Lab 3","Margala Lab 4"],
-    Rawal:["Rawal Lab 1","Rawal Lab 4"],
-    GPU:["GPU Lab"]
+    3:["C-301","C-302","C-303","C-304","C-305","C-307","C-308","C-309","C-310","C-311"],
+    4:["C-401","C-402","C-403","C-404","C-405","C-406","C-407","C-408","C-409"],
+    Margala:["C-Margala 1","C-Margala 3","C-Margala 4"],
+    Rawal:["C-Rawal 1","C-Rawal 4"],
+    GPU:["C-GPU Lab"],
   },
   D:{
     2:["D-IT Lab 1","D-IT Lab 2","D-IT Lab 3","D-IT Lab 4"],
-    3:["D-301","D-302","D-303","D-304","D-305","D-306","D-307","D-308","D-309","D-310","D-311","D-312","D-313","D-314","D-315","D-316"],
-    4:["D-401","D-402","D-403","D-404","D-405","D-406","D-407","D-408","D-409","D-410","D-411","D-412","D-413","D-414","D-415","D-416"],
+    3:["D-301","D-302","D-303","D-304","D-305","D-306","D-311","D-312","D-313","D-314","D-315","D-316"],
+    4:["D-401","D-402","D-403","D-404","D-405","D-406","D-411","D-412","D-413","D-414","D-415","D-416"],
     5:["D-501","D-502","D-503","D-504","D-505","D-506"],
+    Cyber:["Cyber (D-514)"],
     Lab:["D-Lab1","D-Lab2","D-Lab3","D-Lab4"],
     Audi:["D-Audi"]
-  }
+  },
+  A:{
+    Mehran:["A-Mehran 1","A-Mehran 2"],
+    CALL:["A-CALL-1","A-CALL-2","A-CALL-3"],
+  },
+  B:{
+    Digital:["B-Digital"],
+  },
 };
 let BLOCK_FLOORS=cloneFloors(DEFAULT_BLOCK_FLOORS);
 
 const DAYS=["Monday","Tuesday","Wednesday","Thursday","Friday"];
 const DAYNAMES=["SUN","MON","TUE","WED","THU","FRI","SAT"];
-const SLOTS=["08:30-09:50","10:00-11:20","11:30-12:50","01:00-02:20","02:30-03:30"];
+const SLOTS=["08:30-09:50","10:00-11:20","11:30-12:50","01:00-02:20","02:30-03:50","03:55-05:15","05:20-06:40","06:45-08:05","08:30-11:15","11:30-02:15","02:30-05:15"];
 
 
 /* ══════════════════════════════════════════
@@ -803,14 +811,38 @@ function registerSlot(slot){
 function normalizeRoomName(room){
   let r=cleanTxt(room).toUpperCase();
   r=r.replace(/\s+/g,' ');
-  let m=r.match(/\b([A-D])\s*[- ]\s*(\d{3})\b/);
-  if(m) return `${m[1]}-${m[2]}`;
-  m=r.match(/\bD\s*[- ]?\s*(?:IT\s*)?LAB\s*[-#]?\s*(\d+)\b/);
-  if(m) return `D-IT LAB ${m[1]}`;
-  m=r.match(/\b([CD])\s*[- ]?\s*LAB\s*[-#]?\s*(\d+)\b/);
-  if(m) return `${m[1]}-LAB${m[2]}`;
-  m=r.match(/\b(MARGALA|RAWAL|MEHRAN|KHYBER|CALL|DLD|GPU)\s+LABS?\s*\(?\s*(\d+)?\s*\)?/);
+  let m;
+
+  // C-301, D-301, A-Mehran-1, B-Digital
+  m=r.match(/^([A-D])\s*[-]\s*(\d{3}|(?:IT\s*)?LAB\s*\d+|MARGALA\s*\d*|RAWAL\s*\d*|GPU\s*LAB|MEHRAN\s*\d*|CALL-\d+|DIGITAL\b)/i);
+  if(m) return `${m[1].toUpperCase()}-${m[2].toUpperCase().replace(/\s+/g,' ').trim()}`;
+
+  // C 301 → C-301
+  r=r.replace(/\b([A-D])\s+(\d{3})\b/,'$1-$2');
+
+  // D IT Lab 1 → D-IT Lab 1
+  r=r.replace(/\b([A-D])\s+(IT\s+)?LAB\s*[-#]?\s*(\d+)\b/i,'$1-$2LAB $3');
+
+  // C Margala 1, C Rawal 4
+  r=r.replace(/\b([A-D])\s+(MARGALA|RAWAL)\s+(\d+)\b/i,'$1-$2 $3');
+
+  // C GPU Lab
+  r=r.replace(/\b([A-D])\s+GPU\s+LAB\b/i,'$1-GPU LAB');
+
+  // A Mehran 1, A CALL 1
+  r=r.replace(/\b([A-D])\s+(MEHRAN|CALL)\s*[-#]?\s*(\d*)\b/i,'$1-$2 $3').trim();
+
+  // B Digital
+  r=r.replace(/\b([A-D])\s+(DIGITAL)\b/i,'$1-$2');
+
+  // Cyber (D-514)
+  m=r.match(/CYBER\s*\(?\s*([A-D])-(\d{3})/i);
+  if(m) return `Cyber (${m[1].toUpperCase()}-${m[2]})`;
+
+  // Margala Lab, Rawal Lab (legacy format)
+  m=r.match(/^(MARGALA|RAWAL|MEHRAN|KHYBER|CALL|DLD|GPU)\s+LABS?\s*\(?\s*(\d+)?\s*\)?/i);
   if(m) return `${m[1][0]}${m[1].slice(1).toLowerCase()} Lab${m[2]?' '+m[2]:''}`.toUpperCase();
+
   if(/\bAUDI(TORIUM)?\b/.test(r)) return 'D-AUDI';
   return r;
 }
@@ -996,13 +1028,35 @@ function buildTTFromSheets(sheets){
 
 function inferRoomLocation(room){
   const r=normalizeRoomName(room);
-  const m=r.match(/^([CD])-(\d{3})$/);
+  let m;
+
+  // Standard rooms: C-301, D-301, etc.
+  m=r.match(/^([A-D])-(\d{3})$/);
   if(m) return {block:m[1],floor:String(Number(m[2][0]))};
+
+  // D-IT Lab / D-Lab
   if(/^D-IT LAB/.test(r)||/^D-LAB/.test(r)) return {block:'D',floor:'Lab'};
-  if(/^D-AUDI$/.test(r)) return {block:'D',floor:'Audi'};
+  if(/^D-AUDI/.test(r)) return {block:'D',floor:'Audi'};
+
+  // C special rooms
   if(r.includes('MARGALA')) return {block:'C',floor:'Margala'};
   if(r.includes('RAWAL')) return {block:'C',floor:'Rawal'};
   if(r.includes('GPU')) return {block:'C',floor:'GPU'};
+
+  // Cyber (D-514)
+  if(r.includes('CYBER')) return {block:'D',floor:'Cyber'};
+
+  // A block
+  if(r.includes('MEHRAN')) return {block:'A',floor:'Mehran'};
+  if(r.includes('CALL')) return {block:'A',floor:'CALL'};
+
+  // B block
+  if(r.includes('DIGITAL')) return {block:'B',floor:'Digital'};
+
+  // Fallback: extract block letter from prefix
+  m=r.match(/^([A-D])-/);
+  if(m) return {block:m[1],floor:'Other'};
+
   return null;
 }
 function addRoomToFloors(floors,room){
@@ -1103,67 +1157,165 @@ function refreshRoomSelectorsAfterDataUpdate(){
 function selectedDayIsToday(day){return DAYS[new Date().getDay()-1]===day;}
 function getSlotsForDay(day){return selectedDayIsToday(day)?getUpcomingSlots():[...SLOTS];}
 
+/* ═══════════════════════════════════════════════════════════════
+   NEW PARSER — room×slot matrix, correct cell format
+   ═══════════════════════════════════════════════════════════════ */
+
+// Time slot column positions (every 4th column starting from B)
+const SLOT_COLS={
+  1: "08:30-09:50", 5: "10:00-11:20", 9: "11:30-12:50",
+  13:"01:00-02:20", 17:"02:30-03:50", 21:"03:55-05:15",
+  25:"05:20-06:40", 29:"06:45-08:05",
+};
+const LAB_SLOT_COLS={
+  1: "08:30-11:15", 5: "11:30-02:15", 9: "02:30-05:15", 13:"05:20-08:05",
+};
+
+// Batch mapping for Spring-2026: no suffix = 2023 (senior), 25/24/22 = batch
+const BATCH_MAP={"25":"2025","24":"2024","22":"2022"};
+
+// Cell regex: "OOP (CS-E)" or "PF (CS-C, 25)" or "AI Lab (AI/DS-A, 24)"
+const CELL_REGEX=/^(.+?)\s*\(([A-Z]+(?:\/[A-Z]+)*)-([A-Z0-9]+)(?:,\s*(?:G-([IV]+)|(\d{2})))?\)/;
+
+function parseTimetableCell(text){
+  const t=oneLine(text);
+  if(!t) return null;
+  const m=t.match(CELL_REGEX);
+  if(!m) return null;
+  const course=m[1].trim();
+  const deptStr=m[2];
+  const section=m[3];
+  const batchShort=m[5];
+  const batch=batchShort?(BATCH_MAP[batchShort]||"20"+batchShort):"2023";
+  const depts=deptStr.includes("/")?deptStr.split("/"):[deptStr];
+  return {depts,section,batch,course};
+}
+
+function findHeaderRow(grid){
+  for(let r=0;r<Math.min(grid.length,10);r++){
+    if(/^room$/i.test(oneLine(grid[r][0]||""))){
+      const hasSlots=Object.keys(SLOT_COLS).some(c=>normalizeTimeSlot(oneLine(grid[r][c]||"")));
+      if(hasSlots) return r;
+    }
+  }
+  return -1;
+}
+
+function findLabHeaderRow(grid,afterRow){
+  for(let r=afterRow;r<grid.length;r++){
+    const colA=oneLine(grid[r][0]||"").toLowerCase();
+    if(colA==="lab"||colA.startsWith("lab ")) return r;
+    const colB=oneLine(grid[r][1]||"");
+    if(/^\d{1,2}:\d{2}-(?:1[0-5]|0\d):\d{2}$/.test(colB)&&grid[r].filter(c=>oneLine(c)).length<=6) return r;
+  }
+  return -1;
+}
+
+function parseSlotRows(grid,startRow,endRow,slotMap,day,target){
+  let added=0;
+  for(let r=startRow;r<Math.min(endRow,grid.length);r++){
+    const row=grid[r]||[];
+    const room=normalizeRoomName(oneLine(row[0]||""));
+    if(!room||room.length<2||/^(reserved|tutorial|fsm|fsa|fcss|fyp|travel|admin|room)$/i.test(room)) continue;
+    for(const[cIdx,timeSlot]of Object.entries(slotMap)){
+      const col=parseInt(cIdx);
+      if(col>=row.length) continue;
+      const cell=oneLine(row[col]||"");
+      if(!cell) continue;
+      const parsed=parseTimetableCell(cell);
+      if(!parsed) continue;
+      for(const dept of parsed.depts){
+        if(addCourseToTT(target,{dept,batch:parsed.batch,section:parsed.section,day,course:parsed.course,room,time:timeSlot})) added++;
+      }
+    }
+  }
+  return added;
+}
+
+function parseGridToTT(grid,day,target){
+  const hr=findHeaderRow(grid);
+  if(hr<0) return 0;
+  const lr=findLabHeaderRow(grid,hr+1);
+  const classroomEnd=lr>0?lr:grid.length;
+  let added=0;
+
+  // Day section: also handle columns that may not be in SLOT_COLS
+  // by scanning every 4th column starting from B
+  added+=parseSlotRows(grid,hr+1,classroomEnd,SLOT_COLS,day,target);
+
+  // Lab section
+  if(lr>0) added+=parseSlotRows(grid,lr+1,grid.length,LAB_SLOT_COLS,day,target);
+
+  return added;
+}
+
+/* ── Client-side sheet sync (no Vercel API needed) ── */
+
 async function refreshTimetableFromGoogleSheet(){
-  setSheetStatus('SHEET: SYNCING VIA VERCEL API...');
+  setSheetStatus('SHEET: SYNCING FROM GOOGLE...');
   try{
-    const res=await fetch(`/api/timetable?ts=${Date.now()}`,{cache:'no-store'});
-    const data=await res.json().catch(()=>null);
-    if(!res.ok){
-      const msg=(data&&data.error)?data.error:`API HTTP ${res.status}`;
-      const details=(data&&data.diagnostics)?` · ${data.diagnostics.map(d=>`${d.name}:${d.added||0}`).join(', ')}`:'';
-      throw new Error(msg+details);
-    }
-    if(!data||!data.tt) throw new Error('API returned no timetable object');
-    const total=data.count||countTTEntries(data.tt);
-    if(!total) throw new Error('API parsed 0 classes from the Google Sheet');
+    const tabs=GOOGLE_SHEET_TABS;
+    const grids=await Promise.all(tabs.map(tab=>loadSheetGrid(tab).catch(()=>null)));
 
-    TT=data.tt;
-    if(Array.isArray(data.slots)&&data.slots.length){
-      SLOTS.length=0;
-      data.slots.forEach(s=>SLOTS.push(s));
-    }
+    const next={};
+    let total=0;
+    grids.forEach((grid,i)=>{
+      if(!grid||!grid.length) return;
+      const day=DAYS[i];
+      total+=parseGridToTT(grid,day,next);
+    });
 
-    _sheetHadSuccessfulLoad=true;
+    if(!total) throw new Error('Parsed 0 classes from Google Sheet. Check sheet sharing permissions.');
+
+    TT=next;
     rebuildBlockFloorsFromTT();
     refreshTTFilters();
     refreshRoomSelectorsAfterDataUpdate();
+    _sheetHadSuccessfulLoad=true;
 
     const stamp=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-    setSheetStatus(`SHEET: LIVE VIA API · ${total} CLASSES · ${stamp}`);
+    setSheetStatus(`SHEET: LIVE · ${total} CLASSES · ${stamp}`);
 
     const p0=document.getElementById('p0');
     if(p0&&p0.classList.contains('on')) loadTT();
     const p1=document.getElementById('p1');
     if(p1&&p1.classList.contains('on')) onDayChange();
   }catch(err){
-    console.warn('Live timetable API sync failed:',err);
+    console.warn('Live sheet sync failed:',err);
     const message=(err&&err.message)?err.message:String(err);
-    setSheetStatus((_sheetHadSuccessfulLoad?'SHEET: LAST LIVE DATA · ':'SHEET API ERROR · ')+message,false);
-    if(!_sheetHadSuccessfulLoad){
-      if(Object.keys(TT).length>0){
-        refreshTTFilters();
-        rebuildBlockFloorsFromTT();
-        refreshRoomSelectorsAfterDataUpdate();
-      }
-      const p0=document.getElementById('p0'),out=document.getElementById('tt-out');
-      if(p0&&p0.classList.contains('on')&&out){
-        loadTT();
-      }
+    setSheetStatus((_sheetHadSuccessfulLoad?'SHEET: LAST LIVE DATA · ':'SHEET ERROR · ')+message,false);
+    if(!_sheetHadSuccessfulLoad&&Object.keys(TT).length>0){
+      refreshTTFilters();
+      rebuildBlockFloorsFromTT();
+      refreshRoomSelectorsAfterDataUpdate();
+      const p0=document.getElementById('p0');
+      if(p0&&p0.classList.contains('on')) loadTT();
     }
   }
 }
+
 function initLiveSheetSync(){
   setupTTFilterListeners();
-  // Wait for API response to populate filters and room data
   refreshTimetableFromGoogleSheet();
   clearInterval(_sheetTimer);
   _sheetTimer=setInterval(refreshTimetableFromGoogleSheet,GOOGLE_SHEET_REFRESH_MS);
 }
 
 /* ── Time helpers ── */
-// University slots use 12-hr style: "01:00" = 1 PM, "08:30" = 8 AM
-// Hours 1–6 are treated as PM (13–18). Hours 7–12 are AM/noon as-is.
+const SLOT_MINUTE_MAP={
+  "08:30":510,"09:50":590,
+  "10:00":600,"11:20":680,
+  "11:30":690,"12:50":770,
+  "01:00":780,"02:20":860,
+  "02:30":870,"03:50":950,
+  "03:55":955,"05:15":1035,
+  "05:20":1040,"06:40":1120,
+  "06:45":1125,"08:05":1205,
+  "08:30-11:15":510,"11:30-02:15":690,
+  "02:30-05:15":870,"05:20-08:05":1040,
+};
 function slotToMinutes(timeStr){
+  if(timeStr in SLOT_MINUTE_MAP) return SLOT_MINUTE_MAP[timeStr];
   const[hh,mm]=timeStr.split(":").map(Number);
   const hour=(hh>=1&&hh<=6)?hh+12:hh;
   return hour*60+mm;
