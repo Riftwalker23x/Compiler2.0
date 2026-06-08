@@ -651,12 +651,14 @@ const SLOTS=["08:30-09:50","10:00-11:20","11:30-12:50","01:00-02:20","02:30-03:3
    - Rebuilds TT in the same shape used by Class Timetable and Free Rooms
    - Refreshes every 5 minutes without redeploying on Vercel
 ══════════════════════════════════════════ */
-const GOOGLE_SHEET_ID="1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY";
-const GOOGLE_SHEET_TABS=["Monday","Tuesday","Wednesday","Thursday","Friday","Monday (May 11)","Tuesday (May 12)"];
+const GOOGLE_SHEET_ID="1cmDXt7UTIKBVXBHhtZ0E4qMnJrRoexl2GmDFfTBl0Z4";
+const GOOGLE_SHEET_TABS=["Monday","Tuesday","Wednesday","Thursday","Friday"];
 const GOOGLE_SHEET_REFRESH_MS=5*60*1000;
 const SEMESTER_BASE_YEAR=2026; // Spring-2026 timetable: sem 2=>2025, sem 4=>2024, sem 6=>2023, sem 8=>2022
 let _sheetTimer=null;
 let _sheetHadSuccessfulLoad=false;
+
+const DEPT_ORDER=["CS","DS","AI","CY","SE"];
 
 function cloneFloors(obj){return JSON.parse(JSON.stringify(obj));}
 function cleanTxt(v){return String(v??'').replace(/\u00a0/g,' ').replace(/[\t ]+/g,' ').trim();}
@@ -1029,11 +1031,28 @@ function fillSelectOptions(sel,values,labelFn,placeholder){
   if(values.includes(previous)) sel.value=previous;
   else if(values.length) sel.value=values[0];
 }
+
+function formatDeptLabel(dept){
+  if(DEPT_ORDER.includes(dept)) return `BS ${dept}`;
+  return dept;
+}
+
+function sortDeptCodes(a,b){
+  const ai=DEPT_ORDER.indexOf(a);
+  const bi=DEPT_ORDER.indexOf(b);
+  if(ai>=0||bi>=0){
+    if(ai<0) return 1;
+    if(bi<0) return -1;
+    return ai-bi;
+  }
+  return a.localeCompare(b);
+}
+
 function refreshTTFilters(){
   const deptSel=document.getElementById('dept'),batchSel=document.getElementById('batch'),secSel=document.getElementById('sec');
   if(!deptSel||!batchSel||!secSel) return;
-  const depts=Object.keys(TT).sort();
-  fillSelectOptions(deptSel,depts,d=>d==='CS'?'BS CS':d==='AI'?'BS AI':d,'-- Department --');
+  const depts=Object.keys(TT).sort(sortDeptCodes);
+  fillSelectOptions(deptSel,depts,formatDeptLabel,'-- Department --');
   const dep=deptSel.value;
   const batches=Object.keys(TT[dep]||{}).sort((a,b)=>Number(b)-Number(a));
   fillSelectOptions(batchSel,batches,null,'-- Batch --');
@@ -1186,10 +1205,10 @@ function getUpcomingSlots(){
 function getRoomSlotInfo(room,day){
   return getUpcomingSlots().map(slot=>{
     let occupiedBy=null;
-    ['CS','AI'].forEach(dep=>{
-      Object.entries(TT[dep]||{}).forEach(([bat,batches])=>{
-        Object.entries(batches).forEach(([sec,sections])=>{
-          (sections[day]||[]).forEach(c=>{
+    Object.entries(TT).forEach(([dep,batches])=>{
+      Object.entries(batches||{}).forEach(([bat,sections])=>{
+        Object.entries(sections||{}).forEach(([sec,days])=>{
+          (days[day]||[]).forEach(c=>{
             if(sameRoom(c.l,room)&&c.t===slot){
               occupiedBy={course:c.c,dept:dep,batch:bat,section:sec};
             }

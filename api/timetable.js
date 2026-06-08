@@ -2,21 +2,10 @@
 // Replace your GitHub file api/timetable.js with this file.
 // It fetches your public Google Sheet on Vercel's server and converts it into the TT object used by index.html.
 
-const GOOGLE_SHEET_ID = "1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY";
+const GOOGLE_SHEET_ID = "1cmDXt7UTIKBVXBHhtZ0E4qMnJrRoexl2GmDFfTBl0Z4";
 
-// Tabs visible in your sheet. Add more tab names here if your sheet owner adds more weekday tabs.
-const GOOGLE_SHEET_TABS = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Monday (May 11)",
-  "Tuesday (May 12)",
-  "Wednesday (May 13)",
-  "Thursday (May 14)",
-  "Friday (May 15)"
-];
+// Weekday tabs in the linked sheet.
+const GOOGLE_SHEET_TABS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 const SEMESTER_BASE_YEAR = 2026; // Spring 2026: sem 2 -> batch 2025, sem 4 -> 2024, sem 6 -> 2023
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -41,6 +30,49 @@ function normKey(v) {
 function normalizeDay(v) {
   const t = oneLine(v).toLowerCase();
   return DAYS.find((d) => t.includes(d.toLowerCase())) || null;
+}
+
+function extractDeptCodes(text) {
+  const t = oneLine(text).toUpperCase();
+  const codes = [];
+  const seen = new Set();
+  const re = /\b(CS|DS|AI|CY|SE)\b/g;
+  let match;
+
+  while ((match = re.exec(t))) {
+    if (seen.has(match[1])) continue;
+    seen.add(match[1]);
+    codes.push(match[1]);
+  }
+
+  return codes;
+}
+
+function extractBatch(text) {
+  const t = oneLine(text).toUpperCase();
+  const fullYear = t.match(/\b20\d{2}\b/);
+  if (fullYear) return fullYear[0];
+
+  const shortYear = t.match(/(?:\(|,|\s)(2[0-9])(?:\)|\b)/);
+  if (shortYear) return `20${shortYear[1]}`;
+
+  return null;
+}
+
+function extractSection(text) {
+  const t = oneLine(text).toUpperCase();
+  const patterns = [
+    /\b(?:SECTION|SEC)\s*[-:]?\s*([A-Z])\b/,
+    /\b(?:CS|DS|AI|CY|SE)(?:\/(?:CS|DS|AI|CY|SE))+[-, ]\s*([A-Z])(?:\d+)?\b/,
+    /\b(?:CS|DS|AI|CY|SE)\s*[-, ]\s*([A-Z])(?:\d+)?\b/
+  ];
+
+  for (const pattern of patterns) {
+    const match = t.match(pattern);
+    if (match) return match[1].toUpperCase();
+  }
+
+  return null;
 }
 
 function gvizUrl(sheetName) {
@@ -132,10 +164,7 @@ function registerSlot(slot) {
 }
 
 function deptFromText(text) {
-  const t = oneLine(text).toUpperCase();
-  if (/\bB?AI\b|\bBS\s*\(?\s*AI\s*\)?\b|ARTIFICIAL\s+INTELLIGENCE/.test(t)) return "AI";
-  if (/\bB?CS\b|\bBS\s*\(?\s*CS\s*\)?\b|COMPUTER\s+SCIENCE/.test(t)) return "CS";
-  return null;
+  return extractDeptCodes(text)[0] || null;
 }
 
 function batchFromSemester(sem) {
@@ -148,16 +177,15 @@ function parseClassContext(text) {
   const raw = oneLine(text);
   if (!raw) return null;
 
-  let dept = deptFromText(raw);
-  let batch = (raw.match(/\b20\d{2}\b/) || [])[0] || null;
-  let section = null;
+  const depts = extractDeptCodes(raw);
+  let batch = extractBatch(raw);
+  let section = extractSection(raw);
   let semester = null;
 
   const patterns = [
-    /\bBS\s*\(?\s*(CS|AI)\s*\)?\s*[- ]?([0-9]{1,2})\s*[- ]?([A-Z])\b/i,
-    /\bB(CS|AI)\s*[- ]?([0-9]{1,2})\s*[- ]?([A-Z])\b/i,
-    /\b(CS|AI)\s*[- ]?([0-9]{1,2})\s*[- ]?([A-Z])\b/i,
-    /\b(CS|AI)\s*[- ]?(20\d{2})\s*[- ]?([A-Z])\b/i,
+    /\b(?:CS|DS|AI|CY|SE)\s*[- ]?(20\d{2}|2[0-9])\s*[- ]?([A-Z])\b/i,
+    /\b(?:CS|DS|AI|CY|SE)\s*[- ]?([0-9]{1,2})\s*[- ]?([A-Z])\b/i,
+    /\b(?:BS|MS)\s*\(?\s*(CS|DS|AI|CY|SE)\s*\)?\s*[- ]?([0-9]{1,2})\s*[- ]?([A-Z])\b/i,
     /\bSEM(?:ESTER)?\s*[-:]?\s*([0-9]{1,2})\b.*?\bSEC(?:TION)?\s*[-:]?\s*([A-Z])\b/i,
     /\b([0-9]{1,2})\s*[- ]?([A-Z])\b/i
   ];
@@ -166,20 +194,28 @@ function parseClassContext(text) {
     const m = raw.match(p);
     if (!m) continue;
 
-    if (m[1] && /^(CS|AI)$/i.test(m[1])) dept = dept || m[1].toUpperCase();
+    if (!depts.length && m[1] && /^(CS|DS|AI|CY|SE)$/i.test(m[1])) depts.push(m[1].toUpperCase());
 
-    if (m[2] && /^20\d{2}$/.test(m[2])) batch = batch || m[2];
-    else if (m[2] && /^\d{1,2}$/.test(m[2])) semester = semester || m[2];
-    else if (m[1] && /^\d{1,2}$/.test(m[1])) semester = semester || m[1];
+    if (!batch) {
+      if (m[1] && /^20\d{2}$/.test(m[1])) batch = m[1];
+      else if (m[2] && /^20\d{2}$/.test(m[2])) batch = m[2];
+      else if (m[2] && /^\d{2}$/.test(m[2])) batch = `20${m[2]}`;
+      else if (m[3] && /^20\d{2}$/.test(m[3])) batch = m[3];
+      else if (m[3] && /^\d{2}$/.test(m[3])) batch = `20${m[3]}`;
+      else if (m[1] && /^\d{1,2}$/.test(m[1])) semester = semester || m[1];
+      else if (m[2] && /^\d{1,2}$/.test(m[2])) semester = semester || m[2];
+    }
 
-    const possibleSection = [m[3], m[2], m[1]].find((x) => /^[A-Z]$/i.test(String(x || "")));
-    if (possibleSection) section = possibleSection.toUpperCase();
+    if (!section) {
+      const possibleSection = [m[4], m[3], m[2], m[1]].find((x) => /^[A-Z]$/i.test(String(x || "")));
+      if (possibleSection) section = possibleSection.toUpperCase();
+    }
   }
 
   if (!batch && semester) batch = batchFromSemester(semester);
 
-  if (dept && batch && section && /^[A-Z]$/.test(section)) {
-    return { dept, batch, section };
+  if (depts.length && batch && section && /^[A-Z]$/.test(section)) {
+    return { dept: depts, batch, section };
   }
 
   return null;
@@ -260,19 +296,27 @@ function addCourseToTT(target, item) {
   const { dept, batch, section, day, course, room, time } = item;
   if (!dept || !batch || !section || !day || !course || !room || !time) return false;
 
+  const depts = Array.isArray(dept) ? dept : [dept];
+  let added = false;
+
   registerSlot(time);
 
-  target[dept] = target[dept] || {};
-  target[dept][batch] = target[dept][batch] || {};
-  target[dept][batch][section] = target[dept][batch][section] || {};
-  target[dept][batch][section][day] = target[dept][batch][section][day] || [];
+  for (const deptCode of depts) {
+    if (!deptCode) continue;
 
-  const arr = target[dept][batch][section][day];
-  if (!arr.some((x) => x.c === course && sameRoom(x.l, room) && x.t === time)) {
-    arr.push({ c: course, l: room, t: time });
-    return true;
+    target[deptCode] = target[deptCode] || {};
+    target[deptCode][batch] = target[deptCode][batch] || {};
+    target[deptCode][batch][section] = target[deptCode][batch][section] || {};
+    target[deptCode][batch][section][day] = target[deptCode][batch][section][day] || [];
+
+    const arr = target[deptCode][batch][section][day];
+    if (!arr.some((x) => x.c === course && sameRoom(x.l, room) && x.t === time)) {
+      arr.push({ c: course, l: room, t: time });
+      added = true;
+    }
   }
-  return false;
+
+  return added;
 }
 
 function countTTEntries(tt) {
