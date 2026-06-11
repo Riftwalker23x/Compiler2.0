@@ -682,6 +682,10 @@ function gvizUrl(sheetName){
   return `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}&cachebust=${Date.now()}`;
 }
 
+function timetableApiUrl(){
+  return `/api/timetable?cachebust=${Date.now()}`;
+}
+
 function setSheetStatus(msg,ok=true){
   const el=document.getElementById('sheet-sync');
   if(!el) return;
@@ -741,6 +745,53 @@ async function loadSheetGrid(sheetName){
     if(!cell) return '';
     return cleanTxt(cell.f??cell.v??'');
   }));
+}
+
+function replaceSlots(nextSlots){
+  SLOTS.length=0;
+  (Array.isArray(nextSlots)?nextSlots:[]).forEach(slot=>{
+    if(slot&&!SLOTS.includes(slot)) SLOTS.push(slot);
+  });
+  SLOTS.sort((a,b)=>slotToMinutes(a.split('-')[0])-slotToMinutes(b.split('-')[0]));
+}
+
+function rebuildSlotsFromTimetable(tt){
+  const slots=[];
+  Object.values(tt||{}).forEach(batches=>{
+    Object.values(batches||{}).forEach(sections=>{
+      Object.values(sections||{}).forEach(days=>{
+        Object.values(days||{}).forEach(arr=>{
+          (arr||[]).forEach(entry=>{
+            if(entry&&entry.t&&!slots.includes(entry.t)) slots.push(entry.t);
+          });
+        });
+      });
+    });
+  });
+  replaceSlots(slots);
+}
+
+function applyTimetablePayload(payload,sourceLabel){
+  if(!payload||typeof payload!=='object') throw new Error('Timetable payload is empty');
+  if(!payload.tt||typeof payload.tt!=='object') throw new Error('Timetable payload is missing timetable data');
+
+  TT=payload.tt;
+  if(Array.isArray(payload.slots)&&payload.slots.length) replaceSlots(payload.slots);
+  else rebuildSlotsFromTimetable(TT);
+
+  rebuildBlockFloorsFromTT();
+  refreshTTFilters();
+  refreshRoomSelectorsAfterDataUpdate();
+  _sheetHadSuccessfulLoad=true;
+
+  const stamp=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  const count=typeof payload.count==='number' ? payload.count : countTTEntries(TT);
+  setSheetStatus(`${sourceLabel} · ${count} CLASSES · ${stamp}`);
+
+  const p0=document.getElementById('p0');
+  if(p0&&p0.classList.contains('on')) loadTT();
+  const p1=document.getElementById('p1');
+  if(p1&&p1.classList.contains('on')) onDayChange();
 }
 
 function deptFromText(text){
@@ -1161,7 +1212,10 @@ function refreshRoomSelectorsAfterDataUpdate(){
   if(daySel.value) onDayChange();
 }
 
-function selectedDayIsToday(day){return DAYS[new Date().getDay()-1]===day;}
+function selectedDayIsToday(day){
+  const todayIndex=new Date().getDay();
+  return todayIndex>=1&&todayIndex<=5&&DAYS[todayIndex-1]===day;
+}
 function getSlotsForDay(day,slots){return selectedDayIsToday(day)?getUpcomingSlots(slots):[...(slots||CLASSROOM_SLOTS)];}
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1277,54 +1331,41 @@ function parseGridToTT(grid,day,target){
   return added;
 }
 
-/* ── Client-side sheet sync (no Vercel API needed) ── */
+/* ── Timetable sync: API first, Google Sheets fallback ── */
 
 async function refreshTimetableFromGoogleSheet(){
-  setSheetStatus('SHEET: SYNCING FROM GOOGLE...');
+  setSheetStatus('SHEET: SYNCING...');
   try{
-    const tabs=GOOGLE_SHEET_TABS;
-    const grids=await Promise.all(tabs.map(tab=>loadSheetGrid(tab).catch(()=>null)));
-
-    // Debug: verify grid column count to confirm SLOT_COLS indices are correct
-    grids.forEach((grid,i)=>{
-      if(grid&&grid.length>0){
-        console.log(`[Sheet] ${DAYS[i]} grid: ${grid.length} rows × ${grid[0].length} cols, row[4][0]=`,JSON.stringify(grid[4]?.[0]));
+    const apiRes=await fetch(timetableApiUrl(),{cache:'no-store'});
+    if(!apiRes.ok) throw new Error(`Timetable API HTTP ${apiRes.status}`);
+    const apiData=await apiRes.json();
+    if(!apiData.ok) throw new Error(apiData.error||'Timetable API returned an error');
+    applyTimetablePayload(apiData,'SHEET: LIVE API');
+  }catch(apiErr){
+    console.warn('API timetable sync failed, falling back to direct Google Sheets:',apiErr);
+    try{
+      const tabs=GOOGLE_SHEET_TABS;
+      const grids=await Promise.all(tabs.map(tab=>loadSheetGrid(tab).catch(()=>null)));
+      const next={};
+      let total=0;
+      grids.forEach((grid,i)=>{
+        if(!grid||!grid.length) return;
+        const day=DAYS[i];
+        total+=parseGridToTT(grid,day,next);
+      });
+      if(!total) throw new Error('Parsed 0 classes from Google Sheet. Check sheet sharing permissions.');
+      applyTimetablePayload({tt:next,slots:[...SLOTS],count:total},'SHEET: LIVE GOOGLE');
+    }catch(fallbackErr){
+      console.warn('Live sheet sync failed:',fallbackErr);
+      const message=(fallbackErr&&fallbackErr.message)?fallbackErr.message:String(fallbackErr);
+      setSheetStatus((_sheetHadSuccessfulLoad?'SHEET: LAST LIVE DATA · ':'SHEET ERROR · ')+message,false);
+      if(!_sheetHadSuccessfulLoad&&Object.keys(TT).length>0){
+        refreshTTFilters();
+        rebuildBlockFloorsFromTT();
+        refreshRoomSelectorsAfterDataUpdate();
+        const p0=document.getElementById('p0');
+        if(p0&&p0.classList.contains('on')) loadTT();
       }
-    });
-
-    const next={};
-    let total=0;
-    grids.forEach((grid,i)=>{
-      if(!grid||!grid.length) return;
-      const day=DAYS[i];
-      total+=parseGridToTT(grid,day,next);
-    });
-
-    if(!total) throw new Error('Parsed 0 classes from Google Sheet. Check sheet sharing permissions.');
-
-    TT=next;
-    rebuildBlockFloorsFromTT();
-    refreshTTFilters();
-    refreshRoomSelectorsAfterDataUpdate();
-    _sheetHadSuccessfulLoad=true;
-
-    const stamp=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-    setSheetStatus(`SHEET: LIVE · ${total} CLASSES · ${stamp}`);
-
-    const p0=document.getElementById('p0');
-    if(p0&&p0.classList.contains('on')) loadTT();
-    const p1=document.getElementById('p1');
-    if(p1&&p1.classList.contains('on')) onDayChange();
-  }catch(err){
-    console.warn('Live sheet sync failed:',err);
-    const message=(err&&err.message)?err.message:String(err);
-    setSheetStatus((_sheetHadSuccessfulLoad?'SHEET: LAST LIVE DATA · ':'SHEET ERROR · ')+message,false);
-    if(!_sheetHadSuccessfulLoad&&Object.keys(TT).length>0){
-      refreshTTFilters();
-      rebuildBlockFloorsFromTT();
-      refreshRoomSelectorsAfterDataUpdate();
-      const p0=document.getElementById('p0');
-      if(p0&&p0.classList.contains('on')) loadTT();
     }
   }
 }
@@ -1452,7 +1493,8 @@ function onFloorChange(){
     daySel.appendChild(opt);
   });
   // Auto-select today if it's a weekday
-  const todayName=DAYS[new Date().getDay()-1];
+  const todayIndex=new Date().getDay();
+  const todayName=todayIndex>=1&&todayIndex<=5 ? DAYS[todayIndex-1] : '';
   if(todayName){daySel.value=todayName;onDayChange();}
 }
 
