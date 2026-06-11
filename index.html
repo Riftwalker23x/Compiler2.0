@@ -40,6 +40,31 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .go{font-family:'VT323',monospace;font-size:20px;letter-spacing:3px;padding:10px 32px;background:#0a7a3a;border:none;color:#fff;cursor:pointer;border-radius:6px;margin-bottom:18px;transition:all .2s;display:block}
 .go:hover{background:#0d9a4a}.go:active{transform:scale(.97)}
 
+.tt-shell{max-width:900px;margin:0 auto}
+.tt-hero{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:16px 18px;margin-bottom:14px;border:1.5px solid rgba(0,120,60,0.18);border-radius:12px;background:linear-gradient(180deg,rgba(248,255,248,.96),rgba(232,245,236,.88))}
+.tt-kicker{font-size:9px;letter-spacing:4px;color:#7aaa88;margin-bottom:6px}
+.tt-title{font-family:'VT323',monospace;font-size:38px;letter-spacing:4px;color:#0a7a3a;line-height:1}
+.tt-copy{font-size:12px;line-height:1.6;color:#2d8a50;max-width:54ch;margin-top:8px}
+.tt-live-badge{font-family:'VT323',monospace;font-size:16px;letter-spacing:3px;padding:8px 12px;border-radius:999px;border:1px solid rgba(0,120,60,0.2);background:#fff;color:#0a7a3a;white-space:nowrap}
+.tt-form{padding:16px 18px;border:1.5px solid rgba(0,120,60,0.16);border-radius:12px;background:#fff;margin-bottom:14px}
+.tt-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.tt-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
+.tt-hint{font-size:9px;letter-spacing:2px;color:#7aaa88}
+.tt-out{padding:16px 18px;border:1.5px solid rgba(0,120,60,0.16);border-radius:12px;background:#fff}
+.tt-summary{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tt-summary-pill{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;color:#0a7a3a}
+.tt-summary-meta{font-size:10px;letter-spacing:1px;color:#7aaa88}
+.tt-result-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.tt-result-table th{background:#e8f5ec;color:#0a7a3a;font-size:10px;letter-spacing:2px;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.18)}
+.tt-result-table td{padding:10px 12px;border:1px solid rgba(0,120,60,0.1);font-size:12px;color:#1a4a2e;vertical-align:top}
+.tt-result-table tr:nth-child(even) td{background:#f8fff8}
+.tt-result-table tr:hover td{background:#f0fff4}
+.tt-course{font-size:12px}
+.tt-room{font-family:'VT323',monospace;font-size:18px;letter-spacing:1px;color:#0a7a3a}
+.tt-time{font-size:10px;letter-spacing:1px;color:#2d8a50}
+.tt-empty-card{text-align:center;padding:34px 16px;color:#7aaa88;font-size:12px;letter-spacing:2px}
+.tt-empty-card .empty{padding:0}
+
 .tbl{width:100%;border-collapse:collapse;table-layout:fixed}
 .tbl th{background:#e8f5ec;color:#0a7a3a;font-size:10px;letter-spacing:2px;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.2)}
 .tbl td{padding:10px 12px;border:1px solid rgba(0,120,60,0.12);font-size:12px;color:#1a4a2e}
@@ -411,18 +436,45 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 
     <!-- PANEL 0: Class Timetable -->
     <div class="panel on" id="p0">
-      <div class="fields">
-        <div><label class="flabel">DEPARTMENT</label>
-          <select class="rsel" id="dept"><option value="">-- Loading --</option></select></div>
-        <div><label class="flabel">BATCH YEAR</label>
-          <select class="rsel" id="batch"><option value="">-- Loading --</option></select></div>
-        <div><label class="flabel">SECTION</label>
-          <select class="rsel" id="sec"><option value="">-- Loading --</option></select></div>
-        <div><label class="flabel">DAY</label>
-          <select class="rsel" id="day"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option></select></div>
+      <div class="tt-shell">
+        <div class="tt-hero">
+          <div>
+            <div class="tt-kicker">FAST ISLAMABAD · BACHELORS TIMETABLE</div>
+            <div class="tt-title">CLASS TIMETABLE</div>
+            <div class="tt-copy">Choose your department, batch year, day, and section to load the timetable from the live Google Sheet.</div>
+          </div>
+          <div class="tt-live-badge">LIVE SHEET SYNC</div>
+        </div>
+
+        <div class="tt-form">
+          <div class="tt-grid">
+            <div>
+              <label class="flabel">DEPARTMENT</label>
+              <select class="rsel" id="dept"><option value="">Select Department</option></select>
+            </div>
+            <div>
+              <label class="flabel">BATCH YEAR</label>
+              <select class="rsel" id="batch"><option value="">Select Batch Year</option></select>
+            </div>
+            <div>
+              <label class="flabel">DAY</label>
+              <select class="rsel" id="day"><option value="">Select Day</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option></select>
+            </div>
+            <div>
+              <label class="flabel">SECTION</label>
+              <select class="rsel" id="sec"><option value="">Select Section</option></select>
+            </div>
+          </div>
+          <div class="tt-actions">
+            <button class="go" onclick="loadTT()">&#9658; GET TIMETABLE</button>
+            <div class="tt-hint">Selections are remembered automatically on this device.</div>
+          </div>
+        </div>
+
+        <div class="tt-out" id="tt-out">
+          <div class="tt-empty-card"><div class="empty">SELECT OPTIONS TO VIEW THE TIMETABLE</div></div>
+        </div>
       </div>
-      <button class="go" onclick="loadTT()">&#9658; GET TIMETABLE</button>
-      <div id="tt-out"><div class="empty">WAITING FOR DATA...</div></div>
     </div>
 
     <!-- PANEL 1: Free Rooms -->
@@ -1141,7 +1193,25 @@ function fillSelectOptions(sel,values,labelFn,placeholder){
     sel.appendChild(opt);
   });
   if(values.includes(previous)) sel.value=previous;
-  else if(values.length) sel.value=values[0];
+}
+
+const TT_PREF_KEY='fast_timetable_prefs';
+function readTTPrefs(){
+  try{
+    const raw=localStorage.getItem(TT_PREF_KEY);
+    return raw?JSON.parse(raw):{};
+  }catch(e){
+    return {};
+  }
+}
+function saveTTPrefs(){
+  const dept=document.getElementById('dept')?.value||'';
+  const batch=document.getElementById('batch')?.value||'';
+  const day=document.getElementById('day')?.value||'';
+  const sec=document.getElementById('sec')?.value||'';
+  try{
+    localStorage.setItem(TT_PREF_KEY,JSON.stringify({dept,batch,day,sec}));
+  }catch(e){}
 }
 
 function formatDeptLabel(dept){
@@ -1161,29 +1231,34 @@ function sortDeptCodes(a,b){
 }
 
 function refreshTTFilters(){
-  const deptSel=document.getElementById('dept'),batchSel=document.getElementById('batch'),secSel=document.getElementById('sec');
+  const deptSel=document.getElementById('dept'),batchSel=document.getElementById('batch'),secSel=document.getElementById('sec'),daySel=document.getElementById('day');
   if(!deptSel||!batchSel||!secSel) return;
+  const prefs=readTTPrefs();
   const depts=Object.keys(TT).sort(sortDeptCodes);
   fillSelectOptions(deptSel,depts,formatDeptLabel,'-- Department --');
+  if(prefs.dept&&depts.includes(prefs.dept)) deptSel.value=prefs.dept;
   const dep=deptSel.value;
   const batches=Object.keys(TT[dep]||{}).sort((a,b)=>Number(b)-Number(a));
   fillSelectOptions(batchSel,batches,null,'-- Batch --');
+  if(prefs.batch&&batches.includes(prefs.batch)) batchSel.value=prefs.batch;
   const bat=batchSel.value;
   const secs=Object.keys(((TT[dep]||{})[bat])||{}).sort();
   fillSelectOptions(secSel,secs,null,'-- Section --');
+  if(prefs.sec&&secs.includes(prefs.sec)) secSel.value=prefs.sec;
+  if(daySel&&prefs.day&&[...daySel.options].some(opt=>opt.value===prefs.day)) daySel.value=prefs.day;
 }
 function setupTTFilterListeners(){
   const deptSel=document.getElementById('dept'),batchSel=document.getElementById('batch'),secSel=document.getElementById('sec'),daySel=document.getElementById('day');
   if(deptSel&&!deptSel.dataset.liveBound){
     deptSel.dataset.liveBound='1';
-    deptSel.addEventListener('change',()=>{refreshTTFilters();loadTT();});
+    deptSel.addEventListener('change',()=>{refreshTTFilters();saveTTPrefs();loadTT();});
   }
   if(batchSel&&!batchSel.dataset.liveBound){
     batchSel.dataset.liveBound='1';
-    batchSel.addEventListener('change',()=>{refreshTTFilters();loadTT();});
+    batchSel.addEventListener('change',()=>{refreshTTFilters();saveTTPrefs();loadTT();});
   }
   [secSel,daySel].forEach(sel=>{
-    if(sel&&!sel.dataset.liveBound){sel.dataset.liveBound='1';sel.addEventListener('change',loadTT);}
+    if(sel&&!sel.dataset.liveBound){sel.dataset.liveBound='1';sel.addEventListener('change',()=>{saveTTPrefs();loadTT();});}
   });
   // Don't populate here — wait for API or fallback
 }
@@ -1623,9 +1698,35 @@ function loadTT(){
   const day=document.getElementById('day').value;
   const data=(TT[dep]&&TT[dep][bat]&&TT[dep][bat][sec]&&TT[dep][bat][sec][day])||[];
   const out=document.getElementById('tt-out');
-  if(!data.length){out.innerHTML='<div class="empty"><span class="blink">_</span> NO CLASSES SCHEDULED</div>';return;}
-  out.innerHTML='<table class="tbl"><thead><tr><th style="width:52%">COURSE</th><th style="width:20%">ROOM</th><th style="width:28%">TIME</th></tr></thead><tbody>'+
-    data.map(r=>`<tr><td>${r.c}</td><td>${r.l}</td><td>${fmtSlot(r.t)}</td></tr>`).join('')+'</tbody></table>';
+  if(out){
+    if(!dep||!bat||!sec||!day){
+      out.innerHTML='<div class="tt-empty-card"><div class="empty">SELECT DEPARTMENT, BATCH, DAY, AND SECTION TO VIEW THE TIMETABLE</div></div>';
+      return;
+    }
+    saveTTPrefs();
+    if(!data.length){
+      out.innerHTML=`<div class="tt-summary">
+        <div>
+          <div class="tt-summary-pill">${formatDeptLabel(dep)} · ${bat} · ${sec}</div>
+          <div class="tt-summary-meta">${day}</div>
+        </div>
+        <div class="tt-summary-meta">NO CLASSES FOUND</div>
+      </div>
+      <div class="tt-empty-card"><div class="empty">NO CLASSES SCHEDULED FOR THIS SELECTION</div></div>`;
+      return;
+    }
+    out.innerHTML=`<div class="tt-summary">
+      <div>
+        <div class="tt-summary-pill">${formatDeptLabel(dep)} · ${bat} · ${sec}</div>
+        <div class="tt-summary-meta">${day} · ${data.length} ENTRIES</div>
+      </div>
+      <div class="tt-summary-meta">LIVE TIMETABLE</div>
+    </div>
+    <table class="tt-result-table">
+      <thead><tr><th style="width:52%">COURSE</th><th style="width:20%">ROOM</th><th style="width:28%">TIME</th></tr></thead>
+      <tbody>${data.map(r=>`<tr><td><div class="tt-course">${r.c}</div></td><td><div class="tt-room">${r.l}</div></td><td><div class="tt-time">${fmtSlot(r.t)}</div></td></tr>`).join('')}</tbody>
+    </table>`;
+  }
 }
 
 /* ── Live clock + auto-refresh rooms when slot changes ── */
