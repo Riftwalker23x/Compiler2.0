@@ -651,7 +651,7 @@ let BLOCK_FLOORS=cloneFloors(DEFAULT_BLOCK_FLOORS);
 const DAYS=["Monday","Tuesday","Wednesday","Thursday","Friday"];
 const DAYNAMES=["SUN","MON","TUE","WED","THU","FRI","SAT"];
 const CLASSROOM_SLOTS=["08:30-09:50","10:00-11:20","11:30-12:50","01:00-02:20","02:30-03:50","03:55-05:15","05:20-06:40","06:45-08:05"];
-const LAB_SLOTS=["08:30-11:15","11:30-02:15","02:30-05:15"];
+const LAB_SLOTS=["08:30-11:15","11:30-02:15","02:30-05:15","05:20-08:05"];
 const SLOTS=CLASSROOM_SLOTS.concat(LAB_SLOTS);
 function isLabFloor(floorName){
   if(!floorName) return false;
@@ -1170,12 +1170,12 @@ function getSlotsForDay(day,slots){return selectedDayIsToday(day)?getUpcomingSlo
 
 // Time slot column positions (every 4th column starting from B)
 const SLOT_COLS={
-  1: "08:30-09:50", 5: "10:00-11:20", 9: "11:30-12:50",
-  13:"01:00-02:20", 17:"02:30-03:50", 21:"03:55-05:15",
-  25:"05:20-06:40", 29:"06:45-08:05",
+  1: "08:30-09:50", 6: "10:00-11:20", 11: "11:30-12:50",
+  16:"01:00-02:20", 21:"02:30-03:50", 26:"03:55-05:15",
+  31:"05:20-06:40", 37:"06:45-08:05",
 };
 const LAB_SLOT_COLS={
-  1: "08:30-11:15", 5: "11:30-02:15", 9: "02:30-05:15", 13:"05:20-08:05",
+  1: "08:30-11:15", 11: "11:30-02:15", 21: "02:30-05:15", 31:"05:20-08:05",
 };
 
 // Batch mapping for Spring-2026: no suffix = 2023 (senior), 25/24/22 = batch
