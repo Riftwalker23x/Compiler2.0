@@ -1226,7 +1226,7 @@ function getSlotsForDay(day,slots){return selectedDayIsToday(day)?getUpcomingSlo
 const SLOT_COLS={
   1: "08:30-09:50", 6: "10:00-11:20", 11: "11:30-12:50",
   16:"01:00-02:20", 21:"02:30-03:50", 26:"03:55-05:15",
-  31:"05:20-06:40", 37:"06:45-08:05",
+  31:"05:20-06:40", 36:"06:45-08:05",
 };
 const LAB_SLOT_COLS={
   1: "08:30-11:15", 11: "11:30-02:15", 21: "02:30-05:15", 31:"05:20-08:05",
@@ -1293,21 +1293,52 @@ function findLabHeaderRow(grid,afterRow){
   return -1;
 }
 
-function parseSlotRows(grid,startRow,endRow,slotMap,day,target){
+const CLASSROOM_LEFT_BLOCK={
+  roomCol:0,
+  endCol:30,
+  slotCols:[1,6,11,16,21,26],
+  slotMap:{1:"08:30-09:50",6:"10:00-11:20",11:"11:30-12:50",16:"01:00-02:20",21:"02:30-03:50",26:"03:55-05:15"}
+};
+const CLASSROOM_RIGHT_BLOCK={
+  roomCol:30,
+  endCol:null,
+  slotCols:[31,36],
+  slotMap:{31:"05:20-06:40",36:"06:45-08:05"}
+};
+const LAB_BLOCK={
+  roomCol:0,
+  endCol:null,
+  slotCols:[1,11,21,31],
+  slotMap:{1:"08:30-11:15",11:"11:30-02:15",21:"02:30-05:15",31:"05:20-08:05"}
+};
+
+function slotForColumn(col,slotCols){
+  let chosen=null;
+  for(const slotCol of slotCols){
+    if(slotCol<=col) chosen=slotCol;
+  }
+  return chosen;
+}
+
+function parseRoomBlockRows(grid,startRow,endRow,block,day,target){
   let added=0;
   for(let r=startRow;r<Math.min(endRow,grid.length);r++){
     const row=grid[r]||[];
-    const room=normalizeRoomName(oneLine(row[0]||""));
+    const room=normalizeRoomName(oneLine(row[block.roomCol]||""));
     if(!room||room.length<2||/reserved|tutorial|fsm|fsa|fcss|fyp|travel|admin|room/i.test(room)) continue;
-    for(const[cIdx,timeSlot]of Object.entries(slotMap)){
-      const col=parseInt(cIdx);
-      if(col>=row.length) continue;
-      const cell=oneLine(row[col]||"");
-      if(!cell) continue;
-      const parsed=parseTimetableCell(cell);
-      if(!parsed) continue;
-      for(const dept of parsed.depts){
-        if(addCourseToTT(target,{dept,batch:parsed.batch,section:parsed.section,day,course:parsed.course,room,time:timeSlot})) added++;
+    for(let i=0;i<block.slotCols.length;i++){
+      const timeCol=block.slotCols[i];
+      const nextCol=block.slotCols[i+1]??(block.endCol??row.length);
+      const scanEnd=Math.min(nextCol,block.endCol??row.length,row.length);
+      for(let col=timeCol;col<scanEnd;col++){
+        const cell=oneLine(row[col]||"");
+        if(!cell) continue;
+        const parsed=parseTimetableCell(cell);
+        if(!parsed) continue;
+        for(const dept of parsed.depts){
+          if(addCourseToTT(target,{dept,batch:parsed.batch,section:parsed.section,day,course:parsed.course,room,time:block.slotMap[timeCol]})) added++;
+        }
+        break;
       }
     }
   }
@@ -1321,12 +1352,11 @@ function parseGridToTT(grid,day,target){
   const classroomEnd=lr>0?lr:grid.length;
   let added=0;
 
-  // Day section: also handle columns that may not be in SLOT_COLS
-  // by scanning every 4th column starting from B
-  added+=parseSlotRows(grid,hr+1,classroomEnd,SLOT_COLS,day,target);
+  added+=parseRoomBlockRows(grid,hr+1,classroomEnd,CLASSROOM_LEFT_BLOCK,day,target);
+  added+=parseRoomBlockRows(grid,hr+1,classroomEnd,CLASSROOM_RIGHT_BLOCK,day,target);
 
   // Lab section
-  if(lr>0) added+=parseSlotRows(grid,lr+1,grid.length,LAB_SLOT_COLS,day,target);
+  if(lr>0) added+=parseRoomBlockRows(grid,lr+1,grid.length,LAB_BLOCK,day,target);
 
   return added;
 }
