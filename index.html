@@ -724,7 +724,7 @@ const SEMESTER_BASE_YEAR=2026; // Spring-2026 timetable: sem 2=>2025, sem 4=>202
 let _sheetTimer=null;
 let _sheetHadSuccessfulLoad=false;
 
-const DEPT_ORDER=["CS","DS","AI","CY","SE"];
+const DEPT_ORDER=["BS CS","BS AI","BS SE","BS DS","BS CY"];
 
 function cloneFloors(obj){return JSON.parse(JSON.stringify(obj));}
 function cleanTxt(v){return String(v??'').replace(/\u00a0/g,' ').replace(/[\t ]+/g,' ').trim();}
@@ -814,13 +814,36 @@ function rebuildSlotsFromTimetable(tt){
       Object.values(sections||{}).forEach(days=>{
         Object.values(days||{}).forEach(arr=>{
           (arr||[]).forEach(entry=>{
-            if(entry&&entry.t&&!slots.includes(entry.t)) slots.push(entry.t);
+            const time=entry?.time||entry?.t;
+            if(time&&!slots.includes(time)) slots.push(time);
           });
         });
       });
     });
   });
   replaceSlots(slots);
+}
+
+function legacyTTToReferenceTT(tt){
+  const out={};
+  Object.entries(tt||{}).forEach(([depCode,batches])=>{
+    const depLabel=depCode.startsWith('BS ')?depCode:`BS ${depCode}`;
+    out[depLabel]=out[depLabel]||{};
+    Object.entries(batches||{}).forEach(([batch,sections])=>{
+      out[depLabel][batch]=out[depLabel][batch]||{};
+      Object.entries(sections||{}).forEach(([section,days])=>{
+        out[depLabel][batch][section]=out[depLabel][batch][section]||{};
+        Object.entries(days||{}).forEach(([day,arr])=>{
+          out[depLabel][batch][section][day]=(arr||[]).map(entry=>({
+            name:entry.name||entry.c||'',
+            location:entry.location||entry.l||'',
+            time:entry.time||entry.t||''
+          }));
+        });
+      });
+    });
+  });
+  return out;
 }
 
 function applyTimetablePayload(payload,sourceLabel){
@@ -1215,7 +1238,6 @@ function saveTTPrefs(){
 }
 
 function formatDeptLabel(dept){
-  if(DEPT_ORDER.includes(dept)) return `BS ${dept}`;
   return dept;
 }
 
@@ -1228,6 +1250,31 @@ function sortDeptCodes(a,b){
     return ai-bi;
   }
   return a.localeCompare(b);
+}
+
+function setDefaultDay(){
+  const daySel=document.getElementById('day');
+  if(!daySel) return;
+  const prefs=readTTPrefs();
+  if(prefs.day&&[...daySel.options].some(opt=>opt.value===prefs.day)) return;
+  const dayNames=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const currentDayIndex=new Date().getDay();
+  const currentDayName=dayNames[currentDayIndex===0?1:currentDayIndex];
+  if([..."Monday Tuesday Wednesday Thursday Friday".split(' ')].includes(currentDayName)){
+    daySel.value=currentDayName;
+  }
+}
+
+function timeToNumber(timeStr){
+  const time=String(timeStr||'').trim().split('-')[0].trim();
+  const m=time.match(/^(\d{1,2}):(\d{2})$/);
+  if(!m) throw new Error(`Invalid time format: ${timeStr}`);
+  let hours=Number(m[1]);
+  const minutes=Number(m[2]);
+  if(hours===12) return 12*60+minutes;
+  if(hours>=8&&hours<12) return hours*60+minutes;
+  if(hours>=1&&hours<8) return (hours+12)*60+minutes;
+  throw new Error(`Invalid time format: ${timeStr}`);
 }
 
 function refreshTTFilters(){
@@ -1246,6 +1293,7 @@ function refreshTTFilters(){
   fillSelectOptions(secSel,secs,null,'-- Section --');
   if(prefs.sec&&secs.includes(prefs.sec)) secSel.value=prefs.sec;
   if(daySel&&prefs.day&&[...daySel.options].some(opt=>opt.value===prefs.day)) daySel.value=prefs.day;
+  else setDefaultDay();
 }
 function setupTTFilterListeners(){
   const deptSel=document.getElementById('dept'),batchSel=document.getElementById('batch'),secSel=document.getElementById('sec'),daySel=document.getElementById('day');
@@ -1459,7 +1507,8 @@ async function refreshTimetableFromGoogleSheet(){
         total+=parseGridToTT(grid,day,next);
       });
       if(!total) throw new Error('Parsed 0 classes from Google Sheet. Check sheet sharing permissions.');
-      applyTimetablePayload({tt:next,slots:[...SLOTS],count:total},'SHEET: LIVE GOOGLE');
+      const refTT=legacyTTToReferenceTT(next);
+      applyTimetablePayload({tt:refTT,count:countTTEntries(refTT)},'SHEET: LIVE GOOGLE');
     }catch(fallbackErr){
       console.warn('Live sheet sync failed:',fallbackErr);
       const message=(fallbackErr&&fallbackErr.message)?fallbackErr.message:String(fallbackErr);
@@ -1700,31 +1749,34 @@ function loadTT(){
   const out=document.getElementById('tt-out');
   if(out){
     if(!dep||!bat||!sec||!day){
-      out.innerHTML='<div class="tt-empty-card"><div class="empty">SELECT DEPARTMENT, BATCH, DAY, AND SECTION TO VIEW THE TIMETABLE</div></div>';
+      out.innerHTML='<div class="tt-empty-card"><div class="empty">Please select all fields to get the timetable.</div></div>';
       return;
     }
     saveTTPrefs();
-    if(!data.length){
-      out.innerHTML=`<div class="tt-summary">
-        <div>
-          <div class="tt-summary-pill">${formatDeptLabel(dep)} · ${bat} · ${sec}</div>
-          <div class="tt-summary-meta">${day}</div>
-        </div>
-        <div class="tt-summary-meta">NO CLASSES FOUND</div>
-      </div>
-      <div class="tt-empty-card"><div class="empty">NO CLASSES SCHEDULED FOR THIS SELECTION</div></div>`;
+    const validEntries=[];
+    const invalidEntries=[];
+    data.forEach(course=>{
+      try{
+        timeToNumber(course.time||course.t||'');
+        validEntries.push(course);
+      }catch(e){
+        invalidEntries.push(course);
+      }
+    });
+    const sortedValidEntries=validEntries.sort((a,b)=>timeToNumber(a.time||a.t||'')-timeToNumber(b.time||b.t||''));
+    const finalEntries=[...sortedValidEntries,...invalidEntries];
+    if(!finalEntries.length){
+      out.innerHTML='<div class="tt-empty-card"><div class="empty">No classes today</div></div>';
       return;
     }
-    out.innerHTML=`<div class="tt-summary">
-      <div>
-        <div class="tt-summary-pill">${formatDeptLabel(dep)} · ${bat} · ${sec}</div>
-        <div class="tt-summary-meta">${day} · ${data.length} ENTRIES</div>
-      </div>
-      <div class="tt-summary-meta">LIVE TIMETABLE</div>
-    </div>
-    <table class="tt-result-table">
-      <thead><tr><th style="width:52%">COURSE</th><th style="width:20%">ROOM</th><th style="width:28%">TIME</th></tr></thead>
-      <tbody>${data.map(r=>`<tr><td><div class="tt-course">${r.c}</div></td><td><div class="tt-room">${r.l}</div></td><td><div class="tt-time">${fmtSlot(r.t)}</div></td></tr>`).join('')}</tbody>
+    out.innerHTML=`<table class="tt-result-table">
+      <thead><tr><th style="width:52%">Course</th><th style="width:20%">Location</th><th style="width:28%">Time</th></tr></thead>
+      <tbody>${finalEntries.map(r=>{
+        const name=r.name||r.c||'';
+        const location=r.location||r.l||'';
+        const time=r.time||r.t||'';
+        return `<tr><td><div class="tt-course">${name}</div></td><td><div class="tt-room">${location}</div></td><td><div class="tt-time">${time}</div></td></tr>`;
+      }).join('')}</tbody>
     </table>`;
   }
 }

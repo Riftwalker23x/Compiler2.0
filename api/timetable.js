@@ -57,6 +57,51 @@ async function loadSheetGrid(sheetName) {
   );
 }
 
+function countReferenceEntries(tt) {
+  let n = 0;
+  Object.values(tt || {}).forEach((deps) =>
+    Object.values(deps || {}).forEach((batches) =>
+      Object.values(batches || {}).forEach((sections) =>
+        Object.values(sections || {}).forEach((arr) => {
+          n += (arr || []).length;
+        })
+      )
+    )
+  );
+  return n;
+}
+
+function legacyTTToReferenceTT(tt) {
+  const out = {};
+  Object.entries(tt || {}).forEach(([depCode, batches]) => {
+    const depLabel = `BS ${depCode}`;
+    out[depLabel] = out[depLabel] || {};
+    Object.entries(batches || {}).forEach(([batch, sections]) => {
+      out[depLabel][batch] = out[depLabel][batch] || {};
+      Object.entries(sections || {}).forEach(([section, days]) => {
+        out[depLabel][batch][section] = out[depLabel][batch][section] || {};
+        Object.entries(days || {}).forEach(([day, arr]) => {
+          out[depLabel][batch][section][day] = (arr || []).map((entry) => ({
+            name: entry.c,
+            location: entry.l,
+            time: entry.t
+          }));
+        });
+      });
+    });
+  });
+  return out;
+}
+
+async function fetchReferenceTimetable() {
+  const url = `https://fastschedule.github.io/db/timetable.json?v=${Date.now()}`;
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Reference timetable HTTP ${res.status}`);
+  const tt = await res.json();
+  if (!tt || typeof tt !== "object") throw new Error("Reference timetable payload is empty");
+  return tt;
+}
+
 /* ── Time helpers ── */
 
 function parseClock(h, mm, ampm) {
@@ -372,6 +417,22 @@ module.exports = async (req, res) => {
 
   try {
     const requestedSheet = req.query?.sheet;
+
+    if (!requestedSheet) {
+      try {
+        const referenceTT = await fetchReferenceTimetable();
+        return res.status(200).json({
+          ok: true,
+          count: countReferenceEntries(referenceTT),
+          tt: referenceTT,
+          updatedAt: new Date().toISOString(),
+          source: "fastschedule.github.io"
+        });
+      } catch (referenceErr) {
+        // Fall through to live Google Sheets parsing below.
+      }
+    }
+
     const tabs = requestedSheet ? [requestedSheet] : GOOGLE_SHEET_TABS;
     const uniqueTabs = [...new Set(tabs)];
 
@@ -401,7 +462,8 @@ module.exports = async (req, res) => {
     }
 
     const { tt, diagnostics } = buildTTWithDiagnostics(sheets);
-    const count = countTTEntries(tt);
+    const refTT = legacyTTToReferenceTT(tt);
+    const count = countReferenceEntries(refTT);
 
     if (!count) {
       return res.status(500).json({
@@ -414,10 +476,10 @@ module.exports = async (req, res) => {
     return res.status(200).json({
       ok: true,
       count,
-      slots: [...SLOTS],
-      tt,
+      tt: refTT,
       diagnostics,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      source: "google-sheet-fallback"
     });
   } catch (err) {
     return res.status(500).json({ ok: false, error: err.message || String(err) });
