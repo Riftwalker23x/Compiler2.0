@@ -1,13 +1,25 @@
 // Vercel Serverless Function: /api/timetable
-// Parses the Compiler Society timetable Google Sheet using the correct
-// room×slot matrix layout:
-//   Row with "Room" in col A → time slot headers at cols B,F,J,N,R,V,Z,AD
-//   Data rows → col A = room, cells at slot cols = "Course (DEPT-Section[, batch])"
-//   Row with "Lab" in col A → lab slot headers at cols B,F,J,N
-//   Lab data rows → same layout, 3-hour slot spans
+// Multi-school timetable parser for FAST NUCES Islamabad
+// Supports: computing (FSC), engineering (FSE), business (FSM)
 
-const GOOGLE_SHEET_ID = "1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY";
-const GOOGLE_SHEET_TABS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+const SCHOOLS = {
+  computing: {
+    id: "1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY",
+    tabs: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    format: "matrix"
+  },
+  engineering: {
+    id: "1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU",
+    tabs: ["Monday"],
+    format: "flat"
+  },
+  business: {
+    id: "1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw",
+    tabs: ["Monday"],
+    format: "paired-matrix"
+  }
+};
+
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 /* ── Text helpers ── */
@@ -32,8 +44,7 @@ function getGoogleSheetId(idOrUrl) {
   return match ? match[1] : idOrUrl;
 }
 
-function gvizUrl(sheetName) {
-  const sheetId = getGoogleSheetId(GOOGLE_SHEET_ID);
+function gvizUrl(sheetId, sheetName) {
   return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}&cachebust=${Date.now()}`;
 }
 
@@ -46,8 +57,8 @@ function parseGVizText(text) {
   return JSON.parse(raw.slice(start + 1, end));
 }
 
-async function loadSheetGrid(sheetName) {
-  const res = await fetch(gvizUrl(sheetName), {
+async function loadSheetGrid(sheetId, sheetName) {
+  const res = await fetch(gvizUrl(sheetId, sheetName), {
     cache: "no-store",
     headers: { "user-agent": "Mozilla/5.0 Vercel Timetable Sync" }
   });
@@ -62,51 +73,6 @@ async function loadSheetGrid(sheetName) {
       return cleanTxt(cell.f ?? cell.v ?? "");
     })
   );
-}
-
-function countReferenceEntries(tt) {
-  let n = 0;
-  Object.values(tt || {}).forEach((deps) =>
-    Object.values(deps || {}).forEach((batches) =>
-      Object.values(batches || {}).forEach((sections) =>
-        Object.values(sections || {}).forEach((arr) => {
-          n += (arr || []).length;
-        })
-      )
-    )
-  );
-  return n;
-}
-
-function legacyTTToReferenceTT(tt) {
-  const out = {};
-  Object.entries(tt || {}).forEach(([depCode, batches]) => {
-    const depLabel = `BS ${depCode}`;
-    out[depLabel] = out[depLabel] || {};
-    Object.entries(batches || {}).forEach(([batch, sections]) => {
-      out[depLabel][batch] = out[depLabel][batch] || {};
-      Object.entries(sections || {}).forEach(([section, days]) => {
-        out[depLabel][batch][section] = out[depLabel][batch][section] || {};
-        Object.entries(days || {}).forEach(([day, arr]) => {
-          out[depLabel][batch][section][day] = (arr || []).map((entry) => ({
-            name: entry.c,
-            location: entry.l,
-            time: entry.t
-          }));
-        });
-      });
-    });
-  });
-  return out;
-}
-
-async function fetchReferenceTimetable() {
-  const url = `https://fastschedule.github.io/db/timetable.json?v=${Date.now()}`;
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Reference timetable HTTP ${res.status}`);
-  const tt = await res.json();
-  if (!tt || typeof tt !== "object") throw new Error("Reference timetable payload is empty");
-  return tt;
 }
 
 /* ── Time helpers ── */
@@ -161,24 +127,14 @@ function slotToMinutes(slot) {
 function normalizeRoomName(room) {
   let r = oneLine(room).toUpperCase();
   r = r.replace(/\s+/g, " ");
-
-  // C 301 → C-301
   r = r.replace(/\b([A-D])\s+(\d{3})\b/, "$1-$2");
-  // D IT Lab 1 → D-IT LAB 1
   r = r.replace(/\b([A-D])\s+(IT\s+)?LAB\s*[-#]?\s*(\d+)\b/i, "$1-$2LAB $3");
-  // C Margala 1 → C-MARGALA 1
   r = r.replace(/\b([A-D])\s+(MARGALA|RAWAL)\s+(\d+)\b/i, "$1-$2 $3");
-  // C GPU Lab → C-GPU LAB
   r = r.replace(/\b([A-D])\s+GPU\s+LAB\b/i, "$1-GPU LAB");
-  // A Mehran 1 → A-MEHRAN 1
   r = r.replace(/\b([A-D])\s+(MEHRAN|CALL)\s*[-#]?\s*(\d*)\b/i, "$1-$2 $3").trim();
-  // B Digital → B-DIGITAL
   r = r.replace(/\b([A-D])\s+(DIGITAL)\b/i, "$1-$2");
-
-  // Cyber (D-514)
   let m = r.match(/CYBER\s*\(?\s*([A-D])-(\d{3})/i);
   if (m) return `Cyber (${m[1].toUpperCase()}-${m[2]})`;
-
   if (/\bAUDI(TORIUM)?\b/.test(r)) return "D-AUDI";
   return r;
 }
@@ -187,50 +143,8 @@ function sameRoom(a, b) {
   return normalizeRoomName(a) === normalizeRoomName(b);
 }
 
-/* ── TT building ── */
-
-function countTTEntries(tt) {
-  let n = 0;
-  Object.values(tt).forEach((batches) =>
-    Object.values(batches).forEach((sections) =>
-      Object.values(sections).forEach((days) =>
-        Object.values(days).forEach((arr) => { n += arr.length; })
-      )
-    )
-  );
-  return n;
-}
-
-const SLOTS = [];
-
-function registerSlot(slot) {
-  if (!slot || SLOTS.includes(slot)) return;
-  SLOTS.push(slot);
-  SLOTS.sort((a, b) => slotToMinutes(a) - slotToMinutes(b));
-}
-
-function addCourseToTT(target, { dept, batch, section, day, course, room, time }) {
-  if (!dept || !batch || !section || !day || !course || !room || !time) return false;
-  registerSlot(time);
-  const depts = Array.isArray(dept) ? dept : [dept];
-  let added = false;
-  for (const deptCode of depts) {
-    if (!deptCode) continue;
-    target[deptCode] = target[deptCode] || {};
-    target[deptCode][batch] = target[deptCode][batch] || {};
-    target[deptCode][batch][section] = target[deptCode][batch][section] || {};
-    target[deptCode][batch][section][day] = target[deptCode][batch][section][day] || [];
-    const arr = target[deptCode][batch][section][day];
-    if (!arr.some((x) => x.c === course && sameRoom(x.l, room) && x.t === time)) {
-      arr.push({ c: course, l: room, t: time });
-      added = true;
-    }
-  }
-  return added;
-}
-
 /* ══════════════════════════════════════════
-   PARSER — Cell parser, grid walker
+   COMPUTING SCHOOL — Matrix Parser
    ══════════════════════════════════════════ */
 
 const SLOT_COLS = {
@@ -243,24 +157,74 @@ const LAB_SLOT_COLS = {
   1: "08:30-11:15", 11: "11:30-02:15", 21: "02:30-05:15", 31: "05:20-08:05",
 };
 
-const BATCH_MAP = { "25": "2025", "24": "2024", "22": "2022" };
+const BATCH_MAP = { "25": "2025", "24": "2024", "23": "2023", "22": "2022" };
+
 const CELL_REGEX = /(.+?)\s*\(([A-Z]+(?:\/[A-Z]+)*)(?:-([A-Z0-9]+))?(?:,\s*(?:Gp?-([IV]+)|(\d{2})))?\s*\)/i;
+
+const CLASSROOM_LEFT_BLOCK = {
+  roomCol: 0, endCol: 30,
+  slotCols: [1, 6, 11, 16, 21, 26],
+  slotMap: { 1: "08:30-09:50", 6: "10:00-11:20", 11: "11:30-12:50", 16: "01:00-02:20", 21: "02:30-03:50", 26: "03:55-05:15" }
+};
+const CLASSROOM_RIGHT_BLOCK = {
+  roomCol: 30, endCol: null,
+  slotCols: [31, 36],
+  slotMap: { 31: "05:20-06:40", 36: "06:45-08:05" }
+};
+const LAB_BLOCK = {
+  roomCol: 0, endCol: null,
+  slotCols: [1, 11, 21, 31],
+  slotMap: { 1: "08:30-11:15", 11: "11:30-02:15", 21: "02:30-05:15", 31: "05:20-08:05" }
+};
+
+/* ── Header-based batch detection ── */
+
+function buildColBatchMap(grid) {
+  const map = {};
+  const headerRows = Math.min(grid.length, 4);
+  for (let c = 0; c < (grid[0] || []).length; c++) {
+    for (let r = 0; r < headerRows; r++) {
+      const cell = oneLine(grid[r][c] || "");
+      if (!cell) continue;
+      const m = cell.match(/BS\s+([A-Z]+)\s*\((\d{4})\)/i);
+      if (m) {
+        map[c] = { dept: `BS ${m[1].toUpperCase()}`, batch: m[2] };
+        break;
+      }
+      const m2 = cell.match(/MS\s*\(?\s*([A-Z]+)\)?/i);
+      if (m2) {
+        map[c] = { dept: `MS ${m2[1].toUpperCase()}`, batch: "MS" };
+        break;
+      }
+    }
+  }
+  return map;
+}
+
+function lookupBatchForCol(colBatchMap, col, courseName, cellText) {
+  const explicitMatch = cellText.match(/,\s*(\d{2})\s*\)/);
+  if (explicitMatch) {
+    const short = explicitMatch[1];
+    return BATCH_MAP[short] || "20" + short;
+  }
+  if (colBatchMap[col] && colBatchMap[col].batch && colBatchMap[col].batch !== "MS") {
+    return colBatchMap[col].batch;
+  }
+  if (colBatchMap[col] && colBatchMap[col].batch === "MS") return null;
+  return inferBatchFromCourse(courseName) || "2023";
+}
 
 function inferBatchFromCourse(courseName) {
   const name = String(courseName || "").toUpperCase();
-  // Batch 2022 (Seniors, 8th sem)
   if (/\b(CAPSTONE|FYP|SENIOR\s+PROJECT|FINAL\s+YEAR\s+PROJECT|TECH\s+STARTUP|TECH\s+ENTREPRENEURSHIP|INNOVATION\s+LAB|RESEARCH\s+METHODS|AI\s+ETHICS|DIGITAL\s+FORENSICS|ETHICAL\s+HACK|MALWARE|BIG\s+DATA|BDA|AUTONOMOUS\s+VEHICLES|ROBOTICS|IOT|PROFESSIONAL\s+ETHICS|BUSINESS\s+COMMUNICATION|ENTRE|TECH\s+MGT|COMP\s+VISION|COMPUTER\s+VISION)\b/i.test(name)) {
     return "2022";
   }
-  // Batch 2023 (Juniors, 6th sem)
   if (/\b(COMPILER|COMP\s+CONST|PDC|PARALLEL|ARTIFICIAL\s+INTELLIGENCE|\bAI\b|MACHINE\s+LEARNING|\bML\b|DEEP\s+LEARN|DEEP\s+LEARNING|COMPUTER\s+NETWORKS|\bCN\b|COMP\s+NET|SOFTWARE\s+ENGINEERING|\bSE\b|SPM|PROJECT\s+MANAGEMENT|INFO\s+SEC|INFORMATION\s+SECURITY|PPIT|PROFESSIONAL\s+PRACTICES|IMAGE\s+PROCESSING|\bDIP\b|NATURAL\s+LANGUAGE|NLP|CLOUD\s+COMP|METRIC|GEN\s+AI|GENERATIVE\s+AI|PRODUCT\s+DEV|GAME\s+DEV|MOBILE\s+APP|STAT\s+MODELING|DIGITAL\s+MKTG|FIN\s+MGT)\b/i.test(name)) {
     return "2023";
   }
-  // Batch 2024 (Sophomores, 4th sem)
   if (/\b(DATA\s+ST|DATA\s+STRUCTURES|OPERATING\s+SYSTEMS|\bOS\b|DATABASE|\bDB\b|REQUIREMENTS|SRE|DESIGN\s+&\s+ARCHITECTURE|SDA|COMPUTER\s+ORGANIZATION|COAL|PROBABILITY|PROB\s+&\s+STATS|STATS\s+FOR\s+ML|LINEAR\s+ALGEBRA|DATA\s+ANALYSIS)\b/i.test(name)) {
     return "2024";
   }
-  // Batch 2025 (Freshmen, 2nd sem)
   if (/\b(OBJECT|OOP|DISCRETE|DIGITAL\s+LOGIC|DLD|MULTIVARIABLE|MV\s+CALCULUS|APPLIED\s+PHYSICS|\bAP\b|PAK\s+STUDIES|PAKISTAN|FUNCTIONAL\s+ENGLISH|EXP\s+WRITING|EXPOSITORY|SEERAH|ISLAMIC|CIVICS|PROGRAMMING|\bPF\b|INTRO\s+TO\s+COMPUTING|ITC|CALCULUS|COMPOSITION)\b/i.test(name)) {
     return "2025";
   }
@@ -270,7 +234,6 @@ function inferBatchFromCourse(courseName) {
 function parseTimetableCell(text) {
   const t = oneLine(text);
   if (!t) return null;
-  // Strip everything after the first ) to handle trailing room/time info
   const parenEnd = t.indexOf(")");
   const core = parenEnd >= 0 ? t.slice(0, parenEnd + 1) : t;
   const m = core.match(CELL_REGEX);
@@ -279,13 +242,8 @@ function parseTimetableCell(text) {
   const deptStr = m[2];
   const section = m[3];
   if (!section) return null;
-  const batchShort = m[5];
-  let batch = batchShort ? (BATCH_MAP[batchShort] || "20" + batchShort) : null;
-  if (!batch) {
-    batch = inferBatchFromCourse(course) || "2023";
-  }
   const depts = deptStr.includes("/") ? deptStr.split("/") : [deptStr];
-  return { depts, section, batch, course };
+  return { depts, section, course };
 }
 
 function findHeaderRow(grid) {
@@ -316,25 +274,6 @@ function findLabHeaderRow(grid, afterRow) {
   return -1;
 }
 
-const CLASSROOM_LEFT_BLOCK = {
-  roomCol: 0,
-  endCol: 30,
-  slotCols: [1, 6, 11, 16, 21, 26],
-  slotMap: { 1: "08:30-09:50", 6: "10:00-11:20", 11: "11:30-12:50", 16: "01:00-02:20", 21: "02:30-03:50", 26: "03:55-05:15" }
-};
-const CLASSROOM_RIGHT_BLOCK = {
-  roomCol: 30,
-  endCol: null,
-  slotCols: [31, 36],
-  slotMap: { 31: "05:20-06:40", 36: "06:45-08:05" }
-};
-const LAB_BLOCK = {
-  roomCol: 0,
-  endCol: null,
-  slotCols: [1, 11, 21, 31],
-  slotMap: { 1: "08:30-11:15", 11: "11:30-02:15", 21: "02:30-05:15", 31: "05:20-08:05" }
-};
-
 function slotForColumn(col, slotCols) {
   let chosen = null;
   for (const slotCol of slotCols) {
@@ -343,7 +282,83 @@ function slotForColumn(col, slotCols) {
   return chosen;
 }
 
-function parseRoomBlockRows(grid, startRow, endRow, block, day, target) {
+function addCourseToTT(target, { dept, batch, section, day, course, room, time }) {
+  if (!dept || !batch || !section || !day || !course || !room || !time) return false;
+  registerSlot(time);
+  const depts = Array.isArray(dept) ? dept : [dept];
+  let added = false;
+  for (const deptCode of depts) {
+    if (!deptCode) continue;
+    target[deptCode] = target[deptCode] || {};
+    target[deptCode][batch] = target[deptCode][batch] || {};
+    target[deptCode][batch][section] = target[deptCode][batch][section] || {};
+    target[deptCode][batch][section][day] = target[deptCode][batch][section][day] || [];
+    const arr = target[deptCode][batch][section][day];
+    if (!arr.some((x) => x.c === course && sameRoom(x.l, room) && x.t === time)) {
+      arr.push({ c: course, l: room, t: time });
+      added = true;
+    }
+  }
+  return added;
+}
+
+const SLOTS = [];
+
+function registerSlot(slot) {
+  if (!slot || SLOTS.includes(slot)) return;
+  SLOTS.push(slot);
+  SLOTS.sort((a, b) => slotToMinutes(a) - slotToMinutes(b));
+}
+
+function countTTEntries(tt) {
+  let n = 0;
+  Object.values(tt).forEach((batches) =>
+    Object.values(batches).forEach((sections) =>
+      Object.values(sections).forEach((days) =>
+        Object.values(days).forEach((arr) => { n += arr.length; })
+      )
+    )
+  );
+  return n;
+}
+
+function countReferenceEntries(tt) {
+  let n = 0;
+  Object.values(tt || {}).forEach((deps) =>
+    Object.values(deps || {}).forEach((batches) =>
+      Object.values(batches || {}).forEach((sections) =>
+        Object.values(sections || {}).forEach((arr) => { n += (arr || []).length; })
+      )
+    )
+  );
+  return n;
+}
+
+function legacyTTToReferenceTT(tt) {
+  const out = {};
+  Object.entries(tt || {}).forEach(([depCode, batches]) => {
+    const depLabel = depCode.startsWith("BS ") || depCode.startsWith("MS ") ? depCode : `BS ${depCode}`;
+    out[depLabel] = out[depLabel] || {};
+    Object.entries(batches || {}).forEach(([batch, sections]) => {
+      out[depLabel][batch] = out[depLabel][batch] || {};
+      Object.entries(sections || {}).forEach(([section, days]) => {
+        out[depLabel][batch][section] = out[depLabel][batch][section] || {};
+        Object.entries(days || {}).forEach(([day, arr]) => {
+          out[depLabel][batch][section][day] = (arr || []).map((entry) => ({
+            name: entry.c,
+            location: entry.l,
+            time: entry.t
+          }));
+        });
+      });
+    });
+  });
+  return out;
+}
+
+/* ── Matrix parser for Computing school ── */
+
+function parseMatrixBlock(grid, startRow, endRow, block, day, target, colBatchMap) {
   let added = 0;
   for (let r = startRow; r < Math.min(endRow, grid.length); r++) {
     const row = grid[r] || [];
@@ -359,8 +374,11 @@ function parseRoomBlockRows(grid, startRow, endRow, block, day, target) {
         if (!cell) continue;
         parsed = parseTimetableCell(cell);
         if (parsed) {
+          const batch = lookupBatchForCol(colBatchMap, col, parsed.course, cell);
+          if (!batch) continue;
           for (const dept of parsed.depts) {
-            if (addCourseToTT(target, { dept, batch: parsed.batch, section: parsed.section, day, course: parsed.course, room, time: block.slotMap[timeCol] })) added++;
+            const deptKey = `BS ${dept}`;
+            if (addCourseToTT(target, { dept: deptKey, batch, section: parsed.section, day, course: parsed.course, room, time: block.slotMap[timeCol] })) added++;
           }
           break;
         }
@@ -371,16 +389,116 @@ function parseRoomBlockRows(grid, startRow, endRow, block, day, target) {
 }
 
 function parseGridToTT(grid, day, target) {
+  const colBatchMap = buildColBatchMap(grid);
   const hr = findHeaderRow(grid);
   if (hr < 0) return 0;
   const lr = findLabHeaderRow(grid, hr + 1);
   const classroomEnd = lr > 0 ? lr : grid.length;
   let added = 0;
-  added += parseRoomBlockRows(grid, hr + 1, classroomEnd, CLASSROOM_LEFT_BLOCK, day, target);
-  added += parseRoomBlockRows(grid, hr + 1, classroomEnd, CLASSROOM_RIGHT_BLOCK, day, target);
-  if (lr > 0) added += parseRoomBlockRows(grid, lr + 1, grid.length, LAB_BLOCK, day, target);
+  added += parseMatrixBlock(grid, hr + 1, classroomEnd, CLASSROOM_LEFT_BLOCK, day, target, colBatchMap);
+  added += parseMatrixBlock(grid, hr + 1, classroomEnd, CLASSROOM_RIGHT_BLOCK, day, target, colBatchMap);
+  if (lr > 0) added += parseMatrixBlock(grid, lr + 1, grid.length, LAB_BLOCK, day, target, colBatchMap);
   return added;
 }
+
+/* ══════════════════════════════════════════
+   BUSINESS SCHOOL — Paired-Column Matrix Parser
+   Format: each time slot has 2 columns (course + section code)
+   ══════════════════════════════════════════ */
+
+function parseBusinessGrid(grid, tabName, target) {
+  const day = normalizeDay(tabName);
+  if (!day) return 0;
+  let added = 0;
+
+  let headerRow = -1;
+  for (let r = 0; r < Math.min(grid.length, 5); r++) {
+    if (/room/i.test(oneLine(grid[r][2] || ""))) { headerRow = r; break; }
+  }
+  if (headerRow < 0) return 0;
+
+  const slotCols = [];
+  const row = grid[headerRow] || [];
+  for (let c = 3; c < row.length; c++) {
+    const slot = normalizeTimeSlot(oneLine(row[c] || ""));
+    if (slot) slotCols.push({ col: c, time: slot });
+  }
+
+  for (let r = headerRow + 1; r < grid.length; r++) {
+    const rowData = grid[r] || [];
+    const rawRoom = oneLine(rowData[2] || "");
+    if (!rawRoom || rawRoom.length < 2) continue;
+    const room = normalizeRoomName(rawRoom);
+    if (/reserved|tutorial|fsm|fsa|fcss|fyp|travel|admin|room/i.test(rawRoom)) continue;
+    if (!room || room.length < 2) continue;
+
+    for (let si = 0; si < slotCols.length; si++) {
+      const { col: timeCol, time } = slotCols[si];
+      const nextCol = si + 1 < slotCols.length ? slotCols[si + 1].col : rowData.length;
+      const courseCol = timeCol;
+      const sectionCol = timeCol + 1;
+
+      if (sectionCol >= rowData.length || sectionCol >= nextCol) continue;
+      const courseCell = oneLine(rowData[courseCol] || "");
+      const sectionCell = oneLine(rowData[sectionCol] || "");
+      if (!courseCell || !sectionCell) continue;
+
+      const course = courseCell.replace(/\d{4,6}/, "").trim();
+      const section = sectionCell.replace(/^[A-Z]{2,}/, "").trim();
+      if (!course || !section) continue;
+
+      const codeMatch = courseCell.match(/\b(\d{4,6})/);
+      const courseCode = codeMatch ? codeMatch[1] : "";
+
+      const deptHeader = oneLine(grid[0][0] || "");
+      const dept = deptHeader.includes("FAST School of Management") ? "BS Management" : "BS Business";
+
+      const batch = inferBusinessBatch(section) || "2025";
+      if (addCourseToTT(target, { dept, batch, section, day, course: `${course}${courseCode ? " (" + courseCode + ")" : ""}`, room, time })) added++;
+    }
+  }
+  return added;
+}
+
+function inferBusinessBatch(section) {
+  const m = section.match(/(\d{2})/);
+  if (m) {
+    const yr = Number(m[1]);
+    if (yr >= 22 && yr <= 25) return "20" + yr;
+  }
+  return null;
+}
+
+/* ══════════════════════════════════════════
+   ENGINEERING SCHOOL — Flat Row Parser
+   (Cancellation/makeup log format)
+   ══════════════════════════════════════════ */
+
+function parseEngineeringGrid(grid, tabName, target) {
+  const day = normalizeDay(tabName);
+  if (!day) return 0;
+  let added = 0;
+  for (let r = 2; r < grid.length; r++) {
+    const row = grid[r] || [];
+    const course = oneLine(row[2] || "");
+    const instructor = oneLine(row[3] || "");
+    if (!course) continue;
+    const parsed = parseTimetableCell(course);
+    if (parsed) {
+      const batch = inferBatchFromCourse(parsed.course) || "2023";
+      for (const dept of parsed.depts) {
+        if (addCourseToTT(target, { dept: `BS ${dept}`, batch, section: parsed.section, day, course: parsed.course, room: "TBA", time: "TBA" })) added++;
+      }
+    } else {
+      if (addCourseToTT(target, { dept: "BS Engineering", batch: "2024", section: "A", day, course, room: "TBA", time: "TBA" })) added++;
+    }
+  }
+  return added;
+}
+
+/* ══════════════════════════════════════════
+   CD Room Occupancy (unchanged from original)
+   ══════════════════════════════════════════ */
 
 function isCDBlockRoom(room) {
   return /^[CD]-/.test(normalizeRoomName(room));
@@ -391,10 +509,11 @@ function cellToOccupancyInfo(cell) {
   if (!t || /^reserved$/i.test(t)) return null;
   const parsed = parseTimetableCell(t);
   if (parsed) {
+    const batch = lookupBatchForCol({}, 0, parsed.course, t) || "2023";
     return {
       course: parsed.course,
       dept: `BS ${parsed.depts[0]}`,
-      batch: parsed.batch,
+      batch,
       section: parsed.section
     };
   }
@@ -415,7 +534,7 @@ function addCDOccupancy(target, day, room, time, info) {
   }
 }
 
-function parseRoomBlockRowsCD(grid, startRow, endRow, block, day, target) {
+function parseCDBlock(grid, startRow, endRow, block, day, target) {
   let added = 0;
   for (let r = startRow; r < Math.min(endRow, grid.length); r++) {
     const row = grid[r] || [];
@@ -445,27 +564,25 @@ function parseGridToCDOccupancy(grid, day, target) {
   const lr = findLabHeaderRow(grid, hr + 1);
   const classroomEnd = lr > 0 ? lr : grid.length;
   let added = 0;
-  added += parseRoomBlockRowsCD(grid, hr + 1, classroomEnd, CLASSROOM_LEFT_BLOCK, day, target);
-  added += parseRoomBlockRowsCD(grid, hr + 1, classroomEnd, CLASSROOM_RIGHT_BLOCK, day, target);
-  if (lr > 0) added += parseRoomBlockRowsCD(grid, lr + 1, grid.length, LAB_BLOCK, day, target);
+  added += parseCDBlock(grid, hr + 1, classroomEnd, CLASSROOM_LEFT_BLOCK, day, target);
+  added += parseCDBlock(grid, hr + 1, classroomEnd, CLASSROOM_RIGHT_BLOCK, day, target);
+  if (lr > 0) added += parseCDBlock(grid, lr + 1, grid.length, LAB_BLOCK, day, target);
   return added;
 }
 
 function countCDOccupancyEntries(occupancy) {
   let n = 0;
   Object.values(occupancy || {}).forEach((dayMap) => {
-    Object.values(dayMap || {}).forEach((arr) => {
-      n += (arr || []).length;
-    });
+    Object.values(dayMap || {}).forEach((arr) => { n += (arr || []).length; });
   });
   return n;
 }
 
-async function fetchCDRoomOccupancyFromSheets() {
+async function fetchCDRoomOccupancyFromSheets(sheetId) {
   const occupancy = {};
   let total = 0;
-  for (const tab of GOOGLE_SHEET_TABS) {
-    const grid = await loadSheetGrid(tab);
+  for (const tab of SCHOOLS.computing.tabs) {
+    const grid = await loadSheetGrid(sheetId, tab);
     const day = normalizeDay(tab);
     if (day) total += parseGridToCDOccupancy(grid, day, occupancy);
   }
@@ -493,27 +610,31 @@ function nonEmptySamples(grid, max = 30) {
   return samples;
 }
 
-function buildTTWithDiagnostics(sheets) {
+async function fetchReferenceTimetable() {
+  const url = `https://fastschedule.github.io/db/timetable.json?v=${Date.now()}`;
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Reference timetable HTTP ${res.status}`);
+  const tt = await res.json();
+  if (!tt || typeof tt !== "object") throw new Error("Reference timetable payload is empty");
+  return tt;
+}
+
+function buildTTForSchool(grids, school) {
   const tt = {};
-  const diagnostics = [];
   SLOTS.length = 0;
 
-  for (const sheet of sheets) {
-    if (sheet.error) {
-      diagnostics.push({ name: sheet.name, error: sheet.error, rows: 0, added: 0, samples: [] });
-      continue;
-    }
-    const before = countTTEntries(tt);
+  for (const sheet of grids) {
+    if (sheet.error) continue;
     const day = normalizeDay(sheet.name);
-    if (day) parseGridToTT(sheet.grid, day, tt);
-    const after = countTTEntries(tt);
-    diagnostics.push({
-      name: sheet.name,
-      rows: sheet.grid.length,
-      cols: Math.max(0, ...sheet.grid.map((r) => r.length)),
-      added: after - before,
-      samples: nonEmptySamples(sheet.grid, 12)
-    });
+    if (!day) continue;
+
+    if (school.format === "matrix") {
+      parseGridToTT(sheet.grid, day, tt);
+    } else if (school.format === "paired-matrix") {
+      parseBusinessGrid(sheet.grid, sheet.name, tt);
+    } else if (school.format === "flat") {
+      parseEngineeringGrid(sheet.grid, sheet.name, tt);
+    }
   }
 
   Object.values(tt).forEach((batches) =>
@@ -524,7 +645,7 @@ function buildTTWithDiagnostics(sheets) {
     )
   );
 
-  return { tt, diagnostics };
+  return tt;
 }
 
 /* ══════════════════════════════════════════
@@ -538,42 +659,32 @@ module.exports = async (req, res) => {
   if (req.method === "OPTIONS") return res.status(204).end();
 
   try {
-    const requestedSheet = req.query?.sheet;
+    const schoolParam = req.query?.school || "computing";
+    const school = SCHOOLS[schoolParam];
+    if (!school) {
+      return res.status(400).json({ ok: false, error: `Unknown school '${schoolParam}'. Use: computing, engineering, business` });
+    }
+
+    const sheetId = getGoogleSheetId(school.id);
     const roomsMode = req.query?.rooms;
 
     if (roomsMode === "cd") {
-      const { occupancy, count } = await fetchCDRoomOccupancyFromSheets();
+      const computingId = getGoogleSheetId(SCHOOLS.computing.id);
+      const { occupancy, count } = await fetchCDRoomOccupancyFromSheets(computingId);
       return res.status(200).json({
-        ok: true,
-        count,
-        occupancy,
+        ok: true, count, occupancy,
         updatedAt: new Date().toISOString(),
         source: "google-sheet-cd-rooms"
       });
     }
 
-    if (!requestedSheet) {
-      try {
-        const referenceTT = await fetchReferenceTimetable();
-        return res.status(200).json({
-          ok: true,
-          count: countReferenceEntries(referenceTT),
-          tt: referenceTT,
-          updatedAt: new Date().toISOString(),
-          source: "fastschedule.github.io"
-        });
-      } catch (referenceErr) {
-        // Fall through to live Google Sheets parsing below.
-      }
-    }
-
-    const tabs = requestedSheet ? [requestedSheet] : GOOGLE_SHEET_TABS;
+    const tabs = req.query?.sheet ? [req.query.sheet] : school.tabs;
     const uniqueTabs = [...new Set(tabs)];
 
     const sheets = [];
     for (const tab of uniqueTabs) {
       try {
-        const grid = await loadSheetGrid(tab);
+        const grid = await loadSheetGrid(sheetId, tab);
         sheets.push({ name: tab, grid });
       } catch (err) {
         sheets.push({ name: tab, grid: [], error: err.message || String(err) });
@@ -582,11 +693,9 @@ module.exports = async (req, res) => {
 
     if (req.query?.raw) {
       return res.status(200).json({
-        ok: true,
-        tabs: uniqueTabs,
+        ok: true, school: schoolParam, tabs: uniqueTabs,
         sheets: sheets.map((s) => ({
-          name: s.name,
-          error: s.error,
+          name: s.name, error: s.error,
           rows: s.grid.length,
           cols: Math.max(0, ...s.grid.map((r) => r.length)),
           preview: s.grid.slice(0, 35),
@@ -595,25 +704,22 @@ module.exports = async (req, res) => {
       });
     }
 
-    const { tt, diagnostics } = buildTTWithDiagnostics(sheets);
+    const tt = buildTTForSchool(sheets, school);
     const refTT = legacyTTToReferenceTT(tt);
     const count = countReferenceEntries(refTT);
 
     if (!count) {
       return res.status(500).json({
         ok: false,
-        error: "Parsed 0 classes from Google Sheet. Open /api/timetable?raw=1 and send the JSON preview to debug.",
-        diagnostics
+        error: `Parsed 0 classes for ${schoolParam}. Open /api/timetable?school=${schoolParam}&raw=1 to debug.`,
+        diagnostics: sheets.map((s) => ({ name: s.name, error: s.error, rows: s.grid.length, cols: s.grid[0]?.length || 0 }))
       });
     }
 
     return res.status(200).json({
-      ok: true,
-      count,
-      tt: refTT,
-      diagnostics,
+      ok: true, count, tt: refTT, school: schoolParam,
       updatedAt: new Date().toISOString(),
-      source: "google-sheet-fallback"
+      source: `google-sheet-${schoolParam}`
     });
   } catch (err) {
     return res.status(500).json({ ok: false, error: err.message || String(err) });
