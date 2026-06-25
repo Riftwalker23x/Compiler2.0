@@ -1462,15 +1462,46 @@ async function refreshTimetableFromGoogleSheet(){
     if(!apiData.ok) throw new Error(apiData.error||'Timetable API returned an error');
     applyTimetablePayload(apiData,'SHEET: LIVE API');
   }catch(apiErr){
-    console.warn('API timetable sync failed:',apiErr);
-    const message=(apiErr&&apiErr.message)?apiErr.message:String(apiErr);
-    setSheetStatus((_sheetHadSuccessfulLoad?'SHEET: LAST LIVE DATA · ':'SHEET ERROR · ')+message,false);
-    if(!_sheetHadSuccessfulLoad&&Object.keys(TT).length>0){
-      refreshTTFilters();
-      rebuildBlockFloorsFromTT();
-      refreshRoomSelectorsAfterDataUpdate();
-      const p0=document.getElementById('p0');
-      if(p0&&p0.classList.contains('on')) loadTT();
+    console.warn('Primary timetable source failed:',apiErr);
+    // Fallback to fastschedule.github.io reference JSON (day-first format)
+    try{
+      const fbRes=await fetch(`https://fastschedule.github.io/db/timetable.json?v=${Date.now()}`,{cache:'no-store'});
+      if(!fbRes.ok) throw new Error(`Fallback HTTP ${fbRes.status}`);
+      const fbData=await fbRes.json();
+      // Reference JSON is day-first: {Monday:{BS CS:{2025:{A:[...]}}}}
+      // Convert to dept-first for applyTimetablePayload
+      const tt={};
+      const dayKeys=['Monday','Tuesday','Wednesday','Thursday','Friday'];
+      dayKeys.forEach(day=>{
+        const dayData=fbData[day];
+        if(!dayData) return;
+        Object.entries(dayData).forEach(([dept,batches])=>{
+          tt[dept]=tt[dept]||{};
+          Object.entries(batches).forEach(([batch,sections])=>{
+            tt[dept][batch]=tt[dept][batch]||{};
+            Object.entries(sections).forEach(([sec,arr])=>{
+              tt[dept][batch][sec]=tt[dept][batch][sec]||{};
+              tt[dept][batch][sec][day]=(arr||[]).map(e=>({
+                name:e.name||e.c||'',location:e.location||e.l||'',time:e.time||e.t||''
+              }));
+            });
+          });
+        });
+      });
+      let n=0;
+      Object.values(tt).forEach(b=>Object.values(b).forEach(s=>Object.values(s).forEach(d=>Object.values(d).forEach(a=>{n+=a.length;}))));
+      applyTimetablePayload({ok:true,tt,count:n},'FALLBACK: fastschedule.github.io');
+    }catch(fbErr){
+      console.warn('Fallback timetable source also failed:',fbErr);
+      const message=(apiErr&&apiErr.message)?apiErr.message:String(apiErr);
+      setSheetStatus((_sheetHadSuccessfulLoad?'SHEET: LAST LIVE DATA · ':'SHEET ERROR · ')+message,false);
+      if(!_sheetHadSuccessfulLoad&&Object.keys(TT).length>0){
+        refreshTTFilters();
+        rebuildBlockFloorsFromTT();
+        refreshRoomSelectorsAfterDataUpdate();
+        const p0=document.getElementById('p0');
+        if(p0&&p0.classList.contains('on')) loadTT();
+      }
     }
   }
 }
