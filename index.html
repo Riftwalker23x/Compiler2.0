@@ -1290,13 +1290,24 @@ function setupTTFilterListeners(){
     schoolSel.dataset.liveBound='1';
     schoolSel.addEventListener('change',()=>{onSchoolChange();});
   }
-  if(deptSel&&!deptSel.dataset.liveBound){
+ if(deptSel&&!deptSel.dataset.liveBound){
     deptSel.dataset.liveBound='1';
-    deptSel.addEventListener('change',()=>{refreshTTFilters();saveTTPrefs();loadTT();});
+    deptSel.addEventListener('change',()=>{
+      const dep=deptSel.value;
+      const batches=Object.keys(TT[dep]||{}).sort((a,b)=>Number(b)-Number(a));
+      fillSelectOptions(batchSel,batches,null,'-- Batch --');
+      fillSelectOptions(secSel,[],null,'-- Section --');
+      saveTTPrefs();loadTT();
+    });
   }
   if(batchSel&&!batchSel.dataset.liveBound){
     batchSel.dataset.liveBound='1';
-    batchSel.addEventListener('change',()=>{refreshTTFilters();saveTTPrefs();loadTT();});
+    batchSel.addEventListener('change',()=>{
+      const dep=deptSel.value,bat=batchSel.value;
+      const secs=Object.keys(((TT[dep]||{})[bat])||{}).sort();
+      fillSelectOptions(secSel,secs,null,'-- Section --');
+      saveTTPrefs();loadTT();
+    });
   }
   [secSel,daySel].forEach(sel=>{
     if(sel&&!sel.dataset.liveBound){sel.dataset.liveBound='1';sel.addEventListener('change',()=>{saveTTPrefs();loadTT();});}

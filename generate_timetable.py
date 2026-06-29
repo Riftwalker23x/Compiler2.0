@@ -1,357 +1,595 @@
 #!/usr/bin/env python3
+
 """
-generate_timetable.py — VTable / FAST NUCES Islamabad timetable generator
-Reads Google Sheet cell background colours via Sheets API v4 to determine
-which batch (2022–2025) each class belongs to, then outputs db/timetable.json.
+Generate timetable JSON from Google Sheets using Sheets API v4.
+Reads cell background colors to determine batch/year for each entry.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SETUP (one-time, ~10 minutes)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1.  pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+Setup:
+  1. pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+  2. Go to https://console.cloud.google.com → create project → enable Google Sheets API
+  3. Create a service account → download JSON key → save as service-account.json
+  4. Share each sheet with the service account email (viewer)
+  5. Run: python generate_timetable.py --discover
+     → prints all unique non-white background colours found in each sheet
+     → copy the printed COLOUR_BATCH_MAP entries into this file
+  6. Run: python generate_timetable.py
+     → generates db/timetable-{school}.json for each school
 
-2.  console.cloud.google.com
-      -> New project
-      -> Enable "Google Sheets API"
-      -> IAM & Admin -> Service Accounts -> Create service account
-      -> Actions -> Manage keys -> Add key -> JSON
-      -> Save downloaded file as:  service-account.json  (same directory as this script)
-
-3.  Open the timetable Google Sheet
-      -> Share -> paste service account email -> Viewer
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FIRST RUN (colour discovery)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    python generate_timetable.py --discover
-
-    Prints every non-white colour found in header rows alongside
-    the batch year text it was found near.
-    Fill in COLOUR_BATCH_MAP below, then run normally.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-NORMAL RUN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    python generate_timetable.py
-
-    Outputs  db/timetable.json  ready for the frontend.
+Output: db/timetable-{school}.json  (one file per school)
 """
 
-import json, os, re, sys, argparse
+import json
+import os
+import re
+import sys
 from datetime import datetime, timezone
+from collections import OrderedDict
+
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
-# ── Configuration ──────────────────────────────────────────────────────────────
-
-SCOPES               = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
+SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 SERVICE_ACCOUNT_FILE = "service-account.json"
-OUTPUT_PATH          = os.path.join("db", "timetable-computing.json")
 
-SHEET_ID = "1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY"
-TABS     = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+SCHOOLS = OrderedDict([
+    ("computing", OrderedDict([
+        ("id", "1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY"),
+        ("tabs", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]),
+    ])),
+    ("business", OrderedDict([
+        ("id", "1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw"),
+        ("tabs", ["Monday"]),
+    ])),
+    ("engineering", OrderedDict([
+        ("id", "1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU"),
+        ("tabs", ["Monday"]),
+    ])),
+])
 
-# ── COLOUR -> BATCH MAP ────────────────────────────────────────────────────────
-# Fill this in after running:  python generate_timetable.py --discover
+DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+
+# ---------------------------------------------------------------------------
+# COLOUR_BATCH_MAP
 #
-# Keys:   (red, green, blue) floats rounded to 3 decimal places
-# Values: 4-digit batch year string
-#
-# Example:
-#   COLOUR_BATCH_MAP = {
-#       (1.0,   0.902, 0.6):   "2025",
-#       (0.714, 0.843, 0.659): "2024",
-#       (0.647, 0.808, 0.89):  "2023",
-#       (0.918, 0.702, 0.490): "2022",
-#   }
-#
-COLOUR_BATCH_MAP: dict[tuple, str] = {
-    # <- paste --discover output here
+# Auto-populated at runtime by build_colour_map().
+# No manual editing needed — the script reads header cells like
+# 'BS CS (2025)' or 'MS (CS)' to infer which colour = which batch.
+# ---------------------------------------------------------------------------
+
+COLOUR_BATCH_MAP = {}  # filled automatically at runtime
+
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
+BATCH_MAP = {"25": "2025", "24": "2024", "23": "2023", "22": "2022"}
+
+CELL_RE = re.compile(
+    r"(.+?)\s*\(([A-Z]+(?:/[A-Z]+)*)(?:-([A-Z0-9]+))?"
+    r"(?:,\s*(?:Gp?-([IV]+)|(\d{2})))?\s*\)",
+    re.IGNORECASE
+)
+
+SLOT_COLS = {
+    1: "08:30-09:50", 6: "10:00-11:20", 11: "11:30-12:50",
+    16: "01:00-02:20", 21: "02:30-03:50", 26: "03:55-05:15",
+    31: "05:20-06:40", 36: "06:45-08:05"
 }
 
-# ── Sheet layout ───────────────────────────────────────────────────────────────
-
-CLASSROOM_LEFT_BLOCK = {
+CLASSROOM_LEFT = {
     "room_col": 0, "end_col": 30,
     "slot_cols": [1, 6, 11, 16, 21, 26],
     "slot_map": {
         1: "08:30-09:50", 6: "10:00-11:20", 11: "11:30-12:50",
-        16: "01:00-02:20", 21: "02:30-03:50", 26: "03:55-05:15",
-    },
+        16: "01:00-02:20", 21: "02:30-03:50", 26: "03:55-05:15"
+    }
 }
-CLASSROOM_RIGHT_BLOCK = {
+CLASSROOM_RIGHT = {
     "room_col": 30, "end_col": None,
     "slot_cols": [31, 36],
-    "slot_map": {31: "05:20-06:40", 36: "06:45-08:05"},
+    "slot_map": {31: "05:20-06:40", 36: "06:45-08:05"}
 }
 LAB_BLOCK = {
     "room_col": 0, "end_col": None,
     "slot_cols": [1, 11, 21, 31],
     "slot_map": {
         1: "08:30-11:15", 11: "11:30-02:15",
-        21: "02:30-05:15", 31: "05:20-08:05",
-    },
+        21: "02:30-05:15", 31: "05:20-08:05"
+    }
 }
 
-YEAR_SHORT_MAP = {"25": "2025", "24": "2024", "23": "2023", "22": "2022"}
-
-CELL_RE = re.compile(
-    r"(.+?)\s*\("
-    r"([A-Z]+(?:/[A-Z]+)*)"
-    r"(?:-([A-Z0-9]+))?"
-    r"(?:,\s*(?:Gp?-([IV]+)|(\d{2})))?"
-    r"\s*\)",
-    re.IGNORECASE,
-)
-
-# ── Text helpers ───────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Text helpers
+# ---------------------------------------------------------------------------
 
 def clean(v):
     return str(v or "").replace("\u00a0", " ").strip()
 
 def one_line(v):
-    return re.sub(r"\s+", " ", clean(v)).strip()
+    return re.sub(r"\s+", " ", clean(v))
 
-# ── Colour helpers ─────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Colour helpers
+# ---------------------------------------------------------------------------
 
 def rgb_key(bg):
+    """
+    Convert a Sheets API backgroundColor dict to a rounded (R, G, B) tuple.
+    Values are floats in [0, 1]. We round to 2 decimal places so that
+    trivial float precision differences don't break dict lookups.
+    Returns None if bg is falsy.
+    """
     if not bg:
         return None
-    return (round(bg.get("red", 0.0), 3),
-            round(bg.get("green", 0.0), 3),
-            round(bg.get("blue", 0.0), 3))
+    r = round(bg.get("red",   0.0), 2)
+    g = round(bg.get("green", 0.0), 2)
+    b = round(bg.get("blue",  0.0), 2)
+    return (r, g, b)
 
 def is_white(colour):
-    return colour is None or all(c >= 0.97 for c in colour)
+    """True for white / near-white cells (no meaningful background colour)."""
+    if colour is None:
+        return True
+    r, g, b = colour
+    return r >= 0.95 and g >= 0.95 and b >= 0.95
 
-def colour_to_batch(colour, colour_map):
-    if is_white(colour):
+def colour_to_batch(colour):
+    """
+    Look up a colour tuple in COLOUR_BATCH_MAP.
+    Returns a year string like "2025", or None if not found / white.
+    """
+    if colour is None or is_white(colour):
         return None
-    if colour in colour_map:
-        return colour_map[colour]
-    for k, v in colour_map.items():
-        if all(abs(colour[i] - k[i]) < 0.012 for i in range(3)):
-            return v
-    return None
+    return COLOUR_BATCH_MAP.get(colour)
 
-# ── Sheets API ─────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Sheets API fetch — returns BOTH text grid and colour grid in one call
+# ---------------------------------------------------------------------------
 
-def build_service():
-    if not os.path.exists(SERVICE_ACCOUNT_FILE):
-        print(f"ERROR: '{SERVICE_ACCOUNT_FILE}' not found.")
-        print("See SETUP at the top of this file.")
-        sys.exit(1)
-    creds = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-    return build("sheets", "v4", credentials=creds)
+def fetch_sheet_with_colours(service, spreadsheet_id, tab):
+    """
+    Fetch a full sheet tab using spreadsheets().get() with includeGridData=True.
+    Returns:
+        text_grid   — list of rows, each row a list of strings (formatted cell values)
+        colour_grid — list of rows, each row a list of (R,G,B) tuples or None
+    Both grids have the same dimensions.
+    """
+    result = service.spreadsheets().get(
+        spreadsheetId=spreadsheet_id,
+        ranges=[f"'{tab}'"],
+        fields=(
+            "sheets.data.rowData.values("
+            "formattedValue,"
+            "effectiveFormat.backgroundColor"
+            ")"
+        ),
+        includeGridData=True
+    ).execute()
 
+    sheets_data = result.get("sheets", [])
+    if not sheets_data:
+        return [], []
 
-def fetch_tab(service, sheet_id, tab):
-    """Returns (grid, row_data_list) for one tab."""
-    vals = (service.spreadsheets().values()
-            .get(spreadsheetId=sheet_id, range=f"'{tab}'",
-                 valueRenderOption="FORMATTED_VALUE")
-            .execute())
-    grid = [[clean(c) for c in (row or [])] for row in vals.get("values", [])]
+    rows = sheets_data[0].get("data", [{}])[0].get("rowData", [])
 
-    fmt = (service.spreadsheets()
-           .get(spreadsheetId=sheet_id, ranges=[f"'{tab}'!1:6"],
-                fields="sheets.data.rowData.values(effectiveFormat.backgroundColor,formattedValue)",
-                includeGridData=True)
-           .execute())
-    row_data = (fmt.get("sheets", [{}])[0]
-                   .get("data",   [{}])[0]
-                   .get("rowData", []))
-    return grid, row_data
+    # Find max column count so both grids are rectangular
+    max_cols = 0
+    for row in rows:
+        max_cols = max(max_cols, len(row.get("values", [])))
 
-# ── Column -> batch map ────────────────────────────────────────────────────────
+    text_grid   = []
+    colour_grid = []
 
-def build_col_batch_map(row_data_list, colour_map):
-    col_map = {}
-    for row_data in row_data_list:
-        for ci, cell in enumerate(row_data.get("values", [])):
-            fv     = str(cell.get("formattedValue", "") or "")
-            colour = rgb_key(cell.get("effectiveFormat", {}).get("backgroundColor", {}))
+    for row in rows:
+        cells = row.get("values", [])
+        text_row   = []
+        colour_row = []
+        for i in range(max_cols):
+            if i < len(cells):
+                cell = cells[i]
+                text_row.append(clean(cell.get("formattedValue", "") or ""))
+                bg = cell.get("effectiveFormat", {}).get("backgroundColor")
+                colour_row.append(rgb_key(bg))
+            else:
+                text_row.append("")
+                colour_row.append(None)
+        text_grid.append(text_row)
+        colour_grid.append(colour_row)
 
-            # 1. Colour lookup
-            batch = colour_to_batch(colour, colour_map)
-            if batch and ci not in col_map:
-                col_map[ci] = batch
-                continue
+    return text_grid, colour_grid
 
-            # 2. Explicit year text in cell
-            m = re.search(r"\b(202[2-9])\b", fv)
-            if m and ci not in col_map:
-                col_map[ci] = m.group(1)
+# ---------------------------------------------------------------------------
+# Cell parsing
+# ---------------------------------------------------------------------------
 
-    return col_map
-
-
-def lookup_batch(col_map, col, year_suffix):
-    # 1. Explicit suffix in cell text
-    if year_suffix:
-        return YEAR_SHORT_MAP.get(year_suffix, "20" + year_suffix)
-    # 2. Exact column
-    if col in col_map:
-        return col_map[col]
-    # 3. Nearest column to the left
-    candidates = [(c, b) for c, b in col_map.items() if c <= col]
-    if candidates:
-        return max(candidates, key=lambda x: x[0])[1]
-    return None
-
-# ── Cell parser ────────────────────────────────────────────────────────────────
-
-def parse_cell(text):
+def parse_timetable_cell(text):
+    if not text:
+        return None
     t = one_line(text)
-    if not t:
-        return None
-    paren_end = t.find(")")
-    core = t[:paren_end + 1] if paren_end >= 0 else t
+    paren = t.find(")")
+    core = t[:paren + 1] if paren >= 0 else t
     m = CELL_RE.match(core)
     if not m:
         return None
-    section = m.group(3)
+    course  = m.group(1).strip()
+    dept_str = m.group(2)
+    section  = m.group(3)
     if not section:
         return None
-    return {
-        "course":      m.group(1).strip(),
-        "depts":       m.group(2).upper().split("/"),
-        "section":     section.upper(),
-        "year_suffix": m.group(5),
-    }
+    depts = dept_str.split("/")
+    return {"course": course, "depts": depts, "section": section}
 
-# ── Room normaliser ────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Batch inference (fallback only — used when cell has no mapped colour)
+# ---------------------------------------------------------------------------
 
-def norm_room(room):
+def infer_batch_from_course(course_name):
+    name = (course_name or "").upper()
+    if re.search(
+        r"\b(CAPSTONE|FYP|SENIOR\s+PROJECT|FINAL\s+YEAR\s+PROJECT|"
+        r"TECH\s+STARTUP|TECH\s+ENTREPRENEURSHIP|INNOVATION\s+LAB|"
+        r"RESEARCH\s+METHODS|AI\s+ETHICS|DIGITAL\s+FORENSICS|"
+        r"ETHICAL\s+HACK|MALWARE|BIG\s+DATA|BDA|AUTONOMOUS\s+VEHICLES|"
+        r"ROBOTICS|IOT|PROFESSIONAL\s+ETHICS|BUSINESS\s+COMMUNICATION|"
+        r"ENTRE|TECH\s+MGT|COMP\s+VISION|COMPUTER\s+VISION)\b", name):
+        return "2022"
+    if re.search(
+        r"\b(COMPILER|COMP\s+CONST|PDC|PARALLEL|"
+        r"ARTIFICIAL\s+INTELLIGENCE|\bAI\b|MACHINE\s+LEARNING|\bML\b|"
+        r"DEEP\s+LEARN|DEEP\s+LEARNING|COMPUTER\s+NETWORKS|\bCN\b|"
+        r"COMP\s+NET|SOFTWARE\s+ENGINEERING|\bSE\b|SPM|"
+        r"PROJECT\s+MANAGEMENT|INFO\s+SEC|INFORMATION\s+SECURITY|PPIT|"
+        r"PROFESSIONAL\s+PRACTICES|IMAGE\s+PROCESSING|\bDIP\b|"
+        r"NATURAL\s+LANGUAGE|NLP|CLOUD\s+COMP|METRIC|GEN\s+AI|"
+        r"GENERATIVE\s+AI|PRODUCT\s+DEV|GAME\s+DEV|MOBILE\s+APP|"
+        r"STAT\s+MODELING|DIGITAL\s+MKTG|FIN\s+MGT)\b", name):
+        return "2023"
+    if re.search(
+        r"\b(DATA\s+ST|DATA\s+STRUCTURES|OPERATING\s+SYSTEMS|\bOS\b|"
+        r"DATABASE|\bDB\b|REQUIREMENTS|SRE|DESIGN\s+&\s+ARCHITECTURE|"
+        r"SDA|COMPUTER\s+ORGANIZATION|COAL|PROBABILITY|PROB\s+&\s+STATS|"
+        r"STATS\s+FOR\s+ML|LINEAR\s+ALGEBRA|DATA\s+ANALYSIS)\b", name):
+        return "2024"
+    if re.search(
+        r"\b(OBJECT|OOP|DISCRETE|DIGITAL\s+LOGIC|DLD|MULTIVARIABLE|"
+        r"MV\s+CALCULUS|APPLIED\s+PHYSICS|\bAP\b|PAK\s+STUDIES|"
+        r"PAKISTAN|FUNCTIONAL\s+ENGLISH|EXP\s+WRITING|EXPOSITORY|"
+        r"SEERAH|ISLAMIC|CIVICS|PROGRAMMING|\bPF\b|"
+        r"INTRO\s+TO\s+COMPUTING|ITC|CALCULUS|COMPOSITION)\b", name):
+        return "2025"
+    return None
+
+def resolve_batch(cell_colour, cell_text, course_name):
+    """
+    Three-tier batch resolution for a single data cell:
+
+    1. Explicit year suffix in cell text:  "(CS-A, 25)"  → "2025"
+       Most reliable — directly encoded in the cell.
+
+    2. Cell background colour → COLOUR_BATCH_MAP lookup
+       Reliable once COLOUR_BATCH_MAP is filled in from --discover output.
+       This is THE primary mechanism for the computing school matrix format.
+
+    3. Course-name inference (last resort)
+       Fragile — only works for courses with distinctive names.
+       Falls back to "2023" if nothing matches.
+    """
+    # Tier 1 — explicit suffix
+    m = re.search(r",\s*(\d{2})\s*\)", cell_text)
+    if m:
+        short = m.group(1)
+        return BATCH_MAP.get(short, "20" + short)
+
+    # Tier 2 — colour lookup
+    batch = colour_to_batch(cell_colour)
+    if batch:
+        return batch
+
+    # Tier 3 — course name inference, with "2023" as final default
+    return infer_batch_from_course(course_name) or "2023"
+
+# ---------------------------------------------------------------------------
+# Room normalisation
+# ---------------------------------------------------------------------------
+
+def normalise_room(room):
     r = one_line(room).upper()
     r = re.sub(r"\s+", " ", r)
     r = re.sub(r"\b([A-D])\s+(\d{3})\b", r"\1-\2", r)
-    m = re.match(r"([A-D])\s*-\s*(\d{3}|IT\s*LAB\s*\d+|MARGALA\s*\d*|"
-                 r"RAWAL\s*\d*|GPU\s*LAB|MEHRAN\s*\d*|CALL-\d+|DIGITAL\b)", r)
+    m = re.match(
+        r"([A-D])\s*-\s*(\d{3}|IT\s*LAB\s*\d+|MARGALA\s*\d*|"
+        r"RAWAL\s*\d*|GPU\s*LAB|MEHRAN\s*\d*|CALL-\d+|DIGITAL\b)", r)
     if m:
-        return f"{m.group(1)}-{m.group(2).strip()}"
-    if "AUDI" in r:
-        return "D-AUDI"
-    m2 = re.search(r"CYBER\s*\(?\s*([A-D])-(\d{3})", r)
-    if m2:
-        return f"Cyber ({m2.group(1)}-{m2.group(2)})"
+        return f"{m.group(1).upper()}-{m.group(2).strip()}"
     return r
 
-# ── Timetable builder ──────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Timetable accumulator
+# ---------------------------------------------------------------------------
 
-def add_entry(tt, dept, batch, section, day, course, room, time):
+def add_course(tt, dept, batch, section, day, course, room, time):
     if not all([dept, batch, section, day, course, room, time]):
         return False
-    arr = (tt.setdefault(dept, {})
-             .setdefault(batch, {})
-             .setdefault(section, {})
-             .setdefault(day, []))
-    if not any(x["name"] == course and x["location"] == room and x["time"] == time
-               for x in arr):
-        arr.append({"name": course, "location": room, "time": time})
-        return True
-    return False
+    depts = dept if isinstance(dept, list) else [dept]
+    added = False
+    for d in depts:
+        tt.setdefault(d, {})
+        tt[d].setdefault(batch, {})
+        tt[d][batch].setdefault(section, {})
+        tt[d][batch][section].setdefault(day, [])
+        arr = tt[d][batch][section][day]
+        if not any(x["c"] == course and x["l"] == room and x["t"] == time for x in arr):
+            arr.append({"c": course, "l": room, "t": time})
+            added = True
+    return added
 
-# ── Grid structure finders ─────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Sheet structure helpers
+# ---------------------------------------------------------------------------
 
-def find_header_row(grid):
-    for r, row in enumerate(grid[:10]):
-        if not row:
-            continue
-        if re.search(r"\broom\b", one_line(row[0] or ""), re.I):
-            slots = sum(1 for ci in [1, 6, 11, 16, 21, 26]
-                        if ci < len(row) and re.match(r"\d{1,2}:\d{2}", one_line(row[ci] or "")))
-            if slots >= 4:
+def find_header_row(text_grid):
+    for r in range(min(len(text_grid), 10)):
+        cell = one_line(text_grid[r][0] if text_grid[r] else "")
+        if "room" in cell.lower():
+            slots_found = sum(
+                1 for c_idx in SLOT_COLS
+                if c_idx < len(text_grid[r]) and re.match(r"\d{1,2}:\d{2}", one_line(text_grid[r][c_idx] or ""))
+            )
+            if slots_found >= 4:
                 return r
     return -1
 
-def find_lab_header_row(grid, after):
-    for r in range(after, len(grid)):
-        row = grid[r]
-        if not row:
-            continue
-        if "lab" in one_line(row[0] or "").lower():
+def find_lab_header_row(text_grid, after_row):
+    for r in range(after_row, len(text_grid)):
+        col_a = one_line(text_grid[r][0] if text_grid[r] else "").lower()
+        if "lab" in col_a:
             return r
+        if len(text_grid[r]) > 1:
+            col_b = one_line(text_grid[r][1] or "")
+            if re.match(r"^\d{1,2}:\d{2}-(?:1[0-5]|0\d|2[0-3]):\d{2}$", col_b):
+                if sum(1 for c in text_grid[r] if one_line(c)) <= 6:
+                    return r
     return -1
 
-# ── Block parser ───────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Matrix block parser — now receives both text_grid and colour_grid
+# ---------------------------------------------------------------------------
 
-def parse_block(grid, start_row, end_row, block, day, tt, col_map):
+def parse_matrix_block(text_grid, colour_grid, start_row, end_row, block, day, tt):
+    """
+    Parse one rectangular block of the computing school matrix.
+
+    For each data cell:
+      - text comes from text_grid[r][col]
+      - background colour comes from colour_grid[r][col]
+      - batch is resolved via resolve_batch(colour, text, course_name)
+    """
     added = 0
-    for r in range(start_row, min(end_row, len(grid))):
-        row = grid[r]
+    for r in range(start_row, min(end_row, len(text_grid))):
+        row = text_grid[r]
         if not row:
             continue
-        room = norm_room(one_line(row[block["room_col"]] if block["room_col"] < len(row) else ""))
-        if not room or len(room) < 2:
-            continue
-        if re.search(r"reserved|tutorial|fsm|fsa|fcss|fyp|travel|admin|^room$", room, re.I):
+        room = normalise_room(one_line(row[block["room_col"]] if len(row) > block["room_col"] else ""))
+        if (not room or len(room) < 2 or
+                re.search(r"reserved|tutorial|fsm|fsa|fcss|fyp|travel|admin|room",
+                          room, re.IGNORECASE)):
             continue
 
-        for i, time_col in enumerate(block["slot_cols"]):
-            next_col  = block["slot_cols"][i + 1] if i + 1 < len(block["slot_cols"]) else (block["end_col"] or len(row))
-            scan_end  = min(next_col, len(row)) if next_col else len(row)
-            time_label = block["slot_map"][time_col]
+        sc = block["slot_cols"]
+        for i in range(len(sc)):
+            time_col = sc[i]
+            next_col = sc[i + 1] if i + 1 < len(sc) else block.get("end_col") or len(row)
+            scan_end = min(next_col, len(row)) if next_col else len(row)
 
             for col in range(time_col, scan_end):
-                if col >= len(row):
-                    break
-                cell   = one_line(row[col] or "")
-                parsed = parse_cell(cell)
+                cell_text = one_line(row[col] if col < len(row) else "")
+                if not cell_text:
+                    continue
+                parsed = parse_timetable_cell(cell_text)
                 if not parsed:
                     continue
-                batch = lookup_batch(col_map, col, parsed["year_suffix"])
+
+                # Pull this cell's background colour from colour_grid
+                cell_colour = None
+                if r < len(colour_grid) and col < len(colour_grid[r]):
+                    cell_colour = colour_grid[r][col]
+
+                batch = resolve_batch(cell_colour, cell_text, parsed["course"])
                 if not batch:
                     continue
+
                 for dept_code in parsed["depts"]:
-                    if add_entry(tt, f"BS {dept_code}", batch, parsed["section"],
-                                 day, parsed["course"], room, time_label):
+                    dept_key = f"BS {dept_code}"
+                    if add_course(tt, dept_key, batch, parsed["section"],
+                                  day, parsed["course"], room,
+                                  block["slot_map"][time_col]):
                         added += 1
-                break  # one entry per slot per room
+                break  # found the cell for this slot, move to next slot
+
     return added
 
-# ── Full grid parser ───────────────────────────────────────────────────────────
-
-def parse_grid(grid, day, tt, col_map):
-    hr = find_header_row(grid)
+def parse_grid_to_tt(text_grid, colour_grid, day, tt):
+    hr = find_header_row(text_grid)
     if hr < 0:
-        print(f"    WARNING: header row not found for {day}")
         return 0
-    lr            = find_lab_header_row(grid, hr + 1)
-    classroom_end = lr if lr > 0 else len(grid)
-
-    added  = parse_block(grid, hr + 1, classroom_end, CLASSROOM_LEFT_BLOCK,  day, tt, col_map)
-    added += parse_block(grid, hr + 1, classroom_end, CLASSROOM_RIGHT_BLOCK, day, tt, col_map)
+    lr = find_lab_header_row(text_grid, hr + 1)
+    classroom_end = lr if lr > 0 else len(text_grid)
+    added = 0
+    added += parse_matrix_block(text_grid, colour_grid, hr + 1, classroom_end, CLASSROOM_LEFT,  day, tt)
+    added += parse_matrix_block(text_grid, colour_grid, hr + 1, classroom_end, CLASSROOM_RIGHT, day, tt)
     if lr > 0:
-        added += parse_block(grid, lr + 1, len(grid), LAB_BLOCK, day, tt, col_map)
+        added += parse_matrix_block(text_grid, colour_grid, lr + 1, len(text_grid), LAB_BLOCK, day, tt)
     return added
 
-# ── Output builder ─────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Auto colour map builder
+# ---------------------------------------------------------------------------
 
-_SLOT_MINUTES = {
-    "08:30": 510, "10:00": 600, "11:30": 690, "01:00": 780,
-    "02:30": 870, "03:55": 955, "05:20": 1040, "06:45": 1125,
-    "08:30-11:15": 510, "11:30-02:15": 690, "02:30-05:15": 870, "05:20-08:05": 1040,
-}
+def build_colour_map(service):
+    """
+    Scan all sheets and auto-populate COLOUR_BATCH_MAP by parsing year from
+    header cells like 'BS CS (2025)', 'BS AI (2022)', 'MS (CS)', etc.
+    Only needs to scan the first few rows where headers live.
+    """
+    year_re = re.compile(r'\b(20\d{2})\b')
+    ms_re   = re.compile(r'\bMS\b', re.IGNORECASE)
 
-def slot_minutes(slot):
-    start = str(slot or "").split("-")[0]
-    return _SLOT_MINUTES.get(slot, _SLOT_MINUTES.get(start, 9999))
+    for school_name, school_info in SCHOOLS.items():
+        for tab in school_info["tabs"]:
+            try:
+                text_grid, colour_grid = fetch_sheet_with_colours(
+                    service, school_info["id"], tab)
+            except Exception:
+                continue
 
-def build_output(tt):
-    """Sort entries within each day by slot time. Returns dept->batch->section->day->[] shape,
-    which is what the frontend's applyTimetablePayload expects under the 'tt' key."""
+            # Only scan first 10 rows — headers are always at the top
+            for r, (t_row, c_row) in enumerate(zip(text_grid[:10], colour_grid[:10])):
+                for text, colour in zip(t_row, c_row):
+                    if colour is None or is_white(colour):
+                        continue
+                    if colour in COLOUR_BATCH_MAP:
+                        continue  # already mapped
+
+                    m = year_re.search(text)
+                    if m:
+                        COLOUR_BATCH_MAP[colour] = m.group(1)
+                        continue
+
+                    # MS header with no year e.g. 'MS (CS)', 'MS (DS)'
+                    if ms_re.search(text) and 'BS' not in text.upper():
+                        COLOUR_BATCH_MAP[colour] = "MS"
+
+    print(f"  Auto-mapped {len(COLOUR_BATCH_MAP)} colours: "
+          + ", ".join(sorted(set(COLOUR_BATCH_MAP.values()))))
+
+# ---------------------------------------------------------------------------
+# Colour discovery  (--discover mode)
+# ---------------------------------------------------------------------------
+
+def discover_colours(service):
+    """
+    Scan all sheets and print every unique non-white background colour found,
+    with the nearest cell text so you can identify which batch it belongs to.
+    Run once, then fill in COLOUR_BATCH_MAP from the output.
+    """
+    print("\n" + "=" * 60)
+    print("COLOUR DISCOVERY MODE")
+    print("=" * 60)
+    print("Scanning all sheets for non-white background colours...\n")
+
+    all_colours = {}  # colour_tuple → list of (school, tab, row, col, text)
+
+    for school_name, school_info in SCHOOLS.items():
+        print(f"  [{school_name}]")
+        for tab in school_info["tabs"]:
+            print(f"    Fetching {tab}...", end=" ", flush=True)
+            try:
+                text_grid, colour_grid = fetch_sheet_with_colours(
+                    service, school_info["id"], tab)
+            except Exception as e:
+                print(f"ERROR: {e}")
+                continue
+
+            found = 0
+            for r, (t_row, c_row) in enumerate(zip(text_grid, colour_grid)):
+                for col, (text, colour) in enumerate(zip(t_row, c_row)):
+                    if colour is None or is_white(colour):
+                        continue
+                    snippet = one_line(text)[:60] if text else ""
+                    if colour not in all_colours:
+                        all_colours[colour] = []
+                    all_colours[colour].append((school_name, tab, r, col, snippet))
+                    found += 1
+            print(f"{found} coloured cells")
+
+    if not all_colours:
+        print("\n[!] No non-white coloured cells found across any sheet.")
+        print("    Check that the service account has viewer access to the sheets.")
+        return
+
+    print("\n" + "=" * 60)
+    print(f"Found {len(all_colours)} unique colours.\n")
+
+    # Print them grouped, with one example cell each for identification
+    # Sort by first occurrence row so header colours come first
+    def sort_key(item):
+        colour, occurrences = item
+        first = occurrences[0]
+        return (first[0], first[1], first[2])  # school, tab, row
+
+    for colour, occurrences in sorted(all_colours.items(), key=sort_key):
+        r, g, b = colour
+        # Show the first few examples so you can identify the batch
+        examples = occurrences[:3]
+        ex_str = " | ".join(
+            f"'{ex[4]}' (row {ex[2]}, col {ex[3]}, {ex[0]}/{ex[1]})"
+            for ex in examples
+        )
+        count = len(occurrences)
+        print(f"  ({r:.2f}, {g:.2f}, {b:.2f})  [{count:4d} cells]  e.g. {ex_str}")
+
+    print("\n" + "=" * 60)
+    print("Copy the entries below into COLOUR_BATCH_MAP at the top of this script,")
+    print("replacing 'YEAR' with the correct batch year (2022 / 2023 / 2024 / 2025):\n")
+    print("COLOUR_BATCH_MAP = {")
+    for colour, occurrences in sorted(all_colours.items(), key=sort_key):
+        r, g, b = colour
+        ex = occurrences[0]
+        print(f"    ({r:.2f}, {g:.2f}, {b:.2f}): \"YEAR\",  # e.g. '{ex[4][:50]}'")
+    print("}")
+    print()
+
+# ---------------------------------------------------------------------------
+# Main generator
+# ---------------------------------------------------------------------------
+
+def generate(service, school_name, school_info):
+    """
+    Fetch each tab of a school's sheet with colours and parse into tt dict.
+    Returns (tt_dict, total_entry_count).
+    """
+    tt = {}
+    total = 0
+    for tab in school_info["tabs"]:
+        day = tab.strip().capitalize()
+        if day not in DAYS:
+            continue
+        print(f"  Fetching {school_name}/{tab}...", end=" ", flush=True)
+        try:
+            text_grid, colour_grid = fetch_sheet_with_colours(
+                service, school_info["id"], tab)
+        except Exception as e:
+            print(f"ERROR: {e}")
+            continue
+
+        if not text_grid:
+            print("empty — skipped")
+            continue
+
+        added = parse_grid_to_tt(text_grid, colour_grid, day, tt)
+        total += added
+        print(f"{added} entries")
+
+    return tt, total
+
+# ---------------------------------------------------------------------------
+# Output helpers
+# ---------------------------------------------------------------------------
+
+def convert_to_reference_format(tt):
+    """Convert internal {c,l,t} entries to {name,location,time}."""
     out = {}
     for dept, batches in tt.items():
         out[dept] = {}
         for batch, sections in batches.items():
             out[dept][batch] = {}
-            for section, days in sections.items():
-                out[dept][batch][section] = {}
+            for sec, days in sections.items():
+                out[dept][batch][sec] = {}
                 for day, entries in days.items():
-                    out[dept][batch][section][day] = sorted(
-                        entries, key=lambda e: slot_minutes(e["time"])
-                    )
+                    out[dept][batch][sec][day] = [
+                        {"name": e["c"], "location": e["l"], "time": e["t"]}
+                        for e in entries
+                    ]
     return out
 
 def count_entries(tt):
@@ -359,121 +597,73 @@ def count_entries(tt):
     for batches in tt.values():
         for sections in batches.values():
             for days in sections.values():
-                for arr in days.values():
-                    n += len(arr)
+                for entries in days.values():
+                    n += len(entries)
     return n
 
-# ── Discovery mode ─────────────────────────────────────────────────────────────
-
-def run_discovery(service):
-    print("\n=== COLOUR DISCOVERY MODE ===")
-    print("Scanning header rows (1-6) for batch colours...\n")
-    found = {}
-
-    for tab in TABS:
-        print(f"  Tab: {tab}")
-        try:
-            _, row_data = fetch_tab(service, SHEET_ID, tab)
-        except Exception as e:
-            print(f"    ERROR: {e}")
-            continue
-        for ri, row in enumerate(row_data):
-            for ci, cell in enumerate(row.get("values", [])):
-                fv     = str(cell.get("formattedValue", "") or "")
-                colour = rgb_key(cell.get("effectiveFormat", {}).get("backgroundColor", {}))
-                if is_white(colour):
-                    continue
-                m = re.search(r"\b(202[2-9])\b", fv)
-                if m and colour not in found:
-                    found[colour] = m.group(1)
-                    print(f"    row {ri} col {ci}  colour={colour}  ->  {m.group(1)}  ('{fv[:60]}')")
-
-    if not found:
-        print("\nNo colour+year pairs found. Dumping ALL non-white header colours:\n")
-        try:
-            _, row_data = fetch_tab(service, SHEET_ID, TABS[0])
-        except Exception:
-            return
-        for ri, row in enumerate(row_data):
-            for ci, cell in enumerate(row.get("values", [])):
-                fv     = str(cell.get("formattedValue", "") or "")
-                colour = rgb_key(cell.get("effectiveFormat", {}).get("backgroundColor", {}))
-                if not is_white(colour):
-                    print(f"  ({ri},{ci})  colour={colour}  value='{fv[:80]}'")
-        print("\nMatch colours visually to batch years in the sheet, then fill COLOUR_BATCH_MAP.")
-        return
-
-    print("\n--- Paste this into COLOUR_BATCH_MAP ---")
-    print("COLOUR_BATCH_MAP: dict[tuple, str] = {")
-    for colour, year in sorted(found.items(), key=lambda x: x[1]):
-        r, g, b = colour
-        print(f'    ({r}, {g}, {b}): "{year}",')
-    print("}")
-    print("-----------------------------------------")
-    print("Then run:  python generate_timetable.py")
-
-# ── Main ───────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
 
 def main():
-    ap = argparse.ArgumentParser(description="VTable timetable generator")
-    ap.add_argument("--discover", action="store_true",
-                    help="Print cell colours from header rows then exit")
-    args = ap.parse_args()
+    discover_mode = "--discover" in sys.argv
 
-    service = build_service()
-
-    if args.discover:
-        run_discovery(service)
+    if not os.path.exists(SERVICE_ACCOUNT_FILE):
+        print(f"ERROR: '{SERVICE_ACCOUNT_FILE}' not found.")
+        print()
+        print("Setup steps:")
+        print("  1. https://console.cloud.google.com → new project → enable Google Sheets API")
+        print("  2. IAM & Admin → Service Accounts → Create → download JSON key")
+        print(f"  3. Save the key as '{SERVICE_ACCOUNT_FILE}' in this directory")
+        print("  4. Share each Google Sheet with the service account email (Viewer)")
+        print()
+        print("Then run:  python generate_timetable.py --discover")
         return
 
+    creds = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+    service = build("sheets", "v4", credentials=creds)
+
+    if discover_mode:
+        discover_colours(service)
+        return
+
+    print("Auto-detecting colour → batch mappings from sheet headers...")
+    build_colour_map(service)
+
     if not COLOUR_BATCH_MAP:
-        print("ERROR: COLOUR_BATCH_MAP is empty.")
-        print("Run:  python generate_timetable.py --discover")
-        print("Then fill in COLOUR_BATCH_MAP at the top of this file.")
-        sys.exit(1)
+        print("ERROR: Could not auto-detect any colour mappings.")
+        print("Run --discover to inspect the sheet manually.")
+        return
 
-    print("Generating timetable.json...")
-    tt = {}
-    total_added = 0
-
-    for tab in TABS:
-        day = tab.strip().capitalize()
-        print(f"  Fetching {tab}...", end=" ", flush=True)
-        try:
-            grid, row_data = fetch_tab(service, SHEET_ID, tab)
-        except Exception as e:
-            print(f"ERROR: {e}")
-            continue
-
-        col_map     = build_col_batch_map(row_data, COLOUR_BATCH_MAP)
-        added       = parse_grid(grid, day, tt, col_map)
-        total_added += added
-        print(f"{added} entries  (col_map: {len(col_map)} anchors, batches: {sorted(set(col_map.values()))})")
-
-    if not total_added:
-        print("\nERROR: 0 entries parsed.")
-        print("  1. Check COLOUR_BATCH_MAP matches --discover output")
-        print("  2. Verify sheet is shared with the service account (Viewer)")
-        print("  3. Run --discover again to inspect colours")
-        sys.exit(1)
-
-    out = build_output(tt)
-    n   = count_entries(out)
     os.makedirs("db", exist_ok=True)
-    payload = {
-        "ok": True,
-        "count": n,
-        "school": "computing",
-        "source": "generated",
-        "generatedAt": datetime.now(timezone.utc).isoformat(),
-        "tt": out,
-    }
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2)
+    total_entries = 0
+    all_depts = set()
 
-    depts = sorted(out)
-    print(f"\nDone — {n} entries written to {OUTPUT_PATH}")
-    print(f"Departments: {depts}")
+    for school_name, school_info in SCHOOLS.items():
+        print(f"\nProcessing {school_name}...")
+        tt, count = generate(service, school_name, school_info)
+        total_entries += count
+        ref_tt = convert_to_reference_format(tt)
+        all_depts.update(ref_tt.keys())
+
+        output = {
+            "tt": ref_tt,
+            "count": count_entries(ref_tt),
+            "generatedAt": datetime.now(timezone.utc).isoformat(),
+        }
+
+        out_path = os.path.join("db", f"timetable-{school_name}.json")
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump(output, f, ensure_ascii=False, indent=2)
+
+        print(f"  → {school_name}: {count} entries, {len(tt)} depts → {out_path}")
+
+    print(f"\n{'=' * 50}")
+    print(f"Done. {len(SCHOOLS)} school files written to db/")
+    print(f"Total entries: {total_entries}")
+    print(f"All departments: {', '.join(sorted(all_depts))}")
+
 
 if __name__ == "__main__":
     main()
