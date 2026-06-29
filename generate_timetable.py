@@ -30,6 +30,30 @@ from googleapiclient.discovery import build
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 SERVICE_ACCOUNT_FILE = "service-account.json"
+DEBUG_LOG_FILE = "debugLog.txt"
+
+# ---------------------------------------------------------------------------
+# Debug logger
+# ---------------------------------------------------------------------------
+
+_debug_lines = []
+
+def dlog(msg, level="INFO"):
+    stamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    line = f"[{stamp}] [{level}] {msg}"
+    _debug_lines.append(line)
+    print(line)
+
+def dlog_error(msg):
+    dlog(msg, level="ERROR")
+
+def dlog_warn(msg):
+    dlog(msg, level="WARN")
+
+def flush_debug_log():
+    with open(DEBUG_LOG_FILE, "w", encoding="utf-8") as f:
+        f.write("\n".join(_debug_lines) + "\n")
+    print(f"\nDebug log written to: {DEBUG_LOG_FILE}")
 
 SCHOOLS = OrderedDict([
     ("computing", OrderedDict([
@@ -146,6 +170,18 @@ def colour_to_batch(colour):
 # Sheets API fetch — returns BOTH text grid and colour grid in one call
 # ---------------------------------------------------------------------------
 
+def get_sheet_tab_names(service, spreadsheet_id):
+    """Return the list of actual tab/sheet names in a spreadsheet."""
+    try:
+        meta = service.spreadsheets().get(
+            spreadsheetId=spreadsheet_id,
+            fields="sheets.properties(title,index)"
+        ).execute()
+        return [s["properties"]["title"] for s in meta.get("sheets", [])]
+    except Exception as e:
+        dlog_error(f"Could not fetch tab names for {spreadsheet_id}: {e}")
+        return []
+
 def fetch_sheet_with_colours(service, spreadsheet_id, tab):
     """
     Fetch a full sheet tab using spreadsheets().get() with includeGridData=True.
@@ -154,6 +190,7 @@ def fetch_sheet_with_colours(service, spreadsheet_id, tab):
         colour_grid — list of rows, each row a list of (R,G,B) tuples or None
     Both grids have the same dimensions.
     """
+    dlog(f"Fetching spreadsheet={spreadsheet_id} tab='{tab}'")
     result = service.spreadsheets().get(
         spreadsheetId=spreadsheet_id,
         ranges=[f"'{tab}'"],
@@ -550,9 +587,23 @@ def generate(service, school_name, school_info):
     """
     tt = {}
     total = 0
+
+    # Discover actual tab names to help debug wrong tab name errors
+    sheet_url = f"https://docs.google.com/spreadsheets/d/{school_info['id']}"
+    dlog(f"--- {school_name.upper()} --- sheet: {sheet_url}")
+    actual_tabs = get_sheet_tab_names(service, school_info["id"])
+    dlog(f"  Actual tabs in sheet: {actual_tabs}")
+    configured_tabs = school_info["tabs"]
+    dlog(f"  Configured tabs    : {configured_tabs}")
+    missing = [t for t in configured_tabs if t not in actual_tabs]
+    if missing:
+        dlog_error(f"  MISMATCH: tabs {missing} not found in sheet. Available: {actual_tabs}")
+        dlog_warn(f"  Fix: update SCHOOLS['{school_name}']['tabs'] to match one of: {actual_tabs}")
+
     for tab in school_info["tabs"]:
         day = tab.strip().capitalize()
         if day not in DAYS:
+            dlog_warn(f"  Tab '{tab}' does not map to a valid day — skipping")
             continue
         print(f"  Fetching {school_name}/{tab}...", end=" ", flush=True)
         try:
@@ -560,16 +611,20 @@ def generate(service, school_name, school_info):
                 service, school_info["id"], tab)
         except Exception as e:
             print(f"ERROR: {e}")
+            dlog_error(f"  fetch failed for {school_name}/{tab}: {e}")
             continue
 
         if not text_grid:
             print("empty — skipped")
+            dlog_warn(f"  {school_name}/{tab} returned empty grid")
             continue
 
         added = parse_grid_to_tt(text_grid, colour_grid, day, tt)
         total += added
         print(f"{added} entries")
+        dlog(f"  {school_name}/{tab}: {added} entries parsed")
 
+    dlog(f"  {school_name} total: {total} entries, {len(tt)} depts")
     return tt, total
 
 # ---------------------------------------------------------------------------
@@ -608,33 +663,35 @@ def count_entries(tt):
 def main():
     discover_mode = "--discover" in sys.argv
 
+    dlog(f"generate_timetable.py started — mode={'discover' if discover_mode else 'generate'}")
+    dlog(f"Python: {sys.version}")
+
     if not os.path.exists(SERVICE_ACCOUNT_FILE):
+        dlog_error(f"'{SERVICE_ACCOUNT_FILE}' not found — cannot authenticate")
         print(f"ERROR: '{SERVICE_ACCOUNT_FILE}' not found.")
-        print()
-        print("Setup steps:")
-        print("  1. https://console.cloud.google.com → new project → enable Google Sheets API")
-        print("  2. IAM & Admin → Service Accounts → Create → download JSON key")
-        print(f"  3. Save the key as '{SERVICE_ACCOUNT_FILE}' in this directory")
-        print("  4. Share each Google Sheet with the service account email (Viewer)")
-        print()
-        print("Then run:  python generate_timetable.py --discover")
+        flush_debug_log()
         return
 
+    dlog(f"Loading credentials from {SERVICE_ACCOUNT_FILE}")
     creds = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     service = build("sheets", "v4", credentials=creds)
+    dlog(f"Google Sheets API client ready")
 
     if discover_mode:
         discover_colours(service)
+        flush_debug_log()
         return
 
-    print("Auto-detecting colour → batch mappings from sheet headers...")
+    dlog("Auto-detecting colour → batch mappings from sheet headers...")
     build_colour_map(service)
 
     if not COLOUR_BATCH_MAP:
-        print("ERROR: Could not auto-detect any colour mappings.")
-        print("Run --discover to inspect the sheet manually.")
+        dlog_error("Could not auto-detect any colour mappings — aborting")
+        flush_debug_log()
         return
+
+    dlog(f"Colour map: {COLOUR_BATCH_MAP}")
 
     os.makedirs("db", exist_ok=True)
     total_entries = 0
@@ -648,6 +705,7 @@ def main():
         all_depts.update(ref_tt.keys())
 
         output = {
+            "ok": True,
             "tt": ref_tt,
             "count": count_entries(ref_tt),
             "generatedAt": datetime.now(timezone.utc).isoformat(),
@@ -657,12 +715,15 @@ def main():
         with open(out_path, "w", encoding="utf-8") as f:
             json.dump(output, f, ensure_ascii=False, indent=2)
 
+        dlog(f"Wrote {out_path} ({count_entries(ref_tt)} entries, {len(ref_tt)} depts)")
         print(f"  → {school_name}: {count} entries, {len(tt)} depts → {out_path}")
 
     print(f"\n{'=' * 50}")
     print(f"Done. {len(SCHOOLS)} school files written to db/")
     print(f"Total entries: {total_entries}")
     print(f"All departments: {', '.join(sorted(all_depts))}")
+    dlog(f"Done. Total entries: {total_entries}. Depts: {sorted(all_depts)}")
+    flush_debug_log()
 
 
 if __name__ == "__main__":
