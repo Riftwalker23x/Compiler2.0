@@ -62,7 +62,7 @@ SCHOOLS = OrderedDict([
     ])),
     ("business", OrderedDict([
         ("id", "1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw"),
-        ("tabs", ["Monday"]),
+        ("tabs", ["Timetable"]),
     ])),
     ("engineering", OrderedDict([
         ("id", "1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU"),
@@ -184,53 +184,84 @@ def get_sheet_tab_names(service, spreadsheet_id):
 
 def fetch_sheet_with_colours(service, spreadsheet_id, tab):
     """
-    Fetch a full sheet tab using spreadsheets().get() with includeGridData=True.
+    Fetch a full sheet tab using two lightweight API calls:
+
+      1. spreadsheets.values.get()  — returns formatted cell text only.
+         Very small response; never triggers the amplification-ratio limit.
+
+      2. spreadsheets.get() with includeGridData=True BUT scoped to the
+         exact bounding rectangle reported by call 1.  Because we request
+         only the cells that actually contain data, the response stays well
+         within Google's 100× amplification-ratio limit even for large sheets
+         like the Business / FSM 'Timetable' tab.
+
     Returns:
-        text_grid   — list of rows, each row a list of strings (formatted cell values)
+        text_grid   — list of rows, each row a list of strings
         colour_grid — list of rows, each row a list of (R,G,B) tuples or None
     Both grids have the same dimensions.
     """
     dlog(f"Fetching spreadsheet={spreadsheet_id} tab='{tab}'")
-    result = service.spreadsheets().get(
+
+    # ── Call 1: text only ────────────────────────────────────────────────────
+    values_result = service.spreadsheets().values().get(
         spreadsheetId=spreadsheet_id,
-        ranges=[f"'{tab}'"],
+        range=f"'{tab}'",
+        valueRenderOption="FORMATTED_VALUE",
+    ).execute()
+
+    raw_rows = values_result.get("values", [])
+    if not raw_rows:
+        return [], []
+
+    num_rows = len(raw_rows)
+    num_cols = max(len(r) for r in raw_rows)
+
+    # Build a rectangular text grid from the values response
+    text_grid = []
+    for r in raw_rows:
+        padded = [clean(v) for v in r] + [""] * (num_cols - len(r))
+        text_grid.append(padded)
+
+    # ── Call 2: colours only, bounded to actual data range ───────────────────
+    # Convert column count to an A1-notation letter so the range is explicit.
+    def col_to_letter(n):          # n is 1-based column count
+        letters = ""
+        while n:
+            n, rem = divmod(n - 1, 26)
+            letters = chr(65 + rem) + letters
+        return letters
+
+    end_col_letter = col_to_letter(num_cols)
+    bounded_range  = f"'{tab}'!A1:{end_col_letter}{num_rows}"
+
+    colour_result = service.spreadsheets().get(
+        spreadsheetId=spreadsheet_id,
+        ranges=[bounded_range],
         fields=(
             "sheets.data.rowData.values("
-            "formattedValue,"
             "effectiveFormat.backgroundColor"
             ")"
         ),
-        includeGridData=True
+        includeGridData=True,
     ).execute()
 
-    sheets_data = result.get("sheets", [])
-    if not sheets_data:
-        return [], []
+    sheets_data = colour_result.get("sheets", [])
+    colour_rows = (
+        sheets_data[0].get("data", [{}])[0].get("rowData", [])
+        if sheets_data else []
+    )
 
-    rows = sheets_data[0].get("data", [{}])[0].get("rowData", [])
-
-    # Find max column count so both grids are rectangular
-    max_cols = 0
-    for row in rows:
-        max_cols = max(max_cols, len(row.get("values", [])))
-
-    text_grid   = []
+    # Build a rectangular colour grid aligned to text_grid dimensions
     colour_grid = []
-
-    for row in rows:
-        cells = row.get("values", [])
-        text_row   = []
+    for r in range(num_rows):
         colour_row = []
-        for i in range(max_cols):
-            if i < len(cells):
-                cell = cells[i]
-                text_row.append(clean(cell.get("formattedValue", "") or ""))
-                bg = cell.get("effectiveFormat", {}).get("backgroundColor")
+        cells = colour_rows[r].get("values", []) if r < len(colour_rows) else []
+        for c in range(num_cols):
+            if c < len(cells):
+                bg = cells[c].get("effectiveFormat", {}).get("backgroundColor")
                 colour_row.append(rgb_key(bg))
             else:
-                text_row.append("")
                 colour_row.append(None)
-        text_grid.append(text_row)
         colour_grid.append(colour_row)
 
     return text_grid, colour_grid
@@ -806,20 +837,33 @@ def generate(service, school_name, school_info):
     dlog(f"  Actual tabs in sheet: {actual_tabs}")
     configured_tabs = school_info["tabs"]
     dlog(f"  Configured tabs    : {configured_tabs}")
+
     missing = [t for t in configured_tabs if t not in actual_tabs]
     if missing:
-        dlog_error(f"  MISMATCH: tabs {missing} not found in sheet. Available: {actual_tabs}")
-        dlog_warn(f"  Fix: update SCHOOLS['{school_name}']['tabs'] to match one of: {actual_tabs}")
+        dlog_error(
+            f"  MISMATCH: tabs {missing} not found in sheet. Available: {actual_tabs}"
+        )
+        dlog_warn(
+            f"  Fix: update SCHOOLS['{school_name}']['tabs'] to match one of: {actual_tabs}"
+        )
 
-    for tab in school_info["tabs"]:
-        day = tab.strip().capitalize()
-        if day not in DAYS:
-            dlog_warn(f"  Tab '{tab}' does not map to a valid day — skipping")
-            continue
+    for tab in configured_tabs:
+
+        # Only computing/engineering use tab names as weekdays
+        if school_name != "business":
+            day = tab.strip().capitalize()
+            if day not in DAYS:
+                dlog_warn(f"  Tab '{tab}' does not map to a valid day — skipping")
+                continue
+        else:
+            day = None  # Business parser determines the day from column A
+
         print(f"  Fetching {school_name}/{tab}...", end=" ", flush=True)
+
         try:
             text_grid, colour_grid = fetch_sheet_with_colours(
-                service, school_info["id"], tab)
+                service, school_info["id"], tab
+            )
         except Exception as e:
             print(f"ERROR: {e}")
             dlog_error(f"  fetch failed for {school_name}/{tab}: {e}")
@@ -831,17 +875,17 @@ def generate(service, school_name, school_info):
             continue
 
         if school_name == "business":
-            # FSM business school uses paired-matrix format (course + section in same row)
+            # FSM business school uses paired-matrix format
             added = parse_business_grid(text_grid, day, tt)
         else:
             added = parse_grid_to_tt(text_grid, colour_grid, day, tt)
+
         total += added
         print(f"{added} entries")
         dlog(f"  {school_name}/{tab}: {added} entries parsed")
 
     dlog(f"  {school_name} total: {total} entries, {len(tt)} depts")
     return tt, total
-
 # ---------------------------------------------------------------------------
 # Output helpers
 # ---------------------------------------------------------------------------

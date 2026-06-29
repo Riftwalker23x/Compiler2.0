@@ -1,3 +1,45 @@
-[2026-06-29 15:22:30] [INFO] generate_timetable.py started — mode=generate
-[2026-06-29 15:22:30] [INFO] Python: 3.12.6 (tags/v3.12.6:a4a2d2b, Sep  6 2024, 20:11:23) [MSC v.1940 64 bit (AMD64)]
-[2026-06-29 15:22:30] [ERROR] 'service-account.json' not found — cannot authenticate
+[2026-06-29 19:26:43] [INFO] generate_timetable.py started — mode=generate
+[2026-06-29 19:26:43] [INFO] Python: 3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]
+[2026-06-29 19:26:43] [INFO] Loading credentials from service-account.json
+[2026-06-29 19:26:43] [INFO] Google Sheets API client ready
+[2026-06-29 19:26:43] [INFO] Auto-detecting colour → batch mappings from sheet headers...
+[2026-06-29 19:26:43] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Monday'
+[2026-06-29 19:26:47] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Tuesday'
+[2026-06-29 19:26:48] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Wednesday'
+[2026-06-29 19:26:49] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Thursday'
+[2026-06-29 19:26:50] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Friday'
+[2026-06-29 19:26:51] [INFO] Fetching spreadsheet=1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw tab='Timetable'
+[2026-06-29 19:26:53] [INFO] Fetching spreadsheet=1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU tab='Monday'
+[2026-06-29 19:27:03] [INFO] Colour map: {(1, 1, 0.0): '2026', (1, 0.72, 0.25): '2025', (0.5, 0.3, 1): '2025', (0.0, 0.96, 0.0): '2025', (0.0, 0.0, 1): '2025', (0.9, 0.17, 0.02): '2025', (0.4, 1, 1): 'MS', (0.43, 0.32, 0.0): '2024', (0.21, 0.11, 0.46): '2024', (0.15, 0.31, 0.07): '2024', (0.03, 0.22, 0.39): '2024', (0.52, 0.13, 0.05): '2024', (0.75, 0.75, 0.75): 'MS', (0.76, 0.58, 0.0): '2023', (0.69, 0.5, 0.84): '2023', (0.42, 0.66, 0.31): '2023', (0.35, 0.62, 0.85): '2023', (0.87, 0.49, 0.42): '2023', (1, 0.6, 0.0): 'MS', (1, 0.0, 0.0): 'MS', (1, 0.9, 0.6): '2022', (0.71, 0.65, 0.84): '2022', (0.71, 0.84, 0.66): '2022', (0.67, 0.8, 0.92): '2022', (0.96, 0.8, 0.8): '2022', (0.77, 0.88, 0.7): 'MS', (1, 0.7, 0.4): '2011'}
+[2026-06-29 19:27:03] [INFO] --- COMPUTING --- sheet: https://docs.google.com/spreadsheets/d/1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY
+[2026-06-29 19:27:04] [INFO]   Actual tabs in sheet: ['Welcome', 'Tuesday', 'Monday', 'Wednesday', 'Monday (May 11)', 'Sat (May 09)', 'Thursday', 'Friday', 'Sat (25 Apr)', 'Sat (May 02)', 'Tuesday (May 12)', 'Saturday (Feb.14,2025)']
+[2026-06-29 19:27:04] [INFO]   Configured tabs    : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+[2026-06-29 19:27:04] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Monday'
+[2026-06-29 19:27:05] [INFO]   computing/Monday: 222 entries parsed
+[2026-06-29 19:27:05] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Tuesday'
+[2026-06-29 19:27:07] [INFO]   computing/Tuesday: 257 entries parsed
+[2026-06-29 19:27:07] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Wednesday'
+[2026-06-29 19:27:08] [INFO]   computing/Wednesday: 252 entries parsed
+[2026-06-29 19:27:08] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Thursday'
+[2026-06-29 19:27:09] [INFO]   computing/Thursday: 261 entries parsed
+[2026-06-29 19:27:09] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Friday'
+[2026-06-29 19:27:10] [INFO]   computing/Friday: 69 entries parsed
+[2026-06-29 19:27:10] [INFO]   computing total: 1061 entries, 7 depts
+[2026-06-29 19:27:10] [INFO] Wrote db\timetable-computing.json (1061 entries, 7 depts)
+[2026-06-29 19:27:10] [INFO] --- BUSINESS --- sheet: https://docs.google.com/spreadsheets/d/1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw
+[2026-06-29 19:27:11] [INFO]   Actual tabs in sheet: ['Ramzan Timetable', 'Timetable', 'Course Plan']
+[2026-06-29 19:27:11] [INFO]   Configured tabs    : ['Timetable']
+[2026-06-29 19:27:11] [INFO] Fetching spreadsheet=1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw tab='Timetable'
+[2026-06-29 19:27:14] [INFO]   business/Timetable: 490 entries parsed
+[2026-06-29 19:27:14] [INFO]   business total: 490 entries, 4 depts
+[2026-06-29 19:27:14] [INFO] Wrote db\timetable-business.json (490 entries, 4 depts)
+[2026-06-29 19:27:14] [INFO] --- ENGINEERING --- sheet: https://docs.google.com/spreadsheets/d/1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU
+[2026-06-29 19:27:15] [INFO]   Actual tabs in sheet: ['Week 5 Cancellations', 'Week 3 cancellations', 'Week 2 cancellations', 'Ramadan Classes Schedule Sp-26', '17th Week Reschedule', 'Classes Schedule FSE SP-26', 'Academic Plan', 'Courses SP-26']
+[2026-06-29 19:27:15] [INFO]   Configured tabs    : ['Monday']
+[2026-06-29 19:27:15] [ERROR]   MISMATCH: tabs ['Monday'] not found in sheet. Available: ['Week 5 Cancellations', 'Week 3 cancellations', 'Week 2 cancellations', 'Ramadan Classes Schedule Sp-26', '17th Week Reschedule', 'Classes Schedule FSE SP-26', 'Academic Plan', 'Courses SP-26']
+[2026-06-29 19:27:15] [WARN]   Fix: update SCHOOLS['engineering']['tabs'] to match one of: ['Week 5 Cancellations', 'Week 3 cancellations', 'Week 2 cancellations', 'Ramadan Classes Schedule Sp-26', '17th Week Reschedule', 'Classes Schedule FSE SP-26', 'Academic Plan', 'Courses SP-26']
+[2026-06-29 19:27:15] [INFO] Fetching spreadsheet=1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU tab='Monday'
+[2026-06-29 19:27:16] [ERROR]   fetch failed for engineering/Monday: <HttpError 400 when requesting https://sheets.googleapis.com/v4/spreadsheets/1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU/values/%27Monday%27?valueRenderOption=FORMATTED_VALUE&alt=json returned "Unable to parse range: 'Monday'". Details: "Unable to parse range: 'Monday'">
+[2026-06-29 19:27:16] [INFO]   engineering total: 0 entries, 0 depts
+[2026-06-29 19:27:16] [INFO] Wrote db\timetable-engineering.json (0 entries, 0 depts)
+[2026-06-29 19:27:16] [INFO] Done. Total entries: 1551. Depts: ['BS AI', 'BS Accounting & Finance', 'BS Business Administration', 'BS Business Analytics', 'BS CS', 'BS CY', 'BS DS', 'BS Fintech', 'BS G', 'BS MS', 'BS SE']
