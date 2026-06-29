@@ -127,6 +127,7 @@ function slotToMinutes(slot) {
 function normalizeRoomName(room) {
   let r = oneLine(room).toUpperCase();
   r = r.replace(/\s+/g, " ");
+  r = r.replace(/-{2,}/g, "-");
   r = r.replace(/\b([A-D])\s+(\d{3})\b/, "$1-$2");
   r = r.replace(/\b([A-D])\s+(IT\s+)?LAB\s*[-#]?\s*(\d+)\b/i, "$1-$2LAB $3");
   r = r.replace(/\b([A-D])\s+(MARGALA|RAWAL)\s+(\d+)\b/i, "$1-$2 $3");
@@ -403,70 +404,243 @@ function parseGridToTT(grid, day, target) {
 
 /* ══════════════════════════════════════════
    BUSINESS SCHOOL — Paired-Column Matrix Parser
-   Format: each time slot has 2 columns (course + section code)
+   Format: each time slot spans 9 columns (course at col N, section at col N+7)
+   Day name in col 0, Classes/Labs in col 1, Room in col 2
    ══════════════════════════════════════════ */
+
+const FSM_COURSE_RE = /^([A-Za-z]{2,4}\s?\d{4,5})\s*/;
+const FSM_TIME_OVERRIDE_RE = /\((\d{1,2}:\d{2}\s*(?:AM|PM)?\s*-\s*\d{1,2}:\d{2}\s*(?:AM|PM)?)\)\s*$/i;
+const FSM_SECTION_RE = /^([A-Z]{2,5})(\d{2})([A-Z])(\d)?$/;
+const FSM_COMBINED_RE = /^([A-Z]{2,5}\d{2})\s*([A-Z](?:\s*[\/&]\s*[A-Z])+)$/;
+
+const FSM_SLOT_STARTS = [3, 12, 21, 30, 39, 48];
+const FSM_SLOT_WIDTH = 9;
+const FSM_SECTION_OFFSET = 7;
+
+const FSM_DAY_RE = /^(Monday|Tuesday|Wednesday|Thursday|Friday)$/i;
+
+const FSM_PROGRAM_MAP = {
+  "FT": "BS Fintech",
+  "BSFT": "BS Fintech",
+  "BA": "BS Business Analytics",
+  "BSBA": "BS Business Analytics",
+  "BBA": "BS Business Administration",
+  "AF": "BS Accounting & Finance"
+};
+
+function parseFSMCourseName(raw) {
+  raw = oneLine(raw || "");
+  if (!raw) return null;
+
+  let timeOverride = null;
+  const tm = raw.match(FSM_TIME_OVERRIDE_RE);
+  if (tm) {
+    timeOverride = normalizeTimeSlot(tm[1]);
+    raw = raw.slice(0, tm.index).trim();
+  }
+
+  let code = null;
+  let title = raw;
+  const cm = raw.match(FSM_COURSE_RE);
+  if (cm) {
+    code = cm[1].replace(/\s/g, "");
+    title = raw.slice(cm.index + cm[0].length).trim();
+  }
+
+  return { code, title, timeOverride, full: raw };
+}
+
+function parseFSMSectionCode(raw) {
+  raw = oneLine(raw || "").toUpperCase().replace(/\s+/g, "");
+  if (!raw) return null;
+
+  // Try combined: "BBA08A/B/C" → multiple sections
+  const combo = raw.match(FSM_COMBINED_RE);
+  if (combo) {
+    const base = combo[1];
+    const lettersStr = combo[2].replace(/[\/&]/g, " ");
+      const letters = lettersStr.trim().split(/\s+/);
+    const results = [];
+    for (let i = 0; i < letters.length; i++) {
+      const l = letters[i];
+      const code = i === 0 ? base : base.slice(0, -1) + l;
+      const m = code.match(FSM_SECTION_RE);
+      if (m) {
+        results.push({
+          program: m[1],
+          semester: m[2],
+          section: m[3],
+          subSection: m[4] || null,
+          full: code
+        });
+      }
+    }
+    return results.length > 0 ? results : null;
+  }
+
+  // Single section code: "FT02A", "BSFT04D"
+  const m = raw.match(FSM_SECTION_RE);
+  if (m) {
+    return [{
+      program: m[1],
+      semester: m[2],
+      section: m[3],
+      subSection: m[4] || null,
+      full: raw
+    }];
+  }
+
+  return null;
+}
+
+function fsmSemesterToBatch(semester) {
+  const sem = parseInt(semester, 10);
+  if (isNaN(sem)) return null;
+  // Spring 2026: sem 2 → batch 2025, sem 4 → batch 2024, etc.
+  const currentYear = 2026;
+  const batch = currentYear - Math.floor(sem / 2);
+  return String(batch);
+}
+
+function inferFSMBatchFromCourse(courseTitle) {
+  const name = (courseTitle || "").toUpperCase();
+  // Capstone / senior-level courses → batch 2022
+  if (/\b(CAPSTONE|FYP|SENIOR\s+PROJECT|THESIS|RESEARCH\s+PROJECT|TECH\s+STARTUP|ENTREPRENEURSHIP|INNOVATION|BUSINESS\s+ETHICS|ECONOMY\s+OF\s+PAKISTAN|SUPPLY\s+CHAIN|STRATEGY|HUMAN\s+RESOURCE\s+METRIC|BUSINESS\s+STRATEGY|TAXATION|FINANCIAL\s+DATA\s+ANALYTICS)\b/i.test(name)) {
+    return "2022";
+  }
+  if (/\b(PREDICTIVE\s+ANALYTICS|BUSINESS\s+ANALYTICS|DATABASE\s+SYSTEMS\s+FOR\s+BUSINESS|DATA\s+ANALYSIS\s+FOR\s+BUSINESS|BUSINESS\s+RESEARCH|FINANCIAL\s+STATEMENT\s+ANALYSIS|CORPORATE\s+ACCOUNTING|FINANCIAL\s+INSTITUTIONS|BUSINESS\s+COMMUNICATION|PRINCIPLES\s+OF\s+LEADERSHIP|CRITICAL\s+THINKING|MACROECONOMICS|BUSINESS\s+LAW|WEB\s+PROGRAMMING)\b/i.test(name)) {
+    return "2023";
+  }
+  if (/\b(FINANCIAL\s+MANAGEMENT|BUSINESS\s+FINANCE|MARKETING\s+MANAGEMENT|FUNDAMENTAL\s+OF\s+MANAGEMENT|FUNDAMENTALS\s+OF\s+MANAGEMENT|DATA\s+ANALYSIS\s+FOR\s+BUSINESS\s+I|DATA\s+ANALYSIS\s+FOR\s+BUSINESS\s+II|BUSINESS\s+MATH|MACROECONOMICS|ENVIRONMENTAL\s+SCIENCE|DATABASE\s+SYSTEMS|INTRODUCTION\s+TO\s+DATABASE|ENGLISH\s+II|BUSINESS\s+COMMUNICATION|PAKISTAN\s+STUDIES|IDEOLOGY\s+AND\s+CONSTITUTION|ISLAMIC\s+STUDIES|SIRAT|FINANCIAL\s+ACCOUNTING)\b/i.test(name)) {
+    return "2024";
+  }
+  if (/\b(PROGRAMMING\s+FOR\s+BUSINESS|ENGLISH|IT\s+IN\s+BUSINESS|BUSINESS\s+MATH|FUNDAMENTALS\s+OF\s+MANAGEMENT|PRINCIPLES\s+OF\s+MANAGEMENT)\b/i.test(name)) {
+    return "2025";
+  }
+  return null;
+}
 
 function parseBusinessGrid(grid, tabName, target) {
   const day = normalizeDay(tabName);
   if (!day) return 0;
   let added = 0;
 
+  // Find header row with time slots
   let headerRow = -1;
   for (let r = 0; r < Math.min(grid.length, 5); r++) {
-    if (/room/i.test(oneLine(grid[r][2] || ""))) { headerRow = r; break; }
+    const cell = oneLine(grid[r][2] || "");
+    if (/room/i.test(cell)) {
+      // Check it has at least 3 time slots
+      let slotCount = 0;
+      for (const sc of FSM_SLOT_STARTS) {
+        if (normalizeTimeSlot(oneLine(grid[r][sc] || ""))) slotCount++;
+      }
+      if (slotCount >= 3) { headerRow = r; break; }
+    }
   }
   if (headerRow < 0) return 0;
 
-  const slotCols = [];
-  const row = grid[headerRow] || [];
-  for (let c = 3; c < row.length; c++) {
-    const slot = normalizeTimeSlot(oneLine(row[c] || ""));
-    if (slot) slotCols.push({ col: c, time: slot });
+  // Detect time labels from header row
+  const headerTimes = {};
+  for (const sc of FSM_SLOT_STARTS) {
+    const slot = normalizeTimeSlot(oneLine(grid[headerRow][sc] || ""));
+    if (slot) headerTimes[sc] = slot;
   }
+  if (Object.keys(headerTimes).length < 3) return 0;
+
+  // Walk data rows after header
+  let currentDay = day;
+  let currentType = "Classes";
+  const processedCourses = new Set();
 
   for (let r = headerRow + 1; r < grid.length; r++) {
     const rowData = grid[r] || [];
+
+    // Track day name (col 0) – only first row of each day block has it
+    const dayCell = oneLine(rowData[0] || "");
+    const dayMatch = dayCell.match(FSM_DAY_RE);
+    if (dayMatch) currentDay = dayMatch[1];
+
+    // Track Classes/Labs (col 1)
+    const typeCell = oneLine(rowData[1] || "");
+    if (typeCell === "Classes" || typeCell === "Labs") currentType = typeCell;
+
+    // Room (col 2)
     const rawRoom = oneLine(rowData[2] || "");
     if (!rawRoom || rawRoom.length < 2) continue;
     const room = normalizeRoomName(rawRoom);
     if (/reserved|tutorial|fsm|fsa|fcss|fyp|travel|admin|room/i.test(rawRoom)) continue;
     if (!room || room.length < 2) continue;
 
-    for (let si = 0; si < slotCols.length; si++) {
-      const { col: timeCol, time } = slotCols[si];
-      const nextCol = si + 1 < slotCols.length ? slotCols[si + 1].col : rowData.length;
-      const courseCol = timeCol;
-      const sectionCol = timeCol + 1;
+    // If this is a Labs header row (has time slots but no room after col 2), skip
+    if (currentType === "Labs" && typeCell === "Labs" && !rawRoom) continue;
 
-      if (sectionCol >= rowData.length || sectionCol >= nextCol) continue;
-      const courseCell = oneLine(rowData[courseCol] || "");
-      const sectionCell = oneLine(rowData[sectionCol] || "");
-      if (!courseCell || !sectionCell) continue;
+    // Process each time slot
+    const slotStarts = Object.keys(headerTimes).map(Number).sort((a, b) => a - b);
+    for (let si = 0; si < slotStarts.length; si++) {
+      const sc = slotStarts[si];
+      const time = headerTimes[sc];
+      const sEnd = si + 1 < slotStarts.length ? slotStarts[si + 1] : sc + FSM_SLOT_WIDTH;
+      const sectionCol = sc + FSM_SECTION_OFFSET;
 
-      const course = courseCell.replace(/\d{4,6}/, "").trim();
-      const section = sectionCell.replace(/^[A-Z]{2,}/, "").trim();
-      if (!course || !section) continue;
+      const courseRaw = oneLine(rowData[sc] || "");
+      if (!courseRaw) continue;
 
-      const codeMatch = courseCell.match(/\b(\d{4,6})/);
-      const courseCode = codeMatch ? codeMatch[1] : "";
+      const parsedCourse = parseFSMCourseName(courseRaw);
+      if (!parsedCourse) continue;
 
-      const deptHeader = oneLine(grid[0][0] || "");
-      const dept = deptHeader.includes("FAST School of Management") ? "BS Management" : "BS Business";
+      // Find section code – scan forward from section offset to end of slot
+      let sectionRaw = "";
+      for (let c = sectionCol; c < Math.min(sEnd, rowData.length); c++) {
+        const cell = oneLine(rowData[c] || "");
+        if (cell) { sectionRaw = cell; break; }
+      }
+      if (!sectionRaw) continue;
 
-      const batch = inferBusinessBatch(section) || "2025";
-      if (addCourseToTT(target, { dept, batch, section, day, course: `${course}${courseCode ? " (" + courseCode + ")" : ""}`, room, time })) added++;
+      // Skip non-section entries in labs (like lone "CS")
+      if (sectionRaw.length < 4 && !/\d/.test(sectionRaw)) continue;
+
+      const parsedSections = parseFSMSectionCode(sectionRaw);
+      if (!parsedSections) continue;
+
+      const courseLabel = parsedCourse.code
+        ? `${parsedCourse.title} (${parsedCourse.code})`
+        : parsedCourse.title;
+
+      // Generate one record per (section, combined-section-letter)
+      for (const ps of parsedSections) {
+        const dept = FSM_PROGRAM_MAP[ps.program] || `BS ${ps.program}`;
+        let batch = fsmSemesterToBatch(ps.semester);
+
+        // Fallback: infer batch from course title
+        if (!batch) batch = inferFSMBatchFromCourse(parsedCourse.title);
+        if (!batch) batch = "2025";
+
+        const section = ps.section;
+        const sub = ps.subSection || "";
+
+        // Use time override if present
+        const effectiveTime = parsedCourse.timeOverride || time;
+
+        // Deduplicate: same dept+batch+section+day+course+room+time
+        const dedupKey = `${dept}|${batch}|${section}|${currentDay}|${courseLabel}|${room}|${effectiveTime}`;
+        if (processedCourses.has(dedupKey)) continue;
+        processedCourses.add(dedupKey);
+
+        if (addCourseToTT(target, {
+          dept,
+          batch,
+          section,
+          day: currentDay,
+          course: courseLabel,
+          room,
+          time: effectiveTime
+        })) added++;
+      }
     }
   }
-  return added;
-}
 
-function inferBusinessBatch(section) {
-  const m = section.match(/(\d{2})/);
-  if (m) {
-    const yr = Number(m[1]);
-    if (yr >= 22 && yr <= 25) return "20" + yr;
-  }
-  return null;
+  return added;
 }
 
 /* ══════════════════════════════════════════

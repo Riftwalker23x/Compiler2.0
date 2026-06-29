@@ -332,6 +332,7 @@ def resolve_batch(cell_colour, cell_text, course_name):
 def normalise_room(room):
     r = one_line(room).upper()
     r = re.sub(r"\s+", " ", r)
+    r = re.sub(r"-{2,}", "-", r)
     r = re.sub(r"\b([A-D])\s+(\d{3})\b", r"\1-\2", r)
     m = re.match(
         r"([A-D])\s*-\s*(\d{3}|IT\s*LAB\s*\d+|MARGALA\s*\d*|"
@@ -457,6 +458,216 @@ def parse_grid_to_tt(text_grid, colour_grid, day, tt):
     if lr > 0:
         added += parse_matrix_block(text_grid, colour_grid, lr + 1, len(text_grid), LAB_BLOCK, day, tt)
     return added
+
+# ---------------------------------------------------------------------------
+# FSM / Business School Parser  (paired-matrix format)
+# ---------------------------------------------------------------------------
+
+FSM_SLOT_STARTS = [3, 12, 21, 30, 39, 48]
+FSM_SECTION_OFFSET = 7
+
+FSM_COURSE_RE = re.compile(r'^([A-Za-z]{2,4}\s?\d{4,5})\s*')
+
+FSM_TIME_OVERRIDE_RE = re.compile(
+    r'\((\d{1,2}:\d{2}\s*(?:AM|PM)?\s*-\s*\d{1,2}:\d{2}\s*(?:AM|PM)?)\)\s*$', re.IGNORECASE)
+
+FSM_SECTION_RE = re.compile(r'^([A-Z]{2,5})(\d{2})([A-Z])(\d)?$')
+
+FSM_COMBINED_RE = re.compile(r'^([A-Z]{2,5}\d{2})\s*([A-Z](?:\s*[/&]\s*[A-Z])+)$')
+
+FSM_DAY_RE = re.compile(r'^(Monday|Tuesday|Wednesday|Thursday|Friday)$', re.IGNORECASE)
+
+FSM_PROGRAM_MAP = {
+    "FT": "BS Fintech",
+    "BSFT": "BS Fintech",
+    "BA": "BS Business Analytics",
+    "BSBA": "BS Business Analytics",
+    "BBA": "BS Business Administration",
+    "AF": "BS Accounting & Finance",
+}
+
+
+def parse_fsm_course_name(raw):
+    raw = one_line(raw or "")
+    if not raw:
+        return None, None, None
+
+    time_override = None
+    tm = FSM_TIME_OVERRIDE_RE.search(raw)
+    if tm:
+        time_override = tm.group(1)
+        raw = raw[:tm.start()].strip()
+
+    code = None
+    title = raw
+    cm = FSM_COURSE_RE.match(raw)
+    if cm:
+        code = cm.group(1).replace(" ", "")
+        title = raw[cm.end():].strip()
+
+    return code, title, time_override
+
+
+def parse_fsm_section_code(raw):
+    raw = one_line(raw or "").upper().replace(" ", "")
+    if not raw:
+        return None
+
+    combo = FSM_COMBINED_RE.match(raw)
+    if combo:
+        base = combo.group(1)
+        letters_str = re.sub(r'[/&]', ' ', combo.group(2))
+        letters = letters_str.strip().split()
+        results = []
+        for i, l in enumerate(letters):
+            code = base if i == 0 else base[:-1] + l
+            m = FSM_SECTION_RE.match(code)
+            if m:
+                results.append({
+                    "program": m.group(1),
+                    "semester": m.group(2),
+                    "section": m.group(3),
+                    "sub_section": m.group(4) or None,
+                    "full": code,
+                })
+        return results if results else None
+
+    m = FSM_SECTION_RE.match(raw)
+    if m:
+        return [{
+            "program": m.group(1),
+            "semester": m.group(2),
+            "section": m.group(3),
+            "sub_section": m.group(4) or None,
+            "full": raw,
+        }]
+    return None
+
+
+def fsm_semester_to_batch(semester):
+    try:
+        sem = int(semester)
+    except (ValueError, TypeError):
+        return None
+    current_year = 2026
+    return str(current_year - sem // 2)
+
+
+def parse_business_grid(text_grid, day, tt):
+    added = 0
+
+    # Find header row
+    header_row = -1
+    for r in range(min(len(text_grid), 5)):
+        cell = one_line(text_grid[r][2] if len(text_grid[r]) > 2 else "")
+        if "room" in cell.lower():
+            slot_count = 0
+            for sc in FSM_SLOT_STARTS:
+                if sc < len(text_grid[r]):
+                    if re.match(r'\d{1,2}:\d{2}', one_line(text_grid[r][sc] or "")):
+                        slot_count += 1
+            if slot_count >= 3:
+                header_row = r
+                break
+    if header_row < 0:
+        return 0
+
+    # Detect time labels from header row
+    header_times = {}
+    for sc in FSM_SLOT_STARTS:
+        if sc < len(text_grid[header_row]):
+            raw = one_line(text_grid[header_row][sc] or "")
+            m = re.match(r'(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})', raw)
+            if m:
+                header_times[sc] = raw
+    if len(header_times) < 3:
+        return 0
+
+    # Walk data rows
+    current_day = day
+    current_type = "Classes"
+    processed_keys = set()
+
+    for r in range(header_row + 1, len(text_grid)):
+        row = text_grid[r]
+        if not row:
+            continue
+
+        day_cell = one_line(row[0] if len(row) > 0 else "")
+        day_m = FSM_DAY_RE.match(day_cell)
+        if day_m:
+            current_day = day_m.group(1)
+
+        type_cell = one_line(row[1] if len(row) > 1 else "")
+        if type_cell in ("Classes", "Labs"):
+            current_type = type_cell
+
+        raw_room = one_line(row[2] if len(row) > 2 else "")
+        if not raw_room or len(raw_room) < 2:
+            continue
+        room = normalise_room(raw_room)
+        if re.search(r"reserved|tutorial|fsm|fsa|fcss|fyp|travel|admin|room", room, re.IGNORECASE):
+            continue
+        if len(room) < 2:
+            continue
+
+        # Skip labs header rows
+        if current_type == "Labs" and type_cell == "Labs" and not raw_room:
+            continue
+
+        slot_starts = sorted(header_times.keys())
+        for si, sc in enumerate(slot_starts):
+            time = header_times[sc]
+            s_end = slot_starts[si + 1] if si + 1 < len(slot_starts) else sc + 9
+            section_col = sc + FSM_SECTION_OFFSET
+
+            course_raw = one_line(row[sc] if sc < len(row) else "")
+            if not course_raw:
+                continue
+
+            course_code, course_title, time_override = parse_fsm_course_name(course_raw)
+            if not course_title:
+                continue
+
+            # Find section code
+            section_raw = ""
+            for c in range(section_col, min(s_end, len(row))):
+                cell = one_line(row[c] or "")
+                if cell:
+                    section_raw = cell
+                    break
+            if not section_raw:
+                continue
+
+            # Skip non-section entries
+            if len(section_raw) < 4 and not re.search(r'\d', section_raw):
+                continue
+
+            parsed_sections = parse_fsm_section_code(section_raw)
+            if not parsed_sections:
+                continue
+
+            course_label = f"{course_title} ({course_code})" if course_code else course_title
+            effective_time = time_override if time_override else time
+
+            for ps in parsed_sections:
+                dept = FSM_PROGRAM_MAP.get(ps["program"], f"BS {ps['program']}")
+                batch = fsm_semester_to_batch(ps["semester"])
+                if not batch:
+                    batch = "2025"
+
+                sec = ps["section"]
+
+                dedup_key = f"{dept}|{batch}|{sec}|{current_day}|{course_label}|{room}|{effective_time}"
+                if dedup_key in processed_keys:
+                    continue
+                processed_keys.add(dedup_key)
+
+                if add_course(tt, dept, batch, sec, current_day, course_label, room, effective_time):
+                    added += 1
+
+    return added
+
 
 # ---------------------------------------------------------------------------
 # Auto colour map builder
@@ -619,7 +830,11 @@ def generate(service, school_name, school_info):
             dlog_warn(f"  {school_name}/{tab} returned empty grid")
             continue
 
-        added = parse_grid_to_tt(text_grid, colour_grid, day, tt)
+        if school_name == "business":
+            # FSM business school uses paired-matrix format (course + section in same row)
+            added = parse_business_grid(text_grid, day, tt)
+        else:
+            added = parse_grid_to_tt(text_grid, colour_grid, day, tt)
         total += added
         print(f"{added} entries")
         dlog(f"  {school_name}/{tab}: {added} entries parsed")

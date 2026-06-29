@@ -1,0 +1,3 @@
+[2026-06-29 15:22:30] [INFO] generate_timetable.py started — mode=generate
+[2026-06-29 15:22:30] [INFO] Python: 3.12.6 (tags/v3.12.6:a4a2d2b, Sep  6 2024, 20:11:23) [MSC v.1940 64 bit (AMD64)]
+[2026-06-29 15:22:30] [ERROR] 'service-account.json' not found — cannot authenticate
