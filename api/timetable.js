@@ -159,8 +159,9 @@ const LAB_SLOT_COLS = {
 };
 
 const BATCH_MAP = { "25": "2025", "24": "2024", "23": "2023", "22": "2022" };
+const COMPUTING_PROGRAM_CODES = new Set(["AI", "CS", "CY", "DS", "SE"]);
 
-const CELL_REGEX = /(.+?)\s*\(([A-Z]+(?:\/[A-Z]+)*)(?:-([A-Z0-9]+))?(?:,\s*(?:Gp?-([IV]+)|(\d{2})))?\s*\)/i;
+const CELL_REGEX = /(.+?)\s*\(([A-Z]+(?:\s*[\/,]\s*(?!GP?\b)[A-Z]+)*)(?:-([A-Z0-9]+))?(?:,\s*(?:Gp?-([IV]+)|(\d{2})))?\s*\)/i;
 
 const CLASSROOM_LEFT_BLOCK = {
   roomCol: 0, endCol: 30,
@@ -180,23 +181,36 @@ const LAB_BLOCK = {
 
 /* ── Header-based batch detection ── */
 
+function extractDeptFromHeader(text) {
+  const cell = oneLine(text || "");
+  if (!cell) return null;
+
+  let m = cell.match(/^(BS|FT|BA|BBA|AF)\s*([A-Za-z][A-Za-z& ]*?)\s*(?:\(\d{4}\))?$/i);
+  if (m) return { dept: `${m[1].toUpperCase()} ${m[2].trim().toUpperCase()}`, batch: (cell.match(/\b(20\d{2})\b/) || [])[1] || null };
+
+  m = cell.match(/^MS\s*\(([A-Za-z]+)\)\s*(?:\(\d{4}\))?$/i);
+  if (m) return { dept: `MS (${m[1].toUpperCase()})`, batch: "MS" };
+
+  m = cell.match(/^MS\s*([A-Za-z]{2,4})\s*(?:\(\d{4}\))?$/i);
+  if (m) return { dept: `MS (${m[1].toUpperCase()})`, batch: "MS" };
+
+  return null;
+}
+
 function buildColBatchMap(grid) {
   const map = {};
-  const headerRows = Math.min(grid.length, 4);
-  for (let c = 0; c < (grid[0] || []).length; c++) {
-    for (let r = 0; r < headerRows; r++) {
-      const cell = oneLine(grid[r][c] || "");
-      if (!cell) continue;
-      const m = cell.match(/BS\s+([A-Z]+)\s*\((\d{4})\)/i);
-      if (m) {
-        map[c] = { dept: `BS ${m[1].toUpperCase()}`, batch: m[2] };
-        break;
-      }
-      const m2 = cell.match(/MS\s*\(?\s*([A-Z]+)\)?/i);
-      if (m2) {
-        map[c] = { dept: `MS ${m2[1].toUpperCase()}`, batch: "MS" };
-        break;
-      }
+  const headerRows = grid.slice(0, Math.min(grid.length, 4));
+  const maxCols = Math.max(0, ...headerRows.map((row) => (row || []).length));
+  for (const row of headerRows) {
+    const starts = [];
+    for (let c = 0; c < (row || []).length; c++) {
+      const info = extractDeptFromHeader(row[c]);
+      if (info) starts.push([c, info]);
+    }
+    for (let i = 0; i < starts.length; i++) {
+      const [start, info] = starts[i];
+      const end = i + 1 < starts.length ? starts[i + 1][0] : maxCols;
+      for (let c = Math.max(1, start); c < end; c++) map[c] = info;
     }
   }
   return map;
@@ -211,7 +225,7 @@ function lookupBatchForCol(colBatchMap, col, courseName, cellText) {
   if (colBatchMap[col] && colBatchMap[col].batch && colBatchMap[col].batch !== "MS") {
     return colBatchMap[col].batch;
   }
-  if (colBatchMap[col] && colBatchMap[col].batch === "MS") return null;
+  if (colBatchMap[col] && colBatchMap[col].batch === "MS") return "MS";
   return inferBatchFromCourse(courseName) || "2023";
 }
 
@@ -241,10 +255,29 @@ function parseTimetableCell(text) {
   if (!m) return null;
   const course = m[1].trim();
   const deptStr = m[2];
-  const section = m[3];
-  if (!section) return null;
-  const depts = deptStr.includes("/") ? deptStr.split("/") : [deptStr];
-  return { depts, section, course };
+  let section = m[3];
+  const group = m[4];
+  if (!section && group) section = `G-${group.toUpperCase()}`;
+  const depts = deptStr.split(/\s*[\/,]\s*/).map((dept) => dept.trim().toUpperCase()).filter(Boolean);
+  return { depts, section: section || null, hasSection: Boolean(section), course };
+}
+
+function isMSContext(batch, dept) {
+  return batch === "MS" || String(dept || "").startsWith("MS");
+}
+
+function resolveDepartmentsForCell(parsed, headerInfo, batch) {
+  const headerDept = headerInfo?.dept || "";
+  if (isMSContext(batch, headerDept)) {
+    const msDepts = parsed.depts
+      .filter((dept) => COMPUTING_PROGRAM_CODES.has(dept))
+      .map((dept) => `MS (${dept})`);
+    if (msDepts.length) return msDepts;
+    if (headerDept) return [headerDept];
+    return [];
+  }
+  if (headerDept) return [headerDept];
+  return parsed.depts.map((dept) => `BS ${dept}`);
 }
 
 function findHeaderRow(grid) {
@@ -375,11 +408,14 @@ function parseMatrixBlock(grid, startRow, endRow, block, day, target, colBatchMa
         if (!cell) continue;
         parsed = parseTimetableCell(cell);
         if (parsed) {
+          const headerInfo = colBatchMap[col] || null;
           const batch = lookupBatchForCol(colBatchMap, col, parsed.course, cell);
           if (!batch) continue;
-          for (const dept of parsed.depts) {
-            const deptKey = `BS ${dept}`;
-            if (addCourseToTT(target, { dept: deptKey, batch, section: parsed.section, day, course: parsed.course, room, time: block.slotMap[timeCol] })) added++;
+          const depts = resolveDepartmentsForCell(parsed, headerInfo, batch);
+          const section = parsed.section || (depts.some((dept) => isMSContext(batch, dept)) ? "A" : "");
+          if (!section) continue;
+          for (const dept of depts) {
+            if (addCourseToTT(target, { dept, batch, section, day, course: parsed.course, room, time: block.slotMap[timeCol] })) added++;
           }
           break;
         }
@@ -609,7 +645,7 @@ function parseBusinessGrid(grid, tabName, target) {
 
       // Generate one record per (section, combined-section-letter)
       for (const ps of parsedSections) {
-        const dept = FSM_PROGRAM_MAP[ps.program] || `BS ${ps.program}`;
+        const dept = FSM_PROGRAM_MAP[ps.program] || ps.program;
         let batch = fsmSemesterToBatch(ps.semester);
 
         // Fallback: infer batch from course title

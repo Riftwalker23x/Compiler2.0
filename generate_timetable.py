@@ -66,7 +66,7 @@ SCHOOLS = OrderedDict([
     ])),
     ("engineering", OrderedDict([
         ("id", "1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU"),
-        ("tabs", ["Monday"]),
+        ("tabs", ["Classes Schedule FSE SP-26"]),
     ])),
 ])
 
@@ -87,9 +87,10 @@ COLOUR_BATCH_MAP = {}  # filled automatically at runtime
 # ---------------------------------------------------------------------------
 
 BATCH_MAP = {"25": "2025", "24": "2024", "23": "2023", "22": "2022"}
+COMPUTING_PROGRAM_CODES = {"AI", "CS", "CY", "DS", "SE"}
 
 CELL_RE = re.compile(
-    r"(.+?)\s*\(([A-Z]+(?:/[A-Z]+)*)(?:-([A-Z0-9]+))?"
+    r"(.+?)\s*\(([A-Z]+(?:\s*[/,]\s*(?!GP?\b)[A-Z]+)*)(?:-([A-Z]+)(\d+)?)?"
     r"(?:,\s*(?:Gp?-([IV]+)|(\d{2})))?\s*\)",
     re.IGNORECASE
 )
@@ -165,6 +166,82 @@ def colour_to_batch(colour):
     if colour is None or is_white(colour):
         return None
     return COLOUR_BATCH_MAP.get(colour)
+
+def extract_dept_from_header(header_text):
+    """
+    Extract department prefix from a column header like:
+      'BS CS (2025)' -> 'BS CS'
+      'BS AI (2023)' -> 'BS AI'
+      'MS (CS)' -> 'MS (CS)'
+      'PhD' -> 'PhD'
+    
+    Returns the department prefix, or None if can't extract.
+    """
+    if not header_text:
+        return None
+    
+    text = one_line(header_text).strip()
+    if not text:
+        return None
+
+    text = re.sub(r"\s+", " ", text)
+    
+    # Pattern 1: Degree + code + optional year.
+    # Handles both spaced and compact sheet labels, e.g. "BS CS (2025)" and "BSCS (2025)".
+    m = re.match(r'^(BS|FT|BA|BBA|AF)\s*([A-Za-z][A-Za-z& ]*?)\s*(?:\(\d{4}\))?$', text, re.IGNORECASE)
+    if m:
+        prefix = m.group(1).upper()
+        code = m.group(2).strip()
+        code = code.upper() if code.isupper() or len(code) <= 3 else code
+        return f"{prefix} {code}"
+    
+    # Pattern 2: MS with code in parens  e.g. "MS (CS)", "MS (DS)"
+    m = re.match(r'^MS\s*\(([A-Za-z]+)\)\s*(?:\(\d{4}\))?$', text, re.IGNORECASE)
+    if m:
+        code = m.group(1).upper()
+        return f"MS ({code})"
+    
+    # Pattern 3: MS with plain/compact code  e.g. "MS CS", "MSCS"
+    m = re.match(r'^MS\s*([A-Za-z]{2,4})\s*(?:\(\d{4}\))?$', text, re.IGNORECASE)
+    if m:
+        code = m.group(1).upper()
+        return f"MS ({code})"
+    
+    # Pattern 4: Just single word degree  e.g. "PhD", "G"
+    if re.match(r'^(PhD|G)$', text, re.IGNORECASE):
+        return text.upper()
+    
+    # Debug: return the text itself if it looks like a degree label but didn't match
+    if any(text.upper().startswith(p) for p in ['BS', 'MS', 'PhD', 'G', 'FT', 'BA', 'BBA', 'AF']):
+        # Might be a malformed header, try to extract what we can
+        words = text.split()
+        if len(words) >= 1:
+            return text  # Return as-is if it starts with a known prefix
+    
+    return None
+
+def normalize_dept_key(dept_code):
+    """
+    Normalize unknown department codes (fallback for business school FSM parser).
+    If no prefix found, prepend 'BS'.
+    
+    Examples:
+      'CS' -> 'BS CS'
+      'Unknown' -> 'BS Unknown'
+    """
+    if not dept_code:
+        return 'BS'
+    
+    dept_code = str(dept_code).strip()
+    
+    # Check if already has a known prefix
+    known_prefixes = ('BS', 'MS', 'G', 'FT', 'BA', 'BBA', 'AF', 'PhD')
+    for prefix in known_prefixes:
+        if dept_code.startswith(prefix + ' ') or dept_code == prefix:
+            return dept_code
+    
+    # No prefix found, add BS
+    return f'BS {dept_code}'
 
 # ---------------------------------------------------------------------------
 # Sheets API fetch — returns BOTH text grid and colour grid in one call
@@ -282,10 +359,60 @@ def parse_timetable_cell(text):
     course  = m.group(1).strip()
     dept_str = m.group(2)
     section  = m.group(3)
-    if not section:
+    subgroup = m.group(4)
+    group = m.group(5)
+    depts = [d.strip().upper() for d in re.split(r"\s*[/,]\s*", dept_str) if d.strip()]
+    if not depts:
         return None
-    depts = dept_str.split("/")
-    return {"course": course, "depts": depts, "section": section}
+    if not section and group:
+        section = f"G-{group.upper()}"
+    if subgroup:
+        # Label with the actual section letter + subgroup digit (e.g. "G1", "B1")
+        # instead of a generic "Gp 1" that's indistinguishable across sections.
+        sub_label = f"{section}{subgroup}" if section else f"Gp {subgroup}"
+        course = f"{course} ({sub_label})"
+    return {
+        "course": course,
+        "depts": depts,
+        "section": section,
+        "has_section": bool(section),
+    }
+
+def is_ms_context(batch, dept):
+    return batch == "MS" or str(dept or "").startswith("MS")
+
+def resolve_departments_for_cell(parsed, header_dept, batch):
+    """
+    Decide whether a parsed code like DS means BS DS or MS (DS).
+
+    BS cells include explicit sections like (DS-A). MS timetable cells often omit
+    sections and use forms like (DS), (SE), or comma-separated electives.
+
+    IMPORTANT: for the computing-school matrix, the "BS CS (2025)" / "BS DS (2025)"
+    / etc. rows above the Room/time header are only a colour LEGEND used to map
+    background colour -> batch year (see build_colour_map / COLOUR_BATCH_MAP).
+    They are NOT reliably aligned to department per column — a cell physically
+    sitting under the "BS AI (2025)" legend can still legitimately contain
+    "Civics (CS-G)". So whenever the cell text itself encodes a department
+    (e.g. "(CS-G)"), that must win over the column's header_dept. header_dept
+    is only used as a fallback when the cell doesn't specify a department at all.
+    """
+    parsed_depts = parsed["depts"]
+    if is_ms_context(batch, header_dept) and (
+            not parsed["has_section"] or is_ms_context(batch, header_dept)):
+        ms_depts = [f"MS ({dept})" for dept in parsed_depts if dept in COMPUTING_PROGRAM_CODES]
+        if ms_depts:
+            return ms_depts
+        if header_dept and is_ms_context(batch, header_dept):
+            return [header_dept]
+        return []
+    # Prefer the department encoded directly in the cell text over the
+    # column's positional header — the cell is the source of truth.
+    if parsed_depts:
+        return [normalize_dept_key(dept) for dept in parsed_depts]
+    if header_dept:
+        return [header_dept]
+    return []
 
 # ---------------------------------------------------------------------------
 # Batch inference (fallback only — used when cell has no mapped colour)
@@ -420,11 +547,44 @@ def find_lab_header_row(text_grid, after_row):
                     return r
     return -1
 
+def build_col_dept_map(header_rows):
+    """
+    Build a mapping from column index to department prefix string.
+    
+    From header rows like:
+      [Room, BS CS (2025), BS CS (2025), ..., MS (CS), MS (CS), ...]
+    
+    Extract and store the department string for each column (after the room column).
+    Fills merged-cell gaps so that columns between headers inherit from the last header.
+    """
+    col_dept = {}
+
+    if not header_rows:
+        return col_dept
+    if header_rows and not isinstance(header_rows[0], list):
+        header_rows = [header_rows]
+
+    max_cols = max((len(row) for row in header_rows), default=0)
+
+    for row in header_rows:
+        dept_starts = []
+        for col, header_text in enumerate(row):
+            dept = extract_dept_from_header(header_text)
+            if dept:
+                dept_starts.append((col, dept))
+
+        for idx, (start_col, dept) in enumerate(dept_starts):
+            end_col = dept_starts[idx + 1][0] if idx + 1 < len(dept_starts) else max_cols
+            for col in range(max(1, start_col), end_col):
+                col_dept[col] = dept
+    
+    return col_dept
+
 # ---------------------------------------------------------------------------
 # Matrix block parser — now receives both text_grid and colour_grid
 # ---------------------------------------------------------------------------
 
-def parse_matrix_block(text_grid, colour_grid, start_row, end_row, block, day, tt):
+def parse_matrix_block(text_grid, colour_grid, start_row, end_row, block, day, tt, col_dept_map=None):
     """
     Parse one rectangular block of the computing school matrix.
 
@@ -432,7 +592,11 @@ def parse_matrix_block(text_grid, colour_grid, start_row, end_row, block, day, t
       - text comes from text_grid[r][col]
       - background colour comes from colour_grid[r][col]
       - batch is resolved via resolve_batch(colour, text, course_name)
+      - department comes from the header column via col_dept_map (if available)
     """
+    if col_dept_map is None:
+        col_dept_map = {}
+    
     added = 0
     for r in range(start_row, min(end_row, len(text_grid))):
         row = text_grid[r]
@@ -467,9 +631,16 @@ def parse_matrix_block(text_grid, colour_grid, start_row, end_row, block, day, t
                 if not batch:
                     continue
 
-                for dept_code in parsed["depts"]:
-                    dept_key = f"BS {dept_code}"
-                    if add_course(tt, dept_key, batch, parsed["section"],
+                header_dept = col_dept_map.get(col)
+                depts_to_add = resolve_departments_for_cell(parsed, header_dept, batch)
+                section = parsed["section"]
+                if not section and any(is_ms_context(batch, dept) for dept in depts_to_add):
+                    section = "A"
+                if not section:
+                    continue
+                
+                for dept_key in depts_to_add:
+                    if add_course(tt, dept_key, batch, section,
                                   day, parsed["course"], room,
                                   block["slot_map"][time_col]):
                         added += 1
@@ -483,11 +654,16 @@ def parse_grid_to_tt(text_grid, colour_grid, day, tt):
         return 0
     lr = find_lab_header_row(text_grid, hr + 1)
     classroom_end = lr if lr > 0 else len(text_grid)
+    
+    # Department labels are usually merged cells in the rows above the Room/time header.
+    dept_header_rows = text_grid[max(0, hr - 3):hr + 1]
+    col_dept_map = build_col_dept_map(dept_header_rows)
+    
     added = 0
-    added += parse_matrix_block(text_grid, colour_grid, hr + 1, classroom_end, CLASSROOM_LEFT,  day, tt)
-    added += parse_matrix_block(text_grid, colour_grid, hr + 1, classroom_end, CLASSROOM_RIGHT, day, tt)
+    added += parse_matrix_block(text_grid, colour_grid, hr + 1, classroom_end, CLASSROOM_LEFT,  day, tt, col_dept_map)
+    added += parse_matrix_block(text_grid, colour_grid, hr + 1, classroom_end, CLASSROOM_RIGHT, day, tt, col_dept_map)
     if lr > 0:
-        added += parse_matrix_block(text_grid, colour_grid, lr + 1, len(text_grid), LAB_BLOCK, day, tt)
+        added += parse_matrix_block(text_grid, colour_grid, lr + 1, len(text_grid), LAB_BLOCK, day, tt, col_dept_map)
     return added
 
 # ---------------------------------------------------------------------------
@@ -682,7 +858,9 @@ def parse_business_grid(text_grid, day, tt):
             effective_time = time_override if time_override else time
 
             for ps in parsed_sections:
-                dept = FSM_PROGRAM_MAP.get(ps["program"], f"BS {ps['program']}")
+                dept = FSM_PROGRAM_MAP.get(ps["program"])
+                if not dept:
+                    dept = normalize_dept_key(ps["program"])
                 batch = fsm_semester_to_batch(ps["semester"])
                 if not batch:
                     batch = "2025"
