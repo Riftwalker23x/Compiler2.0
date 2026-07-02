@@ -879,6 +879,360 @@ def parse_business_grid(text_grid, day, tt):
 
 
 # ---------------------------------------------------------------------------
+# FSE / Engineering School Parser  (single-tab, all-days-in-one format)
+# ---------------------------------------------------------------------------
+
+ENGINEERING_PROGRAMS = {"EE", "CE"}
+
+# Regex for extracting section info from the trailing part of an FSE course title.
+# Matches patterns like:
+#   "... A"         → programs=[], section="A"
+#   "... CE-A"      → programs=["CE"], section="A"
+#   "... EE-CE-A"   → programs=["EE","CE"], section="A"
+#   "... Int-A"     → programs=["Int"], section="A"  (treated specially)
+#   "... CE/A"      → programs=["CE"], section="A"
+#   "... CE- A"     → programs=["CE"], section="A"  (space-tolerant)
+FSE_SECTION_RE = re.compile(
+    r'^(.*?)\s+'                       # course name (greedy until last whitespace block)
+    r'('
+    r'(?:[A-Z][A-Za-z]*[-/])*'         # zero or more PROG- or PROG/ prefixes
+    r'(?:\s*)'                          # optional space (handles "CE- A")
+    r'([A-Z])'                          # single trailing section letter
+    r')\s*$'
+)
+
+# More structured regex for the suffix itself — used after splitting
+FSE_SUFFIX_RE = re.compile(
+    r'^((?:[A-Z][A-Za-z]*[-/])*)\s*([A-Z])$'
+)
+
+# Known section letters for validation
+FSE_VALID_SECTIONS = set("ABCD")
+
+
+def parse_fse_course_title(title):
+    """
+    Parse an FSE engineering course title to extract:
+      - base course name
+      - program codes: ["EE"], ["CE"], ["EE","CE"], [], ["Int"], etc.
+      - section letter: "A", "B", "C", "D"
+
+    Returns (course_name, programs, section) or None if unparseable.
+
+    Examples:
+      "Linear Circuit Analysis A"       → ("Linear Circuit Analysis", [], "A")
+      "Prog. Fundamentals CE-A"         → ("Prog. Fundamentals", ["CE"], "A")
+      "Applied Calculus EE-CE-A"        → ("Applied Calculus", ["EE", "CE"], "A")
+      "Signal & Systems Lab CE-B"       → ("Signal & Systems Lab", ["CE"], "B")
+      "Applications of ICT Int-A"       → ("Applications of ICT", ["Int"], "A")
+      "Under. of Holy Quran I & II  A"  → ("Under. of Holy Quran I & II", [], "A")
+      "Digital Logic Design Lab CE- A"  → ("Digital Logic Design Lab", ["CE"], "A")
+      "Probability and Statistics CE/A" → ("Probability and Statistics", ["CE"], "A")
+    """
+    if not title:
+        return None
+    t = one_line(title).strip()
+    if not t:
+        return None
+
+    # Skip non-course entries
+    skip_words = ("reserved", "fsm", "fse faculty", "quiz", "pf quiz")
+    if any(t.lower().startswith(w) for w in skip_words):
+        return None
+    # Skip time-only or location-only notes
+    if re.match(r'^\d{1,2}:\d{2}', t) or re.match(r'^Room\b', t, re.IGNORECASE):
+        return None
+
+    m = FSE_SECTION_RE.match(t)
+    if not m:
+        return None
+
+    course_name = m.group(1).strip()
+    suffix_raw = m.group(2).strip()
+    section = m.group(3).upper()
+
+    if section not in FSE_VALID_SECTIONS:
+        return None
+
+    # Parse programs from the suffix (everything before the section letter)
+    sm = FSE_SUFFIX_RE.match(suffix_raw)
+    programs = []
+    if sm:
+        prog_part = sm.group(1)
+        if prog_part:
+            # Split on - or / separators, filter out empty strings
+            progs = [p.strip().upper() for p in re.split(r'[-/]', prog_part) if p.strip()]
+            programs = progs
+
+    # Validate: if the "course_name" is too short or looks like just a
+    # program code, this is probably a mis-parse
+    if len(course_name) < 3:
+        return None
+
+    return {
+        "course": course_name,
+        "programs": programs,
+        "section": section,
+    }
+
+
+def fse_resolve_departments(parsed):
+    """
+    Map parsed FSE programs to department keys.
+
+    Rules:
+      - No program prefix          → ["BS EE"]  (default engineering dept)
+      - ["CE"]                     → ["BS CE"]
+      - ["EE"]                     → ["BS EE"]
+      - ["EE", "CE"]              → ["BS EE", "BS CE"]
+      - ["Int"]                   → ["BS EE"]  (integrated programme)
+      - Programs matching MS/PhD   → ["MS EE"] or ["PhD EE"]
+    """
+    programs = parsed.get("programs", [])
+    if not programs:
+        return ["BS EE"]
+
+    depts = []
+    for p in programs:
+        p_upper = p.upper()
+        if p_upper in ("EE",):
+            depts.append("BS EE")
+        elif p_upper in ("CE",):
+            depts.append("BS CE")
+        elif p_upper in ("INT",):
+            # Integrated programme — treat as EE default
+            depts.append("BS EE")
+        else:
+            # Unknown program — default to BS EE
+            depts.append("BS EE")
+    return list(dict.fromkeys(depts))  # deduplicate, preserve order
+
+
+def infer_fse_batch(course_name, cell_colour=None):
+    """
+    Infer batch year for an FSE engineering course using course-name keywords.
+
+    The global COLOUR_BATCH_MAP is NOT used because it is built from computing
+    school headers and maps engineering cell colours to wrong batch years.
+
+    Spring 2026 semester mapping (engineering):
+      Semester 2 (batch 2025): Linear Circuit Analysis, Prog. for Engineers,
+                               Differential Equations, Linear Algebra,
+                               Pakistan Studies, Applied Physics, Applied Calculus,
+                               Civics, Understanding of Holy Quran, Applications of ICT,
+                               Prog. Fundamentals (CE 2nd-sem), English Language
+      Semester 4 (batch 2024): Signal & Systems, Digital Logic, Data Structures,
+                               Probability, Communication Skills, Object Oriented,
+                               Electrical Network Anal., Basic Mech. Engg,
+                               Tech. Comm. Skills, Prob. & Random Prs.
+      Semester 6 (batch 2023): Engineering Economics, Analog & Digital, Computer Arch,
+                               Entrepreneurship, Operating Systems, Electro-Mechanical,
+                               Network Programming, Feedback Control, Introduction to IOT,
+                               Engineering Workshop
+      Semester 8 (batch 2022): Power Electronics, Digital Signal Processing, VLSI,
+                               Industrial Processes, Deep Learning, Computational Stat
+    """
+    name = (course_name or "").upper()
+
+    # Semester 2 → batch 2025
+    if re.search(
+        r'\b(LINEAR\s+CIRCUIT\s+ANALYSIS|PROG\.?\s+FOR\s+ENGINEERS|'
+        r'DIFFERENTIAL\s+EQU|LINEAR\s+ALGEBRA|PAKISTAN\s+STUD|'
+        r'APPLIED\s+PHYSICS|APPLIED\s+CALCULUS|'
+        r'CIVICS|COMMUNITY\s+ENGAGEMENT|UNDERSTANDING\s+OF\s+HOLY|'
+        r'APPLICATIONS\s+OF\s+ICT|PROG\.?\s+FUNDAMENTALS|'
+        r'ENGLISH\s+LANGUAGE)', name):
+        return "2025"
+
+    # Semester 4 → batch 2024
+    if re.search(
+        r'\b(SIGNAL\s+.?\s*SYSTEMS?|DIGITAL\s+LOGIC|DATA\s+STRUCT|'
+        r'PROBABILITY|PROB\.?\s+.?\s*RANDOM|COMMUNICATION\s+SKILLS?|'
+        r'OBJECT\s+ORIENTED|ELECTRICAL\s+NETWORK|'
+        r'BASIC\s+MECH|TECH\.?\s+COMM)', name):
+        return "2024"
+
+    # Semester 6 → batch 2023
+    if re.search(
+        r'\b(ENGINEERING\s+ECONOMICS|ANALOG|COMPUTER\s+ARCH|'
+        r'ENTREPRENEURSHIP|OPERATING\s+SYSTEMS?|ELECTRO.?MECHANICAL|'
+        r'NETWORK\s+PROGRAM|FEEDBACK\s+CONTROL|INTRODUCTION\s+TO\s+IOT|'
+        r'ENGINEERING\s+WORKSHOP)', name):
+        return "2023"
+
+    # Semester 8 → batch 2022
+    if re.search(
+        r'\b(POWER\s+ELECTRONICS?|DIGITAL\s+SIGNAL|VLSI|'
+        r'INDUSTRIAL\s+PROC|DEEP\s+LEARN|COMPUTATIONAL\s+STAT)', name):
+        return "2022"
+
+    return "2024"  # safe middle-ground default
+
+
+def parse_engineering_grid(text_grid, colour_grid, tt):
+    """
+    Parse the FSE engineering timetable.
+
+    The sheet has ALL five weekdays on a single tab. Structure per day:
+      - Header row: [_, _, Room, time1, ..., time6]   (times at cols ~3,21,39,57,75,93)
+      - Classes block: rooms in col 2, courses in time-slot columns
+      - LABS header row: [_, Labs, LABS, time1, ..., time6]
+      - Labs block: lab-type names in col 2, courses in time-slot columns
+      - Each course entry uses two rows: course title, then instructor name
+
+    Day labels appear in column 0 at the start of each day's section.
+    """
+    added = 0
+    total_rows = len(text_grid)
+    if total_rows < 5:
+        return 0
+
+    # ── Detect all header rows and their time-slot column positions ──────────
+    # A header row has "Room" or "LABS" in col 2 and time patterns in later cols.
+    
+    # Pre-pass: map every row to its active day based on col 0
+    row_days = [None] * total_rows
+    curr_day = None
+    for r in range(total_rows):
+        row = text_grid[r]
+        if row and len(row) > 0:
+            col0 = one_line(row[0]).strip()
+            if col0 in DAYS:
+                curr_day = col0
+        row_days[r] = curr_day
+
+    # First pass: find all header rows and day boundaries
+    header_rows = []  # (row_index, is_labs, slot_map)
+    for r in range(total_rows):
+        row = text_grid[r]
+        if not row or len(row) < 3:
+            continue
+
+        # Detect header row (Room or LABS in col 2 with time patterns)
+        col2 = one_line(row[2]).strip().upper()
+        if col2 in ("ROOM", "LABS"):
+            slot_map = {}
+            for c in range(3, len(row)):
+                cell = one_line(row[c] if c < len(row) else "").strip()
+                tm = re.match(r'(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})', cell)
+                if tm:
+                    slot_map[c] = cell.replace(" ", "")
+            if len(slot_map) >= 3:
+                is_labs = (col2 == "LABS")
+                header_rows.append((r, is_labs, slot_map))
+
+    if not header_rows:
+        dlog_warn("  FSE: no header rows found")
+        return 0
+
+    dlog(f"  FSE: found {len(header_rows)} header rows")
+
+    # ── Second pass: parse data rows between headers ────────────────────────
+    for hi in range(len(header_rows)):
+        h_row, is_labs, slot_map = header_rows[hi]
+
+        # Data rows run from h_row+1 to the next header (or end of sheet)
+        data_end = header_rows[hi + 1][0] if hi + 1 < len(header_rows) else total_rows
+        # Also stop at the "Keys" legend row
+        for r in range(h_row + 1, data_end):
+            if r < total_rows and text_grid[r] and one_line(text_grid[r][0]).strip().lower() == "keys":
+                data_end = r
+                break
+
+        slot_cols = sorted(slot_map.keys())
+
+        # Walk data rows in pairs (course row + instructor row)
+        r = h_row + 1
+        while r < data_end:
+            row = text_grid[r] if r < total_rows else []
+            if not row:
+                r += 1
+                continue
+
+            # The room/lab-name is in col 2
+            room_raw = one_line(row[2] if len(row) > 2 else "").strip()
+            if not room_raw:
+                r += 1
+                continue
+
+            # Skip "Reserved" rooms and header-like rows
+            if re.search(r'reserved|room|labs', room_raw, re.IGNORECASE):
+                r += 2  # skip course + instructor row
+                continue
+
+            # For classes blocks, room_raw is like "B-027"
+            # For labs blocks, room_raw is a lab-type name like "Phy", "Ckt", "DLD"
+            room = normalise_room(room_raw)
+
+            # Scan each time slot in this row
+            for si, sc in enumerate(slot_cols):
+                next_sc = slot_cols[si + 1] if si + 1 < len(slot_cols) else len(row)
+                time_label = slot_map[sc]
+
+                # Find course text — scan columns in this slot range
+                course_text = None
+                course_col = None
+                for c in range(sc, min(next_sc, len(row))):
+                    cell = one_line(row[c] if c < len(row) else "")
+                    if cell and not re.match(r'^\s*$', cell):
+                        course_text = cell
+                        course_col = c
+                        break
+
+                if not course_text:
+                    continue
+
+                # Check for time override embedded in course text or instructor row
+                # e.g. "Pakistan Studies A" with instructor "Ms. Aseefa Zareen 09:55 - 11:50"
+                effective_time = time_label
+                # Check instructor row for time override
+                instr_row = text_grid[r + 1] if r + 1 < total_rows else []
+                if instr_row and course_col is not None:
+                    instr_text = one_line(instr_row[course_col] if course_col < len(instr_row) else "")
+                    tm_override = re.search(r'(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})', instr_text)
+                    if tm_override:
+                        effective_time = tm_override.group(0).replace(" ", "")
+
+                # Parse the course title
+                parsed = parse_fse_course_title(course_text)
+                if not parsed:
+                    continue
+
+                # Determine department(s) and batch
+                depts = fse_resolve_departments(parsed)
+                cell_colour = None
+                if r < len(colour_grid) and course_col is not None and course_col < len(colour_grid[r]):
+                    cell_colour = colour_grid[r][course_col]
+
+                # Check for MS/PhD markers in instructor row
+                is_ms = False
+                if instr_row and course_col is not None:
+                    instr_text = one_line(instr_row[course_col] if course_col < len(instr_row) else "")
+                    if re.search(r'\bPhd\b|\bMS\s+EE\b', instr_text, re.IGNORECASE):
+                        is_ms = True
+                        depts = ["MS EE"]
+
+                batch = infer_fse_batch(parsed["course"], cell_colour)
+                if is_ms:
+                    batch = "MS"
+
+                section = parsed["section"]
+                
+                day = row_days[r]
+                if not day:
+                    continue
+
+                for dept in depts:
+                    if add_course(tt, dept, batch, section, day,
+                                  parsed["course"], room, effective_time):
+                        added += 1
+
+            r += 2  # skip to next course row (past instructor row)
+
+    return added
+
+
+# ---------------------------------------------------------------------------
 # Auto colour map builder
 # ---------------------------------------------------------------------------
 
@@ -1027,14 +1381,15 @@ def generate(service, school_name, school_info):
 
     for tab in configured_tabs:
 
-        # Only computing/engineering use tab names as weekdays
-        if school_name != "business":
+        # Computing school uses tab names as weekdays (Monday, Tuesday, ...);
+        # Business and Engineering have all days in one tab.
+        if school_name not in ("business", "engineering"):
             day = tab.strip().capitalize()
             if day not in DAYS:
                 dlog_warn(f"  Tab '{tab}' does not map to a valid day — skipping")
                 continue
         else:
-            day = None  # Business parser determines the day from column A
+            day = None  # These parsers determine the day internally
 
         print(f"  Fetching {school_name}/{tab}...", end=" ", flush=True)
 
@@ -1055,6 +1410,9 @@ def generate(service, school_name, school_info):
         if school_name == "business":
             # FSM business school uses paired-matrix format
             added = parse_business_grid(text_grid, day, tt)
+        elif school_name == "engineering":
+            # FSE engineering uses single-tab all-days format
+            added = parse_engineering_grid(text_grid, colour_grid, tt)
         else:
             added = parse_grid_to_tt(text_grid, colour_grid, day, tt)
 
