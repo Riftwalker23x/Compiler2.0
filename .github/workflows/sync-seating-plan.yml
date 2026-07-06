@@ -43,7 +43,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No seating-plan changes to commit"
           else
-            git commit -m "Sync seating plan from Gmail [skip ci]"
+            git commit -m "Sync seating plan from Gmail"
             git pull --rebase origin main || true
             git push
           fi
