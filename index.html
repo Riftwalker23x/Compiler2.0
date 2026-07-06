@@ -2630,16 +2630,22 @@ function normalizeNuid(n){
   return String(n||'').trim().toUpperCase().replace(/\s+/g,'');
 }
 
+// Strips everything but letters/digits so "22i1096", "22I-1096" and "22I1096"
+// all compare equal, and a bare "1096" still matches as a substring.
+function nuidKey(n){
+  return normalizeNuid(n).replace(/[^A-Z0-9]/g,'');
+}
+
 function findSeatingMatches(query){
   const q=normalizeQuery(query);
   if(!q) return [];
   const students=(_seatingData&&_seatingData.students)||[];
-  const qNuid=normalizeNuid(query);
+  const qKey=nuidKey(query);
 
   return students.filter(s=>{
     const name=normalizeQuery(s.name);
-    const nuid=normalizeNuid(s.nuid);
-    if(nuid&&(nuid===qNuid||nuid.includes(qNuid)||qNuid.includes(nuid))) return true;
+    const key=nuidKey(s.nuid);
+    if(key&&qKey&&(key===qKey||key.includes(qKey)||qKey.includes(key))) return true;
     if(name&&(name===q||name.includes(q)||q.includes(name))) return true;
     return false;
   });
