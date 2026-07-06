@@ -483,8 +483,8 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     <button class="nav-card" id="nc2" onclick="sw(2)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 03</div>
       <div class="nav-icon">&#9670;</div>
-      <div class="nav-title">COMING EVENTS</div>
-      <div class="nav-desc">NEXT 30 DAYS — TICKETS</div>
+      <div class="nav-title">SHOW UP SCHEDULE</div>
+      <div class="nav-desc">DEPT / BATCH / SECTION</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc3" onclick="sw(3)" role="tab" aria-selected="false" tabindex="-1">
@@ -613,17 +613,36 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
       <div id="rooms-result"></div>
     </div>
 
-    <!-- PANEL 2: Coming Events -->
+    <!-- PANEL 2: Show Up Schedule -->
     <div class="panel" id="p2">
-      <div class="events-date-banner">
-        <div class="live-dot"></div>
+      <div class="exam-filters">
         <div>
-          <div class="events-date-big" id="ev-today-date">-- --- ----</div>
-          <div class="events-date-sub">TODAY</div>
+          <label class="flabel">DEPARTMENT</label>
+          <select class="rsel" id="su-dept" onchange="onShowupDeptChange()">
+            <option value="">-- Department --</option>
+            <option value="CS">BS CS</option>
+            <option value="AI">BS AI</option>
+            <option value="DS">BS DS</option>
+            <option value="SE">BS SE</option>
+            <option value="CY">BS CY</option>
+          </select>
         </div>
-        <div class="events-range" id="ev-range">SHOWING NEXT 30 DAYS</div>
+        <div>
+          <label class="flabel">BATCH YEAR</label>
+          <select class="rsel" id="su-batch" onchange="onShowupBatchChange()">
+            <option value="">-- Batch --</option>
+            <option>2022</option><option>2023</option><option>2024</option><option>2025</option>
+          </select>
+        </div>
+        <div>
+          <label class="flabel">SECTION</label>
+          <select class="rsel" id="su-sec" onchange="renderShowupSchedule()">
+            <option value="">-- Any Section --</option>
+          </select>
+        </div>
       </div>
-      <div class="events-grid" id="events-grid"></div>
+      <div class="exam-header-badge fin" id="showup-source-badge" style="display:inline-block;margin-bottom:12px">&#9670; SHOW UP SCHEDULE</div>
+      <div id="showup-out"></div>
     </div>
 
     <!-- PANEL 3: Exam Schedule -->
@@ -725,33 +744,6 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
       </div>
     </div>
 
-  </div>
-</div>
-
-<!-- Events Modal -->
-<div class="ev-modal-overlay" id="ev-overlay" style="display:none" onclick="closeEvModal(event)">
-  <div class="ev-modal" id="ev-modal">
-    <div class="ev-modal-head">
-      <button class="ev-close-btn" onclick="closeEvModalBtn()">✕ CLOSE</button>
-      <div class="ev-modal-type" id="em-type"></div>
-      <div class="ev-modal-title" id="em-title"></div>
-      <div class="ev-modal-date" id="em-date"></div>
-    </div>
-    <div class="ev-modal-body">
-      <div class="ev-info-row">
-        <div class="ev-info-box"><div class="ev-info-label">VENUE</div><div class="ev-info-val" id="em-venue"></div></div>
-        <div class="ev-info-box"><div class="ev-info-label">TICKET PRICE</div><div class="ev-info-val" id="em-price"></div></div>
-        <div class="ev-info-box"><div class="ev-info-label">SEATS LEFT</div><div class="ev-info-val" id="em-seats"></div></div>
-      </div>
-      <div class="ev-highlights-title">KEY HIGHLIGHTS</div>
-      <div id="em-highlights"></div>
-      <div class="ev-buy-confirm" id="em-confirm">
-        <span class="ev-confirm-icon">✔</span>
-        <div style="font-family:'VT323',monospace;font-size:22px;color:#0a7a3a;letter-spacing:3px;margin-top:6px">TICKET RESERVED!</div>
-        <div style="font-size:10px;letter-spacing:1px;color:#2d8a50;margin-top:4px">Check your email for confirmation.</div>
-      </div>
-      <button class="ev-buy-btn" id="em-buy-btn" onclick="buyTicket()">&#9658; BUY TICKET</button>
-    </div>
   </div>
 </div>
 
@@ -2116,7 +2108,7 @@ function sw(i){
     refreshRoomTimetables();
     refreshCDRoomScheduleFromSheet();
   }
-  if(i===2) renderEvents();
+  if(i===2) initShowupSchedulePanel();
   if(i===3) initExamSchedulePanel();
   if(i===4) initSeatingPlan();
   if(i===5){ renderFacultyVault(); }
@@ -2263,128 +2255,141 @@ syncBlockLabsSections(DEFAULT_BLOCK_FLOORS);
 syncBlockLabsSections(BLOCK_FLOORS);
 initLiveSheetSync();
 
-/* ── Coming Events Data ── */
-const EVENTS=[
-  {
-    title:"Compiler Hackathon 2026",type:"HACKATHON",
-    date:new Date(new Date().getTime()+3*24*60*60*1000),
-    venue:"D-Block Audi",price:"PKR 500",seats:80,
-    highlights:["24-hour non-stop coding challenge","Cash prizes worth PKR 150,000","Industry mentors from leading tech firms","Free meals and refreshments throughout","Certificates for all participants"]
-  },
-  {
-    title:"AI & ML Summit",type:"CONFERENCE",
-    date:new Date(new Date().getTime()+7*24*60*60*1000),
-    venue:"Main Auditorium",price:"PKR 300",seats:200,
-    highlights:["Keynote by FAST alumnus — Google AI researcher","Live demos of generative AI tools","Panel discussion on AI in Pakistan","Networking session with industry leaders","Best project showcase competition"]
-  },
-  {
-    title:"Tech Startup Expo",type:"EXPO",
-    date:new Date(new Date().getTime()+12*24*60*60*1000),
-    venue:"Sports Complex Hall",price:"FREE",seats:500,
-    highlights:["30+ student startup booths","Investor pitch competition — PKR 200K prize","Product demos open to public","Workshop: From Idea to MVP in 30 Days","Merchandise and giveaways"]
-  },
-  {
-    title:"Cybersecurity CTF",type:"COMPETITION",
-    date:new Date(new Date().getTime()+15*24*60*60*1000),
-    venue:"C-Block Labs",price:"PKR 200",seats:60,
-    highlights:["Capture The Flag challenge — 6 hours","Categories: Web, Crypto, Forensics, Reverse Eng.","Top team wins PKR 50,000","Open to all batches and departments","Team of 2–4 members per entry"]
-  },
-  {
-    title:"Annual Compiler Dinner",type:"GALA",
-    date:new Date(new Date().getTime()+20*24*60*60*1000),
-    venue:"Marriott Hotel, ISB",price:"PKR 2,500",seats:150,
-    highlights:["Formal dinner with faculty and alumni","Annual awards: Best Developer, Innovator of the Year","Live music and entertainment","Photo booth and memorabilia","Exclusive limited seating — book early"]
-  },
-  {
-    title:"Open Source Workshop",type:"WORKSHOP",
-    date:new Date(new Date().getTime()+25*24*60*60*1000),
-    venue:"D-401",price:"PKR 100",seats:40,
-    highlights:["Contributing to real GitHub projects","Git workflow and PR best practices","Getting started with open source maintainship","Hands-on session with Linux Foundation repos","Completion certificate provided"]
-  }
-];
+/* ══════════════════════════════════════════
+   SHOW UP SCHEDULE
+   Real data, loaded from dbfolder/showup-schedule-<school>.json (synced from
+   an emailed workbook whose subject contains "showup"). Same matrix layout
+   and JSON shape as the Final Exam Schedule (date/time-slot cells with
+   BS(dept) (sections) groups per course).
+══════════════════════════════════════════ */
+const SHOWUP_SCHEDULE_URL='dbfolder/showup-schedule-computing.json';
+let _showupData=null;
+let _showupLoadPromise=null;
 
-function fmtEventDate(d){
-  const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
-}
-function fmtEventShort(d){
-  const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  return `${d.getDate()} ${months[d.getMonth()]}`;
-}
-function daysFromNow(d){
-  const diff=Math.ceil((d-new Date())/(1000*60*60*24));
-  if(diff===0) return 'TODAY';
-  if(diff===1) return 'TOMORROW';
-  return `IN ${diff} DAYS`;
+function loadShowupScheduleData(){
+  if(_showupData) return Promise.resolve(_showupData);
+  if(_showupLoadPromise) return _showupLoadPromise;
+  _showupLoadPromise=fetch(SHOWUP_SCHEDULE_URL,{cache:'no-store'})
+    .then(r=>{ if(!r.ok) throw new Error('Show up schedule file not found'); return r.json(); })
+    .then(data=>{
+      _showupData=data||{};
+      if(!Array.isArray(_showupData.exams)) _showupData.exams=[];
+      return _showupData;
+    })
+    .catch(err=>{ _showupLoadPromise=null; throw err; });
+  return _showupLoadPromise;
 }
 
-function typeClass(type){
-  return({HACKATHON:'ev-hackathon',CONFERENCE:'ev-conference',EXPO:'ev-expo',COMPETITION:'ev-competition',GALA:'ev-gala',WORKSHOP:'ev-workshop'})[type]||'ev-workshop';
+function showupForDeptBatch(dept,batch){
+  const exams=(_showupData&&_showupData.exams)||[];
+  return exams.filter(e=>e.sections&&e.sections[dept]&&(!batch||e.batch===batch));
 }
 
-function renderEvents(){
-  const now=new Date();
-  const cutoff=new Date(now.getTime()+30*24*60*60*1000);
-  const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  document.getElementById('ev-today-date').textContent=`${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+// A section like "J1"/"J2" belongs to the same base section "J". Grouping by
+// this base means the dropdown offers just "J" and selecting it matches both.
+function baseSection(sec){
+  return String(sec||'').replace(/\d+$/,'');
+}
 
-  const upcoming=EVENTS.filter(e=>e.date>=now&&e.date<=cutoff).sort((a,b)=>a.date-b.date);
-  const grid=document.getElementById('events-grid');
-  if(!upcoming.length){
-    grid.innerHTML='<div class="no-events"><span style="font-family:VT323,monospace;font-size:48px;color:#5a9a6a;display:block;margin-bottom:8px">&#9670;</span>NO EVENTS IN THE NEXT 30 DAYS</div>';
+const SHOWUP_PREF_KEY='fast_showup_prefs';
+function readShowupPrefs(){
+  try{ const raw=localStorage.getItem(SHOWUP_PREF_KEY); return raw?JSON.parse(raw):{}; }
+  catch(e){ return {}; }
+}
+function saveShowupPrefs(){
+  const dept=document.getElementById('su-dept')?.value||'';
+  const batch=document.getElementById('su-batch')?.value||'';
+  const sec=document.getElementById('su-sec')?.value||'';
+  try{ localStorage.setItem(SHOWUP_PREF_KEY,JSON.stringify({dept,batch,sec})); }catch(e){}
+}
+
+function refreshShowupSourceBadge(){
+  const badge=document.getElementById('showup-source-badge');
+  if(!badge) return;
+  const label=(_showupData&&(_showupData.source_filename||_showupData.source_subject))||'SHOW UP SCHEDULE';
+  badge.innerHTML=`&#9670; ${escHtml(label)}`;
+}
+
+function refreshShowupSectionOptions(){
+  const dept=document.getElementById('su-dept').value;
+  const batch=document.getElementById('su-batch').value;
+  const secSel=document.getElementById('su-sec');
+  if(!secSel) return;
+  const prev=secSel.value;
+  const bases=[...new Set(showupForDeptBatch(dept,batch).flatMap(e=>(e.sections[dept]||[]).map(baseSection)))].sort();
+  fillSelectOptions(secSel,bases,null,'-- Any Section --');
+  if(bases.includes(prev)) secSel.value=prev;
+}
+
+function onShowupDeptChange(){ saveShowupPrefs(); refreshShowupSectionOptions(); renderShowupSchedule(); }
+function onShowupBatchChange(){ saveShowupPrefs(); refreshShowupSectionOptions(); renderShowupSchedule(); }
+
+function renderShowupSchedule(){
+  const dept=document.getElementById('su-dept').value;
+  const batch=document.getElementById('su-batch').value;
+  const sec=document.getElementById('su-sec').value;
+  const out=document.getElementById('showup-out');
+  if(!out) return;
+  if(!dept||!batch){
+    out.innerHTML='<div class="exam-no-data"><span style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9670;</span>SELECT DEPARTMENT &amp; BATCH YEAR TO VIEW THE SCHEDULE</div>';
     return;
   }
-  grid.innerHTML=upcoming.map((ev,i)=>`
-    <div class="ev-card ${typeClass(ev.type)}" onclick="openEvModal(${i})">
-      <div class="ev-card-top">
-        <div class="ev-card-date">${fmtEventShort(ev.date)} &nbsp;·&nbsp; ${daysFromNow(ev.date)}</div>
-        <div class="ev-card-title">${ev.title}</div>
-        <div class="ev-card-type">${ev.type}</div>
-      </div>
-      <div class="ev-card-body">
-        <div class="ev-card-venue">&#9632; ${ev.venue}</div>
-        <div class="ev-card-price">${ev.price}</div>
-        <div class="ev-card-cta">TAP FOR DETAILS &amp; TICKETS &#9658;</div>
-      </div>
-    </div>`).join('');
+  saveShowupPrefs();
+  let data=showupForDeptBatch(dept,batch);
+  // Selected section is a base (e.g. "J"); match any token whose base equals it (J1, J2, ...).
+  if(sec) data=data.filter(e=>(e.sections[dept]||[]).some(s=>baseSection(s)===sec));
 
-  // store filtered list for modal access
-  window._evList=upcoming;
+  if(!data.length){
+    out.innerHTML='<div class="exam-no-data"><span style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9670;</span>NO SHOW UP SCHEDULE DATA FOR THIS SELECTION</div>';
+    return;
+  }
+
+  const sorted=[...data].sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  const rows=sorted.map(e=>{
+    const d=e.date?new Date(e.date+'T00:00:00'):null;
+    const cd=d?examCountdown(d):null;
+    const secsForDept=(e.sections[dept]||[]).join(', ');
+    return `<tr>
+      <td><div class="exam-course-name">${escHtml(e.code||'')} ${escHtml(e.course||'')}</div><div class="exam-time-txt">SEC ${escHtml(secsForDept)}</div></td>
+      <td>
+        <div class="exam-date-pill fin">${d?dDay(d)+', '+dFmt(d):'—'}</div>
+        <div class="exam-time-txt">${escHtml(e.time||'')}${e.notes?' &middot; '+escHtml(e.notes):''}</div>
+        ${cd?`<span class="exam-countdown ${cd.cls}">${cd.label}</span>`:''}
+      </td>
+    </tr>`;
+  }).join('');
+
+  out.innerHTML=`
+    <div class="exam-header-bar">
+      <span class="exam-header-label">BS ${dept} &nbsp;·&nbsp; BATCH ${batch}${sec?(' &nbsp;·&nbsp; SEC '+sec):''}</span>
+      <span class="exam-header-badge fin">SHOW UP</span>
+    </div>
+    <div class="exam-table-wrap">
+      <table class="exam-tbl">
+        <thead><tr>
+          <th class="fin" style="width:60%">COURSE</th>
+          <th class="fin" style="width:40%">DATE &amp; TIME</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
 }
 
-function openEvModal(i){
-  const ev=window._evList[i];
-  const tc=typeClass(ev.type);
-  document.getElementById('em-type').textContent=ev.type;
-  document.getElementById('em-title').textContent=ev.title;
-  document.getElementById('em-date').textContent=fmtEventDate(ev.date)+' · '+daysFromNow(ev.date);
-  document.getElementById('em-venue').textContent=ev.venue;
-  document.getElementById('em-price').textContent=ev.price;
-  document.getElementById('em-seats').textContent=ev.seats;
-  // Apply colour class to modal head
-  const head=document.getElementById('ev-modal').querySelector('.ev-modal-head');
-  head.className='ev-modal-head '+tc;
-  // Colour info vals
-  ['em-venue','em-price','em-seats'].forEach(id=>{
-    const el=document.getElementById(id);
-    el.className='ev-info-val '+tc;
+function initShowupSchedulePanel(){
+  const prefs=readShowupPrefs();
+  const deptSel=document.getElementById('su-dept'),batchSel=document.getElementById('su-batch'),secSel=document.getElementById('su-sec');
+  loadShowupScheduleData().then(()=>{
+    if(prefs.dept&&deptSel) deptSel.value=prefs.dept;
+    if(prefs.batch&&batchSel) batchSel.value=prefs.batch;
+    refreshShowupSourceBadge();
+    refreshShowupSectionOptions();
+    if(prefs.sec&&secSel) secSel.value=prefs.sec;
+    renderShowupSchedule();
+  }).catch(()=>{
+    refreshShowupSourceBadge();
+    const out=document.getElementById('showup-out');
+    if(out) out.innerHTML='<div class="exam-no-data"><span style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9888;</span>NO SHOW UP SCHEDULE SYNCED YET</div>';
   });
-  document.getElementById('em-highlights').innerHTML=ev.highlights.map(h=>`<div class="ev-highlight-item"><div class="ev-highlight-dot ${tc}"></div><span>${h}</span></div>`).join('');
-  document.getElementById('em-confirm').style.display='none';
-  const btn=document.getElementById('em-buy-btn');
-  btn.className='ev-buy-btn '+tc;
-  btn.style.display='block';
-  btn.textContent=ev.price==='FREE'?'▶ REGISTER FREE':'▶ BUY TICKET';
-  document.getElementById('ev-overlay').style.display='flex';
-}
-
-function closeEvModal(e){if(e.target===document.getElementById('ev-overlay')) closeEvModalBtn();}
-function closeEvModalBtn(){document.getElementById('ev-overlay').style.display='none';}
-
-function buyTicket(){
-  document.getElementById('em-buy-btn').style.display='none';
-  document.getElementById('em-confirm').style.display='block';
 }
 
 /* ══════════════════════════════════════════

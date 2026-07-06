@@ -6,6 +6,9 @@ Fetches the latest matching Gmail message and routes it by subject keyword:
     dbfolder/seating-plan.json
   - subject contains "schedule" -> parses the attached Final Exam Schedule
     .xlsx workbook into dbfolder/exam-schedule-<school>.json
+  - subject contains "showup"   -> parses the attached Show Up Schedule .xlsx
+    workbook (same matrix layout as the exam schedule) into
+    dbfolder/showup-schedule-<school>.json
 
 Required environment variables:
   GMAIL_USER  – Gmail address
@@ -49,6 +52,14 @@ GMAIL_IMAP_PORT = 993
 SUBJECT_ROUTES: dict[str, tuple[str, str]] = {
     "seating": ("seating", "dbfolder/seating-plan.json"),
     "schedule": ("exam_schedule", "dbfolder/exam-schedule-computing.json"),
+    "showup": ("showup_schedule", "dbfolder/showup-schedule-computing.json"),
+}
+
+# For the multi-school xlsx routes, the per-school output path is
+# dbfolder/{prefix}-{school}.json — this maps kind -> that filename prefix.
+SCHEDULE_FILE_PREFIX: dict[str, str] = {
+    "exam_schedule": "exam-schedule",
+    "showup_schedule": "showup-schedule",
 }
 
 # Column header aliases → canonical JSON field names
@@ -280,7 +291,7 @@ def fetch_latest_matching_email() -> tuple[str, str, str, bytes | None, str]:
                 break
 
         if not ids:
-            raise RuntimeError('No emails found with "seating" or "schedule" in the subject')
+            raise RuntimeError('No emails found with "seating", "schedule", or "showup" in the subject')
 
         latest_id = ids[-1]
         status, fetched = mail.fetch(latest_id, "(RFC822)")
@@ -987,17 +998,18 @@ class handler(BaseHTTPRequestHandler):
                 )
             else:
                 if not attachment:
-                    raise RuntimeError("No .xlsx attachment found on the exam-schedule email")
+                    raise RuntimeError(f"No .xlsx attachment found on the {kind} email")
                 documents = parse_exam_schedule_workbook(attachment, subject, attachment_filename)
+                prefix = SCHEDULE_FILE_PREFIX[kind]
                 github_results = {}
                 for school, doc in documents.items():
-                    path = f"dbfolder/exam-schedule-{school}.json"
+                    path = f"dbfolder/{prefix}-{school}.json"
                     github_results[school] = commit_json_to_github(doc, path)
                 json_response(
                     self, 200,
                     {
                         "ok": True,
-                        "message": "Exam schedule synced successfully from xlsx file",
+                        "message": f"{kind} synced successfully from xlsx file",
                         "schools_parsed": {s: d["count"] for s, d in documents.items()},
                         "source_subject": subject,
                         "github": github_results,
@@ -1021,7 +1033,7 @@ def run_cli() -> int:
     except RuntimeError as exc:
         # A scheduled run with no matching email is a no-op, not a failure.
         if "No emails found" in str(exc):
-            print("No seating/schedule email found - nothing to sync.")
+            print("No seating/schedule/showup email found - nothing to sync.")
             return 0
         raise
 
@@ -1032,11 +1044,12 @@ def run_cli() -> int:
         print(f"Wrote {path}: {document['count']} student(s) (subject: {subject!r})")
     else:
         if not attachment:
-            print(f"Exam-schedule email (subject: {subject!r}) had no .xlsx attachment - skipping.")
+            print(f"{kind} email (subject: {subject!r}) had no .xlsx attachment - skipping.")
             return 0
         documents = parse_exam_schedule_workbook(attachment, subject, attachment_filename)
+        prefix = SCHEDULE_FILE_PREFIX[kind]
         for school, doc in documents.items():
-            path = f"dbfolder/exam-schedule-{school}.json"
+            path = f"dbfolder/{prefix}-{school}.json"
             _write_json_file(path, doc)
             print(f"Wrote {path}: {doc['count']} exam entries (subject: {subject!r}, file: {attachment_filename!r})")
     return 0

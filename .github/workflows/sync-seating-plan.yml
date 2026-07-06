@@ -1,9 +1,9 @@
-name: Sync seating plan & exam schedule
+name: Sync seating plan, exam schedule & show up schedule
 
 on:
   # Primary (fast) trigger: a Google Apps Script polls the mailbox every minute
-  # and fires this via the GitHub API the moment a new "seating"/"schedule"
-  # email arrives — see docs/seating-gmail-trigger.gs for setup.
+  # and fires this via the GitHub API the moment a new "seating"/"schedule"/
+  # "showup" email arrives — see docs/seating-gmail-trigger.gs for setup.
   repository_dispatch:
     types: [new-seating-email]
   # Safety-net trigger: in case the Apps Script trigger is ever paused/removed,
@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Sync from Gmail (seating plan or exam schedule)
+      - name: Sync from Gmail (seating plan, exam schedule, or show up schedule)
         env:
           # Mailbox to read from (not sensitive).
           GMAIL_USER: compilersociety@gmail.com
@@ -45,11 +45,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dbfolder/seating-plan.json dbfolder/exam-schedule-*.json
+          git add dbfolder/seating-plan.json dbfolder/exam-schedule-*.json dbfolder/showup-schedule-*.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Sync seating plan / exam schedule from Gmail"
+            git commit -m "Sync seating plan / exam schedule / show up schedule from Gmail"
             git pull --rebase origin main || true
             git push
           fi
