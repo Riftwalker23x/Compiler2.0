@@ -1,10 +1,12 @@
 name: Sync seating plan
 
 on:
-  schedule:
-    # Every hour. Change to "*/30 * * * *" during exam weeks for faster pickup,
-    # or trigger instantly from the Actions tab (Run workflow) when the email lands.
-    - cron: "0 * * * *"
+  # Event-driven: a Google Apps Script on the mailbox fires this via the GitHub
+  # API only when a new "seating" email actually arrives, so it never runs on an
+  # empty schedule. See docs/seating-gmail-trigger.gs for the script.
+  repository_dispatch:
+    types: [new-seating-email]
+  # Manual fallback.
   workflow_dispatch:
 
 permissions:
