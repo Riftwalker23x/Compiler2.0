@@ -1,18 +1,16 @@
 name: Sync seating plan & exam schedule
 
 on:
-  # Poll the mailbox every minute. GitHub runs this entirely on its own — no
-  # external service needed. When a new "seating"/"schedule" email exists it is
-  # parsed and committed; when there's nothing new the run is a harmless no-op
-  # (no commit, no deploy). NOTE: GitHub Actions does not guarantee cron finer
-  # than ~5 minutes and delays it further under load/queueing, so in practice
-  # this runs roughly every 5 min, not literally every 60 seconds.
-  schedule:
-    - cron: "* * * * *"
-  # Optional instant trigger if the Google Apps Script is ever set up
-  # (docs/seating-gmail-trigger.gs), plus a manual "Run workflow" fallback.
+  # Primary (fast) trigger: a Google Apps Script polls the mailbox every minute
+  # and fires this via the GitHub API the moment a new "seating"/"schedule"
+  # email arrives — see docs/seating-gmail-trigger.gs for setup.
   repository_dispatch:
     types: [new-seating-email]
+  # Safety-net trigger: in case the Apps Script trigger is ever paused/removed,
+  # still check every 30 min so nothing gets stuck for too long. A run with no
+  # new email is a harmless no-op (no commit, no deploy).
+  schedule:
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 permissions:
