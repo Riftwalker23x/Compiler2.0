@@ -468,35 +468,35 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   <div class="nav" role="tablist">
     <button class="nav-card active" id="nc0" onclick="sw(0)" role="tab" aria-selected="true" tabindex="0">
       <div class="nav-badge">PANEL 01</div>
-      <div class="nav-icon">&#9632;</div>
+      <div class="nav-icon">⏱️</div>
       <div class="nav-title">CLASS TIMETABLE</div>
       <div class="nav-desc">DEPT / BATCH / SECTION / DAY</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc1" onclick="sw(1)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 02</div>
-      <div class="nav-icon">&#9633;</div>
+      <div class="nav-icon">🛋️</div>
       <div class="nav-title">FREE ROOMS</div>
       <div class="nav-desc">BLOCK / FLOOR — SLOT TIMELINE</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc2" onclick="sw(2)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 03</div>
-      <div class="nav-icon">&#9670;</div>
+      <div class="nav-icon">🗓️</div>
       <div class="nav-title">SHOW UP SCHEDULE</div>
       <div class="nav-desc">DEPT / BATCH / SECTION</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc3" onclick="sw(3)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 04</div>
-      <div class="nav-icon">&#9956;</div>
+      <div class="nav-icon">✍🏻</div>
       <div class="nav-title">EXAM SCHEDULE</div>
       <div class="nav-desc">S1 / S2 / FINAL EXAMS</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc4" onclick="sw(4)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 05</div>
-      <div class="nav-icon">&#9635;</div>
+      <div class="nav-icon">🪑</div>
       <div class="nav-title">SEATING PLAN</div>
       <div class="nav-desc">EXAM SEAT LOOKUP</div>
       <div class="nav-indicator"></div>
@@ -641,7 +641,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
           </select>
         </div>
       </div>
-      <div class="exam-header-badge fin" id="showup-source-badge" style="display:inline-block;margin-bottom:12px">&#9670; SHOW UP SCHEDULE</div>
+      <div class="exam-header-badge fin" id="showup-source-badge" style="display:inline-block;margin-bottom:12px">🗓️ SHOW UP SCHEDULE</div>
       <div id="showup-out"></div>
     </div>
 
@@ -667,7 +667,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
           </select>
         </div>
       </div>
-      <div class="exam-header-badge fin" id="exam-source-badge" style="display:inline-block;margin-bottom:12px">&#9956; FINAL EXAM SCHEDULE</div>
+      <div class="exam-header-badge fin" id="exam-source-badge" style="display:inline-block;margin-bottom:12px">✍🏻 FINAL EXAM SCHEDULE</div>
       <div id="exam-out"></div>
     </div>
 
@@ -2307,7 +2307,7 @@ function refreshShowupSourceBadge(){
   const badge=document.getElementById('showup-source-badge');
   if(!badge) return;
   const label=(_showupData&&(_showupData.source_filename||_showupData.source_subject))||'SHOW UP SCHEDULE';
-  badge.innerHTML=`&#9670; ${escHtml(label)}`;
+  badge.innerHTML=`🗓️ ${escHtml(label)}`;
 }
 
 function refreshShowupSectionOptions(){
@@ -2442,7 +2442,7 @@ function refreshExamSourceBadge(){
   const badge=document.getElementById('exam-source-badge');
   if(!badge) return;
   const label=(_examData&&(_examData.source_filename||_examData.source_subject))||'FINAL EXAM SCHEDULE';
-  badge.innerHTML=`&#9956; ${escHtml(label)}`;
+  badge.innerHTML=`✍🏻 ${escHtml(label)}`;
 }
 
 function onExamDeptChange(){ saveExamPrefs(); renderExamSchedule(); }
