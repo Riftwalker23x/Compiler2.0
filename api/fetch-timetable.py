@@ -241,11 +241,13 @@ def _build_subject_or_criteria(keywords: list[str]) -> str:
     return f"({chain})"
 
 
-def fetch_latest_matching_email() -> tuple[str, str, str, bytes | None]:
+def fetch_latest_matching_email() -> tuple[str, str, str, bytes | None, str]:
     """
     Connect to Gmail IMAP, find the newest message whose subject matches one of
     SUBJECT_ROUTES (preferring unread), and return (kind, subject, plain_body,
-    attachment_bytes). `kind` is "seating" or "exam_schedule" per SUBJECT_ROUTES.
+    attachment_bytes, attachment_filename). `kind` is "seating" or
+    "exam_schedule" per SUBJECT_ROUTES; attachment_filename is "" when not
+    applicable (e.g. the seating PDF route doesn't need it).
     Marks the message as \\Seen after a successful read.
     """
     user = os.environ.get("GMAIL_USER", "").strip()
@@ -298,15 +300,20 @@ def fetch_latest_matching_email() -> tuple[str, str, str, bytes | None]:
         if kind is None:
             raise RuntimeError(f"Matched email subject {subject!r} did not match any known route")
 
+        attachment_filename = ""
         if kind == "seating":
             body = extract_plain_text(msg)
             attachment = find_pdf_attachment(msg)
         else:
             body = ""
-            attachment = find_xlsx_attachment(msg)
+            xlsx_found = find_xlsx_attachment(msg)
+            if xlsx_found:
+                attachment, attachment_filename = xlsx_found
+            else:
+                attachment = None
 
         mail.store(latest_id, "+FLAGS", "\\Seen")
-        return kind, subject, body, attachment
+        return kind, subject, body, attachment, attachment_filename
     finally:
         try:
             mail.logout()
@@ -484,15 +491,15 @@ XLSX_CONTENT_TYPES = (
 )
 
 
-def find_xlsx_attachment(msg: email.message.Message) -> bytes | None:
-    """Return the raw bytes of the first .xlsx/.xlsm attachment, or None."""
+def find_xlsx_attachment(msg: email.message.Message) -> tuple[bytes, str] | None:
+    """Return (raw_bytes, filename) of the first .xlsx/.xlsm attachment, or None."""
     for part in msg.walk():
         content_type = part.get_content_type()
         filename = part.get_filename() or ""
         if filename.lower().endswith((".xlsx", ".xlsm")) or content_type in XLSX_CONTENT_TYPES:
             payload = part.get_payload(decode=True)
             if payload:
-                return payload
+                return payload, decode_mime_header(filename) or "exam-schedule.xlsx"
     return None
 
 
@@ -835,7 +842,7 @@ def parse_exam_schedule_sheet(ws: Any) -> list[dict[str, Any]]:
     return exams
 
 
-def parse_exam_schedule_workbook(xlsx_bytes: bytes, subject: str) -> dict[str, dict[str, Any]]:
+def parse_exam_schedule_workbook(xlsx_bytes: bytes, subject: str, filename: str = "") -> dict[str, dict[str, Any]]:
     """Parse the Final Exam Schedule workbook. Returns {school: document}."""
     import openpyxl  # local import: only needed for the exam-schedule route
 
@@ -852,6 +859,7 @@ def parse_exam_schedule_workbook(xlsx_bytes: bytes, subject: str) -> dict[str, d
             documents[school] = {
                 "updated_at": datetime.now(timezone.utc).isoformat(),
                 "source_subject": subject,
+                "source_filename": filename,
                 "count": len(exams),
                 "exams": exams,
             }
@@ -962,7 +970,7 @@ class handler(BaseHTTPRequestHandler):
 
     def _run_sync(self) -> None:
         try:
-            kind, subject, body, attachment = fetch_latest_matching_email()
+            kind, subject, body, attachment, attachment_filename = fetch_latest_matching_email()
             if kind == "seating":
                 document = parse_seating_plan_email(body, subject, attachment)
                 path = SUBJECT_ROUTES["seating"][1]
@@ -980,7 +988,7 @@ class handler(BaseHTTPRequestHandler):
             else:
                 if not attachment:
                     raise RuntimeError("No .xlsx attachment found on the exam-schedule email")
-                documents = parse_exam_schedule_workbook(attachment, subject)
+                documents = parse_exam_schedule_workbook(attachment, subject, attachment_filename)
                 github_results = {}
                 for school, doc in documents.items():
                     path = f"dbfolder/exam-schedule-{school}.json"
@@ -1009,7 +1017,7 @@ class handler(BaseHTTPRequestHandler):
 
 def run_cli() -> int:
     try:
-        kind, subject, body, attachment = fetch_latest_matching_email()
+        kind, subject, body, attachment, attachment_filename = fetch_latest_matching_email()
     except RuntimeError as exc:
         # A scheduled run with no matching email is a no-op, not a failure.
         if "No emails found" in str(exc):
@@ -1026,11 +1034,11 @@ def run_cli() -> int:
         if not attachment:
             print(f"Exam-schedule email (subject: {subject!r}) had no .xlsx attachment - skipping.")
             return 0
-        documents = parse_exam_schedule_workbook(attachment, subject)
+        documents = parse_exam_schedule_workbook(attachment, subject, attachment_filename)
         for school, doc in documents.items():
             path = f"dbfolder/exam-schedule-{school}.json"
             _write_json_file(path, doc)
-            print(f"Wrote {path}: {doc['count']} exam entries (subject: {subject!r})")
+            print(f"Wrote {path}: {doc['count']} exam entries (subject: {subject!r}, file: {attachment_filename!r})")
     return 0
 
 

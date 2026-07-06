@@ -647,14 +647,8 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
             <option>2022</option><option>2023</option><option>2024</option><option>2025</option>
           </select>
         </div>
-        <div>
-          <label class="flabel">SECTION</label>
-          <select class="rsel" id="ex-sec" onchange="renderExamSchedule()">
-            <option value="">-- Any Section --</option>
-          </select>
-        </div>
       </div>
-      <div class="exam-header-badge fin" style="display:inline-block;margin-bottom:12px">&#9956; FINAL EXAM SCHEDULE — SPRING 2026</div>
+      <div class="exam-header-badge fin" id="exam-source-badge" style="display:inline-block;margin-bottom:12px">&#9956; FINAL EXAM SCHEDULE</div>
       <div id="exam-out"></div>
     </div>
 
@@ -2432,23 +2426,20 @@ function readExamPrefs(){
 function saveExamPrefs(){
   const dept=document.getElementById('ex-dept')?.value||'';
   const batch=document.getElementById('ex-batch')?.value||'';
-  const sec=document.getElementById('ex-sec')?.value||'';
-  try{ localStorage.setItem(EXAM_PREF_KEY,JSON.stringify({dept,batch,sec})); }catch(e){}
+  try{ localStorage.setItem(EXAM_PREF_KEY,JSON.stringify({dept,batch})); }catch(e){}
 }
 
-function refreshExamSectionOptions(){
-  const dept=document.getElementById('ex-dept').value;
-  const batch=document.getElementById('ex-batch').value;
-  const secSel=document.getElementById('ex-sec');
-  if(!secSel) return;
-  const prev=secSel.value;
-  const secs=[...new Set(examsForDeptBatch(dept,batch).flatMap(e=>e.sections[dept]||[]))].sort();
-  fillSelectOptions(secSel,secs,null,'-- Any Section --');
-  if(secs.includes(prev)) secSel.value=prev;
+// Badge shows the actual source file/subject of the synced workbook, so it's
+// obvious which emailed sheet the schedule came from.
+function refreshExamSourceBadge(){
+  const badge=document.getElementById('exam-source-badge');
+  if(!badge) return;
+  const label=(_examData&&(_examData.source_filename||_examData.source_subject))||'FINAL EXAM SCHEDULE';
+  badge.innerHTML=`&#9956; ${escHtml(label)}`;
 }
 
-function onExamDeptChange(){ saveExamPrefs(); refreshExamSectionOptions(); renderExamSchedule(); }
-function onExamBatchChange(){ saveExamPrefs(); refreshExamSectionOptions(); renderExamSchedule(); }
+function onExamDeptChange(){ saveExamPrefs(); renderExamSchedule(); }
+function onExamBatchChange(){ saveExamPrefs(); renderExamSchedule(); }
 
 function examCountdown(date){
   const now=new Date();
@@ -2464,7 +2455,6 @@ function examCountdown(date){
 function renderExamSchedule(){
   const dept=document.getElementById('ex-dept').value;
   const batch=document.getElementById('ex-batch').value;
-  const sec=document.getElementById('ex-sec').value;
   const out=document.getElementById('exam-out');
   if(!out) return;
   if(!dept||!batch){
@@ -2472,8 +2462,7 @@ function renderExamSchedule(){
     return;
   }
   saveExamPrefs();
-  let data=examsForDeptBatch(dept,batch);
-  if(sec) data=data.filter(e=>(e.sections[dept]||[]).includes(sec));
+  const data=examsForDeptBatch(dept,batch);
 
   if(!data.length){
     out.innerHTML=`<div class="exam-no-data"><span style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9956;</span>NO EXAM DATA FOR THIS SELECTION</div>`;
@@ -2497,7 +2486,7 @@ function renderExamSchedule(){
 
   out.innerHTML=`
     <div class="exam-header-bar">
-      <span class="exam-header-label">BS ${dept} &nbsp;·&nbsp; BATCH ${batch}${sec?(' &nbsp;·&nbsp; SEC '+sec):''}</span>
+      <span class="exam-header-label">BS ${dept} &nbsp;·&nbsp; BATCH ${batch}</span>
       <span class="exam-header-badge fin">FINAL EXAM</span>
     </div>
     <div class="exam-table-wrap">
@@ -2513,12 +2502,11 @@ function renderExamSchedule(){
 
 function initExamSchedulePanel(){
   const prefs=readExamPrefs();
-  const deptSel=document.getElementById('ex-dept'),batchSel=document.getElementById('ex-batch'),secSel=document.getElementById('ex-sec');
+  const deptSel=document.getElementById('ex-dept'),batchSel=document.getElementById('ex-batch');
   loadExamScheduleData().then(()=>{
     if(prefs.dept&&deptSel) deptSel.value=prefs.dept;
     if(prefs.batch&&batchSel) batchSel.value=prefs.batch;
-    refreshExamSectionOptions();
-    if(prefs.sec&&secSel) secSel.value=prefs.sec;
+    refreshExamSourceBadge();
     renderExamSchedule();
   }).catch(()=>{
     const out=document.getElementById('exam-out');
