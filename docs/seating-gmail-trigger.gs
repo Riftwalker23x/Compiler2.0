@@ -1,9 +1,11 @@
 /**
- * Gmail -> GitHub trigger for the seating-plan sync.
+ * Gmail -> GitHub trigger for the seating-plan / exam-schedule sync.
  *
- * Watches the compilersociety mailbox and fires the "Sync seating plan"
- * GitHub Actions workflow ONLY when a new unread email with "seating" in the
- * subject arrives. No email => no run.
+ * Watches the compilersociety mailbox and fires the "Sync seating plan & exam
+ * schedule" GitHub Actions workflow ONLY when a new unread email with
+ * "seating" OR "schedule" in the subject arrives. No matching email => no run.
+ * The Python backend (api/fetch-timetable.py) inspects the subject itself to
+ * decide which pipeline to run (seating PDF vs exam-schedule xlsx).
  *
  * ── SETUP (do this once, signed in as compilersociety@gmail.com) ──────────────
  * 1. Go to https://script.google.com  ->  New project.
@@ -12,26 +14,27 @@
  *      (Fine-grained PAT): Repository access = only "Riftwalker23x/Compiler2.0",
  *      Permissions -> Repository -> "Contents: Read and write".
  *      (Or a classic token with the "repo" scope.)
- * 3. Save. Run `checkSeatingEmails` once and approve the Gmail/UrlFetch access
+ * 3. Save. Run `checkSyncEmails` once and approve the Gmail/UrlFetch access
  *    prompt.
  * 4. Left sidebar -> Triggers (clock icon) -> Add Trigger:
- *      Function: checkSeatingEmails
+ *      Function: checkSyncEmails
  *      Event source: Time-driven -> Minutes timer -> Every minute
  *    (1 minute is Apps Script's fastest polling interval.)
  *
- * That's it. New seating email -> within ~1 min the workflow runs and the site
- * updates. For true real-time (seconds) you'd need Gmail push via Google Cloud
- * Pub/Sub, which is a lot more setup; polling every minute is the simple choice.
+ * That's it. New seating/schedule email -> within ~1 min the workflow runs and
+ * the site updates. For true real-time (seconds) you'd need Gmail push via
+ * Google Cloud Pub/Sub, which is a lot more setup; polling every minute is the
+ * simple choice.
  */
 
 const GITHUB_OWNER = 'Riftwalker23x';
 const GITHUB_REPO  = 'Compiler2.0';
 const GITHUB_TOKEN = 'PASTE_YOUR_GITHUB_TOKEN_HERE';
 
-function checkSeatingEmails() {
-  // Unread, subject contains "seating", from the last day. The workflow marks
-  // the email read once processed, so it won't be triggered again.
-  const threads = GmailApp.search('is:unread subject:seating newer_than:1d');
+function checkSyncEmails() {
+  // Unread, subject contains "seating" or "schedule", from the last day. The
+  // workflow marks the email read once processed, so it won't re-trigger.
+  const threads = GmailApp.search('is:unread (subject:seating OR subject:schedule) newer_than:1d');
   if (!threads.length) {
     return; // nothing new -> do not trigger the workflow
   }
@@ -50,7 +53,7 @@ function checkSeatingEmails() {
 
   const code = response.getResponseCode();
   if (code === 204) {
-    Logger.log('Triggered seating-plan sync (%s unread thread(s)).', threads.length);
+    Logger.log('Triggered sync workflow (%s unread thread(s)).', threads.length);
   } else {
     Logger.log('GitHub dispatch failed: %s %s', code, response.getContentText());
   }

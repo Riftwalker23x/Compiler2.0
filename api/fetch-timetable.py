@@ -1,14 +1,17 @@
 """
-Vercel Serverless Function: GET/POST /api/fetch-timetable
+Vercel Serverless Function / GitHub Actions CLI: fetch-timetable
 
-Fetches the latest unread Gmail message whose subject contains "seatingplan",
-extracts and parses its attached PDF seating layout into structured JSON,
-and commits it to dbfolder/seating-plan.json via the GitHub REST API.
+Fetches the latest matching Gmail message and routes it by subject keyword:
+  - subject contains "seating"  -> parses the attached seating-plan PDF into
+    dbfolder/seating-plan.json
+  - subject contains "schedule" -> parses the attached Final Exam Schedule
+    .xlsx workbook into dbfolder/exam-schedule-<school>.json
 
 Required environment variables:
   GMAIL_USER  – Gmail address
   GMAIL_PASS  – Gmail App Password (not your regular password)
-  GH_TOKEN    – GitHub PAT with repo contents write access
+  GH_TOKEN    – GitHub PAT with repo contents write access (Vercel handler only;
+                the GitHub Actions CLI commits with its own built-in token)
 
 Optional environment variables:
   GH_REPO     – "owner/repo" (defaults to VERCEL_GIT_REPO_OWNER/SLUG)
@@ -40,10 +43,13 @@ from urllib.request import Request, urlopen
 
 GMAIL_IMAP_HOST = "imap.gmail.com"
 GMAIL_IMAP_PORT = 993
-# Substring the email subject must contain (case-insensitive). Kept broad on
-# purpose so it matches "Seating Plan", "seatingplan", "seating chart", etc.
-SUBJECT_KEYWORD = "seating"
-REPO_FILE_PATH = "dbfolder/seating-plan.json"
+# Subject keyword -> (kind label, JSON output path). Matched case-insensitively
+# against the email subject; kept broad so "Seating Plan", "seatingplan",
+# "Schedule of Final Examination", etc. all match.
+SUBJECT_ROUTES: dict[str, tuple[str, str]] = {
+    "seating": ("seating", "dbfolder/seating-plan.json"),
+    "schedule": ("exam_schedule", "dbfolder/exam-schedule-computing.json"),
+}
 
 # Column header aliases → canonical JSON field names
 FIELD_ALIASES: dict[str, str] = {
@@ -226,11 +232,21 @@ def strip_html(html: str) -> str:
     return text.strip()
 
 
-def fetch_latest_seating_email() -> tuple[str, str, bytes | None]:
+def _build_subject_or_criteria(keywords: list[str]) -> str:
+    """Build an IMAP SEARCH criteria string matching ANY of the given subject
+    keywords, e.g. ["seating", "schedule"] -> '(OR (SUBJECT "seating") (SUBJECT "schedule"))'."""
+    chain = f'SUBJECT "{keywords[0]}"'
+    for kw in keywords[1:]:
+        chain = f'OR ({chain}) (SUBJECT "{kw}")'
+    return f"({chain})"
+
+
+def fetch_latest_matching_email() -> tuple[str, str, str, bytes | None]:
     """
-    Connect to Gmail IMAP, find the newest message whose subject contains
-    SUBJECT_KEYWORD (preferring unread), and return (subject, plain_body,
-    pdf_bytes). Marks the message as \\Seen after a successful read.
+    Connect to Gmail IMAP, find the newest message whose subject matches one of
+    SUBJECT_ROUTES (preferring unread), and return (kind, subject, plain_body,
+    attachment_bytes). `kind` is "seating" or "exam_schedule" per SUBJECT_ROUTES.
+    Marks the message as \\Seen after a successful read.
     """
     user = os.environ.get("GMAIL_USER", "").strip()
     password = os.environ.get("GMAIL_PASS", "").strip()
@@ -243,13 +259,15 @@ def fetch_latest_seating_email() -> tuple[str, str, bytes | None]:
         mail.login(user, password)
         mail.select("INBOX")
 
+        subject_criteria = _build_subject_or_criteria(list(SUBJECT_ROUTES.keys()))
+
         # Prefer the newest UNREAD matching email; if none is found (e.g. it was
         # already opened), fall back to the newest matching email regardless of
         # read state so an opened email still gets processed.
         ids: list[bytes] = []
         for criteria in (
-            ("UNSEEN", f'(SUBJECT "{SUBJECT_KEYWORD}")'),
-            (f'(SUBJECT "{SUBJECT_KEYWORD}")',),
+            ("UNSEEN", subject_criteria),
+            (subject_criteria,),
         ):
             status, data = mail.search(None, *criteria)
             if status != "OK":
@@ -260,7 +278,7 @@ def fetch_latest_seating_email() -> tuple[str, str, bytes | None]:
                 break
 
         if not ids:
-            raise RuntimeError('No emails found with "seating" in the subject')
+            raise RuntimeError('No emails found with "seating" or "schedule" in the subject')
 
         latest_id = ids[-1]
         status, fetched = mail.fetch(latest_id, "(RFC822)")
@@ -270,11 +288,25 @@ def fetch_latest_seating_email() -> tuple[str, str, bytes | None]:
         raw_bytes = fetched[0][1]
         msg = email.message_from_bytes(raw_bytes)
         subject = decode_mime_header(msg.get("Subject", ""))
-        body = extract_plain_text(msg)
-        pdf_bytes = find_pdf_attachment(msg)
+        subject_lower = subject.lower()
+
+        kind = None
+        for keyword, (label, _path) in SUBJECT_ROUTES.items():
+            if keyword in subject_lower:
+                kind = label
+                break
+        if kind is None:
+            raise RuntimeError(f"Matched email subject {subject!r} did not match any known route")
+
+        if kind == "seating":
+            body = extract_plain_text(msg)
+            attachment = find_pdf_attachment(msg)
+        else:
+            body = ""
+            attachment = find_xlsx_attachment(msg)
 
         mail.store(latest_id, "+FLAGS", "\\Seen")
-        return subject, body, pdf_bytes
+        return kind, subject, body, attachment
     finally:
         try:
             mail.logout()
@@ -440,6 +472,24 @@ def find_pdf_attachment(msg: email.message.Message) -> bytes | None:
         content_type = part.get_content_type()
         filename = part.get_filename() or ""
         if content_type == "application/pdf" or filename.lower().endswith(".pdf"):
+            payload = part.get_payload(decode=True)
+            if payload:
+                return payload
+    return None
+
+
+XLSX_CONTENT_TYPES = (
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.ms-excel",
+)
+
+
+def find_xlsx_attachment(msg: email.message.Message) -> bytes | None:
+    """Return the raw bytes of the first .xlsx/.xlsm attachment, or None."""
+    for part in msg.walk():
+        content_type = part.get_content_type()
+        filename = part.get_filename() or ""
+        if filename.lower().endswith((".xlsx", ".xlsm")) or content_type in XLSX_CONTENT_TYPES:
             payload = part.get_payload(decode=True)
             if payload:
                 return payload
@@ -652,6 +702,170 @@ def parse_seating_plan_email(body: str, subject: str, pdf_bytes: bytes | None = 
     return document
 
 
+# ── FAST Final Exam Schedule parser (xlsx, matrix layout) ──────────────────────
+# Each school sheet (FSC Final / FSM Final / FSE Final) is a matrix: column A
+# holds the exam date (present once per date block, blank on subsequent rows of
+# that block), and columns B/D/F hold the three time-slot cells (9-12, 1-4, 5-8),
+# each stacked with one paper per non-blank row. A paper cell looks like:
+#   "CS2005 Database Systems\nBS(CS) (A,B,C,D,E,F,G)\nBS(AI) (A,B,C)\n2024"
+# with the batch year and any department/section group on their own lines.
+
+EXAM_SLOT_COLUMNS = {2: "9:00 to 12:00 PM", 4: "1:00 to 4:00 PM", 6: "5:00 to 8:00 PM"}  # 1-indexed: B,D,F
+EXAM_SCHOOL_SHEETS = [(re.compile(r"FSC", re.I), "computing"),
+                      (re.compile(r"FSM", re.I), "business"),
+                      (re.compile(r"FSE", re.I), "engineering")]
+
+EXAM_CODE_RE = re.compile(r"^([A-Z]{2,3}\d{3,4})\s*(.*)$", re.S)
+EXAM_YEAR_LINE_RE = re.compile(r"^(20\d{2})$")
+EXAM_YEAR_ANY_RE = re.compile(r"(20\d{2})")
+EXAM_DEPT_RE = re.compile(r"^BS\(([A-Z]+)\)\s*(.*)$", re.S)
+EXAM_NOTE_RE = re.compile(r"\(in[^)]*\)", re.I)
+
+
+def _excel_serial_to_iso_date(value: Any) -> str:
+    if isinstance(value, datetime):
+        return value.date().isoformat()
+    if hasattr(value, "isoformat") and not isinstance(value, str):
+        return value.isoformat()
+    try:
+        n = float(value)
+    except (TypeError, ValueError):
+        return ""
+    from datetime import date, timedelta
+    return (date(1899, 12, 30) + timedelta(days=round(n))).isoformat()
+
+
+def _iso_date_day_name(iso_date: str) -> str:
+    if not iso_date:
+        return ""
+    from datetime import date as _date
+    y, m, d = (int(x) for x in iso_date.split("-"))
+    return _date(y, m, d).strftime("%A")
+
+
+def parse_exam_paper_cell(text: str) -> dict[str, Any] | None:
+    """Parse one matrix cell into {code, course, batch, sections, notes}."""
+    lines = [ln.strip() for ln in re.split(r"\r\n|\r|\n", text) if ln.strip()]
+    if not lines:
+        return None
+
+    m = EXAM_CODE_RE.match(lines[0])
+    code = m.group(1) if m else None
+    course = m.group(2).strip() if m else lines[0]
+    year: str | None = None
+    notes: list[str] = []
+    sections: dict[str, list[str]] = {}
+
+    for ln in lines[1:]:
+        if EXAM_YEAR_LINE_RE.match(ln):
+            year = ln
+            continue
+        if "BS(" in ln:
+            for chunk in re.split(r"(?=BS\()", ln):
+                chunk = chunk.strip()
+                if not chunk:
+                    continue
+                dm = EXAM_DEPT_RE.match(chunk)
+                if not dm:
+                    continue
+                dept = dm.group(1)
+                remainder = dm.group(2).strip()
+                note_m = EXAM_NOTE_RE.search(remainder)
+                if note_m:
+                    notes.append(note_m.group(0))
+                    remainder = remainder.replace(note_m.group(0), "").strip()
+                remainder = re.sub(r"^-", "", remainder).strip()
+                remainder = re.sub(r"^\(|\)$", "", remainder).strip()
+                remainder = re.sub(r"\s+", "", remainder)
+                if "," in remainder:
+                    secs = [s for s in remainder.split(",") if s]
+                elif re.fullmatch(r"[A-Z]{2,}", remainder or ""):
+                    secs = list(remainder)
+                elif remainder:
+                    secs = [remainder]
+                else:
+                    secs = []
+                secs = sorted({s.strip().upper() for s in secs if s.strip()})
+                sections[dept] = sorted(set(sections.get(dept, [])) | set(secs))
+        else:
+            ym = EXAM_YEAR_ANY_RE.search(ln)
+            if ym and not year:
+                year = ym.group(1)
+            else:
+                notes.append(ln)
+
+    return {
+        "code": code,
+        "course": course,
+        "batch": year,
+        "sections": sections,
+        "notes": "; ".join(notes) if notes else None,
+    }
+
+
+def parse_exam_schedule_sheet(ws: Any) -> list[dict[str, Any]]:
+    exams: list[dict[str, Any]] = []
+    current_date = ""
+    for row in ws.iter_rows():
+        if len(row) > 0 and row[0].value is not None:
+            iso = _excel_serial_to_iso_date(row[0].value)
+            if iso:
+                current_date = iso
+        for col_idx, slot_label in EXAM_SLOT_COLUMNS.items():
+            if col_idx - 1 >= len(row):
+                continue
+            cell_value = row[col_idx - 1].value
+            if cell_value is None:
+                continue
+            parsed = parse_exam_paper_cell(str(cell_value))
+            if not parsed or not parsed.get("code"):
+                continue
+            entry: dict[str, Any] = {
+                "date": current_date or None,
+                "day": _iso_date_day_name(current_date) or None,
+                "time": slot_label,
+                "code": parsed["code"],
+                "course": parsed["course"],
+                "batch": parsed["batch"],
+                "sections": parsed["sections"],
+            }
+            if parsed.get("notes"):
+                entry["notes"] = parsed["notes"]
+            exams.append(entry)
+    return exams
+
+
+def parse_exam_schedule_workbook(xlsx_bytes: bytes, subject: str) -> dict[str, dict[str, Any]]:
+    """Parse the Final Exam Schedule workbook. Returns {school: document}."""
+    import openpyxl  # local import: only needed for the exam-schedule route
+
+    wb = openpyxl.load_workbook(io.BytesIO(xlsx_bytes), data_only=True, read_only=True)
+    documents: dict[str, dict[str, Any]] = {}
+    try:
+        for sheet_name in wb.sheetnames:
+            school = next((key for pattern, key in EXAM_SCHOOL_SHEETS if pattern.search(sheet_name)), None)
+            if not school:
+                continue
+            exams = parse_exam_schedule_sheet(wb[sheet_name])
+            if not exams:
+                continue
+            documents[school] = {
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+                "source_subject": subject,
+                "count": len(exams),
+                "exams": exams,
+            }
+    finally:
+        wb.close()
+
+    if not documents:
+        raise ValueError(
+            "Could not find a recognizable exam-schedule sheet (FSC/FSM/FSE) "
+            "in the attached workbook, or no papers could be parsed from it."
+        )
+    return documents
+
+
 # ── GitHub REST API commit ─────────────────────────────────────────────────────
 
 def github_request(method: str, url: str, token: str, payload: dict | None = None) -> Any:
@@ -690,18 +904,15 @@ def resolve_repo() -> tuple[str, str]:
     )
 
 
-def commit_json_to_github(document: dict[str, Any]) -> dict[str, Any]:
-    """
-    Overwrites dbfolder/seating-plan.json completely. Employs full array
-    state wiping contextually by replacing the remote tree element directly.
-    """
+def commit_json_to_github(document: dict[str, Any], repo_path: str) -> dict[str, Any]:
+    """Overwrite `repo_path` completely with `document` via the GitHub contents API."""
     token = os.environ.get("GH_TOKEN", "").strip()
     if not token:
         raise RuntimeError("GH_TOKEN environment variable is required")
 
     owner, repo = resolve_repo()
     branch = os.environ.get("GH_BRANCH", "main").strip() or "main"
-    api_base = f"https://api.github.com/repos/{owner}/{repo}/contents/{REPO_FILE_PATH}"
+    api_base = f"https://api.github.com/repos/{owner}/{repo}/contents/{repo_path}"
 
     existing_sha: str | None = None
     try:
@@ -713,7 +924,7 @@ def commit_json_to_github(document: dict[str, Any]) -> dict[str, Any]:
 
     content_bytes = json.dumps(document, indent=2, ensure_ascii=False).encode("utf-8")
     payload: dict[str, Any] = {
-        "message": f"Sync seating plan from Gmail PDF ({document.get('count', 0)} students)",
+        "message": f"Sync {repo_path} from Gmail ({document.get('count', 0)} entries)",
         "content": base64.b64encode(content_bytes).decode("ascii"),
         "branch": branch,
     }
@@ -723,11 +934,19 @@ def commit_json_to_github(document: dict[str, Any]) -> dict[str, Any]:
     result = github_request("PUT", api_base, token, payload)
     return {
         "committed": True,
-        "path": REPO_FILE_PATH,
+        "path": repo_path,
         "branch": branch,
         "sha": result.get("content", {}).get("sha"),
         "html_url": result.get("content", {}).get("html_url"),
     }
+
+
+def _write_json_file(path: str, document: dict[str, Any]) -> None:
+    directory = os.path.dirname(path)
+    if directory:
+        os.makedirs(directory, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(document, fh, indent=2, ensure_ascii=False)
 
 
 # ── Vercel handler ───────────────────────────────────────────────────────────
@@ -743,20 +962,39 @@ class handler(BaseHTTPRequestHandler):
 
     def _run_sync(self) -> None:
         try:
-            subject, body, pdf_bytes = fetch_latest_seating_email()
-            document = parse_seating_plan_email(body, subject, pdf_bytes)
-            commit_info = commit_json_to_github(document)
-            json_response(
-                self,
-                200,
-                {
-                    "ok": True,
-                    "message": "Seating plan synced successfully from PDF file",
-                    "students_parsed": document["count"],
-                    "source_subject": subject,
-                    "github": commit_info,
-                },
-            )
+            kind, subject, body, attachment = fetch_latest_matching_email()
+            if kind == "seating":
+                document = parse_seating_plan_email(body, subject, attachment)
+                path = SUBJECT_ROUTES["seating"][1]
+                commit_info = commit_json_to_github(document, path)
+                json_response(
+                    self, 200,
+                    {
+                        "ok": True,
+                        "message": "Seating plan synced successfully from PDF file",
+                        "students_parsed": document["count"],
+                        "source_subject": subject,
+                        "github": commit_info,
+                    },
+                )
+            else:
+                if not attachment:
+                    raise RuntimeError("No .xlsx attachment found on the exam-schedule email")
+                documents = parse_exam_schedule_workbook(attachment, subject)
+                github_results = {}
+                for school, doc in documents.items():
+                    path = f"dbfolder/exam-schedule-{school}.json"
+                    github_results[school] = commit_json_to_github(doc, path)
+                json_response(
+                    self, 200,
+                    {
+                        "ok": True,
+                        "message": "Exam schedule synced successfully from xlsx file",
+                        "schools_parsed": {s: d["count"] for s, d in documents.items()},
+                        "source_subject": subject,
+                        "github": github_results,
+                    },
+                )
         except Exception as exc:
             json_response(self, 500, {"ok": False, "error": str(exc)})
 
@@ -765,27 +1003,34 @@ class handler(BaseHTTPRequestHandler):
 
 
 # ── Standalone CLI (GitHub Actions / local) ────────────────────────────────────
-# Same fetch+parse pipeline as the Vercel handler, but writes
-# dbfolder/seating-plan.json to disk so a CI workflow can commit it with its own
-# GITHUB_TOKEN. Only GMAIL_USER / GMAIL_PASS are required in this mode.
+# Same fetch+parse pipeline as the Vercel handler, but writes JSON straight to
+# disk so a CI workflow can commit it with its own GITHUB_TOKEN. Only
+# GMAIL_USER / GMAIL_PASS are required in this mode.
 
 def run_cli() -> int:
     try:
-        subject, body, pdf_bytes = fetch_latest_seating_email()
+        kind, subject, body, attachment = fetch_latest_matching_email()
     except RuntimeError as exc:
         # A scheduled run with no matching email is a no-op, not a failure.
         if "No emails found" in str(exc):
-            print("No seating-plan email found - nothing to sync.")
+            print("No seating/schedule email found - nothing to sync.")
             return 0
         raise
-    document = parse_seating_plan_email(body, subject, pdf_bytes)
-    directory = os.path.dirname(REPO_FILE_PATH)
-    if directory:
-        os.makedirs(directory, exist_ok=True)
-    with open(REPO_FILE_PATH, "w", encoding="utf-8") as fh:
-        json.dump(document, fh, indent=2, ensure_ascii=False)
-    print(f"Wrote {REPO_FILE_PATH}: {document['count']} student(s) "
-          f"(subject: {subject!r})")
+
+    if kind == "seating":
+        document = parse_seating_plan_email(body, subject, attachment)
+        path = SUBJECT_ROUTES["seating"][1]
+        _write_json_file(path, document)
+        print(f"Wrote {path}: {document['count']} student(s) (subject: {subject!r})")
+    else:
+        if not attachment:
+            print(f"Exam-schedule email (subject: {subject!r}) had no .xlsx attachment - skipping.")
+            return 0
+        documents = parse_exam_schedule_workbook(attachment, subject)
+        for school, doc in documents.items():
+            path = f"dbfolder/exam-schedule-{school}.json"
+            _write_json_file(path, doc)
+            print(f"Wrote {path}: {doc['count']} exam entries (subject: {subject!r})")
     return 0
 
 

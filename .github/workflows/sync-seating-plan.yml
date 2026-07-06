@@ -1,9 +1,9 @@
-name: Sync seating plan
+name: Sync seating plan & exam schedule
 
 on:
   # Event-driven: a Google Apps Script on the mailbox fires this via the GitHub
-  # API only when a new "seating" email actually arrives, so it never runs on an
-  # empty schedule. See docs/seating-gmail-trigger.gs for the script.
+  # API only when a new "seating" or "schedule" email actually arrives, so it
+  # never runs on an empty schedule. See docs/seating-gmail-trigger.gs.
   repository_dispatch:
     types: [new-seating-email]
   # Manual fallback.
@@ -29,9 +29,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Sync seating plan from Gmail
+      - name: Sync from Gmail (seating plan or exam schedule)
         env:
-          # Mailbox to read seating-plan emails from (not sensitive).
+          # Mailbox to read from (not sensitive).
           GMAIL_USER: compilersociety@gmail.com
           # 16-char Gmail App Password — add this as a repo secret named GMAIL_PASS.
           GMAIL_PASS: ${{ secrets.GMAIL_PASS }}
@@ -41,11 +41,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dbfolder/seating-plan.json
+          git add dbfolder/seating-plan.json dbfolder/exam-schedule-*.json
           if git diff --cached --quiet; then
-            echo "No seating-plan changes to commit"
+            echo "No changes to commit"
           else
-            git commit -m "Sync seating plan from Gmail"
+            git commit -m "Sync seating plan / exam schedule from Gmail"
             git pull --rebase origin main || true
             git push
           fi

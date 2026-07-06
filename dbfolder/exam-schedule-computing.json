@@ -1,0 +1,2569 @@
+{
+  "updated_at": "2026-07-06T21:41:11.260Z",
+  "source_subject": "Final Examination Schedule Spring 2026 (imported from xlsx)",
+  "count": 158,
+  "exams": [
+    {
+      "date": "2026-05-18",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS2005",
+      "course": "Database Systems",
+      "batch": "2024",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "SE": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-18",
+      "day": "Monday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS1004",
+      "course": "Object Oriented Programming",
+      "batch": "2025",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "J"
+        ],
+        "SE": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ],
+        "CY": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-18",
+      "day": "Monday",
+      "time": "5:00 to 8:00 PM",
+      "code": "AI5009",
+      "course": "MLOps for Cloud-Native ApplicationsMDS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-18",
+      "day": "Monday",
+      "time": "5:00 to 8:00 PM",
+      "code": "CS5001",
+      "course": "Research Methodology MCS-1A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-18",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS4061",
+      "course": "Ethical Hacking Concepts and Practices",
+      "batch": "2023",
+      "sections": {
+        "CY": [
+          "A"
+        ]
+      },
+      "notes": "(in Lab)"
+    },
+    {
+      "date": "2026-05-18",
+      "day": "Monday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS4061",
+      "course": "Ethical Hacking Concepts and Practices",
+      "batch": "2023",
+      "sections": {
+        "CY": [
+          "B"
+        ]
+      },
+      "notes": "(in Lab)"
+    },
+    {
+      "date": "2026-05-18",
+      "day": "Monday",
+      "time": "5:00 to 8:00 PM",
+      "code": "SE6006",
+      "course": "Research MethodologyPCS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-18",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS1002",
+      "course": "Programming Fundamentals",
+      "batch": "2025",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C"
+        ],
+        "SE": [
+          "A"
+        ],
+        "AI": [
+          "A"
+        ],
+        "CY": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-18",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AI4017",
+      "course": "Responsible and Explainable AI",
+      "batch": "2022",
+      "sections": {
+        "AI": [
+          "A"
+        ],
+        "DS": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-18",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS4074",
+      "course": "User Experience Engineering",
+      "batch": "2022",
+      "sections": {
+        "SE": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-18",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS4045",
+      "course": "Deep Learning for Perception",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-19",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS4049",
+      "course": "Blockchain and Cryptocurrency",
+      "batch": "2022",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-19",
+      "day": "Tuesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS3012",
+      "course": "Fundamentals of Data Visualization",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-19",
+      "day": "Tuesday",
+      "time": "5:00 to 8:00 PM",
+      "code": "CS4002",
+      "course": "Applied Programming MCS-1A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-19",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CY4045",
+      "course": "Blockchain and Cryptocurrency",
+      "batch": "2022",
+      "sections": {
+        "CY": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-19",
+      "day": "Tuesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS5037",
+      "course": "Data Visualization MCS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-19",
+      "day": "Tuesday",
+      "time": "5:00 to 8:00 PM",
+      "code": "CS5020",
+      "course": "Agentic AI MDS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-19",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CY4054",
+      "course": "Blockchain Technologies and Applications",
+      "batch": "2022",
+      "sections": {
+        "AI": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-19",
+      "day": "Tuesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CY3004",
+      "course": "Fundamentals of Malware Analysis",
+      "batch": "2023",
+      "sections": {
+        "CY": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-19",
+      "day": "Tuesday",
+      "time": "5:00 to 8:00 PM",
+      "code": "CS5051",
+      "course": "Malware Analysis and Detection MCY-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-19",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "SE4001",
+      "course": "Software Re-Engineering",
+      "batch": "2022",
+      "sections": {
+        "SE": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-19",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS2009",
+      "course": "Design and Analysis of Algorithms",
+      "batch": "2024",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-19",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CL2005",
+      "course": "Database Systems - Lab",
+      "batch": "2024",
+      "sections": {
+        "SE": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS3004",
+      "course": "Software Design and Analysis",
+      "batch": "2024",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "NS1001",
+      "course": "Applied Physics",
+      "batch": "2025",
+      "sections": {
+        "SE": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "CY": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "5:00 to 8:00 PM",
+      "code": "CS5006",
+      "course": "Theory of Programming Languages MCS-1A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AI3003",
+      "course": "Artificial Neural Networks",
+      "batch": "2023",
+      "sections": {
+        "AI": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "5:00 to 8:00 PM",
+      "code": "CY5006",
+      "course": "Advanced Network Security MCY-1A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS3009",
+      "course": "Software Engineering",
+      "batch": "2023",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "DS3005",
+      "course": "Data Mining",
+      "batch": "2023",
+      "sections": {
+        "DS": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "5:00 to 8:00 PM",
+      "code": "SE5001",
+      "course": "Advanced Software Requirement Engineering MSE-1A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CY3001",
+      "course": "Networks and Cyber Security -II",
+      "batch": "2022",
+      "sections": {
+        "CY": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "DS3002",
+      "course": "Data Mining",
+      "batch": "2022",
+      "sections": {
+        "DS": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "SE3003",
+      "course": "Web Engineering",
+      "batch": "2022",
+      "sections": {
+        "SE": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AI3004",
+      "course": "Reinforcement Learning",
+      "batch": "2022",
+      "sections": {
+        "DS": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS5137",
+      "course": "Deep Reinforcement Learning MAI-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-20",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS6018",
+      "course": "Recent Advances in Deep LearningPCS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-21",
+      "day": "Thursday",
+      "time": "9:00 to 12:00 PM",
+      "code": "SS1015",
+      "course": "Pakistan Studies",
+      "batch": "2025",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "J"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-21",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "SS1021",
+      "course": "Understanding of Holy Quran I",
+      "batch": "2025",
+      "sections": {
+        "SE": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "CY": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "notes": "(1.5 Hours)"
+    },
+    {
+      "date": "2026-05-21",
+      "day": "Thursday",
+      "time": "5:00 to 8:00 PM",
+      "code": "CS5027",
+      "course": "Machine Learning MCS-1A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-21",
+      "day": "Thursday",
+      "time": "5:00 to 8:00 PM",
+      "code": "CS5130",
+      "course": "Securing the Internet of things MCY-1A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-21",
+      "day": "Thursday",
+      "time": "9:00 to 12:00 PM",
+      "code": "SS1015",
+      "course": "Pakistan Studies",
+      "batch": "2024",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "SE": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ],
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-21",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS4055",
+      "course": "Digital Image Processing",
+      "batch": "2023",
+      "sections": {
+        "CS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-21",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AI4009",
+      "course": "Generative AI",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C"
+        ],
+        "AI": [
+          "A"
+        ],
+        "DS": [
+          "A"
+        ],
+        "SE": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-21",
+      "day": "Thursday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CY3006",
+      "course": "Digital Forensics",
+      "batch": "2023",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-21",
+      "day": "Thursday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CY2002",
+      "course": "Digital Forensics",
+      "batch": "2022",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-21",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AI5004",
+      "course": "Advanced Topics in Generative AI MDS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-21",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS6058",
+      "course": "Advanced Topic in Agentic AIPCS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-22",
+      "day": "Friday",
+      "time": "9:00 to 12:00 PM",
+      "code": "SE4009",
+      "course": "Process Mining and Simulation",
+      "batch": "2023",
+      "sections": {
+        "SE": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-22",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "MT1008",
+      "course": "Multivariable Calculus",
+      "batch": "2025",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "J"
+        ],
+        "SE": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ],
+        "CY": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-22",
+      "day": "Friday",
+      "time": "5:00 to 8:00 PM",
+      "code": "AI5003",
+      "course": "Advanced Machine Learning MAI-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-22",
+      "day": "Friday",
+      "time": "9:00 to 12:00 PM",
+      "code": "MT1003",
+      "course": "Calculus and Analytical Geometry",
+      "batch": "2024",
+      "sections": {
+        "SE": [
+          "A"
+        ],
+        "CS": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-22",
+      "day": "Friday",
+      "time": "5:00 to 8:00 PM",
+      "code": "DS5004",
+      "course": "Machine Learning for Data Science MDS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-22",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "MG4033",
+      "course": "Digital Marketing",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-22",
+      "day": "Friday",
+      "time": "5:00 to 8:00 PM",
+      "code": "SE5004",
+      "course": "Search-based Software Engineering MSE-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-22",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS6025",
+      "course": "Advanced Machine LearningPCS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-22",
+      "day": "Friday",
+      "time": "5:00 to 8:00 PM",
+      "code": "SE6007",
+      "course": "Search-based Software EngineeringPSE-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "SS2012",
+      "course": "Technical and Business Writing",
+      "batch": "2024",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS1005",
+      "course": "Discrete Structures",
+      "batch": "2025",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "J"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "5:00 to 8:00 PM",
+      "code": "CY2004",
+      "course": "Cyber Security MCY-1A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "SS2007",
+      "course": "Technical and Business Writing",
+      "batch": "2022",
+      "sections": {
+        "CY": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "5:00 to 8:00 PM",
+      "code": "SE5006",
+      "course": "Model Bases Testing MSE-1A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "SE2004",
+      "course": "Software Design and Architecture",
+      "batch": "2024",
+      "sections": {
+        "SE": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS3015",
+      "course": "- Robotics Technology BS(CS)-A",
+      "batch": "2022",
+      "sections": {}
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "SE2002",
+      "course": "Software Design and Architecture",
+      "batch": "2022",
+      "sections": {
+        "SE": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AI4001",
+      "course": "Fundamentals of Natural Language Processing",
+      "batch": "2022",
+      "sections": {
+        "AI": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS4032",
+      "course": "Web Programming",
+      "batch": "2023",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS4063",
+      "course": "Natural Language Processing",
+      "batch": "2023",
+      "sections": {
+        "AI": [
+          "A",
+          "B"
+        ],
+        "DS": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CY4052",
+      "course": "Cloud Security",
+      "batch": "2022",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS4063",
+      "course": "Natural Language Processing",
+      "batch": "2022",
+      "sections": {
+        "DS": [
+          "A"
+        ],
+        "SE": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "DS5007",
+      "course": "Natural Language Processing MAI-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS6027",
+      "course": "Applied Image ProcessingPCS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-05-23",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS6033",
+      "course": "Statistical and Mathematical Methods for DSP CS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-06-01",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS3002",
+      "course": "Information Security",
+      "batch": "2022",
+      "sections": {
+        "AI": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-01",
+      "day": "Monday",
+      "time": "1:00 to 4:00 PM",
+      "code": "SS1014",
+      "course": "Expository Writing",
+      "batch": "2025",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "J"
+        ],
+        "SE": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ],
+        "CY": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-01",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS3002",
+      "course": "Information Security",
+      "batch": "2023",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-01",
+      "day": "Monday",
+      "time": "1:00 to 4:00 PM",
+      "code": "MG2007",
+      "course": "Technology Management",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-01",
+      "day": "Monday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS6006",
+      "course": "Cyber and Network SecurityPCS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-06-01",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CL2006",
+      "course": "Operating Systems - Lab",
+      "batch": "2024",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "SE": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-01",
+      "day": "Monday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS6011",
+      "course": "Data Analysis and VisualizationPCS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-06-01",
+      "day": "Monday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS6001",
+      "course": "Advanced Topics in CS PCS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-06-02",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "EE2003",
+      "course": "Computer Organization and Assembly Language",
+      "batch": "2024",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ],
+        "SE": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-02",
+      "day": "Tuesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "EE1005",
+      "course": "Digital Logic Design",
+      "batch": "2025",
+      "sections": {
+        "SE": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ],
+        "CY": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-02",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS4031",
+      "course": "Compiler Construction",
+      "batch": "2023",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-02",
+      "day": "Tuesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS4090",
+      "course": "Machine Learning for Robotics BS(CS)-A",
+      "batch": "2022",
+      "sections": {}
+    },
+    {
+      "date": "2026-06-02",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "SE4002",
+      "course": "Fundamentals of Software Project Management",
+      "batch": "2023",
+      "sections": {
+        "SE": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-02",
+      "day": "Tuesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "SE6001",
+      "course": "Advanced Topics in Requirements Engineering PSE-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-06-02",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "DL3002",
+      "course": "Data Mining - Lab",
+      "batch": "2022",
+      "sections": {
+        "DS": [
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-02",
+      "day": "Tuesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS6016",
+      "course": "Research Topics in Cloud ComputingPCS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-06-03",
+      "day": "Wednesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS2006",
+      "course": "Operating Systems",
+      "batch": "2024",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "SE": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-03",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS3006",
+      "course": "Parallel and Distributed Computing",
+      "batch": "2023",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "AI": [
+          "A",
+          "B"
+        ],
+        "DS": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-03",
+      "day": "Wednesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS2001",
+      "course": "Data Structures",
+      "batch": "2024",
+      "sections": {
+        "CS": [
+          "A",
+          "B"
+        ],
+        "SE": [
+          "A"
+        ],
+        "CYS": [
+          "A"
+        ],
+        "AI": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-03",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS3006",
+      "course": "Parallel and Distributed Computing",
+      "batch": "2022",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-03",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "SE6031",
+      "course": "Research Topics in Software EngineeringPCS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-06-03",
+      "day": "Wednesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "SE4011",
+      "course": "Software Measurement and Metrics",
+      "batch": "2022",
+      "sections": {
+        "SE": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-03",
+      "day": "Wednesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CL1004",
+      "course": "Object Oriented Programming - Lab",
+      "batch": "2025",
+      "sections": {
+        "CY": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-03",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CL1004",
+      "course": "Object Oriented Programming - Lab",
+      "batch": "2025",
+      "sections": {
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-03",
+      "day": "Wednesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CL1004",
+      "course": "Object Oriented Programming - Lab",
+      "batch": "2025",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "J"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-03",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CL1004",
+      "course": "Object Oriented Programming - Lab",
+      "batch": "2025",
+      "sections": {
+        "SE": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-04",
+      "day": "Thursday",
+      "time": "9:00 to 12:00 PM",
+      "code": "MG4011",
+      "course": "Entrepreneurship",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C"
+        ],
+        "CY": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "SE": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-04",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "SL1014",
+      "course": "Expository Writing - Lab",
+      "batch": "2025",
+      "sections": {
+        "CS": [
+          "2A1",
+          "2A2",
+          "2B1",
+          "2B2",
+          "2C1",
+          "2C2",
+          "2D1",
+          "2D2",
+          "2E1",
+          "2E2",
+          "2F1",
+          "2F2",
+          "2G1",
+          "2G2",
+          "2H1",
+          "2H2",
+          "2J1",
+          "2J2"
+        ],
+        "SE": [
+          "2A1",
+          "2A2",
+          "2B1",
+          "2B2",
+          "2C1",
+          "2C2",
+          "2D1",
+          "2D2"
+        ],
+        "AI": [
+          "2A1",
+          "2A2",
+          "2B1",
+          "2B2",
+          "2C1",
+          "2C2"
+        ],
+        "DS": [
+          "2A1",
+          "2A2",
+          "2B1",
+          "2B2"
+        ],
+        "CY": [
+          "2A1",
+          "2A2",
+          "2B1",
+          "2B2",
+          "2C1",
+          "2C2"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-04",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "SL1008",
+      "course": "Communication and Presentation Skills - Lab",
+      "batch": null,
+      "sections": {},
+      "notes": "BCS-9A"
+    },
+    {
+      "date": "2026-06-04",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AL4002",
+      "course": "Computer Vision - Lab",
+      "batch": "2023",
+      "sections": {
+        "AI": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-04",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AL4002",
+      "course": "Computer Vision - Lab",
+      "batch": "2022",
+      "sections": {
+        "AI": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-04",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "SS1021",
+      "course": "MP  Understanding of Holy Quran I",
+      "batch": null,
+      "sections": {},
+      "notes": "PCS-1A, PCS-2A, MAI-2A, MDS-2A; (1.5 Hours)"
+    },
+    {
+      "date": "2026-06-04",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "SS1022",
+      "course": "Understanding of Holy Quran II (1.5",
+      "batch": null,
+      "sections": {},
+      "notes": "PCS-1A, PCS-2A, MAI-2A, MDS-2A; (1.5 Hours)"
+    },
+    {
+      "date": "2026-06-05",
+      "day": "Friday",
+      "time": "9:00 to 12:00 PM",
+      "code": "MT2005",
+      "course": "Probability and Statistics",
+      "batch": "2024",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "CY": [
+          "A",
+          "B"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-05",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS4112",
+      "course": "Deep Learning",
+      "batch": "2023",
+      "sections": {
+        "DS": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-05",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "DS5006",
+      "course": "Deep Learning MAI-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-06-05",
+      "day": "Friday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AL2002",
+      "course": "Artificial Intelligence - Lab",
+      "batch": "2023",
+      "sections": {
+        "SE": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-05",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "DS5006",
+      "course": "Deep Learning MDS-2A",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-06-05",
+      "day": "Friday",
+      "time": "9:00 to 12:00 PM",
+      "code": "SL2002",
+      "course": "Software Design and Architecture - Lab",
+      "batch": "2022",
+      "sections": {
+        "SE": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-05",
+      "day": "Friday",
+      "time": "9:00 to 12:00 PM",
+      "code": "DL2004",
+      "course": "Fundamental of Big Data Analytics - Lab",
+      "batch": "2022",
+      "sections": {
+        "DS": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-06",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS4001",
+      "course": "Professional Practices in IT",
+      "batch": "2022",
+      "sections": {
+        "SE": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "CY": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-06",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS2004",
+      "course": "Fundamentals of Software Engineering",
+      "batch": "2024",
+      "sections": {
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-06",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "SE2001",
+      "course": "Software Requirements Engineering",
+      "batch": "2024",
+      "sections": {
+        "SE": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-06",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AI4013",
+      "course": "AI Product Development",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-06",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AL2002",
+      "course": "Artificial Intelligence - Lab",
+      "batch": "2023",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-06",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AL2002",
+      "course": "Artificial Intelligence - Lab",
+      "batch": "2023",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-06",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AL2002",
+      "course": "Artificial Intelligence - Lab",
+      "batch": "2024",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-06",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CL1002",
+      "course": "Programming Fundamentals - Lab",
+      "batch": "2025",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C"
+        ],
+        "SE": [
+          "A"
+        ],
+        "AI": [
+          "A",
+          "M"
+        ],
+        "CY": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-08",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS3001",
+      "course": "Computer Networks",
+      "batch": "2023",
+      "sections": {
+        "AI": [
+          "A",
+          "B"
+        ],
+        "SE": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-08",
+      "day": "Monday",
+      "time": "1:00 to 4:00 PM",
+      "code": "EE3009",
+      "course": "Computer Architecture",
+      "batch": "2023",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-08",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS3001",
+      "course": "Computer Networks",
+      "batch": "2024",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      },
+      "notes": "MCY-1A"
+    },
+    {
+      "date": "2026-06-08",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "DS2004",
+      "course": "Fundamental of Big Data Analytics",
+      "batch": "2022",
+      "sections": {
+        "DS": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-08",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS4109",
+      "course": "Big Data Analytics",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-08",
+      "day": "Monday",
+      "time": "1:00 to 4:00 PM",
+      "code": "EL1005",
+      "course": "Digital Logic Design - Lab",
+      "batch": "2025",
+      "sections": {
+        "CY": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-08",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "YL3002",
+      "course": "Vulnerability Assessment and Reverse Engg - Lab",
+      "batch": "2022",
+      "sections": {},
+      "notes": "BCY- (A)"
+    },
+    {
+      "date": "2026-06-08",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "EL1005",
+      "course": "Digital Logic Design - Lab",
+      "batch": "2025",
+      "sections": {
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-08",
+      "day": "Monday",
+      "time": "1:00 to 4:00 PM",
+      "code": "EL1005",
+      "course": "Digital Logic Design - Lab",
+      "batch": "2025",
+      "sections": {
+        "SE": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-09",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "MT2002",
+      "course": "Statistical Modelling",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "J",
+          "K"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-09",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AF3011",
+      "course": "Fundamentals of Financial Management",
+      "batch": "2022",
+      "sections": {
+        "AI": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "DS": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-09",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "SE4033",
+      "course": "Formal Methods in Software Engineering",
+      "batch": "2023",
+      "sections": {
+        "SE": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-09",
+      "day": "Tuesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "EL2003",
+      "course": "Computer Organization and Assembly Language - Lab",
+      "batch": "2024",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ],
+        "SE": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-09",
+      "day": "Tuesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CY4001",
+      "course": "Secure Software Design",
+      "batch": "2023",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-10",
+      "day": "Wednesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AI2002",
+      "course": "Artificial Intelligence",
+      "batch": "2023",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "DS": [
+          "A",
+          "B",
+          "C"
+        ],
+        "SE": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-10",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AI4015",
+      "course": "Agentic Artificial Intelligence",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C"
+        ],
+        "AI": [
+          "A"
+        ],
+        "DS": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-10",
+      "day": "Wednesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AI2002",
+      "course": "Artificial Intelligence",
+      "batch": "2024",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ],
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-10",
+      "day": "Wednesday",
+      "time": "1:00 to 4:00 PM",
+      "code": "SL3003",
+      "course": "Web Engineering - Lab",
+      "batch": "2022",
+      "sections": {
+        "SE": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-10",
+      "day": "Wednesday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AI2002",
+      "course": "Artificial Intelligence",
+      "batch": "2023",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-11",
+      "day": "Thursday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS4075",
+      "course": "Cloud Computing",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A",
+          "B"
+        ],
+        "SE": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-11",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AL2002",
+      "course": "Artificial Intelligence - Lab",
+      "batch": "2024",
+      "sections": {
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-11",
+      "day": "Thursday",
+      "time": "9:00 to 12:00 PM",
+      "code": "DS2003",
+      "course": "Advanced Statistics",
+      "batch": "2023",
+      "sections": {
+        "DS": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-11",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AL2002",
+      "course": "Artificial Intelligence - Lab",
+      "batch": "2023",
+      "sections": {
+        "DS": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-11",
+      "day": "Thursday",
+      "time": "9:00 to 12:00 PM",
+      "code": "YL4001",
+      "course": "Secure Software Design - Lab",
+      "batch": "2023",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-12",
+      "day": "Friday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS4044",
+      "course": "Fundamentals of Software Project Management",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-12",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CS4059",
+      "course": "Fundamentals of Computer Vision",
+      "batch": "2022",
+      "sections": {
+        "DS": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-12",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AI4002",
+      "course": "Computer Vision",
+      "batch": "2023",
+      "sections": {
+        "AI": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-12",
+      "day": "Friday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CL2001",
+      "course": "Data Structures - Lab",
+      "batch": "2024",
+      "sections": {
+        "CS": [
+          "A",
+          "B"
+        ],
+        "SE": [
+          "A"
+        ],
+        "CYS": [
+          "A"
+        ],
+        "AI": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-12",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AI4002",
+      "course": "Computer Vision",
+      "batch": "2022",
+      "sections": {
+        "AI": [
+          "A"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-12",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CL2005",
+      "course": "Database Systems - Lab",
+      "batch": "2024",
+      "sections": {
+        "CS": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-12",
+      "day": "Friday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CL2005",
+      "course": "Database Systems - Lab",
+      "batch": "2024",
+      "sections": {
+        "AI": [
+          "A",
+          "B",
+          "C"
+        ],
+        "DS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-13",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS4085",
+      "course": "MLOps",
+      "batch": "2022",
+      "sections": {
+        "DS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-13",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CL3001",
+      "course": "Computer Networks - Lab",
+      "batch": "2023",
+      "sections": {
+        "AI": [
+          "A",
+          "B"
+        ],
+        "SE": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-13",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "CS4085",
+      "course": "MLOps",
+      "batch": "2022",
+      "sections": {
+        "CS": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-13",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "CL3001",
+      "course": "Computer Networks - Lab",
+      "batch": "2024",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-13",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "YL3006",
+      "course": "Digital Forensics - Lab",
+      "batch": "2023",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-06-13",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "YL2002",
+      "course": "Digital Forensics - Lab",
+      "batch": "2022",
+      "sections": {
+        "CY": [
+          "A",
+          "B"
+        ]
+      }
+    }
+  ]
+}
