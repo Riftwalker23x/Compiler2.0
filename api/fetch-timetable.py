@@ -2,8 +2,8 @@
 Vercel Serverless Function: GET/POST /api/fetch-timetable
 
 Fetches the latest unread Gmail message whose subject contains "seatingplan",
-parses the body into structured JSON, and commits it to dbfolder/seating-plan.json
-via the GitHub REST API (Vercel's filesystem is read-only at runtime).
+extracts and parses its attached PDF seating layout into structured JSON,
+and commits it to dbfolder/seating-plan.json via the GitHub REST API.
 
 Required environment variables:
   GMAIL_USER  – Gmail address
@@ -24,6 +24,8 @@ import json
 import os
 import re
 import ssl
+import io
+import pypdf
 from datetime import datetime, timezone
 from email.header import decode_header
 from http.server import BaseHTTPRequestHandler
@@ -102,7 +104,7 @@ def json_response(handler: BaseHTTPRequestHandler, status: int, payload: dict) -
     handler.wfile.write(body)
 
 
-# ── Gmail IMAP ─────────────────────────────────────────────────────────────────
+# ── Gmail IMAP & PDF Extraction ─────────────────────────────────────────────────
 
 def decode_mime_header(value: str) -> str:
     """Decode RFC 2047 encoded email headers into a plain string."""
@@ -116,11 +118,39 @@ def decode_mime_header(value: str) -> str:
     return "".join(decoded).strip()
 
 
+def extract_pdf_text(payload: bytes) -> str:
+    """Extract all textual data from a raw PDF attachment binary stream."""
+    text_content = []
+    try:
+        pdf_file = io.BytesIO(payload)
+        reader = pypdf.PdfReader(pdf_file)
+        for page in reader.pages:
+            page_text = page.extract_text()
+            if page_text:
+                text_content.append(page_text)
+        return "\n".join(text_content)
+    except Exception as e:
+        raise RuntimeError(f"Failed to process and parse PDF attachment data: {str(e)}")
+
+
 def extract_plain_text(msg: email.message.Message) -> str:
     """
-    Walk the MIME tree and return the best available plain-text body.
-    Falls back to stripped HTML when no text/plain part exists.
+    Walk the MIME tree and isolate PDF attachment blocks. If a PDF file is present,
+    it maps out text from it. Otherwise, falls back to raw plain/html fallback trees.
     """
+    # High Priority Pass: Intercept PDF attachment configurations
+    for part in msg.walk():
+        content_type = part.get_content_type()
+        filename = part.get_filename() or ""
+        
+        if content_type == "application/pdf" or filename.lower().endswith(".pdf"):
+            payload = part.get_payload(decode=True)
+            if payload:
+                pdf_text = extract_pdf_text(payload)
+                if pdf_text.strip():
+                    return pdf_text
+
+    # Default Low Priority Pass: Parse standard text body components
     if msg.is_multipart():
         plain_parts: list[str] = []
         html_parts: list[str] = []
@@ -143,6 +173,7 @@ def extract_plain_text(msg: email.message.Message) -> str:
         if html_parts:
             return strip_html("\n".join(html_parts))
         return ""
+        
     payload = msg.get_payload(decode=True)
     if payload is None:
         return str(msg.get_payload())
@@ -182,7 +213,6 @@ def fetch_latest_seating_email() -> tuple[str, str, bytes]:
         mail.login(user, password)
         mail.select("INBOX")
 
-        # IMAP SUBJECT search is case-insensitive on Gmail
         status, data = mail.search(None, "UNSEEN", f'(SUBJECT "{SUBJECT_KEYWORD}")')
         if status != "OK":
             raise RuntimeError(f"IMAP search failed: {status}")
@@ -191,7 +221,6 @@ def fetch_latest_seating_email() -> tuple[str, str, bytes]:
         if not ids:
             raise RuntimeError('No unread emails found with "seatingplan" in the subject')
 
-        # Latest message = highest UID
         latest_id = ids[-1]
         status, fetched = mail.fetch(latest_id, "(RFC822)")
         if status != "OK" or not fetched or not fetched[0]:
@@ -202,7 +231,6 @@ def fetch_latest_seating_email() -> tuple[str, str, bytes]:
         subject = decode_mime_header(msg.get("Subject", ""))
         body = extract_plain_text(msg)
 
-        # Mark as read so the same email is not re-processed
         mail.store(latest_id, "+FLAGS", "\\Seen")
         return subject, body, raw_bytes
     finally:
@@ -232,13 +260,11 @@ def detect_delimiter(line: str) -> str | None:
 
 def split_row(line: str, delimiter: str) -> list[str]:
     if delimiter == ",":
-        # Simple CSV split (seating plans rarely contain quoted commas)
         return [cell.strip() for cell in line.split(",")]
     return [cell.strip() for cell in line.split(delimiter)]
 
 
 def map_header_indices(headers: list[str]) -> dict[str, int]:
-    """Map canonical field names to column indices from a header row."""
     mapping: dict[str, int] = {}
     for idx, header in enumerate(headers):
         canonical = FIELD_ALIASES.get(normalize_header(header))
@@ -248,7 +274,6 @@ def map_header_indices(headers: list[str]) -> dict[str, int]:
 
 
 def row_to_entry(cells: list[str], col_map: dict[str, int]) -> dict[str, str] | None:
-    """Convert one tabular row into a student entry dict."""
     entry: dict[str, str] = {}
     for field, idx in col_map.items():
         if idx < len(cells):
@@ -261,11 +286,6 @@ def row_to_entry(cells: list[str], col_map: dict[str, int]) -> dict[str, str] | 
 
 
 def parse_tabular_body(text: str) -> list[dict[str, str]]:
-    """
-    DATA PARSING – tabular format
-    Detects a header row (Name | NUID | Paper | Time | Class | Seat) and
-    maps every subsequent row into the JSON student list.
-    """
     lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
     if not lines:
         return []
@@ -280,7 +300,6 @@ def parse_tabular_body(text: str) -> list[dict[str, str]]:
             continue
         cells = split_row(line, delim)
         candidate = map_header_indices(cells)
-        # Require at least name/nuid plus one seating field
         if ("name" in candidate or "nuid" in candidate) and (
             "paper" in candidate or "class" in candidate or "seat" in candidate
         ):
@@ -306,13 +325,6 @@ def parse_tabular_body(text: str) -> list[dict[str, str]]:
 
 
 def parse_key_value_body(text: str) -> list[dict[str, str]]:
-    """
-    DATA PARSING – key:value blocks
-    Handles emails formatted as repeated blocks like:
-      Name: Alice
-      NUID: 21L-1234
-      Paper: Data Structures
-    """
     blocks = re.split(r"\n\s*\n", text.strip())
     entries: list[dict[str, str]] = []
 
@@ -333,10 +345,7 @@ def parse_key_value_body(text: str) -> list[dict[str, str]]:
 
 
 def normalize_seat(seat: str) -> str:
-    """
-    Normalize seat labels to C3R5 style (Column 3, Row 5).
-    Accepts: C3R5, C-3 R-5, Col3 Row5, 3C5R, etc.
-    """
+    """Normalize seat strings cleanly into standard row-col signatures."""
     raw = (seat or "").upper().strip()
     if not raw:
         return ""
@@ -357,7 +366,6 @@ def normalize_seat(seat: str) -> str:
 
 
 def normalize_entry(entry: dict[str, str]) -> dict[str, str]:
-    """Apply final cleanup to a parsed student record."""
     normalized = {
         "name": entry.get("name", "").strip(),
         "nuid": entry.get("nuid", "").strip().upper(),
@@ -370,11 +378,6 @@ def normalize_entry(entry: dict[str, str]) -> dict[str, str]:
 
 
 def parse_seating_plan_email(body: str, subject: str) -> dict[str, Any]:
-    """
-    Main DATA PARSING entry point.
-    Tries tabular parsing first, then key:value blocks.
-    Returns the full JSON document written to dbfolder/seating-plan.json.
-    """
     students = parse_tabular_body(body)
     if not students:
         students = parse_key_value_body(body)
@@ -384,9 +387,8 @@ def parse_seating_plan_email(body: str, subject: str) -> dict[str, Any]:
 
     if not cleaned:
         raise ValueError(
-            "Could not parse any student records from the email body. "
-            "Expected a header row (Name, NUID, Paper, Time, Class, Seat) "
-            "or key:value blocks."
+            "Could not parse any student records from the email PDF payload. "
+            "Verify table alignment formats inside the source file."
         )
 
     return {
@@ -431,16 +433,14 @@ def resolve_repo() -> tuple[str, str]:
     if owner and slug:
         return owner, slug
     raise RuntimeError(
-        "Set GH_REPO (owner/repo) or deploy via Vercel so "
-        "VERCEL_GIT_REPO_OWNER and VERCEL_GIT_REPO_SLUG are available"
+        "Set GH_REPO (owner/repo) or deploy via Vercel properties"
     )
 
 
 def commit_json_to_github(document: dict[str, Any]) -> dict[str, Any]:
     """
-    Upsert dbfolder/seating-plan.json in the connected GitHub repository.
-    Fetches the existing blob SHA when the file already exists, then PUTs
-    the new base64-encoded content (full replace, not a merge).
+    Overwrites dbfolder/seating-plan.json completely. Employs full array
+    state wiping contextually by replacing the remote tree element directly.
     """
     token = os.environ.get("GH_TOKEN", "").strip()
     if not token:
@@ -452,11 +452,7 @@ def commit_json_to_github(document: dict[str, Any]) -> dict[str, Any]:
 
     existing_sha: str | None = None
     try:
-        meta = github_request(
-            "GET",
-            f"{api_base}?ref={branch}",
-            token,
-        )
+        meta = github_request("GET", f"{api_base}?ref={branch}", token)
         existing_sha = meta.get("sha")
     except RuntimeError as exc:
         if "404" not in str(exc):
@@ -464,7 +460,7 @@ def commit_json_to_github(document: dict[str, Any]) -> dict[str, Any]:
 
     content_bytes = json.dumps(document, indent=2, ensure_ascii=False).encode("utf-8")
     payload: dict[str, Any] = {
-        "message": f"Sync seating plan from Gmail ({document.get('count', 0)} students)",
+        "message": f"Sync seating plan from Gmail PDF ({document.get('count', 0)} students)",
         "content": base64.b64encode(content_bytes).decode("ascii"),
         "branch": branch,
     }
@@ -502,22 +498,14 @@ class handler(BaseHTTPRequestHandler):
                 200,
                 {
                     "ok": True,
-                    "message": "Seating plan synced successfully",
+                    "message": "Seating plan synced successfully from PDF file",
                     "students_parsed": document["count"],
                     "source_subject": subject,
                     "github": commit_info,
                 },
             )
-        except Exception as exc:  # noqa: BLE001 – surface all sync failures to caller
-            json_response(
-                self,
-                500,
-                {
-                    "ok": False,
-                    "error": str(exc),
-                },
-            )
+        except Exception as exc:
+            json_response(self, 500, {"ok": False, "error": str(exc)})
 
     def log_message(self, format: str, *args: Any) -> None:
-        # Suppress default stderr logging on Vercel
         return
