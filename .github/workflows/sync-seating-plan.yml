@@ -1,12 +1,16 @@
 name: Sync seating plan & exam schedule
 
 on:
-  # Event-driven: a Google Apps Script on the mailbox fires this via the GitHub
-  # API only when a new "seating" or "schedule" email actually arrives, so it
-  # never runs on an empty schedule. See docs/seating-gmail-trigger.gs.
+  # Poll the mailbox every 15 minutes. GitHub runs this entirely on its own — no
+  # external service needed. When a new "seating"/"schedule" email exists it is
+  # parsed and committed; when there's nothing new the run is a harmless no-op
+  # (no commit, no deploy). Adjust the cadence below if you want faster pickup.
+  schedule:
+    - cron: "*/15 * * * *"
+  # Optional instant trigger if the Google Apps Script is ever set up
+  # (docs/seating-gmail-trigger.gs), plus a manual "Run workflow" fallback.
   repository_dispatch:
     types: [new-seating-email]
-  # Manual fallback.
   workflow_dispatch:
 
 permissions:
