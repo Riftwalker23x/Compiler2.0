@@ -885,6 +885,125 @@ def parse_exam_schedule_workbook(xlsx_bytes: bytes, subject: str, filename: str 
     return documents
 
 
+# ── FAST Show Up Schedule parser (plain table layout) ───────────────────────────
+# Unlike the Final Exam Schedule (a date/time-slot matrix), the Show Up Schedule
+# workbook is a normal one-row-per-section table with columns:
+#   Sr No. | Code | Course | Section | Teacher Name | Total Students |
+#   Exam Date | Show-Up Date | Show-Up Time | Show-Up Venue
+# The "Section" cell encodes program+semester+section+subsection, e.g.:
+#   "BCS-3B"   -> Bachelor's, CS, semester 3, section B
+#   "BCS-1J1"  -> Bachelor's, CS, semester 1, section J, subsection 1 (paired
+#                 with a "BCS-1J2" row on a different date/time/venue — these
+#                 are kept as separate exam entries, not merged, since a show-up
+#                 slot is genuinely per-subsection).
+# Only "B" (Bachelor's) rows are kept — "M"/"P" (Masters/PhD) rows are outside
+# this app's BS-only department scope, same as the Final Exam Schedule feature.
+
+SHOWUP_HEADER_RE = re.compile(r"^\s*code\s*$", re.I)
+SHOWUP_SECTION_RE = re.compile(r"^-?([BMP]?)([A-Z]{2})-(\d+)([A-Z])(\d?)$")
+SHOWUP_TERM_YEAR_RE = re.compile(r"(20\d{2})")
+
+
+def _showup_semester_to_batch(semester: int, current_entry_year: int) -> str:
+    """Map a semester number to an admission ("batch") year, e.g. for a
+    Fall-2025 term: semester 1 -> 2025, semester 3 -> 2024, semester 5 -> 2023,
+    semester 7 -> 2022 (each pair of semesters = one admission year)."""
+    return str(current_entry_year - (semester - 1) // 2)
+
+
+def parse_showup_schedule_sheet(ws: Any, current_entry_year: int) -> list[dict[str, Any]]:
+    rows = list(ws.iter_rows())
+    header_row_idx = next(
+        (i for i, row in enumerate(rows) if len(row) > 1 and SHOWUP_HEADER_RE.match(str(row[1].value or ""))),
+        None,
+    )
+    if header_row_idx is None:
+        return []
+
+    exams: list[dict[str, Any]] = []
+    for row in rows[header_row_idx + 1:]:
+        get = lambda idx: row[idx].value if idx < len(row) else None  # noqa: E731
+        code = get(1)
+        course = get(2)
+        section_raw = get(3)
+        teacher = get(4)
+        exam_date_val = get(6)
+        showup_date_val = get(7)
+        showup_time = get(8)
+        showup_venue = get(9)
+        if not code or not section_raw:
+            continue
+
+        m = SHOWUP_SECTION_RE.match(str(section_raw).strip())
+        if not m or m.group(1) != "B":
+            continue  # skip Masters/PhD/unrecognized rows - BS-only scope
+        dept, semester, section_letter, subsection = m.group(2), int(m.group(3)), m.group(4), m.group(5)
+        section = section_letter + subsection
+
+        showup_date_iso = _excel_serial_to_iso_date(showup_date_val) if showup_date_val is not None else ""
+        exam_date_iso = _excel_serial_to_iso_date(exam_date_val) if exam_date_val is not None else ""
+
+        entry: dict[str, Any] = {
+            "date": showup_date_iso or None,
+            "day": _iso_date_day_name(showup_date_iso) or None,
+            "time": str(showup_time).strip() if showup_time else "",
+            "venue": str(showup_venue).strip() if showup_venue else "",
+            "code": str(code).strip(),
+            "course": str(course).strip() if course else "",
+            "batch": _showup_semester_to_batch(semester, current_entry_year),
+            "sections": {dept: [section]},
+        }
+        if teacher:
+            entry["teacher"] = str(teacher).strip()
+        if exam_date_iso:
+            entry["exam_date"] = exam_date_iso
+        exams.append(entry)
+    return exams
+
+
+def parse_showup_schedule_workbook(xlsx_bytes: bytes, subject: str, filename: str = "") -> dict[str, dict[str, Any]]:
+    """Parse the Show Up Schedule workbook. Returns {"computing": document}.
+
+    Only the workbook's VISIBLE sheet(s) are parsed (the file typically keeps
+    prior terms' sheets around, hidden) so this keeps working as the sheet
+    name changes each term (e.g. "Final Examination, Fall-2025" next becomes
+    "..., Spring-2026") without needing a name pattern to match against.
+    """
+    import openpyxl  # local import: only needed for the showup-schedule route
+
+    wb = openpyxl.load_workbook(io.BytesIO(xlsx_bytes), data_only=True, read_only=True)
+    all_exams: list[dict[str, Any]] = []
+    try:
+        year_match = SHOWUP_TERM_YEAR_RE.search(filename) or SHOWUP_TERM_YEAR_RE.search(subject)
+        current_entry_year = int(year_match.group(1)) if year_match else datetime.now(timezone.utc).year
+
+        for sheet_name in wb.sheetnames:
+            ws = wb[sheet_name]
+            if getattr(ws, "sheet_state", "visible") != "visible":
+                continue
+            sheet_year_match = SHOWUP_TERM_YEAR_RE.search(sheet_name)
+            entry_year = int(sheet_year_match.group(1)) if sheet_year_match else current_entry_year
+            all_exams.extend(parse_showup_schedule_sheet(ws, entry_year))
+    finally:
+        wb.close()
+
+    if not all_exams:
+        raise ValueError(
+            "Could not parse any Show Up Schedule rows from the attached "
+            "workbook's visible sheet(s)."
+        )
+
+    return {
+        "computing": {
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+            "source_subject": subject,
+            "source_filename": filename,
+            "count": len(all_exams),
+            "exams": all_exams,
+        }
+    }
+
+
 # ── GitHub REST API commit ─────────────────────────────────────────────────────
 
 def github_request(method: str, url: str, token: str, payload: dict | None = None) -> Any:
@@ -999,7 +1118,11 @@ class handler(BaseHTTPRequestHandler):
             else:
                 if not attachment:
                     raise RuntimeError(f"No .xlsx attachment found on the {kind} email")
-                documents = parse_exam_schedule_workbook(attachment, subject, attachment_filename)
+                parser = (
+                    parse_showup_schedule_workbook if kind == "showup_schedule"
+                    else parse_exam_schedule_workbook
+                )
+                documents = parser(attachment, subject, attachment_filename)
                 prefix = SCHEDULE_FILE_PREFIX[kind]
                 github_results = {}
                 for school, doc in documents.items():
@@ -1046,7 +1169,11 @@ def run_cli() -> int:
         if not attachment:
             print(f"{kind} email (subject: {subject!r}) had no .xlsx attachment - skipping.")
             return 0
-        documents = parse_exam_schedule_workbook(attachment, subject, attachment_filename)
+        parser = (
+            parse_showup_schedule_workbook if kind == "showup_schedule"
+            else parse_exam_schedule_workbook
+        )
+        documents = parser(attachment, subject, attachment_filename)
         prefix = SCHEDULE_FILE_PREFIX[kind]
         for school, doc in documents.items():
             path = f"dbfolder/{prefix}-{school}.json"

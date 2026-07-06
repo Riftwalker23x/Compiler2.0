@@ -2350,12 +2350,13 @@ function renderShowupSchedule(){
     const cd=d?examCountdown(d):null;
     const secsForDept=(e.sections[dept]||[]).join(', ');
     return `<tr>
-      <td><div class="exam-course-name">${escHtml(e.code||'')} ${escHtml(e.course||'')}</div><div class="exam-time-txt">SEC ${escHtml(secsForDept)}</div></td>
+      <td><div class="exam-course-name">${escHtml(e.code||'')} ${escHtml(e.course||'')}</div><div class="exam-time-txt">SEC ${escHtml(secsForDept)}${e.teacher?' &middot; '+escHtml(e.teacher):''}</div></td>
       <td>
         <div class="exam-date-pill fin">${d?dDay(d)+', '+dFmt(d):'—'}</div>
-        <div class="exam-time-txt">${escHtml(e.time||'')}${e.notes?' &middot; '+escHtml(e.notes):''}</div>
+        <div class="exam-time-txt">${escHtml(e.time||'')}</div>
         ${cd?`<span class="exam-countdown ${cd.cls}">${cd.label}</span>`:''}
       </td>
+      <td><div class="exam-room-txt">${escHtml(e.venue||'—')}</div></td>
     </tr>`;
   }).join('');
 
@@ -2367,8 +2368,9 @@ function renderShowupSchedule(){
     <div class="exam-table-wrap">
       <table class="exam-tbl">
         <thead><tr>
-          <th class="fin" style="width:60%">COURSE</th>
-          <th class="fin" style="width:40%">DATE &amp; TIME</th>
+          <th class="fin" style="width:48%">COURSE</th>
+          <th class="fin" style="width:32%">DATE &amp; TIME</th>
+          <th class="fin" style="width:20%">VENUE</th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
