@@ -1,12 +1,13 @@
 {
-  "updated_at": "2026-07-06T18:28:19.453301+00:00",
+  "updated_at": "2026-07-06T18:47:56.270Z",
   "source_subject": "Seating Plan",
-  "count": 341,
+  "exam_date": "Sat,06,Jun,26",
+  "count": 254,
   "students": [
     {
       "name": "Sammar Kaleem Extra",
       "nuid": "22I-2141",
-      "paper": "CS4001,BAI-8C - Professional",
+      "paper": "CS4001,BAI-8C - Professional C1R1 Central SEATING P",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "1"
@@ -14,34 +15,18 @@
     {
       "name": "Sahar Iqbal Extra",
       "nuid": "22I-8803",
-      "paper": "CS4001,BSE-8G - Professional",
+      "paper": "CS4001,BSE-8G - Professional C2R2 Central SEATING",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "1"
     },
     {
-      "name": "Saleha Irum Extra",
-      "nuid": "22K-4360",
-      "paper": "AI4013,BCS-8A - AI Product",
+      "name": "Tauha Imran Extra",
+      "nuid": "22I-1239",
+      "paper": "AI4013,BCS-8A - AI Product C1R1 Central SEATIN",
       "time": "9:00-12:00",
       "class": "D 304",
       "seat": "1"
-    },
-    {
-      "name": "Muhammad Abrar",
-      "nuid": "23I-2087",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "39"
-    },
-    {
-      "name": "Sarita Sangrez",
-      "nuid": "23I-2088",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "40"
     },
     {
       "name": "Umar Javed",
@@ -52,28 +37,12 @@
       "seat": "1"
     },
     {
-      "name": "Anum Ali",
-      "nuid": "23I-2089",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "41"
-    },
-    {
       "name": "Faizan Ali",
       "nuid": "22I-1587",
       "paper": "AL2002,BCY-6A - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "3"
-    },
-    {
-      "name": "Hajra Khalid Butt",
-      "nuid": "23I-2094",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "42"
     },
     {
       "name": "Haleema Naeem",
@@ -84,28 +53,12 @@
       "seat": "5"
     },
     {
-      "name": "Irtaza Zahid",
-      "nuid": "23I-2096",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "43"
-    },
-    {
       "name": "Abdul Wasay",
       "nuid": "22I-1680",
       "paper": "AL2002,BCY-6A - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "7"
-    },
-    {
-      "name": "Faizan Saeed",
-      "nuid": "23I-2100",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "44"
     },
     {
       "name": "Rayyan Hafeez",
@@ -116,28 +69,12 @@
       "seat": "9"
     },
     {
-      "name": "Hadi Waqar",
-      "nuid": "23I-2101",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "45"
-    },
-    {
       "name": "Muhammad Hassan",
       "nuid": "23I-2002",
       "paper": "AL2002,BCY-6A - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "11"
-    },
-    {
-      "name": "Ayesha Noor",
-      "nuid": "23I-2103",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "46"
     },
     {
       "name": "Rohaan Shafi",
@@ -148,28 +85,12 @@
       "seat": "13"
     },
     {
-      "name": "Bareera Ahmed",
-      "nuid": "23I-2104",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "47"
-    },
-    {
       "name": "Abdullah Noman",
       "nuid": "23I-2012",
       "paper": "AL2002,BCY-6A - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "15"
-    },
-    {
-      "name": "Rumaisah Haroon",
-      "nuid": "23I-2106",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "48"
     },
     {
       "name": "Shanzay Shah",
@@ -180,28 +101,12 @@
       "seat": "17"
     },
     {
-      "name": "Akash Waris",
-      "nuid": "23I-2110",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "49"
-    },
-    {
       "name": "Tahir Minhas",
       "nuid": "23I-2021",
       "paper": "AL2002,BCY-6A - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "19"
-    },
-    {
-      "name": "Lutfan Shahzad",
-      "nuid": "23I-2114",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "50"
     },
     {
       "name": "Shaheer Shaban",
@@ -212,28 +117,12 @@
       "seat": "20"
     },
     {
-      "name": "Sukina Raveen",
-      "nuid": "23I-2115",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "51"
-    },
-    {
       "name": "Areeba Akmal",
       "nuid": "23I-2044",
       "paper": "AL2002,BCY-6A - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "21"
-    },
-    {
-      "name": "Ali Shah",
-      "nuid": "23I-2116",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "52"
     },
     {
       "name": "Hammad Ahmed",
@@ -244,28 +133,12 @@
       "seat": "22"
     },
     {
-      "name": "Aatif Ali Khan",
-      "nuid": "23I-2120",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "53"
-    },
-    {
       "name": "Fatima Naeem",
       "nuid": "23I-2046",
       "paper": "AL2002,BCY-6A - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "23"
-    },
-    {
-      "name": "Furqan Haider",
-      "nuid": "23I-2123",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "54"
     },
     {
       "name": "Shaezmina Amin",
@@ -276,28 +149,12 @@
       "seat": "24"
     },
     {
-      "name": "Ammar Shahid",
-      "nuid": "23I-2125",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "55"
-    },
-    {
       "name": "Subhan Umer",
       "nuid": "23I-2054",
       "paper": "AL2002,BCY-6A - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "25"
-    },
-    {
-      "name": "Heba Hammad",
-      "nuid": "23I-2127",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "56"
     },
     {
       "name": "Saad Ahmad",
@@ -308,28 +165,12 @@
       "seat": "26"
     },
     {
-      "name": "Musab Ahmad",
-      "nuid": "23I-2132",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "57"
-    },
-    {
       "name": "Rania Muskan",
       "nuid": "23I-2057",
       "paper": "AL2002,BCY-6A - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "27"
-    },
-    {
-      "name": "Ahmed Bhatti",
-      "nuid": "23I-4586",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "58"
     },
     {
       "name": "Omar Malik",
@@ -340,20 +181,236 @@
       "seat": "28"
     },
     {
-      "name": "Muhammad Abdullah",
-      "nuid": "23I-2064",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "29"
-    },
-    {
       "name": "Amna Ali",
       "nuid": "23I-2067",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "30"
+    },
+    {
+      "name": "Usman Khan",
+      "nuid": "23I-2069",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "31"
+    },
+    {
+      "name": "Muhammad Hussain",
+      "nuid": "23I-2070",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "32"
+    },
+    {
+      "name": "Zuha Qayyum",
+      "nuid": "23I-2071",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "33"
+    },
+    {
+      "name": "Khawaja Fashi-Ud-Din",
+      "nuid": "23I-2077",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "34"
+    },
+    {
+      "name": "Habib Ahmed",
+      "nuid": "23I-2078",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "35"
+    },
+    {
+      "name": "Laiba Nasir",
+      "nuid": "23I-2079",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "36"
+    },
+    {
+      "name": "Momin Amin",
+      "nuid": "23I-2081",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "37"
+    },
+    {
+      "name": "Shahzaib Khan",
+      "nuid": "23I-2083",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "38"
+    },
+    {
+      "name": "Muhammad Abrar",
+      "nuid": "23I-2087",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "39"
+    },
+    {
+      "name": "Sarita Sangrez",
+      "nuid": "23I-2088",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "40"
+    },
+    {
+      "name": "Anum Ali",
+      "nuid": "23I-2089",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "41"
+    },
+    {
+      "name": "Hajra Khalid Butt",
+      "nuid": "23I-2094",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "42"
+    },
+    {
+      "name": "Irtaza Zahid",
+      "nuid": "23I-2096",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "43"
+    },
+    {
+      "name": "Faizan Saeed",
+      "nuid": "23I-2100",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "44"
+    },
+    {
+      "name": "Hadi Waqar",
+      "nuid": "23I-2101",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "45"
+    },
+    {
+      "name": "Ayesha Noor",
+      "nuid": "23I-2103",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "46"
+    },
+    {
+      "name": "Bareera Ahmed",
+      "nuid": "23I-2104",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "47"
+    },
+    {
+      "name": "Rumaisah Haroon",
+      "nuid": "23I-2106",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "48"
+    },
+    {
+      "name": "Akash Waris",
+      "nuid": "23I-2110",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "49"
+    },
+    {
+      "name": "Lutfan Shahzad",
+      "nuid": "23I-2114",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "50"
+    },
+    {
+      "name": "Sukina Raveen",
+      "nuid": "23I-2115",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "51"
+    },
+    {
+      "name": "Ali Shah",
+      "nuid": "23I-2116",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "52"
+    },
+    {
+      "name": "Aatif Ali Khan",
+      "nuid": "23I-2120",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "53"
+    },
+    {
+      "name": "Furqan Haider",
+      "nuid": "23I-2123",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "54"
+    },
+    {
+      "name": "Ammar Shahid",
+      "nuid": "23I-2125",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "55"
+    },
+    {
+      "name": "Heba Hammad",
+      "nuid": "23I-2127",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "56"
+    },
+    {
+      "name": "Musab Ahmad",
+      "nuid": "23I-2132",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "57"
+    },
+    {
+      "name": "Ahmed Bhatti",
+      "nuid": "23I-4586",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Acade SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 1",
+      "seat": "58"
     },
     {
       "name": "Noor Fatima",
@@ -364,28 +421,12 @@
       "seat": "2"
     },
     {
-      "name": "Usman Khan",
-      "nuid": "23I-2069",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "31"
-    },
-    {
       "name": "Mueez Hassan",
       "nuid": "23I-2000",
       "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "4"
-    },
-    {
-      "name": "Muhammad Hussain",
-      "nuid": "23I-2070",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "32"
     },
     {
       "name": "Saad Bukhari",
@@ -396,28 +437,12 @@
       "seat": "6"
     },
     {
-      "name": "Zuha Qayyum",
-      "nuid": "23I-2071",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "33"
-    },
-    {
       "name": "Bilal Saif",
       "nuid": "23I-2004",
       "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "8"
-    },
-    {
-      "name": "Khawaja Fashi-Ud-Din",
-      "nuid": "23I-2077",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "34"
     },
     {
       "name": "Jaisha Muhammad",
@@ -428,28 +453,12 @@
       "seat": "10"
     },
     {
-      "name": "Habib Ahmed",
-      "nuid": "23I-2078",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "35"
-    },
-    {
       "name": "Abdul Ahad",
       "nuid": "23I-2014",
       "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "12"
-    },
-    {
-      "name": "Laiba Nasir",
-      "nuid": "23I-2079",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "36"
     },
     {
       "name": "Amna Hassan",
@@ -460,28 +469,12 @@
       "seat": "14"
     },
     {
-      "name": "Momin Amin",
-      "nuid": "23I-2081",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "37"
-    },
-    {
       "name": "Huzaifa Malik",
       "nuid": "23I-2017",
       "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "16"
-    },
-    {
-      "name": "Shahzaib Khan",
-      "nuid": "23I-2083",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 1",
-      "seat": "38"
     },
     {
       "name": "Faisal Yaseen",
@@ -492,36 +485,12 @@
       "seat": "18"
     },
     {
-      "name": "Muhammad Talha",
-      "nuid": "23I-2102",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "47"
-    },
-    {
-      "name": "Aabish Noor",
-      "nuid": "23I-2109",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "48"
-    },
-    {
       "name": "Noor Ul Ain",
       "nuid": "23I-2019",
       "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "1"
-    },
-    {
-      "name": "Muhammad Saim",
-      "nuid": "23I-2117",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "49"
     },
     {
       "name": "Musa Ali",
@@ -532,28 +501,12 @@
       "seat": "3"
     },
     {
-      "name": "Noor Ul Azeem",
-      "nuid": "23I-2118",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "50"
-    },
-    {
       "name": "Maryam Zafar",
       "nuid": "23I-2026",
       "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "5"
-    },
-    {
-      "name": "Muhammad Ahsan",
-      "nuid": "23I-2119",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "51"
     },
     {
       "name": "Abdul Rafay",
@@ -564,28 +517,12 @@
       "seat": "7"
     },
     {
-      "name": "Muhammad Ahsan",
-      "nuid": "23I-2121",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "52"
-    },
-    {
       "name": "Malaika Rizwan",
       "nuid": "23I-2029",
       "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "9"
-    },
-    {
-      "name": "Khalid Umar",
-      "nuid": "23I-2122",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "53"
     },
     {
       "name": "Waseem Sajjad",
@@ -596,28 +533,12 @@
       "seat": "11"
     },
     {
-      "name": "Oswa",
-      "nuid": "23I-2124",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "54"
-    },
-    {
       "name": "Muhammad Ayan",
       "nuid": "23I-2032",
       "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "13"
-    },
-    {
-      "name": "Mohid Umer",
-      "nuid": "23I-2130",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "55"
     },
     {
       "name": "Arooba Faisal",
@@ -628,28 +549,12 @@
       "seat": "15"
     },
     {
-      "name": "Muhammad Ibrahim",
-      "nuid": "23I-2533",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "56"
-    },
-    {
       "name": "Abdul Rafay",
       "nuid": "23I-2034",
       "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "17"
-    },
-    {
-      "name": "Aleesha Ishtiaq",
-      "nuid": "23I-2595",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "57"
     },
     {
       "name": "Kamil Saeed",
@@ -660,14 +565,6 @@
       "seat": "19"
     },
     {
-      "name": "Muhammad Huzaifa",
-      "nuid": "23I-6123",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "58"
-    },
-    {
       "name": "Touqeer Ahmed",
       "nuid": "23I-2036",
       "paper": "AL2002,BCY-6B - Artificial Intelligence",
@@ -676,324 +573,388 @@
       "seat": "21"
     },
     {
-      "name": "Muhammad Hassaan",
-      "nuid": "23I-2038",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "23"
-    },
-    {
       "name": "Muhammad Hayyan",
       "nuid": "23I-2041",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "25"
     },
     {
-      "name": "Hassaan Siddiqui",
-      "nuid": "22I-1642",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "2"
-    },
-    {
       "name": "Azka Nadeem",
       "nuid": "23I-2049",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "27"
     },
     {
-      "name": "Ayaan Salman",
-      "nuid": "24I-0123",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "4"
-    },
-    {
       "name": "Ali Ahmad",
       "nuid": "23I-2050",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "29"
     },
     {
-      "name": "Huzaifa Akram",
-      "nuid": "25I-0003",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "6"
-    },
-    {
       "name": "Aiman Qureshi",
       "nuid": "23I-2051",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "31"
     },
     {
-      "name": "Mahnoor Malik",
-      "nuid": "25I-0009",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "8"
-    },
-    {
       "name": "Umar Farooq",
       "nuid": "23I-2053",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "33"
     },
     {
-      "name": "Abdullah Bilal",
-      "nuid": "25I-0013",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "10"
-    },
-    {
       "name": "Tazeen Gull",
       "nuid": "23I-2055",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "35"
     },
     {
-      "name": "Abdul Samad",
-      "nuid": "25I-0015",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "12"
-    },
-    {
       "name": "Haiqa Usman",
       "nuid": "23I-2059",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "36"
     },
     {
-      "name": "Hamza Fraz",
-      "nuid": "25I-0022",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "14"
-    },
-    {
       "name": "Muhammad Umair",
       "nuid": "23I-2072",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "37"
     },
     {
-      "name": "Fasiha Faisal",
-      "nuid": "25I-0024",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "16"
-    },
-    {
       "name": "Manahil Shakeel",
       "nuid": "23I-2073",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "38"
     },
     {
-      "name": "Ahmad Sarwar",
-      "nuid": "25I-0035",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "18"
-    },
-    {
       "name": "Faizan Shakeel",
       "nuid": "23I-2074",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "39"
     },
     {
-      "name": "Ali Hamza",
-      "nuid": "25I-0046",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "20"
-    },
-    {
       "name": "Irbaz Ali",
       "nuid": "23I-2075",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "40"
     },
     {
-      "name": "Sarahshafqat",
-      "nuid": "25I-0055",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "22"
-    },
-    {
       "name": "Noor Amir",
       "nuid": "23I-2085",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "41"
     },
     {
-      "name": "Mahid Ali",
-      "nuid": "25I-0069",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "24"
-    },
-    {
       "name": "Maheen Ahmad",
       "nuid": "23I-2086",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "42"
     },
     {
-      "name": "Hajra Tariq",
-      "nuid": "25I-0074",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "26"
-    },
-    {
       "name": "Hiba Amir",
       "nuid": "23I-2090",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "43"
     },
     {
-      "name": "Dawood Abdullah",
-      "nuid": "25I-0085",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "28"
-    },
-    {
       "name": "Hamiz Rathore",
       "nuid": "23I-2093",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "44"
     },
     {
-      "name": "Taha Iqbal",
-      "nuid": "25I-0088",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "30"
-    },
-    {
       "name": "Huzaifa Amir",
       "nuid": "23I-2095",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "45"
     },
     {
-      "name": "Abdul Muhaimin",
-      "nuid": "25I-0089",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 2",
-      "seat": "32"
-    },
-    {
       "name": "Zainab Waqas",
       "nuid": "23I-2097",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "46"
     },
     {
-      "name": "Adnan Abbas",
-      "nuid": "25I-0090",
-      "paper": "CL1002,BAI-2A - Programming",
+      "name": "Muhammad Talha",
+      "nuid": "23I-2102",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academic SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "47"
+    },
+    {
+      "name": "Aabish Noor",
+      "nuid": "23I-2109",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academic SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "48"
+    },
+    {
+      "name": "Muhammad Saim",
+      "nuid": "23I-2117",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academic SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "50"
+    },
+    {
+      "name": "Noor Ul Azeem",
+      "nuid": "23I-2118",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academic SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "52"
+    },
+    {
+      "name": "Muhammad Ahsan",
+      "nuid": "23I-2119",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academic SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "54"
+    },
+    {
+      "name": "Muhammad Ahsan",
+      "nuid": "23I-2121",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academic SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "56"
+    },
+    {
+      "name": "Khalid Umar",
+      "nuid": "23I-2122",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academic SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "58"
+    },
+    {
+      "name": "Oswa",
+      "nuid": "23I-2124",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academic SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "2"
+    },
+    {
+      "name": "Mohid Umer",
+      "nuid": "23I-2130",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academic SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "6"
+    },
+    {
+      "name": "Muhammad Ibrahim",
+      "nuid": "23I-2533",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academic SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "10"
+    },
+    {
+      "name": "Aleesha Ishtiaq",
+      "nuid": "23I-2595",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academic SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "14"
+    },
+    {
+      "name": "Muhammad Huzaifa",
+      "nuid": "23I-6123",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academic SEATING PLAN",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "18"
+    },
+    {
+      "name": "Hassaan Siddiqui",
+      "nuid": "22I-1642",
+      "paper": "CL1002,BAI-2A - Programming 22",
+      "time": "9:00-12:00",
+      "class": "IT Lab 2",
+      "seat": "30"
+    },
+    {
+      "name": "Ayaan Salman",
+      "nuid": "24I-0123",
+      "paper": "CL1002,BAI-2A - Programming 22",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "34"
     },
     {
-      "name": "Afeerah Ahmad",
-      "nuid": "25I-3123",
-      "paper": "CL1002,BAI-2A - Programming",
+      "name": "Huzaifa Akram Page 1 of",
+      "nuid": "25I-0003",
+      "paper": "CL1002,BAI-2A - Programming 22",
       "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "58"
-    },
-    {
-      "name": "Abdul Muqeet",
-      "nuid": "25I-3132",
-      "paper": "CL1002,BAI-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "59"
+      "class": "IT Lab 2",
+      "seat": "1"
     },
     {
       "name": "Salman Ahmad",
       "nuid": "25I-0096",
-      "paper": "CL1002,BAI-2A - Programming",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "3"
     },
     {
-      "name": "Sehar Amin",
-      "nuid": "25I-0097",
-      "paper": "CL1002,BAI-2M - Programming",
+      "name": "Hussain",
+      "nuid": "25I-0116",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "5"
     },
     {
-      "name": "Hussain",
-      "nuid": "25I-0116",
-      "paper": "CL1002,BAI-2M - Programming",
+      "name": "Omer",
+      "nuid": "25I-0149",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "7"
+    },
+    {
+      "name": "Araiz Nazir",
+      "nuid": "25I-2030",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "9"
+    },
+    {
+      "name": "Aniqa Ahmed",
+      "nuid": "25I-2109",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "11"
+    },
+    {
+      "name": "Moiz Ahmed",
+      "nuid": "25I-2131",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "13"
+    },
+    {
+      "name": "Yahyamikalahmad",
+      "nuid": "25I-2514",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "15"
+    },
+    {
+      "name": "Hamna Faisal",
+      "nuid": "25I-2528",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "17"
+    },
+    {
+      "name": "Sohaib Sheikh",
+      "nuid": "25I-2572",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "19"
+    },
+    {
+      "name": "Ahmed Mustafa",
+      "nuid": "25I-2594",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "21"
+    },
+    {
+      "name": "Abdullah Tahir",
+      "nuid": "25I-2600",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "23"
+    },
+    {
+      "name": "Zaigham Abbas",
+      "nuid": "25I-3013",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "25"
+    },
+    {
+      "name": "Safiullah",
+      "nuid": "25I-3024",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "27"
+    },
+    {
+      "name": "Mohammad Abdullah",
+      "nuid": "25I-3049",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "29"
+    },
+    {
+      "name": "Emaan Nayyar",
+      "nuid": "25I-3099",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "31"
+    },
+    {
+      "name": "Afeerah Ahmad",
+      "nuid": "25I-3123",
+      "paper": "CL1002,BAI-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 3",
+      "seat": "58"
     },
     {
       "name": "Ahmed Hassan Ali",
@@ -1001,427 +962,180 @@
       "paper": "CL1002,BAI-2M - Programming",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
-      "seat": "2"
-    },
-    {
-      "name": "Alishba Qasim",
-      "nuid": "25I-0139",
-      "paper": "CL1002,BAI-2M - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "9"
-    },
-    {
-      "name": "Omer",
-      "nuid": "25I-0149",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "11"
-    },
-    {
-      "name": "Shamaldin",
-      "nuid": "25I-0159",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "13"
+      "seat": "10"
     },
     {
       "name": "Hassan Mehdi",
       "nuid": "24I-0649",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "4"
-    },
-    {
-      "name": "Araiz Nazir",
-      "nuid": "25I-2030",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "15"
-    },
-    {
-      "name": "Saad Kamal",
-      "nuid": "25I-0510",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "6"
-    },
-    {
-      "name": "Afaq Ullah",
-      "nuid": "25I-2045",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "17"
-    },
-    {
-      "name": "Hamza Zahid",
-      "nuid": "25I-0511",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "8"
-    },
-    {
-      "name": "Aniqa Ahmed",
-      "nuid": "25I-2109",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "19"
-    },
-    {
-      "name": "Amna Shakeel",
-      "nuid": "25I-0544",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "10"
-    },
-    {
-      "name": "Ali Tahir",
-      "nuid": "25I-2118",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "21"
-    },
-    {
-      "name": "Tasmeet Zahra",
-      "nuid": "25I-0566",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "12"
-    },
-    {
-      "name": "Moiz Ahmed",
-      "nuid": "25I-2131",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "23"
-    },
-    {
-      "name": "Iman Sultan",
-      "nuid": "25I-0583",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "14"
-    },
-    {
-      "name": "Amna Umar",
-      "nuid": "25I-2144",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "25"
-    },
-    {
-      "name": "Ahmad Baig",
-      "nuid": "25I-0594",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "16"
-    },
-    {
-      "name": "Yahyamikalahmad",
-      "nuid": "25I-2514",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "27"
-    },
-    {
-      "name": "Komal Sabeen",
-      "nuid": "25I-0611",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "18"
-    },
-    {
-      "name": "Areeba Saman",
-      "nuid": "25I-2527",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "29"
-    },
-    {
-      "name": "Bilal Chattha",
-      "nuid": "25I-0630",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "20"
-    },
-    {
-      "name": "Hamna Faisal",
-      "nuid": "25I-2528",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "31"
-    },
-    {
-      "name": "Qais Mubeen",
-      "nuid": "25I-0657",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2A - Programming 14",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "22"
     },
     {
-      "name": "Hussain Khan",
-      "nuid": "25I-2558",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "33"
-    },
-    {
-      "name": "Aliyakausar",
-      "nuid": "25I-0673",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "24"
-    },
-    {
-      "name": "Sohaib Sheikh",
-      "nuid": "25I-2572",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "35"
-    },
-    {
-      "name": "Abdullah Zafar",
-      "nuid": "25I-0680",
-      "paper": "CL1002,BCS-2A - Programming",
+      "name": "Saad Kamal",
+      "nuid": "25I-0510",
+      "paper": "CL1002,BCS-2A - Programming 14",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "26"
     },
     {
-      "name": "Kashaf Imran",
-      "nuid": "25I-2573",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "37"
-    },
-    {
-      "name": "Fida Hussain",
-      "nuid": "25I-0689",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "28"
-    },
-    {
-      "name": "Ahmed Mustafa",
-      "nuid": "25I-2594",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "39"
-    },
-    {
-      "name": "Shamir Ali",
-      "nuid": "25I-0717",
-      "paper": "CL1002,BCS-2A - Programming",
+      "name": "Hamza Zahid",
+      "nuid": "25I-0511",
+      "paper": "CL1002,BCS-2A - Programming 14",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "30"
     },
     {
-      "name": "Zunoorain",
-      "nuid": "25I-2597",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "41"
-    },
-    {
-      "name": "Laibamubashir",
-      "nuid": "25I-0722",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "32"
-    },
-    {
-      "name": "Abdullah Tahir",
-      "nuid": "25I-2600",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "43"
-    },
-    {
-      "name": "Farhan Ali",
-      "nuid": "25I-0724",
-      "paper": "CL1002,BCS-2A - Programming",
+      "name": "Amna Shakeel",
+      "nuid": "25I-0544",
+      "paper": "CL1002,BCS-2A - Programming 14",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "34"
     },
     {
-      "name": "Maryam Mir",
-      "nuid": "25I-2607",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "45"
-    },
-    {
-      "name": "Saad Khalid",
-      "nuid": "25I-0753",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "36"
-    },
-    {
-      "name": "Zaigham Abbas",
-      "nuid": "25I-3013",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "47"
-    },
-    {
-      "name": "Mubashir Siddique",
-      "nuid": "25I-0763",
-      "paper": "CL1002,BCS-2A - Programming",
+      "name": "Tasmeet Zahra",
+      "nuid": "25I-0566",
+      "paper": "CL1002,BCS-2A - Programming 14",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "38"
     },
     {
-      "name": "Faraz Abdullah",
-      "nuid": "25I-3022",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "49"
-    },
-    {
-      "name": "Mahad Kashif",
-      "nuid": "25I-0775",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "40"
-    },
-    {
-      "name": "Safiullah",
-      "nuid": "25I-3024",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "51"
-    },
-    {
-      "name": "Ammad Ud",
-      "nuid": "25I-0776",
-      "paper": "CL1002,BCS-2A - Programming",
+      "name": "Iman Sultan",
+      "nuid": "25I-0583",
+      "paper": "CL1002,BCS-2A - Programming 14",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "42"
     },
     {
-      "name": "Huzaifa Azam",
-      "nuid": "25I-3036",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "53"
-    },
-    {
-      "name": "Rumail Nauman",
-      "nuid": "25I-0794",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "44"
-    },
-    {
-      "name": "Mohammad Abdullah",
-      "nuid": "25I-3049",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "55"
-    },
-    {
-      "name": "Muhammad Saad",
-      "nuid": "25I-0797",
-      "paper": "CL1002,BCS-2A - Programming",
+      "name": "Ahmad Baig",
+      "nuid": "25I-0594",
+      "paper": "CL1002,BCS-2A - Programming 14",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "46"
     },
     {
-      "name": "Rawish Zahra",
-      "nuid": "25I-3052",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "56"
-    },
-    {
-      "name": "Ayeshahassan",
-      "nuid": "25I-0800",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "48"
-    },
-    {
-      "name": "Emaan Nayyar",
-      "nuid": "25I-3099",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "57"
-    },
-    {
-      "name": "Asad Ali",
-      "nuid": "25I-0824",
-      "paper": "CL1002,BCS-2A - Programming",
+      "name": "Komal Sabeen",
+      "nuid": "25I-0611",
+      "paper": "CL1002,BCS-2A - Programming 14",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "50"
     },
     {
-      "name": "Noor Ul Ain Fatima",
-      "nuid": "25I-0846",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 3",
-      "seat": "52"
-    },
-    {
       "name": "Intikhab Alam",
       "nuid": "25I-0854",
+      "paper": "",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "54"
     },
     {
+      "name": "Atta Ur",
+      "nuid": "25I-0859",
+      "paper": "CL1002,BCS-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 4",
+      "seat": "1"
+    },
+    {
+      "name": "Arqum Mehtab",
+      "nuid": "25I-0896",
+      "paper": "CL1002,BCS-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 4",
+      "seat": "3"
+    },
+    {
+      "name": "Ayan Rafiq",
+      "nuid": "25I-0911",
+      "paper": "CL1002,BCS-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 4",
+      "seat": "5"
+    },
+    {
+      "name": "Fatima Ijaz",
+      "nuid": "25I-0918",
+      "paper": "CL1002,BCS-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 4",
+      "seat": "7"
+    },
+    {
+      "name": "Shahzaib Afzal",
+      "nuid": "25I-0924",
+      "paper": "CL1002,BCS-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 4",
+      "seat": "9"
+    },
+    {
+      "name": "Abdullah Faisal",
+      "nuid": "25I-0955",
+      "paper": "CL1002,BCS-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 4",
+      "seat": "11"
+    },
+    {
+      "name": "Aoun Saleh",
+      "nuid": "25I-0976",
+      "paper": "CL1002,BCS-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 4",
+      "seat": "13"
+    },
+    {
+      "name": "Ghayas Ali",
+      "nuid": "25I-1016",
+      "paper": "CL1002,BCS-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 4",
+      "seat": "15"
+    },
+    {
+      "name": "Bilal Ahmad",
+      "nuid": "25I-1021",
+      "paper": "CL1002,BCS-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 4",
+      "seat": "17"
+    },
+    {
+      "name": "Tayyabshabbir",
+      "nuid": "25I-3005",
+      "paper": "CL1002,BCS-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 4",
+      "seat": "19"
+    },
+    {
+      "name": "Usama",
+      "nuid": "24I-0887",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 4",
+      "seat": "2"
+    },
+    {
+      "name": "Ahmad Zeb",
+      "nuid": "25I-0513",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "IT Lab 4",
+      "seat": "4"
+    },
+    {
       "name": "Meshsim Abbasi",
       "nuid": "25I-0531",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "10"
@@ -1429,327 +1143,167 @@
     {
       "name": "Aayan Zahoor",
       "nuid": "25I-0551",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "12"
     },
     {
-      "name": "Atta Ur",
-      "nuid": "25I-0859",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "1"
-    },
-    {
       "name": "Talal Malik",
       "nuid": "25I-0603",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "14"
     },
     {
-      "name": "Bin Naveed",
-      "nuid": "25I-0862",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "3"
-    },
-    {
       "name": "Abdullah Cheema",
       "nuid": "25I-0607",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "16"
     },
     {
-      "name": "Arqum Mehtab",
-      "nuid": "25I-0896",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "5"
-    },
-    {
       "name": "Ali Hassan",
       "nuid": "25I-0614",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "18"
     },
     {
-      "name": "Najeeha",
-      "nuid": "25I-0908",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "7"
-    },
-    {
       "name": "Filzashumail",
       "nuid": "25I-0627",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "20"
     },
     {
-      "name": "Ayan Rafiq",
-      "nuid": "25I-0911",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "9"
-    },
-    {
       "name": "Moosa Aasim",
       "nuid": "25I-0637",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "22"
     },
     {
-      "name": "Sarah Rehman",
-      "nuid": "25I-0916",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "11"
-    },
-    {
       "name": "Zohaib Ahmed",
       "nuid": "25I-0642",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "24"
     },
     {
-      "name": "Fatima Ijaz",
-      "nuid": "25I-0918",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "13"
-    },
-    {
       "name": "Farhan Akbar",
       "nuid": "25I-0670",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "26"
     },
     {
-      "name": "Jotika",
-      "nuid": "25I-0919",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "15"
-    },
-    {
       "name": "Javeria Ali",
       "nuid": "25I-0677",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "28"
     },
     {
-      "name": "Shahzaib Afzal",
-      "nuid": "25I-0924",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "17"
-    },
-    {
       "name": "Aun Muhammad",
       "nuid": "25I-0684",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "30"
     },
     {
-      "name": "Muhammad Ahmed",
-      "nuid": "25I-0935",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "19"
-    },
-    {
       "name": "Irtaza Ahmad",
       "nuid": "25I-0694",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "32"
     },
     {
-      "name": "Abdullah Faisal",
-      "nuid": "25I-0955",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "21"
-    },
-    {
       "name": "Rayan Asim",
       "nuid": "25I-0703",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "34"
     },
     {
-      "name": "Mobeen Ahmed",
-      "nuid": "25I-0972",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "23"
-    },
-    {
       "name": "Fatimazahid",
       "nuid": "25I-0716",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "36"
     },
     {
-      "name": "Aoun Saleh",
-      "nuid": "25I-0976",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "25"
-    },
-    {
       "name": "Rehan",
       "nuid": "25I-0719",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "38"
     },
     {
-      "name": "Aashir Paracha",
-      "nuid": "25I-0980",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "27"
-    },
-    {
       "name": "Khawaja Umer",
       "nuid": "25I-0733",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "40"
     },
     {
-      "name": "Ghayas Ali",
-      "nuid": "25I-1016",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "29"
-    },
-    {
       "name": "Talha Tariq",
       "nuid": "25I-0754",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "41"
     },
     {
-      "name": "Abdullah",
-      "nuid": "25I-1017",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "31"
-    },
-    {
       "name": "Eman Shafqat",
       "nuid": "25I-0767",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "42"
     },
     {
-      "name": "Bilal Ahmad",
-      "nuid": "25I-1021",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "33"
-    },
-    {
       "name": "Abdullah",
       "nuid": "25I-0771",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "43"
     },
     {
-      "name": "Fatima Nadeem",
-      "nuid": "25I-2509",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "35"
-    },
-    {
       "name": "Hasnain Ali",
       "nuid": "25I-0772",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "44"
     },
     {
-      "name": "Tayyabshabbir",
-      "nuid": "25I-3005",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "37"
-    },
-    {
       "name": "Emaan Malik",
       "nuid": "25I-0773",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "45"
     },
     {
-      "name": "Ibtisam Hashmi",
-      "nuid": "25I-3167",
-      "paper": "CL1002,BCS-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "39"
-    },
-    {
       "name": "Aleena Shahid",
       "nuid": "25I-0790",
-      "paper": "CL1002,BCS-2A - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "46"
@@ -1757,7 +1311,7 @@
     {
       "name": "Ali Haider",
       "nuid": "25I-0802",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "47"
@@ -1765,63 +1319,127 @@
     {
       "name": "Faizan",
       "nuid": "25I-0803",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "48"
     },
     {
-      "name": "Usama",
-      "nuid": "24I-0887",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "2"
-    },
-    {
       "name": "Sania Amir",
       "nuid": "25I-0808",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "49"
     },
     {
-      "name": "Shahmeer Shah",
-      "nuid": "25I-0512",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "IT Lab 4",
-      "seat": "4"
-    },
-    {
       "name": "Wajahat Jamshed",
       "nuid": "25I-0836",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "IT Lab 4",
       "seat": "50"
     },
     {
-      "name": "Ahmad Zeb",
-      "nuid": "25I-0513",
-      "paper": "CL1002,BCS-2B - Programming",
+      "name": "Ahmadmusanazir",
+      "nuid": "25I-0855",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
-      "class": "IT Lab 4",
+      "class": "Margallah Lab I",
+      "seat": "2"
+    },
+    {
+      "name": "Ibrahimshehzad",
+      "nuid": "25I-0870",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab I",
+      "seat": "4"
+    },
+    {
+      "name": "Daniyal Alam",
+      "nuid": "25I-0877",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab I",
       "seat": "6"
     },
     {
-      "name": "Shanzay Khurram",
-      "nuid": "25I-0529",
-      "paper": "CL1002,BCS-2B - Programming",
+      "name": "Shamaiza Rani",
+      "nuid": "25I-0887",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
-      "class": "IT Lab 4",
+      "class": "Margallah Lab I",
       "seat": "8"
+    },
+    {
+      "name": "Mudassir Zia",
+      "nuid": "25I-0894",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab I",
+      "seat": "10"
+    },
+    {
+      "name": "Sarfaraz Hussain",
+      "nuid": "25I-0921",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab I",
+      "seat": "12"
+    },
+    {
+      "name": "Ahsanmukhtiar",
+      "nuid": "25I-0939",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab I",
+      "seat": "14"
+    },
+    {
+      "name": "Arifhussain",
+      "nuid": "25I-0967",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab I",
+      "seat": "16"
+    },
+    {
+      "name": "Fahad Abdullah",
+      "nuid": "25I-0981",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab I",
+      "seat": "18"
+    },
+    {
+      "name": "Farhan Ali",
+      "nuid": "25I-0989",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab I",
+      "seat": "20"
+    },
+    {
+      "name": "Usaid Ur",
+      "nuid": "25I-1028",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab I",
+      "seat": "22"
+    },
+    {
+      "name": "Laiba Farooq",
+      "nuid": "25I-1036",
+      "paper": "CL1002,BCS-2B - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab I",
+      "seat": "24"
     },
     {
       "name": "Ahmed Fasih",
       "nuid": "25I-0135",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "3"
@@ -1829,383 +1447,279 @@
     {
       "name": "Adil Saleem",
       "nuid": "25I-0520",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "5"
     },
     {
-      "name": "Ahmadmusanazir",
-      "nuid": "25I-0855",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "2"
-    },
-    {
       "name": "Subhan Ahmed",
       "nuid": "25I-0522",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "7"
     },
     {
-      "name": "Saleha Rehman",
-      "nuid": "25I-0865",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "4"
-    },
-    {
       "name": "Sumaandawood",
       "nuid": "25I-0533",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "9"
     },
     {
-      "name": "Ibrahimshehzad",
-      "nuid": "25I-0870",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "6"
-    },
-    {
       "name": "Khubaib Khalil",
       "nuid": "25I-0542",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "11"
     },
     {
-      "name": "Tayyaba Rashid",
-      "nuid": "25I-0874",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "8"
-    },
-    {
       "name": "Muhammad Waiz",
       "nuid": "25I-0558",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "13"
     },
     {
-      "name": "Daniyal Alam",
-      "nuid": "25I-0877",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "10"
-    },
-    {
       "name": "Aamen Khan",
       "nuid": "25I-0562",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "15"
     },
     {
-      "name": "Hashim Yaseen",
-      "nuid": "25I-0882",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "12"
-    },
-    {
       "name": "Haad Saeed",
       "nuid": "25I-0589",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "17"
     },
     {
-      "name": "Shamaiza Rani",
-      "nuid": "25I-0887",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "14"
-    },
-    {
       "name": "Maryam Noor",
       "nuid": "25I-0591",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "19"
     },
     {
-      "name": "Ali Mehdi",
-      "nuid": "25I-0889",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "16"
-    },
-    {
       "name": "Wajeeh Imran",
       "nuid": "25I-0632",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "21"
     },
     {
-      "name": "Mudassir Zia",
-      "nuid": "25I-0894",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "18"
-    },
-    {
       "name": "Abuzar",
       "nuid": "25I-0654",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "23"
     },
     {
-      "name": "Abdullah Tahir",
-      "nuid": "25I-0905",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "20"
-    },
-    {
       "name": "Javeria Yasir",
       "nuid": "25I-0679",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "25"
     },
     {
-      "name": "Sarfaraz Hussain",
-      "nuid": "25I-0921",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "22"
-    },
-    {
       "name": "Ahab Baig",
       "nuid": "25I-0704",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "27"
     },
     {
-      "name": "Saqib Khurshid",
-      "nuid": "25I-0934",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "24"
-    },
-    {
       "name": "Duaa Zulfiqar",
       "nuid": "25I-0741",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "29"
     },
     {
-      "name": "Ahsanmukhtiar",
-      "nuid": "25I-0939",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "26"
-    },
-    {
       "name": "Abdul Rehman",
       "nuid": "25I-0747",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "31"
     },
     {
-      "name": "Saim Iqbal",
-      "nuid": "25I-0943",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "28"
-    },
-    {
       "name": "Azhmeer",
       "nuid": "25I-0749",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "33"
     },
     {
-      "name": "Arifhussain",
-      "nuid": "25I-0967",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "30"
-    },
-    {
       "name": "Zain Shakeel",
       "nuid": "25I-0755",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "35"
     },
     {
-      "name": "Hassaan Sadiq",
-      "nuid": "25I-0970",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "32"
-    },
-    {
       "name": "Areesha Ashraf",
       "nuid": "25I-0791",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "37"
     },
     {
-      "name": "Fahad Abdullah",
-      "nuid": "25I-0981",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "34"
-    },
-    {
       "name": "Hassaan Shahzad",
       "nuid": "25I-0804",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "39"
     },
     {
-      "name": "Ameer Abdullah",
-      "nuid": "25I-0986",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "36"
-    },
-    {
       "name": "Manahil Kalim",
       "nuid": "25I-0820",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "41"
     },
     {
-      "name": "Farhan Ali",
-      "nuid": "25I-0989",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "38"
-    },
-    {
       "name": "Hassan Abbas",
       "nuid": "25I-0828",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "43"
     },
     {
-      "name": "Muhammad Waleed",
-      "nuid": "25I-0999",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "40"
-    },
-    {
       "name": "Ridha Adeel",
       "nuid": "25I-0835",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "45"
     },
     {
-      "name": "Usaid Ur",
-      "nuid": "25I-1028",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "42"
-    },
-    {
       "name": "Areej Fatima",
       "nuid": "25I-0888",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "47"
     },
     {
-      "name": "Ahmad Yousaf",
-      "nuid": "25I-1032",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "44"
-    },
-    {
       "name": "Sakeena Zahoor",
       "nuid": "25I-0893",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "48"
     },
     {
-      "name": "Laiba Farooq",
-      "nuid": "25I-1036",
-      "paper": "CL1002,BCS-2B - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab I",
-      "seat": "46"
-    },
-    {
       "name": "Muhammad Hamid",
       "nuid": "25I-0949",
-      "paper": "CL1002,BCS-2B - Programming",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab I",
       "seat": "49"
     },
     {
+      "name": "Abdullah",
+      "nuid": "25I-2000",
+      "paper": "CL1002,BCS-2C - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab III",
+      "seat": "2"
+    },
+    {
+      "name": "Shameer Hassan",
+      "nuid": "23I-2063",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab III",
+      "seat": "3"
+    },
+    {
+      "name": "Muhammad Usman",
+      "nuid": "25I-0537",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab III",
+      "seat": "6"
+    },
+    {
+      "name": "Muhammad Umar",
+      "nuid": "25I-0595",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab III",
+      "seat": "8"
+    },
+    {
+      "name": "Tatheer Fatima",
+      "nuid": "25I-0612",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab III",
+      "seat": "10"
+    },
+    {
+      "name": "Aoun Abbas",
+      "nuid": "25I-0701",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab III",
+      "seat": "12"
+    },
+    {
+      "name": "Abdullah Khalid",
+      "nuid": "25I-0844",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab III",
+      "seat": "14"
+    },
+    {
+      "name": "Muhammad Abubakar",
+      "nuid": "25I-0965",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab III",
+      "seat": "16"
+    },
+    {
+      "name": "Muhammad Umair",
+      "nuid": "25I-1009",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab III",
+      "seat": "18"
+    },
+    {
+      "name": "Elham Safi",
+      "nuid": "25I-1046",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab III",
+      "seat": "20"
+    },
+    {
       "name": "Taha Sohail",
       "nuid": "25I-2043",
-      "paper": "CL1002,BCS-2C - Programming",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "34"
@@ -2213,39 +1727,23 @@
     {
       "name": "Hajra Nasir",
       "nuid": "25I-2076",
-      "paper": "CL1002,BCS-2C - Programming",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "35"
     },
     {
-      "name": "Abdullah",
-      "nuid": "25I-2000",
-      "paper": "CL1002,BCS-2C - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "2"
-    },
-    {
       "name": "Arham Ibrahim",
       "nuid": "25I-2084",
-      "paper": "CL1002,BCS-2C - Programming",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "36"
     },
     {
-      "name": "Lozina Jalil",
-      "nuid": "25I-2547",
-      "paper": "CL1002,BCS-2C - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "5"
-    },
-    {
       "name": "Humera Noor",
       "nuid": "25I-2153",
-      "paper": "CL1002,BCS-2C - Programming",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "37"
@@ -2253,7 +1751,7 @@
     {
       "name": "Muhammad Abdullah",
       "nuid": "25I-2162",
-      "paper": "CL1002,BCY-2A - Programming",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "38"
@@ -2261,271 +1759,183 @@
     {
       "name": "Huzaifa Arif",
       "nuid": "25I-2172",
-      "paper": "CL1002,BCY-2A - Programming",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "39"
     },
     {
-      "name": "Shameer Hassan",
-      "nuid": "23I-2063",
-      "paper": "CL1002,BCY-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "3"
-    },
-    {
       "name": "Abdul Hadi",
       "nuid": "25I-2196",
-      "paper": "CL1002,BCY-2A - Programming",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "40"
     },
     {
-      "name": "Noor Fatima",
-      "nuid": "24I-0898",
-      "paper": "CL1002,BCY-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "6"
-    },
-    {
       "name": "Abdullah Khalid",
       "nuid": "25I-2554",
-      "paper": "CL1002,BCY-2A - Programming",
+      "paper": "CL1002,BCY-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "41"
     },
     {
-      "name": "Muhammad Usman",
-      "nuid": "25I-0537",
-      "paper": "CL1002,BCY-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "8"
-    },
-    {
-      "name": "Abdullah Azmeer",
-      "nuid": "25I-0546",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "10"
-    },
-    {
-      "name": "Muhammad Umar",
-      "nuid": "25I-0595",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "12"
-    },
-    {
       "name": "Anns Mushtaq",
       "nuid": "25I-0122",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "4"
     },
     {
-      "name": "Zohaib Uddin",
-      "nuid": "25I-0602",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "14"
-    },
-    {
       "name": "Huzaifarumman",
       "nuid": "25I-0141",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "7"
     },
     {
-      "name": "Tatheer Fatima",
-      "nuid": "25I-0612",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "16"
-    },
-    {
       "name": "Rameen Azhar",
       "nuid": "25I-0586",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "9"
     },
     {
-      "name": "Shahzaib Ali",
-      "nuid": "25I-0665",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "18"
-    },
-    {
       "name": "Usman Khan",
       "nuid": "25I-0592",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "11"
     },
     {
-      "name": "Aoun Abbas",
-      "nuid": "25I-0701",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "20"
-    },
-    {
       "name": "Ali Hassan",
       "nuid": "25I-0675",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "13"
     },
     {
-      "name": "Rohaib Nasir",
-      "nuid": "25I-0805",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "22"
-    },
-    {
       "name": "Shabira Karimi",
       "nuid": "25I-1044",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "15"
     },
     {
-      "name": "Abdullah Khalid",
-      "nuid": "25I-0844",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "24"
-    },
-    {
       "name": "Sima Jan Hamidi",
       "nuid": "25I-1045",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "17"
     },
     {
-      "name": "Namra Malik",
-      "nuid": "25I-0869",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "26"
-    },
-    {
       "name": "Yousaf Khan",
       "nuid": "25I-2059",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "19"
     },
     {
-      "name": "Muhammad Abubakar",
-      "nuid": "25I-0965",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "28"
-    },
-    {
       "name": "Mahnoorzafar",
       "nuid": "25I-2074",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "21"
     },
     {
-      "name": "Anfaal Zahra",
-      "nuid": "25I-0966",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "29"
-    },
-    {
       "name": "Ahmed Shahbaz",
       "nuid": "25I-2089",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "23"
     },
     {
-      "name": "Muhammad Umair",
-      "nuid": "25I-1009",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "30"
-    },
-    {
       "name": "Khadijatulkubra",
       "nuid": "25I-2096",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "25"
     },
     {
-      "name": "Zainub Rehan",
-      "nuid": "25I-1015",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "31"
-    },
-    {
       "name": "Rabbia Akhtar",
       "nuid": "25I-2523",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab III",
       "seat": "27"
     },
     {
-      "name": "Elham Safi",
-      "nuid": "25I-1046",
-      "paper": "CL1002,BSE-2A - Programming",
+      "name": "Aimannoor",
+      "nuid": "25I-2555",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "32"
+      "class": "Margallah Lab IV",
+      "seat": "9"
     },
     {
-      "name": "Muneba",
-      "nuid": "25I-2038",
-      "paper": "CL1002,BSE-2A - Programming",
+      "name": "Rabia Basri",
+      "nuid": "25I-2602",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
-      "class": "Margallah Lab III",
-      "seat": "33"
+      "class": "Margallah Lab IV",
+      "seat": "10"
+    },
+    {
+      "name": "Ayesha Naveed",
+      "nuid": "25I-3001",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab IV",
+      "seat": "11"
+    },
+    {
+      "name": "Mehreenzakauallah",
+      "nuid": "25I-3043",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab IV",
+      "seat": "12"
+    },
+    {
+      "name": "Samia Noor",
+      "nuid": "25I-3075",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab IV",
+      "seat": "13"
+    },
+    {
+      "name": "Ahmad Habib",
+      "nuid": "25I-3093",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab IV",
+      "seat": "14"
+    },
+    {
+      "name": "Usman",
+      "nuid": "25I-3104",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
+      "time": "9:00-12:00",
+      "class": "Margallah Lab IV",
+      "seat": "15"
     },
     {
       "name": "Chaudhry Irtaza",
       "nuid": "25I-3134",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "22"
@@ -2533,203 +1943,98 @@
     {
       "name": "Ali Tahir",
       "nuid": "25I-3142",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "23"
     },
     {
-      "name": "Aimannoor",
-      "nuid": "25I-2555",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "9"
-    },
-    {
       "name": "Abdul Rehman",
       "nuid": "25I-3143",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "24"
     },
     {
-      "name": "Waseem Iqbal",
-      "nuid": "25I-2561",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "10"
-    },
-    {
       "name": "Abdullah Ahmed",
       "nuid": "25I-3145",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "25"
     },
     {
-      "name": "Rabia Basri",
-      "nuid": "25I-2602",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "11"
-    },
-    {
       "name": "Zunaira",
       "nuid": "25I-3157",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "26"
     },
     {
-      "name": "Murtaza Hassan",
-      "nuid": "25I-2603",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "12"
-    },
-    {
       "name": "Mahadfarooq",
       "nuid": "25I-3164",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "27"
     },
     {
-      "name": "Ayesha Naveed",
-      "nuid": "25I-3001",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "13"
-    },
-    {
       "name": "Azam",
       "nuid": "25I-3168",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "28"
     },
     {
-      "name": "Palwasha Atif",
-      "nuid": "25I-3038",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "14"
-    },
-    {
       "name": "Haris Ahmad",
       "nuid": "25I-3183",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "29"
     },
     {
-      "name": "Mehreenzakauallah",
-      "nuid": "25I-3043",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "15"
-    },
-    {
       "name": "Abbas Ashraf",
       "nuid": "25I-3186",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "30"
     },
     {
-      "name": "Irtiza Hussain",
-      "nuid": "25I-3055",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "16"
-    },
-    {
       "name": "Qaiser Iqbal",
       "nuid": "25I-3190",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "31"
     },
     {
-      "name": "Samia Noor",
-      "nuid": "25I-3075",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "17"
-    },
-    {
       "name": "Fazalurrehman",
       "nuid": "25I-3201",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "32"
     },
     {
-      "name": "Khadija Mubashir",
-      "nuid": "25I-3084",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "18"
-    },
-    {
       "name": "Arooj Fatima",
       "nuid": "25I-6503",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "33"
     },
     {
-      "name": "Ahmad Habib",
-      "nuid": "25I-3093",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "19"
-    },
-    {
       "name": "Furqan Atif",
       "nuid": "25I-6572",
-      "paper": "CL1002,BSE-2A - Programming",
+      "paper": "CL1002,BSE-2A - Programming Fundamentals - Lab",
       "time": "9:00-12:00",
       "class": "Margallah Lab IV",
       "seat": "34"
-    },
-    {
-      "name": "Habib Ullah",
-      "nuid": "25I-3103",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "20"
-    },
-    {
-      "name": "Usman",
-      "nuid": "25I-3104",
-      "paper": "CL1002,BSE-2A - Programming",
-      "time": "9:00-12:00",
-      "class": "Margallah Lab IV",
-      "seat": "21"
     }
-  ],
-  "exam_date": "Sat,06,Jun,26"
+  ]
 }

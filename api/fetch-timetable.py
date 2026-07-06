@@ -433,15 +433,22 @@ def _clean_paper(code: str, rest: str) -> str:
 
 
 def parse_fast_seating(text: str) -> tuple[list[dict[str, str]], str]:
-    """Parse a FAST seating sheet. Returns (students, exam_date)."""
-    date = slot = venue = paper = ""
-    split = 43
-    students: list[dict[str, str]] = []
+    """Parse a FAST seating sheet. Returns (students, exam_date).
+
+    The page flows column-major: the whole LEFT column is read top-to-bottom,
+    then the whole RIGHT column. A section header (e.g. "CL1002,BCS-2C") can sit
+    at the bottom of the left column and apply to the right column, so each venue
+    block is processed as left-column lines followed by right-column lines, with
+    the current paper/section carried across that boundary.
+    """
+    date = slot = ""
+    blocks: list[dict[str, Any]] = []
+    current: dict[str, Any] | None = None
 
     for raw in text.splitlines():
         line = raw.rstrip()
 
-        m = re.search(r"Date:\s*([A-Za-z0-9,/ ]+?)(?:\s{2,}|$)", line)
+        m = re.search(r"Date:\s*([A-Za-z0-9,/ ]+?)(?:\s{2,}|Slot|$)", line)
         if m:
             date = m.group(1).strip()
         m = re.search(r"Slot:\s*([0-9:apmAPM.\- ]+?)(?:\s{2,}|Venue|$)", line)
@@ -449,13 +456,25 @@ def parse_fast_seating(text: str) -> tuple[list[dict[str, str]], str]:
             slot = m.group(1).strip()
         m = re.search(r"Venue:\s*(.+?)\s*$", line)
         if m:
-            venue, paper = m.group(1).strip(), ""
+            current = {"venue": m.group(1).strip(), "slot": slot, "lines": [], "split": 43}
+            blocks.append(current)
+            continue
+        if current is None:
+            continue
         if re.search(r"S#\s+Roll", line):
             second = line.find("S#", line.find("S#") + 1)
             if second > 0:
-                split = second
+                current["split"] = second
+            continue
+        current["lines"].append(line)
 
-        for half in (line[:split], line[split:]):
+    students: list[dict[str, str]] = []
+    for block in blocks:
+        split = block["split"]
+        left = [ln[:split] for ln in block["lines"]]
+        right = [ln[split:] for ln in block["lines"]]
+        paper = ""
+        for half in left + right:  # column-major: full left column, then full right
             rec = FAST_REC.match(half)
             if rec:
                 name = re.sub(r"\s+\d{1,3}$", "", rec.group(3).strip())
@@ -465,15 +484,15 @@ def parse_fast_seating(text: str) -> tuple[list[dict[str, str]], str]:
                     "nuid": rec.group(2).upper(),
                     "seat": rec.group(4),
                     "paper": paper,
-                    "time": slot,
-                    "class": venue,
+                    "time": block["slot"],
+                    "class": block["venue"],
                 })
                 continue
             stripped = half.strip()
             paper_match = FAST_PAPER.match(half)
             if paper_match and re.match(r"^[A-Z]{2,3}\d{3,4}", stripped):
                 paper = _clean_paper(paper_match.group(1), paper_match.group(2))
-            elif paper and re.fullmatch(r"[A-Za-z]{2,6}", stripped) and not paper.endswith("Lab"):
+            elif paper and re.fullmatch(r"[A-Za-z][A-Za-z \-]*", stripped) and not paper.endswith("Lab"):
                 paper = re.sub(r"\s+", " ", f"{paper} {stripped}")
 
     return students, date
