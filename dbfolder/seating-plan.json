@@ -1,7 +1,6 @@
 {
-  "updated_at": "2026-07-06T19:04:43.957Z",
+  "updated_at": "2026-07-06T22:27:51.118071+00:00",
   "source_subject": "Seating Plan",
-  "exam_date": "Sat,06,Jun,26",
   "count": 1190,
   "students": [
     {
@@ -127,7 +126,7 @@
     {
       "name": "Eesha Tir Raazia",
       "nuid": "22I-0531",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C3R4"
@@ -135,7 +134,7 @@
     {
       "name": "Faizan Zahid",
       "nuid": "22I-0533",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C3R5"
@@ -143,7 +142,7 @@
     {
       "name": "Huzaifa Azam",
       "nuid": "22I-0534",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C3R6"
@@ -151,7 +150,7 @@
     {
       "name": "Katrina Bodani",
       "nuid": "22I-0545",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C4R1"
@@ -159,7 +158,7 @@
     {
       "name": "Ishtiaq Hussain",
       "nuid": "22I-0549",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C4R2"
@@ -167,7 +166,7 @@
     {
       "name": "Hassan Shoro",
       "nuid": "22I-0561",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C4R3"
@@ -175,7 +174,7 @@
     {
       "name": "Iqra Shahid",
       "nuid": "22I-0564",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C4R4"
@@ -183,7 +182,7 @@
     {
       "name": "Rameen Elahi",
       "nuid": "22I-0565",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C4R5"
@@ -191,7 +190,7 @@
     {
       "name": "Ibaad Ahmed",
       "nuid": "22I-0585",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C4R6"
@@ -199,7 +198,7 @@
     {
       "name": "Sofia Raheel",
       "nuid": "22I-0596",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C5R1"
@@ -207,7 +206,7 @@
     {
       "name": "Zuhair Akber",
       "nuid": "22I-0599",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C5R2"
@@ -215,7 +214,7 @@
     {
       "name": "Hamza Inayat",
       "nuid": "22I-0607",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C5R3"
@@ -223,7 +222,7 @@
     {
       "name": "Anam Omar",
       "nuid": "22I-0610",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C5R4"
@@ -231,7 +230,7 @@
     {
       "name": "Arslan Javed",
       "nuid": "22I-0613",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C5R5"
@@ -239,7 +238,7 @@
     {
       "name": "Abdul Rehman",
       "nuid": "22I-0616",
-      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 301",
       "seat": "C5R6"
@@ -359,7 +358,7 @@
     {
       "name": "Abia Javed",
       "nuid": "21I-0311",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C1R2"
@@ -367,7 +366,7 @@
     {
       "name": "Talha Rashid",
       "nuid": "21I-1365",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C1R4"
@@ -375,7 +374,7 @@
     {
       "name": "Hunain Maqbool",
       "nuid": "22I-0454",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C1R6"
@@ -383,7 +382,7 @@
     {
       "name": "Hammad Ali",
       "nuid": "22I-0459",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C2R1"
@@ -391,7 +390,7 @@
     {
       "name": "Maida Shahzad",
       "nuid": "22I-0471",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C2R3"
@@ -399,7 +398,7 @@
     {
       "name": "Muhid Qaiser",
       "nuid": "22I-0472",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C2R5"
@@ -407,7 +406,7 @@
     {
       "name": "Urwah Ejaz",
       "nuid": "22I-0474",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C3R2"
@@ -415,7 +414,7 @@
     {
       "name": "Ammad Nasir",
       "nuid": "22I-0477",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C3R4"
@@ -423,7 +422,7 @@
     {
       "name": "Muhammad Faheem",
       "nuid": "22I-0485",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C3R6"
@@ -431,7 +430,7 @@
     {
       "name": "Shaheer Qadir",
       "nuid": "22I-0501",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C4R1"
@@ -439,7 +438,7 @@
     {
       "name": "Shaiman Qadir",
       "nuid": "22I-0511",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C4R3"
@@ -447,7 +446,7 @@
     {
       "name": "Moeez Jamal",
       "nuid": "22I-0513",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C4R5"
@@ -455,7 +454,7 @@
     {
       "name": "Ammar Ahmed",
       "nuid": "22I-0514",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C5R2"
@@ -463,7 +462,7 @@
     {
       "name": "Zain Raza",
       "nuid": "22I-0520",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C5R4"
@@ -471,7 +470,7 @@
     {
       "name": "Mubashir Hamad",
       "nuid": "22I-0524",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C5R5"
@@ -479,7 +478,7 @@
     {
       "name": "Ahmed Zubair",
       "nuid": "22I-0525",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 302",
       "seat": "C5R6"
@@ -607,7 +606,7 @@
     {
       "name": "Malaika Nasir",
       "nuid": "22I-0631",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 303",
       "seat": "C5R2"
@@ -615,7 +614,7 @@
     {
       "name": "Muhammad Umar",
       "nuid": "22I-0644",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 303",
       "seat": "C5R3"
@@ -623,7 +622,7 @@
     {
       "name": "Muhammad Ahmad",
       "nuid": "22I-1386",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 303",
       "seat": "C5R4"
@@ -631,7 +630,7 @@
     {
       "name": "Muhammad Usman",
       "nuid": "22I-2136",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 303",
       "seat": "C5R5"
@@ -639,7 +638,7 @@
     {
       "name": "Amar Rameez",
       "nuid": "22I-2146",
-      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 303",
       "seat": "C5R6"
@@ -847,7 +846,7 @@
     {
       "name": "Danish Ali",
       "nuid": "22I-0584",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C3R4"
@@ -855,7 +854,7 @@
     {
       "name": "Sami Naeem",
       "nuid": "22I-0587",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C3R5"
@@ -863,7 +862,7 @@
     {
       "name": "Safwan Hafeez",
       "nuid": "22I-0588",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C3R6"
@@ -871,7 +870,7 @@
     {
       "name": "Asad Ullah",
       "nuid": "22I-0589",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C4R1"
@@ -879,7 +878,7 @@
     {
       "name": "Muhammad Abdullah",
       "nuid": "22I-0591",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C4R2"
@@ -887,7 +886,7 @@
     {
       "name": "Arooj Raheel",
       "nuid": "22I-0601",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C4R3"
@@ -895,7 +894,7 @@
     {
       "name": "Ahmad Islam",
       "nuid": "22I-0603",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C4R4"
@@ -903,7 +902,7 @@
     {
       "name": "Abeer Umair",
       "nuid": "22I-0606",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C4R5"
@@ -911,7 +910,7 @@
     {
       "name": "Noor Ul Ain",
       "nuid": "22I-0608",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C4R6"
@@ -919,7 +918,7 @@
     {
       "name": "Aiza Ali",
       "nuid": "22I-0612",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C5R1"
@@ -927,7 +926,7 @@
     {
       "name": "Ahmad Bhatti",
       "nuid": "22I-0623",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C5R2"
@@ -935,7 +934,7 @@
     {
       "name": "Hussain Ahmad",
       "nuid": "22I-1374",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C5R3"
@@ -943,7 +942,7 @@
     {
       "name": "Maaz Ud Din",
       "nuid": "22I-1388",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C5R4"
@@ -951,7 +950,7 @@
     {
       "name": "Mohsin Abbas",
       "nuid": "22I-2130",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C5R5"
@@ -959,7 +958,7 @@
     {
       "name": "Ayan Asim",
       "nuid": "22I-2139",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "C5R6"
@@ -967,7 +966,7 @@
     {
       "name": "Sammar Kaleem Extra",
       "nuid": "22I-2141",
-      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 304",
       "seat": "1"
@@ -1095,7 +1094,7 @@
     {
       "name": "Bilal Hassan",
       "nuid": "22I-0505",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C3R4"
@@ -1103,7 +1102,7 @@
     {
       "name": "Hamid Ashraf",
       "nuid": "22I-0510",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C3R5"
@@ -1111,7 +1110,7 @@
     {
       "name": "Haris Usman",
       "nuid": "22I-0527",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C3R6"
@@ -1119,7 +1118,7 @@
     {
       "name": "Zain Ali",
       "nuid": "22I-0562",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C4R1"
@@ -1127,7 +1126,7 @@
     {
       "name": "Jannat Anees",
       "nuid": "22I-0567",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C4R2"
@@ -1135,7 +1134,7 @@
     {
       "name": "Muhammad Omer",
       "nuid": "22I-0572",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C4R3"
@@ -1143,7 +1142,7 @@
     {
       "name": "Reha Yamin",
       "nuid": "22I-0573",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C4R4"
@@ -1151,7 +1150,7 @@
     {
       "name": "Amna Ehtisham",
       "nuid": "22I-0575",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C4R5"
@@ -1159,7 +1158,7 @@
     {
       "name": "Usama",
       "nuid": "22I-0577",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C4R6"
@@ -1167,7 +1166,7 @@
     {
       "name": "Sidra Hamid",
       "nuid": "22I-0578",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C5R1"
@@ -1175,7 +1174,7 @@
     {
       "name": "Ibrahim Ansari",
       "nuid": "22I-0586",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C5R2"
@@ -1183,7 +1182,7 @@
     {
       "name": "Muhammad Sajjad",
       "nuid": "22I-0590",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C5R3"
@@ -1191,7 +1190,7 @@
     {
       "name": "Abdul Haadi",
       "nuid": "22I-0592",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C5R4"
@@ -1199,7 +1198,7 @@
     {
       "name": "Ahmad Abdul",
       "nuid": "22I-0609",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C5R5"
@@ -1207,7 +1206,7 @@
     {
       "name": "Amin Fahim",
       "nuid": "22I-0618",
-      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BAI-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 305",
       "seat": "C5R6"
@@ -1327,7 +1326,7 @@
     {
       "name": "Fatima Khan",
       "nuid": "22I-1603",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C3R3"
@@ -1335,7 +1334,7 @@
     {
       "name": "Ariz Usman",
       "nuid": "22I-1607",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C3R4"
@@ -1343,7 +1342,7 @@
     {
       "name": "Taha Nayab",
       "nuid": "22I-1610",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C3R5"
@@ -1351,7 +1350,7 @@
     {
       "name": "Hunain Raza",
       "nuid": "22I-1614",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C3R6"
@@ -1359,7 +1358,7 @@
     {
       "name": "Uzair Zahid",
       "nuid": "22I-1619",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C4R1"
@@ -1367,7 +1366,7 @@
     {
       "name": "Muhammad Huzaifa",
       "nuid": "22I-1627",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C4R2"
@@ -1375,7 +1374,7 @@
     {
       "name": "Tehreem Zafar",
       "nuid": "22I-1630",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C4R3"
@@ -1383,7 +1382,7 @@
     {
       "name": "Arsalan Javed",
       "nuid": "22I-1632",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C4R4"
@@ -1391,7 +1390,7 @@
     {
       "name": "Bilal Ikram",
       "nuid": "22I-1636",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C4R5"
@@ -1399,7 +1398,7 @@
     {
       "name": "Hussain Abdullah",
       "nuid": "22I-1639",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C4R6"
@@ -1407,7 +1406,7 @@
     {
       "name": "Saad Mehmood",
       "nuid": "22I-1655",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C5R1"
@@ -1415,7 +1414,7 @@
     {
       "name": "Eman Fatima",
       "nuid": "22I-1675",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C5R2"
@@ -1423,7 +1422,7 @@
     {
       "name": "Sajer Tasleem",
       "nuid": "22I-1677",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C5R3"
@@ -1431,7 +1430,7 @@
     {
       "name": "Saad Umar",
       "nuid": "22I-1679",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C5R4"
@@ -1439,7 +1438,7 @@
     {
       "name": "Haziq Hussain",
       "nuid": "22I-1685",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C5R5"
@@ -1447,7 +1446,7 @@
     {
       "name": "Muhammad Usman",
       "nuid": "22I-1689",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 307",
       "seat": "C5R6"
@@ -1575,7 +1574,7 @@
     {
       "name": "Ayila Rasheed",
       "nuid": "22I-7430",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 308",
       "seat": "C5R3"
@@ -1583,7 +1582,7 @@
     {
       "name": "Umar Murtaza",
       "nuid": "22I-7431",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 308",
       "seat": "C5R4"
@@ -1591,7 +1590,7 @@
     {
       "name": "Abdur Rehman",
       "nuid": "22I-7433",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 308",
       "seat": "C5R5"
@@ -1599,7 +1598,7 @@
     {
       "name": "Aneeqa Mehboob",
       "nuid": "22I-7446",
-      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 308",
       "seat": "C5R6"
@@ -1815,7 +1814,7 @@
     {
       "name": "Muhammad Azan",
       "nuid": "22I-1668",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C3R4"
@@ -1823,7 +1822,7 @@
     {
       "name": "Farrukh Riaz",
       "nuid": "22I-1669",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C3R5"
@@ -1831,7 +1830,7 @@
     {
       "name": "Abdullah",
       "nuid": "22I-1671",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C3R6"
@@ -1839,7 +1838,7 @@
     {
       "name": "Fatima Farooq",
       "nuid": "22I-1678",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C4R1"
@@ -1847,7 +1846,7 @@
     {
       "name": "Hussain Khaqan",
       "nuid": "22I-1681",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C4R2"
@@ -1855,7 +1854,7 @@
     {
       "name": "Wania Sajid",
       "nuid": "22I-1691",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C4R3"
@@ -1863,7 +1862,7 @@
     {
       "name": "Abdul Hadi",
       "nuid": "22I-1693",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C4R4"
@@ -1871,7 +1870,7 @@
     {
       "name": "Umar Zeb",
       "nuid": "22I-1700",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C4R5"
@@ -1879,7 +1878,7 @@
     {
       "name": "Abdul Moiz",
       "nuid": "22I-1704",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C4R6"
@@ -1887,7 +1886,7 @@
     {
       "name": "Ayesha Areej",
       "nuid": "22I-1711",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C5R1"
@@ -1895,7 +1894,7 @@
     {
       "name": "Huda Imran",
       "nuid": "22I-1713",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C5R2"
@@ -1903,7 +1902,7 @@
     {
       "name": "Manahil Choudary",
       "nuid": "22I-1728",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C5R3"
@@ -1911,7 +1910,7 @@
     {
       "name": "Saad Umar",
       "nuid": "22I-1736",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C5R4"
@@ -1919,7 +1918,7 @@
     {
       "name": "Ibtihaj Haider",
       "nuid": "22I-1737",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C5R5"
@@ -1927,7 +1926,7 @@
     {
       "name": "Azan Afzal",
       "nuid": "22I-1741",
-      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 309",
       "seat": "C5R6"
@@ -2047,7 +2046,7 @@
     {
       "name": "Dur E Shahwar",
       "nuid": "22I-1579",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C2R5"
@@ -2055,7 +2054,7 @@
     {
       "name": "Ahmed Umar",
       "nuid": "22I-1580",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C3R2"
@@ -2063,7 +2062,7 @@
     {
       "name": "Faieq Imtiaz",
       "nuid": "22I-1581",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C3R4"
@@ -2071,7 +2070,7 @@
     {
       "name": "Ahmad Ali",
       "nuid": "22I-1582",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C3R6"
@@ -2079,7 +2078,7 @@
     {
       "name": "Abdullah Najif",
       "nuid": "22I-1583",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C4R1"
@@ -2087,7 +2086,7 @@
     {
       "name": "Abdul Hanan",
       "nuid": "22I-1586",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C4R2"
@@ -2095,7 +2094,7 @@
     {
       "name": "Moarij Ali",
       "nuid": "22I-1595",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C4R3"
@@ -2103,7 +2102,7 @@
     {
       "name": "Minahil Kamal",
       "nuid": "22I-1600",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C4R4"
@@ -2111,7 +2110,7 @@
     {
       "name": "Abdul Nafay",
       "nuid": "22I-1605",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C4R5"
@@ -2119,7 +2118,7 @@
     {
       "name": "Hasham Hassan",
       "nuid": "22I-1617",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C4R6"
@@ -2127,7 +2126,7 @@
     {
       "name": "Muhammad Ammar",
       "nuid": "22I-1626",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C5R1"
@@ -2135,7 +2134,7 @@
     {
       "name": "Attiya Basharat",
       "nuid": "22I-1629",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C5R2"
@@ -2143,7 +2142,7 @@
     {
       "name": "Haad Zia",
       "nuid": "22I-1643",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C5R3"
@@ -2151,7 +2150,7 @@
     {
       "name": "Hoorya Muhammad",
       "nuid": "22I-1644",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C5R4"
@@ -2159,7 +2158,7 @@
     {
       "name": "Saadullah Khan",
       "nuid": "22I-1647",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C5R5"
@@ -2167,7 +2166,7 @@
     {
       "name": "Muneeb Kashif",
       "nuid": "22I-1659",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 310",
       "seat": "C5R6"
@@ -2271,7 +2270,7 @@
     {
       "name": "Azaan Naveed",
       "nuid": "22I-1769",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 311",
       "seat": "C4R2"
@@ -2279,7 +2278,7 @@
     {
       "name": "Zeeshan Qaisar",
       "nuid": "22I-1773",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 311",
       "seat": "C4R3"
@@ -2287,7 +2286,7 @@
     {
       "name": "Abdul Sami",
       "nuid": "22I-2358",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 311",
       "seat": "C4R4"
@@ -2295,7 +2294,7 @@
     {
       "name": "Hassan Ali",
       "nuid": "22I-7423",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 311",
       "seat": "C4R5"
@@ -2303,7 +2302,7 @@
     {
       "name": "Hurmain Fatima",
       "nuid": "22I-7438",
-      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 311",
       "seat": "C4R6"
@@ -2487,7 +2486,7 @@
     {
       "name": "Muhammad Haseeb",
       "nuid": "22I-1698",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C3R4"
@@ -2495,7 +2494,7 @@
     {
       "name": "Lubna Basharat",
       "nuid": "22I-1699",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C3R5"
@@ -2503,7 +2502,7 @@
     {
       "name": "Ali Jauhar",
       "nuid": "22I-1705",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C3R6"
@@ -2511,7 +2510,7 @@
     {
       "name": "Hussain Mehmood",
       "nuid": "22I-1706",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C4R1"
@@ -2519,7 +2518,7 @@
     {
       "name": "Umar Inam",
       "nuid": "22I-1716",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C4R2"
@@ -2527,7 +2526,7 @@
     {
       "name": "Kumail Haider",
       "nuid": "22I-1723",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C4R3"
@@ -2535,7 +2534,7 @@
     {
       "name": "Abdul Sami",
       "nuid": "22I-1725",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C4R4"
@@ -2543,7 +2542,7 @@
     {
       "name": "Jibran Hanan",
       "nuid": "22I-1732",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C4R5"
@@ -2551,7 +2550,7 @@
     {
       "name": "Umar Ahmad",
       "nuid": "22I-1743",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C4R6"
@@ -2559,7 +2558,7 @@
     {
       "name": "Zohaib Ahmad",
       "nuid": "22I-1745",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C5R1"
@@ -2567,7 +2566,7 @@
     {
       "name": "Duaa Aamir",
       "nuid": "22I-1753",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C5R2"
@@ -2575,7 +2574,7 @@
     {
       "name": "Zaib-Un-Nisa",
       "nuid": "22I-1756",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C5R3"
@@ -2583,7 +2582,7 @@
     {
       "name": "Muhammad Hassan",
       "nuid": "22I-1770",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C5R4"
@@ -2591,7 +2590,7 @@
     {
       "name": "Rozina Bibi",
       "nuid": "22I-1779",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C5R5"
@@ -2599,7 +2598,7 @@
     {
       "name": "Aleena Fatima",
       "nuid": "22I-2353",
-      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BCY-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 401",
       "seat": "C5R6"
@@ -2719,7 +2718,7 @@
     {
       "name": "Shahzaib Akram",
       "nuid": "22I-2450",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C3R3"
@@ -2727,7 +2726,7 @@
     {
       "name": "Hamza Tufail",
       "nuid": "22I-2458",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C3R4"
@@ -2735,7 +2734,7 @@
     {
       "name": "Usman Tariq",
       "nuid": "22I-2459",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C3R5"
@@ -2743,7 +2742,7 @@
     {
       "name": "Aamina Bokhari",
       "nuid": "22I-2474",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C3R6"
@@ -2751,7 +2750,7 @@
     {
       "name": "Zubair Khalid",
       "nuid": "22I-2475",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C4R1"
@@ -2759,7 +2758,7 @@
     {
       "name": "Muhammad Haris",
       "nuid": "22I-2479",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C4R2"
@@ -2767,7 +2766,7 @@
     {
       "name": "Abdul Moiz",
       "nuid": "22I-2493",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C4R3"
@@ -2775,7 +2774,7 @@
     {
       "name": "Rafay Ul Haq",
       "nuid": "22I-2520",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C4R4"
@@ -2783,7 +2782,7 @@
     {
       "name": "Fahad Zafar",
       "nuid": "22I-2525",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C4R5"
@@ -2791,7 +2790,7 @@
     {
       "name": "Waheed Gulzar",
       "nuid": "22I-2526",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C4R6"
@@ -2799,7 +2798,7 @@
     {
       "name": "Mahnoor Hafeez",
       "nuid": "22I-2549",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C5R1"
@@ -2807,7 +2806,7 @@
     {
       "name": "Unzila Anjum",
       "nuid": "22I-2550",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C5R2"
@@ -2815,7 +2814,7 @@
     {
       "name": "Tayyab Attiq",
       "nuid": "22I-2554",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C5R3"
@@ -2823,7 +2822,7 @@
     {
       "name": "Umama Saif",
       "nuid": "22I-2558",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C5R4"
@@ -2831,7 +2830,7 @@
     {
       "name": "Affan Wajid",
       "nuid": "22I-2567",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C5R5"
@@ -2839,7 +2838,7 @@
     {
       "name": "Muhammad Saleh",
       "nuid": "22I-2583",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 402",
       "seat": "C5R6"
@@ -2967,7 +2966,7 @@
     {
       "name": "Sumair Ali",
       "nuid": "22I-2709",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 403",
       "seat": "C5R1"
@@ -2975,7 +2974,7 @@
     {
       "name": "Sami Naveed",
       "nuid": "22I-2717",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 403",
       "seat": "C5R2"
@@ -2983,7 +2982,7 @@
     {
       "name": "Danish Nadeem",
       "nuid": "22I-8772",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 403",
       "seat": "C5R3"
@@ -2991,7 +2990,7 @@
     {
       "name": "Ibrahim Ahmad",
       "nuid": "22I-8781",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 403",
       "seat": "C5R4"
@@ -2999,7 +2998,7 @@
     {
       "name": "Fizza Ali",
       "nuid": "22I-8787",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 403",
       "seat": "C5R5"
@@ -3007,7 +3006,7 @@
     {
       "name": "Huda Asim",
       "nuid": "22I-8790",
-      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8A - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 403",
       "seat": "C5R6"
@@ -3207,7 +3206,7 @@
     {
       "name": "Affan Hameed",
       "nuid": "22I-2582",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C3R4"
@@ -3215,7 +3214,7 @@
     {
       "name": "Maaz Uddin",
       "nuid": "22I-2599",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C3R5"
@@ -3223,7 +3222,7 @@
     {
       "name": "Noor Fatima",
       "nuid": "22I-2610",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C3R6"
@@ -3231,7 +3230,7 @@
     {
       "name": "Bushra Sajid",
       "nuid": "22I-2613",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C4R1"
@@ -3239,7 +3238,7 @@
     {
       "name": "Fatima Rathore",
       "nuid": "22I-2631",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C4R2"
@@ -3247,7 +3246,7 @@
     {
       "name": "Zeeshan Nazim",
       "nuid": "22I-2646",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C4R3"
@@ -3255,7 +3254,7 @@
     {
       "name": "Sumeed Jawad",
       "nuid": "22I-2651",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C4R4"
@@ -3263,7 +3262,7 @@
     {
       "name": "Khawar Mohi",
       "nuid": "22I-2657",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C4R5"
@@ -3271,7 +3270,7 @@
     {
       "name": "Saim Zia",
       "nuid": "22I-2661",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C4R6"
@@ -3279,7 +3278,7 @@
     {
       "name": "Huzaifa Mahmood",
       "nuid": "22I-2669",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C5R1"
@@ -3287,7 +3286,7 @@
     {
       "name": "Ali Hassan",
       "nuid": "22I-2689",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C5R2"
@@ -3295,7 +3294,7 @@
     {
       "name": "Musfirah Zunnoon",
       "nuid": "22I-2692",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C5R3"
@@ -3303,7 +3302,7 @@
     {
       "name": "Muneeb Ur Rehman",
       "nuid": "22I-2702",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C5R4"
@@ -3311,7 +3310,7 @@
     {
       "name": "Waleed Abdullah",
       "nuid": "22I-2714",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C5R5"
@@ -3319,7 +3318,7 @@
     {
       "name": "Amna Malik",
       "nuid": "22I-2715",
-      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8B - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 404",
       "seat": "C5R6"
@@ -3439,7 +3438,7 @@
     {
       "name": "Ghulam Husnain",
       "nuid": "22I-1537",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C3R3"
@@ -3447,7 +3446,7 @@
     {
       "name": "Ali Hassan",
       "nuid": "22I-1545",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C3R4"
@@ -3455,7 +3454,7 @@
     {
       "name": "Arbaz Masood",
       "nuid": "22I-2406",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C3R5"
@@ -3463,7 +3462,7 @@
     {
       "name": "Eman Khalid",
       "nuid": "22I-2409",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C3R6"
@@ -3471,7 +3470,7 @@
     {
       "name": "Abdullah Jillani",
       "nuid": "22I-2417",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C4R1"
@@ -3479,7 +3478,7 @@
     {
       "name": "Zayam Adeel",
       "nuid": "22I-2436",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C4R2"
@@ -3487,7 +3486,7 @@
     {
       "name": "Afnan Rafaqat",
       "nuid": "22I-2437",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C4R3"
@@ -3495,7 +3494,7 @@
     {
       "name": "Tamim Ahmad",
       "nuid": "22I-2449",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C4R4"
@@ -3503,7 +3502,7 @@
     {
       "name": "Saoud Ahmed",
       "nuid": "22I-2467",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C4R5"
@@ -3511,7 +3510,7 @@
     {
       "name": "Zarnab Ali",
       "nuid": "22I-2471",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C4R6"
@@ -3519,7 +3518,7 @@
     {
       "name": "Esha Aamir",
       "nuid": "22I-2473",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C5R1"
@@ -3527,7 +3526,7 @@
     {
       "name": "Anas Abdullah",
       "nuid": "22I-2487",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C5R2"
@@ -3535,7 +3534,7 @@
     {
       "name": "Rayyan Ahmed",
       "nuid": "22I-2489",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C5R3"
@@ -3543,7 +3542,7 @@
     {
       "name": "Ahmad Tashfeen",
       "nuid": "22I-2490",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C5R4"
@@ -3551,7 +3550,7 @@
     {
       "name": "Naufil Nadeem",
       "nuid": "22I-2494",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C5R5"
@@ -3559,7 +3558,7 @@
     {
       "name": "Talha Aamir",
       "nuid": "22I-2502",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 405",
       "seat": "C5R6"
@@ -3687,7 +3686,7 @@
     {
       "name": "Haseeb Ur Rehman",
       "nuid": "22I-2643",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 406",
       "seat": "C4R5"
@@ -3695,7 +3694,7 @@
     {
       "name": "Taimoor Raza",
       "nuid": "22I-2659",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 406",
       "seat": "C4R6"
@@ -3703,7 +3702,7 @@
     {
       "name": "Abdullah Ghani",
       "nuid": "22I-2683",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 406",
       "seat": "C5R1"
@@ -3711,7 +3710,7 @@
     {
       "name": "Awais Akbar",
       "nuid": "22I-2688",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 406",
       "seat": "C5R2"
@@ -3719,7 +3718,7 @@
     {
       "name": "Haroon Aziz",
       "nuid": "22I-2697",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 406",
       "seat": "C5R3"
@@ -3727,7 +3726,7 @@
     {
       "name": "Saif Ur Rehman",
       "nuid": "22I-8767",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 406",
       "seat": "C5R4"
@@ -3735,7 +3734,7 @@
     {
       "name": "Muhammad Ahmad",
       "nuid": "22L-7869",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 406",
       "seat": "C5R5"
@@ -3743,7 +3742,7 @@
     {
       "name": "Zarmeena Fatima",
       "nuid": "22L-7883",
-      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8C - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 406",
       "seat": "C5R6"
@@ -3927,7 +3926,7 @@
     {
       "name": "Dawood Qamar",
       "nuid": "22I-2522",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C3R4"
@@ -3935,7 +3934,7 @@
     {
       "name": "Saad Khaliq",
       "nuid": "22I-2527",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C3R5"
@@ -3943,7 +3942,7 @@
     {
       "name": "Muhammad Rayan",
       "nuid": "22I-2532",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C3R6"
@@ -3951,7 +3950,7 @@
     {
       "name": "Husnain Ashfaq",
       "nuid": "22I-2536",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C4R1"
@@ -3959,7 +3958,7 @@
     {
       "name": "Hammad Idrees",
       "nuid": "22I-2537",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C4R2"
@@ -3967,7 +3966,7 @@
     {
       "name": "Shuja Uddin",
       "nuid": "22I-2553",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C4R3"
@@ -3975,7 +3974,7 @@
     {
       "name": "Hamdan Rauf",
       "nuid": "22I-2561",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C4R4"
@@ -3983,7 +3982,7 @@
     {
       "name": "Ali Hamza",
       "nuid": "22I-2566",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C4R5"
@@ -3991,7 +3990,7 @@
     {
       "name": "Kamran Ali",
       "nuid": "22I-2589",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C4R6"
@@ -3999,7 +3998,7 @@
     {
       "name": "Muskan Tariq",
       "nuid": "22I-2602",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C5R1"
@@ -4007,7 +4006,7 @@
     {
       "name": "Saroash Waseem",
       "nuid": "22I-2609",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C5R2"
@@ -4015,7 +4014,7 @@
     {
       "name": "Umar Mehmood",
       "nuid": "22I-2617",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C5R3"
@@ -4023,7 +4022,7 @@
     {
       "name": "Abdur Rafae",
       "nuid": "22I-2638",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C5R4"
@@ -4031,7 +4030,7 @@
     {
       "name": "Samyan Ahmed",
       "nuid": "22I-2639",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C5R5"
@@ -4039,7 +4038,7 @@
     {
       "name": "Abdul Moiz",
       "nuid": "22I-2640",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 407",
       "seat": "C5R6"
@@ -4167,7 +4166,7 @@
     {
       "name": "Saadullah",
       "nuid": "22I-8795",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 408",
       "seat": "C5R5"
@@ -4175,7 +4174,7 @@
     {
       "name": "Suleman Ahmadzai",
       "nuid": "22I-8807",
-      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8D - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 408",
       "seat": "C5R6"
@@ -4407,7 +4406,7 @@
     {
       "name": "Kaif Anwar",
       "nuid": "22I-2668",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C3R4"
@@ -4415,7 +4414,7 @@
     {
       "name": "Ibrahim Kayani",
       "nuid": "22I-2686",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C3R5"
@@ -4423,7 +4422,7 @@
     {
       "name": "Hateem Khush",
       "nuid": "22I-2691",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C3R6"
@@ -4431,7 +4430,7 @@
     {
       "name": "Abubakar Ali",
       "nuid": "22I-2693",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C4R1"
@@ -4439,7 +4438,7 @@
     {
       "name": "Ahmad Masood",
       "nuid": "22I-2704",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C4R2"
@@ -4447,7 +4446,7 @@
     {
       "name": "Musab Ubaid",
       "nuid": "22I-2708",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C4R3"
@@ -4455,7 +4454,7 @@
     {
       "name": "Talha Mukhtiar",
       "nuid": "22I-2720",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C4R4"
@@ -4463,7 +4462,7 @@
     {
       "name": "Usman Ali",
       "nuid": "22I-2725",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C4R5"
@@ -4471,7 +4470,7 @@
     {
       "name": "Faizan Rasheed",
       "nuid": "22I-2734",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C4R6"
@@ -4479,7 +4478,7 @@
     {
       "name": "Muhammad Faisal",
       "nuid": "22I-8758",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C5R1"
@@ -4487,7 +4486,7 @@
     {
       "name": "Rehab Imtiaz",
       "nuid": "22I-8769",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C5R2"
@@ -4495,7 +4494,7 @@
     {
       "name": "Areeba Nisar",
       "nuid": "22I-8770",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C5R3"
@@ -4503,7 +4502,7 @@
     {
       "name": "Amna Asif",
       "nuid": "22I-8777",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C5R4"
@@ -4511,7 +4510,7 @@
     {
       "name": "Hadeed Abbas",
       "nuid": "22I-8780",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C5R5"
@@ -4519,7 +4518,7 @@
     {
       "name": "Uswa Zafar",
       "nuid": "22I-8782",
-      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8E - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "C 409",
       "seat": "C5R6"
@@ -4663,7 +4662,7 @@
     {
       "name": "Anhar Munir",
       "nuid": "22I-2481",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C3R6"
@@ -4671,7 +4670,7 @@
     {
       "name": "Abdullah Iqbal",
       "nuid": "22I-2504",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C4R1"
@@ -4679,7 +4678,7 @@
     {
       "name": "Hania Bashir",
       "nuid": "22I-2506",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C4R2"
@@ -4687,7 +4686,7 @@
     {
       "name": "Abdur Rehman",
       "nuid": "22I-2518",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C4R3"
@@ -4695,7 +4694,7 @@
     {
       "name": "Safi Ur Rehman",
       "nuid": "22I-2534",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C4R4"
@@ -4703,7 +4702,7 @@
     {
       "name": "Haroon Rasheed",
       "nuid": "22I-2555",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C4R5"
@@ -4711,7 +4710,7 @@
     {
       "name": "Bilal Raza",
       "nuid": "22I-2559",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C4R6"
@@ -4719,7 +4718,7 @@
     {
       "name": "Abdul Moiz",
       "nuid": "22I-2560",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C5R1"
@@ -4727,7 +4726,7 @@
     {
       "name": "Esha Riaz",
       "nuid": "22I-2584",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C5R2"
@@ -4735,7 +4734,7 @@
     {
       "name": "Sheryar Ali",
       "nuid": "22I-2623",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C5R3"
@@ -4743,7 +4742,7 @@
     {
       "name": "Abdullah Tariq",
       "nuid": "22I-2627",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C5R4"
@@ -4751,7 +4750,7 @@
     {
       "name": "Abdul Faheem",
       "nuid": "22I-2629",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C5R5"
@@ -4759,7 +4758,7 @@
     {
       "name": "Humair Naseer",
       "nuid": "22I-2632",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C5R6"
@@ -4767,7 +4766,7 @@
     {
       "name": "Noor Junaina",
       "nuid": "22I-2633",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C6R1"
@@ -4775,7 +4774,7 @@
     {
       "name": "Muhammad Pasha",
       "nuid": "22I-2635",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C6R2"
@@ -4783,7 +4782,7 @@
     {
       "name": "Hammad Ur Rehman",
       "nuid": "22I-2662",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C6R3"
@@ -4791,7 +4790,7 @@
     {
       "name": "Muhammad Ahtisham",
       "nuid": "22I-2690",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C6R4"
@@ -4799,7 +4798,7 @@
     {
       "name": "Muhammad Tayyab",
       "nuid": "22I-2698",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C6R5"
@@ -4807,7 +4806,7 @@
     {
       "name": "Hassan",
       "nuid": "22I-2705",
-      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8F - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 301",
       "seat": "C6R6"
@@ -4951,7 +4950,7 @@
     {
       "name": "Ali Rizwan",
       "nuid": "22I-2447",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C3R6"
@@ -4959,7 +4958,7 @@
     {
       "name": "Zain Amjad",
       "nuid": "22I-2453",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C4R1"
@@ -4967,7 +4966,7 @@
     {
       "name": "Ammad Ashraf",
       "nuid": "22I-2470",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C4R2"
@@ -4975,7 +4974,7 @@
     {
       "name": "Hamna Noor",
       "nuid": "22I-2480",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C4R3"
@@ -4983,7 +4982,7 @@
     {
       "name": "Aqsa Yaqoob",
       "nuid": "22I-2501",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C4R4"
@@ -4991,7 +4990,7 @@
     {
       "name": "Badar Faisal",
       "nuid": "22I-2507",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C4R5"
@@ -4999,7 +4998,7 @@
     {
       "name": "Haseeb Sajid",
       "nuid": "22I-2510",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C4R6"
@@ -5007,7 +5006,7 @@
     {
       "name": "Abdullah",
       "nuid": "22I-2515",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C5R1"
@@ -5015,7 +5014,7 @@
     {
       "name": "Altaf Ur Rehman",
       "nuid": "22I-2519",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C5R2"
@@ -5023,7 +5022,7 @@
     {
       "name": "Ahsan Iqbal",
       "nuid": "22I-2524",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C5R3"
@@ -5031,7 +5030,7 @@
     {
       "name": "Adnan Khaliq",
       "nuid": "22I-2529",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C5R4"
@@ -5039,7 +5038,7 @@
     {
       "name": "Ali Hamza",
       "nuid": "22I-2535",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C5R5"
@@ -5047,7 +5046,7 @@
     {
       "name": "Shafiq Ullah",
       "nuid": "22I-2556",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C5R6"
@@ -5055,7 +5054,7 @@
     {
       "name": "Noman Ahmed",
       "nuid": "22I-2563",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C6R1"
@@ -5063,7 +5062,7 @@
     {
       "name": "Ahmad Waseem",
       "nuid": "22I-2575",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C6R2"
@@ -5071,7 +5070,7 @@
     {
       "name": "Abdulhaq Zulfiqar",
       "nuid": "22I-2585",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C6R3"
@@ -5079,7 +5078,7 @@
     {
       "name": "Zubair Ali",
       "nuid": "22I-2591",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C6R4"
@@ -5087,7 +5086,7 @@
     {
       "name": "Abdullah Khan",
       "nuid": "22I-2604",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C6R5"
@@ -5095,7 +5094,7 @@
     {
       "name": "Aakash Ijaz",
       "nuid": "22I-2606",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 302",
       "seat": "C6R6"
@@ -5247,7 +5246,7 @@
     {
       "name": "Ibraheem Mazhar",
       "nuid": "22I-2666",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C3R3"
@@ -5255,7 +5254,7 @@
     {
       "name": "Sania Zaheer",
       "nuid": "22I-2674",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C3R5"
@@ -5263,7 +5262,7 @@
     {
       "name": "Arwa Ahmed",
       "nuid": "22I-2676",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C4R2"
@@ -5271,7 +5270,7 @@
     {
       "name": "Ayesha Khalid",
       "nuid": "22I-2678",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C4R4"
@@ -5279,7 +5278,7 @@
     {
       "name": "Asim Shehzad",
       "nuid": "22I-2679",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C4R5"
@@ -5287,7 +5286,7 @@
     {
       "name": "Uzair Choudhary",
       "nuid": "22I-2681",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C4R6"
@@ -5295,7 +5294,7 @@
     {
       "name": "Huzaifa Khan",
       "nuid": "22I-2699",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C5R1"
@@ -5303,7 +5302,7 @@
     {
       "name": "Muhammad Ahmad",
       "nuid": "22I-2711",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C5R2"
@@ -5311,7 +5310,7 @@
     {
       "name": "Aisha Adil",
       "nuid": "22I-2718",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C5R3"
@@ -5319,7 +5318,7 @@
     {
       "name": "Abdul Ahad",
       "nuid": "22I-2721",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C5R4"
@@ -5327,7 +5326,7 @@
     {
       "name": "Ehsan Umran",
       "nuid": "22I-2724",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C5R5"
@@ -5335,7 +5334,7 @@
     {
       "name": "Muhammad Zunair",
       "nuid": "22I-2729",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C5R6"
@@ -5343,7 +5342,7 @@
     {
       "name": "Maaz Khalid",
       "nuid": "22I-2736",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C6R1"
@@ -5351,7 +5350,7 @@
     {
       "name": "Kashan Karim",
       "nuid": "22I-8754",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C6R2"
@@ -5359,7 +5358,7 @@
     {
       "name": "Jalal Haidar",
       "nuid": "22I-8755",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C6R3"
@@ -5367,7 +5366,7 @@
     {
       "name": "Muhammad Bin Tariq",
       "nuid": "22I-8761",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C6R4"
@@ -5375,7 +5374,7 @@
     {
       "name": "Abdul Rafay",
       "nuid": "22I-8785",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C6R5"
@@ -5383,7 +5382,7 @@
     {
       "name": "Manal Shahid",
       "nuid": "22I-8801",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "C6R6"
@@ -5391,7 +5390,7 @@
     {
       "name": "Sahar Iqbal Extra",
       "nuid": "22I-8803",
-      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics Office FAST School of Computing",
+      "paper": "CS4001,BSE-8G - Professional Practices in IT Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "D 303",
       "seat": "1"
@@ -7055,7 +7054,7 @@
     {
       "name": "Muhammad Abrar",
       "nuid": "23I-2087",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "39"
@@ -7063,7 +7062,7 @@
     {
       "name": "Sarita Sangrez",
       "nuid": "23I-2088",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "40"
@@ -7071,7 +7070,7 @@
     {
       "name": "Anum Ali",
       "nuid": "23I-2089",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "41"
@@ -7079,7 +7078,7 @@
     {
       "name": "Hajra Khalid Butt",
       "nuid": "23I-2094",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "42"
@@ -7087,7 +7086,7 @@
     {
       "name": "Irtaza Zahid",
       "nuid": "23I-2096",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "43"
@@ -7095,7 +7094,7 @@
     {
       "name": "Faizan Saeed",
       "nuid": "23I-2100",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "44"
@@ -7103,7 +7102,7 @@
     {
       "name": "Hadi Waqar",
       "nuid": "23I-2101",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "45"
@@ -7111,7 +7110,7 @@
     {
       "name": "Ayesha Noor",
       "nuid": "23I-2103",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "46"
@@ -7119,7 +7118,7 @@
     {
       "name": "Bareera Ahmed",
       "nuid": "23I-2104",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "47"
@@ -7127,7 +7126,7 @@
     {
       "name": "Rumaisah Haroon",
       "nuid": "23I-2106",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "48"
@@ -7135,7 +7134,7 @@
     {
       "name": "Akash Waris",
       "nuid": "23I-2110",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "49"
@@ -7143,7 +7142,7 @@
     {
       "name": "Lutfan Shahzad",
       "nuid": "23I-2114",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "50"
@@ -7151,7 +7150,7 @@
     {
       "name": "Sukina Raveen",
       "nuid": "23I-2115",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "51"
@@ -7159,7 +7158,7 @@
     {
       "name": "Ali Shah",
       "nuid": "23I-2116",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "52"
@@ -7167,7 +7166,7 @@
     {
       "name": "Aatif Ali Khan",
       "nuid": "23I-2120",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "53"
@@ -7175,7 +7174,7 @@
     {
       "name": "Furqan Haider",
       "nuid": "23I-2123",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "54"
@@ -7183,7 +7182,7 @@
     {
       "name": "Ammar Shahid",
       "nuid": "23I-2125",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "55"
@@ -7191,7 +7190,7 @@
     {
       "name": "Heba Hammad",
       "nuid": "23I-2127",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "56"
@@ -7199,7 +7198,7 @@
     {
       "name": "Musab Ahmad",
       "nuid": "23I-2132",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "57"
@@ -7207,7 +7206,7 @@
     {
       "name": "Ahmed Bhatti",
       "nuid": "23I-4586",
-      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6A - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 1",
       "seat": "58"
@@ -7519,7 +7518,7 @@
     {
       "name": "Muhammad Talha",
       "nuid": "23I-2102",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "47"
@@ -7527,7 +7526,7 @@
     {
       "name": "Aabish Noor",
       "nuid": "23I-2109",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "48"
@@ -7535,7 +7534,7 @@
     {
       "name": "Muhammad Saim",
       "nuid": "23I-2117",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "49"
@@ -7543,7 +7542,7 @@
     {
       "name": "Noor Ul Azeem",
       "nuid": "23I-2118",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "50"
@@ -7551,7 +7550,7 @@
     {
       "name": "Muhammad Ahsan",
       "nuid": "23I-2119",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "51"
@@ -7559,7 +7558,7 @@
     {
       "name": "Muhammad Ahsan",
       "nuid": "23I-2121",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "52"
@@ -7567,7 +7566,7 @@
     {
       "name": "Khalid Umar",
       "nuid": "23I-2122",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "53"
@@ -7575,7 +7574,7 @@
     {
       "name": "Oswa",
       "nuid": "23I-2124",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "54"
@@ -7583,7 +7582,7 @@
     {
       "name": "Mohid Umer",
       "nuid": "23I-2130",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "55"
@@ -7591,7 +7590,7 @@
     {
       "name": "Muhammad Ibrahim",
       "nuid": "23I-2533",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "56"
@@ -7599,7 +7598,7 @@
     {
       "name": "Aleesha Ishtiaq",
       "nuid": "23I-2595",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "57"
@@ -7607,7 +7606,7 @@
     {
       "name": "Muhammad Huzaifa",
       "nuid": "23I-6123",
-      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics Office FAST School of Computing",
+      "paper": "AL2002,BCY-6B - Artificial Intelligence Central Academics FAST School of Computing PLAN",
       "time": "9:00-12:00",
       "class": "IT Lab 2",
       "seat": "58"
@@ -8207,7 +8206,6 @@
     {
       "name": "Intikhab Alam",
       "nuid": "25I-0854",
-      "paper": "",
       "time": "9:00-12:00",
       "class": "IT Lab 3",
       "seat": "54"
@@ -9524,5 +9522,6 @@
       "class": "Margallah Lab IV",
       "seat": "34"
     }
-  ]
+  ],
+  "exam_date": "Sat,06,Jun,26"
 }
