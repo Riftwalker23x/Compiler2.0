@@ -509,3 +509,33 @@ class handler(BaseHTTPRequestHandler):
 
     def log_message(self, format: str, *args: Any) -> None:
         return
+
+
+# ── Standalone CLI (GitHub Actions / local) ────────────────────────────────────
+# Same fetch+parse pipeline as the Vercel handler, but writes
+# dbfolder/seating-plan.json to disk so a CI workflow can commit it with its own
+# GITHUB_TOKEN. Only GMAIL_USER / GMAIL_PASS are required in this mode.
+
+def run_cli() -> int:
+    try:
+        subject, body, _raw = fetch_latest_seating_email()
+    except RuntimeError as exc:
+        # A scheduled run with no new email is a no-op, not a failure.
+        if "No unread emails" in str(exc):
+            print("No new seating-plan email found - nothing to sync.")
+            return 0
+        raise
+    document = parse_seating_plan_email(body, subject)
+    directory = os.path.dirname(REPO_FILE_PATH)
+    if directory:
+        os.makedirs(directory, exist_ok=True)
+    with open(REPO_FILE_PATH, "w", encoding="utf-8") as fh:
+        json.dump(document, fh, indent=2, ensure_ascii=False)
+    print(f"Wrote {REPO_FILE_PATH}: {document['count']} student(s) "
+          f"(subject: {subject!r})")
+    return 0
+
+
+if __name__ == "__main__":
+    import sys
+    sys.exit(run_cli())
