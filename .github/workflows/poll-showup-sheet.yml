@@ -1,0 +1,50 @@
+name: Poll live Show Up Schedule sheet
+
+# The school edits the Show Up Schedule directly in a Google Sheet - they
+# don't resend a new email when it changes. So instead of waiting on email,
+# this polls that live sheet every 5 minutes (GitHub's fastest reliable cron
+# cadence) and re-syncs only if the content actually changed (the commit step
+# below only pushes a real diff, so an unchanged sheet is a harmless no-op).
+#
+# The sheet's link is discovered automatically from the one show-up-schedule
+# email's body by the OTHER workflow (sync-seating-plan.yml) and stored in
+# dbfolder/showup-sheet-source.json - this workflow just polls whatever sheet
+# is on record there. If that file doesn't exist yet, this run is a no-op.
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Poll live sheet
+        run: python api/fetch-timetable.py --poll-showup
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dbfolder/showup-schedule-*.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update show up schedule from live Google Sheet"
+            git pull --rebase origin main || true
+            git push
+          fi

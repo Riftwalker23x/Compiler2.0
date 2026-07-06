@@ -5,10 +5,16 @@ Fetches the latest matching Gmail message and routes it by subject keyword:
   - subject contains "seating"  -> parses the attached seating-plan PDF into
     dbfolder/seating-plan.json
   - subject contains "schedule" -> parses the attached Final Exam Schedule
-    .xlsx workbook into dbfolder/exam-schedule-<school>.json
+    .xlsx workbook (date/time-slot matrix layout) into
+    dbfolder/exam-schedule-<school>.json
   - subject contains "showup"   -> parses the attached Show Up Schedule .xlsx
-    workbook (same matrix layout as the exam schedule) into
-    dbfolder/showup-schedule-<school>.json
+    workbook (plain one-row-per-section table, different layout) into
+    dbfolder/showup-schedule-<school>.json. The school edits this data
+    directly in a linked Google Sheet rather than resending email, so this
+    module also extracts that sheet's link from the email body once (see
+    maybe_bootstrap_showup_sheet_source) and `--poll-showup` (run via
+    .github/workflows/poll-showup-sheet.yml on a 5-min cron) re-fetches that
+    live sheet directly, independent of any new email.
 
 Required environment variables:
   GMAIL_USER  – Gmail address
@@ -234,6 +240,10 @@ def extract_plain_text(msg: email.message.Message) -> str:
 def strip_html(html: str) -> str:
     """Minimal HTML → text conversion for seating-plan table emails."""
     text = re.sub(r"(?is)<(script|style).*?>.*?</\1>", " ", html)
+    # Preserve link targets inline (e.g. "View Sheet (https://docs.google.com/...)")
+    # before the generic tag-stripper below discards them - a "click here"-style
+    # link would otherwise silently lose the actual URL.
+    text = re.sub(r'(?is)<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', r"\2 (\1)", text)
     text = re.sub(r"(?i)<br\s*/?>", "\n", text)
     text = re.sub(r"(?i)</tr>", "\n", text)
     text = re.sub(r"(?i)</t[dh]>", "\t", text)
@@ -311,12 +321,15 @@ def fetch_latest_matching_email() -> tuple[str, str, str, bytes | None, str]:
         if kind is None:
             raise RuntimeError(f"Matched email subject {subject!r} did not match any known route")
 
+        # Always extract body text - for "seating" this is (mainly) the PDF's
+        # own text; for xlsx routes there's no PDF so this naturally falls
+        # through to the mail's own plain/html body, which is what lets us
+        # scan for a linked Google Sheet URL below (see maybe_bootstrap_showup_sheet_source).
+        body = extract_plain_text(msg)
         attachment_filename = ""
         if kind == "seating":
-            body = extract_plain_text(msg)
             attachment = find_pdf_attachment(msg)
         else:
-            body = ""
             xlsx_found = find_xlsx_attachment(msg)
             if xlsx_found:
                 attachment, attachment_filename = xlsx_found
@@ -1004,6 +1017,65 @@ def parse_showup_schedule_workbook(xlsx_bytes: bytes, subject: str, filename: st
     }
 
 
+# ── Show Up Schedule: live Google Sheet polling ─────────────────────────────────
+# The school doesn't resend a new email when the schedule changes - they just
+# edit the same Google Sheet that was linked in the one email they already
+# sent. So instead of relying on new emails, we extract that sheet's link ONCE
+# (from the existing email's body, scanned automatically) and from then on poll
+# the live sheet directly on a tight schedule (see
+# .github/workflows/poll-showup-sheet.yml), independent of email entirely.
+
+SHOWUP_SHEET_SOURCE_PATH = "dbfolder/showup-sheet-source.json"
+GOOGLE_SHEET_LINK_RE = re.compile(r"https://docs\.google\.com/spreadsheets/d/([a-zA-Z0-9_-]+)")
+
+
+def extract_google_sheet_id(text: str) -> str | None:
+    m = GOOGLE_SHEET_LINK_RE.search(text or "")
+    return m.group(1) if m else None
+
+
+def read_showup_sheet_id() -> str | None:
+    try:
+        with open(SHOWUP_SHEET_SOURCE_PATH, encoding="utf-8") as fh:
+            return (json.load(fh) or {}).get("sheet_id") or None
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+
+
+def maybe_bootstrap_showup_sheet_source(kind: str, subject: str, body: str) -> None:
+    """If this is a showup-schedule email and its body contains a Google Sheets
+    link we haven't recorded yet, save it to disk so the poller can use it.
+    Safe to call every run - a no-op once the link is already recorded (or if
+    none is found at all)."""
+    if kind != "showup_schedule":
+        return
+    sheet_id = extract_google_sheet_id(body)
+    if not sheet_id or sheet_id == read_showup_sheet_id():
+        return
+    _write_json_file(SHOWUP_SHEET_SOURCE_PATH, {
+        "sheet_id": sheet_id,
+        "discovered_at": datetime.now(timezone.utc).isoformat(),
+        "discovered_from_subject": subject,
+    })
+    print(f"Discovered/updated showup schedule Google Sheet id: {sheet_id!r}")
+
+
+def fetch_showup_sheet_export_bytes(sheet_id: str) -> bytes:
+    """Download the live sheet as .xlsx via Google's public export endpoint.
+    Requires the sheet to be shared as "anyone with the link can view" (same
+    requirement as the class timetable sync)."""
+    import requests  # already a project dependency (requirements.txt)
+
+    url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=xlsx"
+    resp = requests.get(url, timeout=30)
+    if resp.status_code != 200 or not resp.content.startswith(b"PK"):
+        raise RuntimeError(
+            f"Could not download the live showup sheet (HTTP {resp.status_code}). "
+            "It may not be shared as 'Anyone with the link can view'."
+        )
+    return resp.content
+
+
 # ── GitHub REST API commit ─────────────────────────────────────────────────────
 
 def github_request(method: str, url: str, token: str, payload: dict | None = None) -> Any:
@@ -1160,6 +1232,12 @@ def run_cli() -> int:
             return 0
         raise
 
+    # Regardless of what else happens below: if this is a showup-schedule email
+    # and its body links a Google Sheet we haven't recorded yet, save it so the
+    # live poller (run_showup_poll_cli, on its own 5-min schedule) can use it -
+    # this is how we track edits made directly in the sheet, with no new email.
+    maybe_bootstrap_showup_sheet_source(kind, subject, body)
+
     if kind == "seating":
         document = parse_seating_plan_email(body, subject, attachment)
         path = SUBJECT_ROUTES["seating"][1]
@@ -1167,7 +1245,8 @@ def run_cli() -> int:
         print(f"Wrote {path}: {document['count']} student(s) (subject: {subject!r})")
     else:
         if not attachment:
-            print(f"{kind} email (subject: {subject!r}) had no .xlsx attachment - skipping.")
+            print(f"{kind} email (subject: {subject!r}) had no .xlsx attachment - skipping "
+                  f"the attachment parse (any linked Google Sheet was still checked above).")
             return 0
         parser = (
             parse_showup_schedule_workbook if kind == "showup_schedule"
@@ -1182,6 +1261,36 @@ def run_cli() -> int:
     return 0
 
 
+# ── Standalone CLI: live Show Up Schedule sheet poll ────────────────────────────
+# Runs on its own tight schedule (every 5 min - see
+# .github/workflows/poll-showup-sheet.yml), independent of email. No-op if no
+# sheet has been discovered yet (see maybe_bootstrap_showup_sheet_source above).
+
+def run_showup_poll_cli() -> int:
+    sheet_id = read_showup_sheet_id()
+    if not sheet_id:
+        print(f"No showup Google Sheet registered yet in {SHOWUP_SHEET_SOURCE_PATH} - nothing to poll.")
+        return 0
+
+    try:
+        xlsx_bytes = fetch_showup_sheet_export_bytes(sheet_id)
+    except RuntimeError as exc:
+        # A transient fetch failure shouldn't fail the whole scheduled run.
+        print(f"Could not fetch live showup sheet {sheet_id!r}: {exc}")
+        return 0
+
+    documents = parse_showup_schedule_workbook(
+        xlsx_bytes, subject="Live Google Sheet poll", filename=f"Google Sheet ({sheet_id})",
+    )
+    for school, doc in documents.items():
+        path = f"dbfolder/showup-schedule-{school}.json"
+        _write_json_file(path, doc)
+        print(f"Wrote {path}: {doc['count']} exam entries (polled live sheet {sheet_id!r})")
+    return 0
+
+
 if __name__ == "__main__":
     import sys
+    if "--poll-showup" in sys.argv:
+        sys.exit(run_showup_poll_cli())
     sys.exit(run_cli())
