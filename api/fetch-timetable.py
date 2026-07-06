@@ -226,11 +226,11 @@ def strip_html(html: str) -> str:
     return text.strip()
 
 
-def fetch_latest_seating_email() -> tuple[str, str, bytes]:
+def fetch_latest_seating_email() -> tuple[str, str, bytes | None]:
     """
-    Connect to Gmail IMAP, find the newest UNSEEN message whose subject
-    contains SUBJECT_KEYWORD, and return (subject, plain_body, raw_bytes).
-    Marks the message as \\Seen after a successful read.
+    Connect to Gmail IMAP, find the newest message whose subject contains
+    SUBJECT_KEYWORD (preferring unread), and return (subject, plain_body,
+    pdf_bytes). Marks the message as \\Seen after a successful read.
     """
     user = os.environ.get("GMAIL_USER", "").strip()
     password = os.environ.get("GMAIL_PASS", "").strip()
@@ -271,9 +271,10 @@ def fetch_latest_seating_email() -> tuple[str, str, bytes]:
         msg = email.message_from_bytes(raw_bytes)
         subject = decode_mime_header(msg.get("Subject", ""))
         body = extract_plain_text(msg)
+        pdf_bytes = find_pdf_attachment(msg)
 
         mail.store(latest_id, "+FLAGS", "\\Seen")
-        return subject, body, raw_bytes
+        return subject, body, pdf_bytes
     finally:
         try:
             mail.logout()
@@ -422,7 +423,8 @@ def normalize_entry(entry: dict[str, str]) -> dict[str, str]:
 # Handles the jsPDF "SEATING PLAN" sheets: shared Date/Slot/Venue headers, a
 # course/paper line, and two side-by-side "S# Roll No. Student Name Seat" tables.
 
-FAST_REC = re.compile(r"^\s*(\d{1,3})\s+(\d{2}[A-Za-z]-\d{4})\s+(.+?)\s+(\d{1,3})\s*$")
+# Seat may be a plain number (e.g. "21") or a column-row code (e.g. "C1R2").
+FAST_REC = re.compile(r"^\s*(\d{1,3})\s+(\d{2}[A-Za-z]-\d{4})\s+(.+?)\s+([A-Z]\d+[A-Z]\d+|\d{1,3})\s*$")
 FAST_PAPER = re.compile(r"^\s*([A-Z]{2,3}\d{3,4}\s*,\s*[A-Z0-9\-/]+)\s*-?\s*(.*)$")
 
 
@@ -430,6 +432,109 @@ def _clean_paper(code: str, rest: str) -> str:
     rest = re.sub(r"\s+", " ", rest or "").rstrip("- ").strip()
     code = re.sub(r"\s+", "", code)
     return f"{code} - {rest}" if rest else code
+
+
+def find_pdf_attachment(msg: email.message.Message) -> bytes | None:
+    """Return the raw bytes of the first PDF attachment, or None."""
+    for part in msg.walk():
+        content_type = part.get_content_type()
+        filename = part.get_filename() or ""
+        if content_type == "application/pdf" or filename.lower().endswith(".pdf"):
+            payload = part.get_payload(decode=True)
+            if payload:
+                return payload
+    return None
+
+
+def _cluster_rows(words: list[dict], tol: float = 3.0) -> list[list[dict]]:
+    """Group pdfplumber words into visual rows by their vertical position."""
+    rows: list[list[dict]] = []
+    for w in sorted(words, key=lambda w: (w["top"], w["x0"])):
+        for row in rows:
+            if abs(row[0]["top"] - w["top"]) <= tol:
+                row.append(w)
+                break
+        else:
+            rows.append([w])
+    for row in rows:
+        row.sort(key=lambda w: w["x0"])
+    rows.sort(key=lambda row: min(w["top"] for w in row))
+    return rows
+
+
+def parse_pdf_coordinates(payload: bytes) -> tuple[list[dict[str, str]], str]:
+    """Coordinate-based parse of a FAST seating PDF using pdfplumber.
+
+    Grouping words by their y-position keeps each student's seat on the same row
+    even when a multi-line section header would otherwise drift the seat column
+    (which breaks text-only extraction). Each page is one venue; within a page
+    the two columns are read left-then-right so a section header at the bottom of
+    the left column correctly applies to the right column.
+    """
+    import pdfplumber  # local import: text fallback still works if unavailable
+
+    students: list[dict[str, str]] = []
+    date = ""
+    with pdfplumber.open(io.BytesIO(payload)) as pdf:
+        for page in pdf.pages:
+            words = page.extract_words(use_text_flow=False, keep_blank_chars=False)
+            if not words:
+                continue
+            rows = _cluster_rows(words)
+
+            slot = venue = ""
+            for row in rows:
+                text = " ".join(w["text"] for w in row)
+                m = re.search(r"Date:\s*([A-Za-z0-9,/ ]+?)(?:\s{2,}|Slot|$)", text)
+                if m:
+                    date = m.group(1).strip()
+                m = re.search(r"Slot:\s*([0-9:apmAPM.\- ]+?)(?:\s{2,}|Venue|$)", text)
+                if m:
+                    slot = m.group(1).strip()
+                m = re.search(r"Venue:\s*(.+?)\s*$", text)
+                if m:
+                    venue = m.group(1).strip()
+
+            split = None
+            for row in rows:
+                heads = [w for w in row if w["text"] == "S#"]
+                if len(heads) >= 2:
+                    split = heads[1]["x0"] - 5
+                    break
+            if split is None:
+                split = float(page.width) / 2
+
+            left_halves, right_halves = [], []
+            for row in rows:
+                left = " ".join(w["text"] for w in row if w["x0"] < split).strip()
+                right = " ".join(w["text"] for w in row if w["x0"] >= split).strip()
+                if left:
+                    left_halves.append(left)
+                if right:
+                    right_halves.append(right)
+
+            paper = ""
+            for half in left_halves + right_halves:
+                rec = FAST_REC.match(half)
+                if rec:
+                    students.append({
+                        "name": re.sub(r"\s+", " ", rec.group(3).strip()),
+                        "nuid": rec.group(2).upper(),
+                        "seat": rec.group(4),
+                        "paper": paper,
+                        "time": slot,
+                        "class": venue,
+                    })
+                    continue
+                stripped = half.strip()
+                paper_match = FAST_PAPER.match(half)
+                if paper_match and re.match(r"^[A-Z]{2,3}\d{3,4}", stripped):
+                    paper = _clean_paper(paper_match.group(1), paper_match.group(2))
+                elif (paper and re.fullmatch(r"[A-Za-z][A-Za-z \-]*", stripped)
+                      and not re.search(r"(Lab|Development)$", paper)):
+                    paper = re.sub(r"\s+", " ", f"{paper} {stripped}")
+
+    return students, date
 
 
 def parse_fast_seating(text: str) -> tuple[list[dict[str, str]], str]:
@@ -498,17 +603,37 @@ def parse_fast_seating(text: str) -> tuple[list[dict[str, str]], str]:
     return students, date
 
 
-def parse_seating_plan_email(body: str, subject: str) -> dict[str, Any]:
-    # FAST positional seating sheet first; fall back to generic table / key-value.
-    fast_students, exam_date = parse_fast_seating(body)
-    if fast_students:
-        students = fast_students
-    else:
+def parse_seating_plan_email(body: str, subject: str, pdf_bytes: bytes | None = None) -> dict[str, Any]:
+    students: list[dict[str, str]] = []
+    exam_date = ""
+
+    # 1) Coordinate-based parse (most accurate: keeps seats aligned to rows).
+    if pdf_bytes:
+        try:
+            students, exam_date = parse_pdf_coordinates(pdf_bytes)
+        except Exception as exc:
+            print(f"Coordinate parse failed ({exc}); falling back to text parse.")
+            students = []
+
+    # 2) Text-layout FAST parser, then 3) generic table / key-value.
+    if not students:
+        students, exam_date = parse_fast_seating(body)
+    if not students:
         students = parse_tabular_body(body) or parse_key_value_body(body)
-        exam_date = ""
 
     cleaned = [normalize_entry(s) for s in students]
     cleaned = [s for s in cleaned if s.get("name") or s.get("nuid")]
+
+    # De-duplicate (same student can appear once per parse path / page).
+    seen: set[tuple] = set()
+    deduped = []
+    for s in cleaned:
+        key = (s.get("nuid", ""), s.get("seat", ""), s.get("class", ""), s.get("name", ""))
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(s)
+    cleaned = deduped
 
     if not cleaned:
         raise ValueError(
@@ -618,8 +743,8 @@ class handler(BaseHTTPRequestHandler):
 
     def _run_sync(self) -> None:
         try:
-            subject, body, _raw = fetch_latest_seating_email()
-            document = parse_seating_plan_email(body, subject)
+            subject, body, pdf_bytes = fetch_latest_seating_email()
+            document = parse_seating_plan_email(body, subject, pdf_bytes)
             commit_info = commit_json_to_github(document)
             json_response(
                 self,
@@ -646,14 +771,14 @@ class handler(BaseHTTPRequestHandler):
 
 def run_cli() -> int:
     try:
-        subject, body, _raw = fetch_latest_seating_email()
+        subject, body, pdf_bytes = fetch_latest_seating_email()
     except RuntimeError as exc:
         # A scheduled run with no matching email is a no-op, not a failure.
         if "No emails found" in str(exc):
             print("No seating-plan email found - nothing to sync.")
             return 0
         raise
-    document = parse_seating_plan_email(body, subject)
+    document = parse_seating_plan_email(body, subject, pdf_bytes)
     directory = os.path.dirname(REPO_FILE_PATH)
     if directory:
         os.makedirs(directory, exist_ok=True)
