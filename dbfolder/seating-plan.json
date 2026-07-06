@@ -1,6 +1,2448 @@
 {
-  "updated_at": null,
-  "source_subject": null,
-  "count": 0,
-  "students": []
+  "updated_at": "2026-07-06T17:40:14.794Z",
+  "source_subject": "Seating Plan (imported from PDF 13-6-26)",
+  "exam_date": "Sat,13,Jun,26",
+  "count": 305,
+  "students": [
+    {
+      "name": "Abdullah Sufian",
+      "nuid": "23I-0082",
+      "paper": "CL3001,BAI-6A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "30"
+    },
+    {
+      "name": "Mohammad Ibrahim",
+      "nuid": "23I-0083",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "31"
+    },
+    {
+      "name": "Abia Javed",
+      "nuid": "21I-0311",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "1"
+    },
+    {
+      "name": "Rana Zohaib",
+      "nuid": "23I-0090",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "33"
+    },
+    {
+      "name": "Izen Ali",
+      "nuid": "21I-0320",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "2"
+    },
+    {
+      "name": "Laiba Iftikhar",
+      "nuid": "23I-0096",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "35"
+    },
+    {
+      "name": "Wajeeh Ul Hassan",
+      "nuid": "21I-0337",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "3"
+    },
+    {
+      "name": "Wajeeha Mahmood",
+      "nuid": "23I-0098",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "37"
+    },
+    {
+      "name": "Hamza Khurram",
+      "nuid": "21I-0735",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "4"
+    },
+    {
+      "name": "Abdul Moiz",
+      "nuid": "23I-0099",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "39"
+    },
+    {
+      "name": "Saud Ahmed",
+      "nuid": "21I-0896",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "5"
+    },
+    {
+      "name": "Asad Akbar",
+      "nuid": "23I-0101",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "41"
+    },
+    {
+      "name": "Abdul Wahab",
+      "nuid": "21I-2517",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "6"
+    },
+    {
+      "name": "Areesha Hussain",
+      "nuid": "23I-0105",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "43"
+    },
+    {
+      "name": "Inam Rasool",
+      "nuid": "21I-2721",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "7"
+    },
+    {
+      "name": "Hassan Waqar",
+      "nuid": "23I-0109",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "45"
+    },
+    {
+      "name": "Ammad Nasir",
+      "nuid": "22I-0477",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "8"
+    },
+    {
+      "name": "Abdullah Mansoor",
+      "nuid": "23I-0115",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "47"
+    },
+    {
+      "name": "Hassan Subhani",
+      "nuid": "22I-0483",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "9"
+    },
+    {
+      "name": "Javeria Rahman",
+      "nuid": "23I-0117",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "49"
+    },
+    {
+      "name": "Mohummad Haider Ali",
+      "nuid": "22I-0502",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "10"
+    },
+    {
+      "name": "Wasay Sabih",
+      "nuid": "23I-0120",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "51"
+    },
+    {
+      "name": "Moeez Jamal",
+      "nuid": "22I-0513",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "11"
+    },
+    {
+      "name": "Ahmed Riaz",
+      "nuid": "23I-0122",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "53"
+    },
+    {
+      "name": "Muhammad Ibrahim",
+      "nuid": "22I-0543",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "12"
+    },
+    {
+      "name": "Muhammad Saad",
+      "nuid": "23I-0123",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "55"
+    },
+    {
+      "name": "Huzaifa Aziz",
+      "nuid": "22I-1387",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "13"
+    },
+    {
+      "name": "Afroz Talha",
+      "nuid": "23I-0125",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "57"
+    },
+    {
+      "name": "Tashfeen Abbasi",
+      "nuid": "22I-2041",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "14"
+    },
+    {
+      "name": "Zara Ali",
+      "nuid": "23I-0126",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "59"
+    },
+    {
+      "name": "Hamza Khan",
+      "nuid": "22I-2149",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "15"
+    },
+    {
+      "name": "Page 1 of",
+      "nuid": "23I-0127",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "1"
+    },
+    {
+      "name": "Shahid Farid",
+      "nuid": "23I-0009",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "16"
+    },
+    {
+      "name": "Umal Khan",
+      "nuid": "23I-0021",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "17"
+    },
+    {
+      "name": "Muhammad Alyun",
+      "nuid": "23I-0022",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "18"
+    },
+    {
+      "name": "Irha Azhar",
+      "nuid": "23I-0029",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "19"
+    },
+    {
+      "name": "Muhammad Wajdan",
+      "nuid": "23I-0033",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "20"
+    },
+    {
+      "name": "Rehan Tariq",
+      "nuid": "23I-0034",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "21"
+    },
+    {
+      "name": "Uroosh Kamran",
+      "nuid": "23I-0035",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "22"
+    },
+    {
+      "name": "Ali Muhammad",
+      "nuid": "23I-0038",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "23"
+    },
+    {
+      "name": "Ali Reza",
+      "nuid": "23I-0044",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "24"
+    },
+    {
+      "name": "Balaaj Raza",
+      "nuid": "23I-0046",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "25"
+    },
+    {
+      "name": "Hassan Abdullah",
+      "nuid": "23I-0047",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "26"
+    },
+    {
+      "name": "Shamir Shahzad",
+      "nuid": "23I-0052",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "27"
+    },
+    {
+      "name": "Shaheera Kashif",
+      "nuid": "23I-0063",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "28"
+    },
+    {
+      "name": "Awais Ali",
+      "nuid": "23I-0080",
+      "paper": "CL3001,BAI-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 1",
+      "seat": "29"
+    },
+    {
+      "name": "Muhammad Hasaan",
+      "nuid": "23I-0094",
+      "paper": "CL3001,BAI-6B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "42"
+    },
+    {
+      "name": "Amna Hameed",
+      "nuid": "23I-0102",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "43"
+    },
+    {
+      "name": "Shazil Ali",
+      "nuid": "22I-0452",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "1"
+    },
+    {
+      "name": "Ahsan Azad",
+      "nuid": "23I-0113",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "44"
+    },
+    {
+      "name": "Hasan Waqar",
+      "nuid": "22I-0484",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "3"
+    },
+    {
+      "name": "Minahil Rizwan",
+      "nuid": "23I-0114",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "45"
+    },
+    {
+      "name": "Sarim Mansoor",
+      "nuid": "22I-0532",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "5"
+    },
+    {
+      "name": "Nade Ali",
+      "nuid": "23I-0116",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "46"
+    },
+    {
+      "name": "Fizan Tariq",
+      "nuid": "22I-0547",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "7"
+    },
+    {
+      "name": "Shahmeer Ali",
+      "nuid": "23I-0119",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "47"
+    },
+    {
+      "name": "Malaeka Noor",
+      "nuid": "22I-0550",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "9"
+    },
+    {
+      "name": "Mohammad Abdullah",
+      "nuid": "23I-0121",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "48"
+    },
+    {
+      "name": "Shahmir Asif",
+      "nuid": "22I-0556",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "11"
+    },
+    {
+      "name": "Ayesha Niazi",
+      "nuid": "23I-0129",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "49"
+    },
+    {
+      "name": "Asad Shah",
+      "nuid": "22I-0597",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "13"
+    },
+    {
+      "name": "Shireen Fatima",
+      "nuid": "23I-0130",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "50"
+    },
+    {
+      "name": "Aon Mehdi",
+      "nuid": "22I-2147",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "15"
+    },
+    {
+      "name": "Nawal",
+      "nuid": "23I-0135",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "51"
+    },
+    {
+      "name": "Aman Qaisar",
+      "nuid": "22I-2360",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "17"
+    },
+    {
+      "name": "Talha Akram",
+      "nuid": "23I-0139",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "52"
+    },
+    {
+      "name": "Taha Yasir",
+      "nuid": "22I-2429",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "19"
+    },
+    {
+      "name": "Saim Ali",
+      "nuid": "23I-2065",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "53"
+    },
+    {
+      "name": "Safee Ahmed",
+      "nuid": "23I-0003",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "21"
+    },
+    {
+      "name": "Abdul Rehman",
+      "nuid": "23I-2082",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "54"
+    },
+    {
+      "name": "Maha Asghar",
+      "nuid": "23I-0010",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "23"
+    },
+    {
+      "name": "Abdul Mateen",
+      "nuid": "23I-2511",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "55"
+    },
+    {
+      "name": "Atqa Rehman",
+      "nuid": "23I-0012",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "25"
+    },
+    {
+      "name": "Muhammad Taha",
+      "nuid": "23I-2571",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "56"
+    },
+    {
+      "name": "Ahmed Izaan",
+      "nuid": "23I-0015",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "26"
+    },
+    {
+      "name": "Uwaid Munir",
+      "nuid": "23I-2574",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "57"
+    },
+    {
+      "name": "Rayan Ahmed",
+      "nuid": "23I-0018",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "27"
+    },
+    {
+      "name": "Faryal Siddique",
+      "nuid": "23I-3022",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "58"
+    },
+    {
+      "name": "Moomena Asad",
+      "nuid": "23I-0054",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "28"
+    },
+    {
+      "name": "Haffeez Ullah",
+      "nuid": "23I-3082",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "59"
+    },
+    {
+      "name": "Adam Afridi",
+      "nuid": "23I-0055",
+      "paper": "CL3001,BAI-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "29"
+    },
+    {
+      "name": "Ahmad Hassan",
+      "nuid": "23I-0059",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "31"
+    },
+    {
+      "name": "Muhamamd Ahmad",
+      "nuid": "22I-1591",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "2"
+    },
+    {
+      "name": "Raza Ahmed",
+      "nuid": "23I-0060",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "32"
+    },
+    {
+      "name": "Umar Farooq",
+      "nuid": "22I-1978",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "4"
+    },
+    {
+      "name": "Fahid Imran",
+      "nuid": "23I-0061",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "33"
+    },
+    {
+      "name": "Ayan Nadeem",
+      "nuid": "22I-7427",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "6"
+    },
+    {
+      "name": "Hamda Shahid",
+      "nuid": "23I-0069",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "34"
+    },
+    {
+      "name": "Abdul Rafay",
+      "nuid": "23I-2008",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "8"
+    },
+    {
+      "name": "Abdullah Attique",
+      "nuid": "23I-0073",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "35"
+    },
+    {
+      "name": "Umar Abdul Aziz",
+      "nuid": "23I-2022",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "10"
+    },
+    {
+      "name": "Ali Rauf",
+      "nuid": "23I-0076",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "36"
+    },
+    {
+      "name": "Muhammad Shahzaib",
+      "nuid": "23I-2105",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "12"
+    },
+    {
+      "name": "Awwab Ahmad",
+      "nuid": "23I-0079",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "37"
+    },
+    {
+      "name": "Roshni Fawad",
+      "nuid": "23I-2107",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "14"
+    },
+    {
+      "name": "Hamdul Haq",
+      "nuid": "23I-0081",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "38"
+    },
+    {
+      "name": "Hamza Amir",
+      "nuid": "23I-2111",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "16"
+    },
+    {
+      "name": "Hanzlah Hassan",
+      "nuid": "23I-0085",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "39"
+    },
+    {
+      "name": "Laiba Yousaf",
+      "nuid": "23I-2135",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "18"
+    },
+    {
+      "name": "Abdullah Qadri",
+      "nuid": "23I-0089",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "40"
+    },
+    {
+      "name": "Ammar Ijaz",
+      "nuid": "23I-4086",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "20"
+    },
+    {
+      "name": "Ehtisham Abid",
+      "nuid": "23I-0091",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "41"
+    },
+    {
+      "name": "Umar Anees",
+      "nuid": "23I-6135",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "22"
+    },
+    {
+      "name": "Saad Arif",
+      "nuid": "24I-0106",
+      "paper": "",
+      "time": "1:00-4:00",
+      "class": "IT Lab 2",
+      "seat": "24"
+    },
+    {
+      "name": "Muhammad Usman",
+      "nuid": "24I-2119",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "53"
+    },
+    {
+      "name": "Samia Rauf",
+      "nuid": "24I-2123",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "54"
+    },
+    {
+      "name": "Hajra Tariq",
+      "nuid": "24I-2000",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "1"
+    },
+    {
+      "name": "Muhammad Mateen",
+      "nuid": "24I-2126",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "55"
+    },
+    {
+      "name": "Asif Iqbal",
+      "nuid": "24I-2002",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "3"
+    },
+    {
+      "name": "Musawir Altaf",
+      "nuid": "24I-2134",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "56"
+    },
+    {
+      "name": "Muhammad Mannan",
+      "nuid": "24I-2004",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "5"
+    },
+    {
+      "name": "Shaihan Ahmed",
+      "nuid": "24I-2568",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "57"
+    },
+    {
+      "name": "Aqsa Noor",
+      "nuid": "24I-2010",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "7"
+    },
+    {
+      "name": "Umna Chaudhry",
+      "nuid": "24I-6556",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "58"
+    },
+    {
+      "name": "Noor Fatima",
+      "nuid": "24I-2012",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "9"
+    },
+    {
+      "name": "Usman Hashmi",
+      "nuid": "24K-2014",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "59"
+    },
+    {
+      "name": "Bilal Azhar",
+      "nuid": "24I-2022",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "11"
+    },
+    {
+      "name": "Aayan Sultan",
+      "nuid": "24K-2015",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "60"
+    },
+    {
+      "name": "Muhammad Talha",
+      "nuid": "24I-2031",
+      "paper": "CL3001,BCY-4A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "13"
+    },
+    {
+      "name": "Muhammad Wajid",
+      "nuid": "24I-2054",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "17"
+    },
+    {
+      "name": "Muhammad Talha",
+      "nuid": "21I-0277",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "2"
+    },
+    {
+      "name": "Alisha Javed",
+      "nuid": "24I-2063",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "19"
+    },
+    {
+      "name": "Hamza Ijaz",
+      "nuid": "21I-1562",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "4"
+    },
+    {
+      "name": "Adeeba Sohail",
+      "nuid": "24I-2067",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "21"
+    },
+    {
+      "name": "Abdul Muizz",
+      "nuid": "21I-1911",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "6"
+    },
+    {
+      "name": "Maryam Imran",
+      "nuid": "24I-2070",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "23"
+    },
+    {
+      "name": "Umar Iftikhar",
+      "nuid": "21I-2710",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "8"
+    },
+    {
+      "name": "Asad Ali",
+      "nuid": "24I-2072",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "25"
+    },
+    {
+      "name": "Hamza Saleem",
+      "nuid": "22I-1185",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "10"
+    },
+    {
+      "name": "Ayesha Irfan",
+      "nuid": "24I-2077",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "27"
+    },
+    {
+      "name": "Hassaan Siddiqui",
+      "nuid": "22I-1642",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "12"
+    },
+    {
+      "name": "Tooba Sohail",
+      "nuid": "24I-2078",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "29"
+    },
+    {
+      "name": "Maaz Ali",
+      "nuid": "22I-1937",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "14"
+    },
+    {
+      "name": "Sannan Khan",
+      "nuid": "24I-2084",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "31"
+    },
+    {
+      "name": "Ibrahim Iqbal",
+      "nuid": "23I-2013",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "16"
+    },
+    {
+      "name": "Ahmed Shahzad",
+      "nuid": "24I-2086",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "33"
+    },
+    {
+      "name": "Abdul Moiz",
+      "nuid": "24I-2006",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "18"
+    },
+    {
+      "name": "Abdul Rehman",
+      "nuid": "24I-2092",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "35"
+    },
+    {
+      "name": "Abdul Raffay",
+      "nuid": "24I-2008",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "20"
+    },
+    {
+      "name": "Moiz Hassan",
+      "nuid": "24I-2096",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "37"
+    },
+    {
+      "name": "Affaf Shahid",
+      "nuid": "24I-2009",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "22"
+    },
+    {
+      "name": "Ali Miqdad Raza",
+      "nuid": "24I-2098",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "39"
+    },
+    {
+      "name": "Afnan Abbas",
+      "nuid": "24I-2018",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "24"
+    },
+    {
+      "name": "Iraj Aslam",
+      "nuid": "24I-2100",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "41"
+    },
+    {
+      "name": "Mudassir Mumtaz",
+      "nuid": "24I-2021",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "26"
+    },
+    {
+      "name": "Zuha Aman",
+      "nuid": "24I-2103",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "43"
+    },
+    {
+      "name": "Saim Zaib",
+      "nuid": "24I-2023",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "28"
+    },
+    {
+      "name": "Irum Fatima",
+      "nuid": "24I-2105",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "45"
+    },
+    {
+      "name": "Abubaker Rashid",
+      "nuid": "24I-2024",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "30"
+    },
+    {
+      "name": "Masab Saeed",
+      "nuid": "24I-2106",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "47"
+    },
+    {
+      "name": "Hanaa Sajid",
+      "nuid": "24I-2029",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "32"
+    },
+    {
+      "name": "Asma Siddiqa",
+      "nuid": "24I-2109",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "48"
+    },
+    {
+      "name": "Harma Hussain",
+      "nuid": "24I-2032",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "34"
+    },
+    {
+      "name": "Umm E Hani",
+      "nuid": "24I-2113",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "49"
+    },
+    {
+      "name": "Alishba Inam",
+      "nuid": "24I-2036",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "36"
+    },
+    {
+      "name": "Wasaam Qaisar",
+      "nuid": "24I-2114",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "50"
+    },
+    {
+      "name": "Usman Ibrahim",
+      "nuid": "24I-2038",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "38"
+    },
+    {
+      "name": "Hassam Ali",
+      "nuid": "24I-2115",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "51"
+    },
+    {
+      "name": "Sameer Hussain",
+      "nuid": "24I-2042",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "40"
+    },
+    {
+      "name": "Maidah Binte Junaid",
+      "nuid": "24I-2116",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "52"
+    },
+    {
+      "name": "Hoorain Afroze",
+      "nuid": "24I-2043",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "42"
+    },
+    {
+      "name": "Muhammad Huzaifa",
+      "nuid": "24I-2045",
+      "paper": "",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "44"
+    },
+    {
+      "name": "Sameer Ahmed",
+      "nuid": "24I-2047",
+      "paper": "",
+      "time": "1:00-4:00",
+      "class": "IT Lab 3",
+      "seat": "46"
+    },
+    {
+      "name": "Hamas Naveed",
+      "nuid": "23I-3014",
+      "paper": "CL3001,BSE-6A - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "26"
+    },
+    {
+      "name": "Nabeeha Islam",
+      "nuid": "23I-3015",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "27"
+    },
+    {
+      "name": "Zain Abbas",
+      "nuid": "21I-1109",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "1"
+    },
+    {
+      "name": "Usman Shaukat",
+      "nuid": "23I-3016",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "28"
+    },
+    {
+      "name": "Agha Ahsan",
+      "nuid": "21I-1117",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "2"
+    },
+    {
+      "name": "Rabeeha Kamran",
+      "nuid": "23I-3025",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "29"
+    },
+    {
+      "name": "Ammad Ashraf",
+      "nuid": "22I-2470",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "3"
+    },
+    {
+      "name": "Aqsa Khurram",
+      "nuid": "23I-3027",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "30"
+    },
+    {
+      "name": "Aymen Akhtar",
+      "nuid": "22I-2476",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "4"
+    },
+    {
+      "name": "Umar Riaz",
+      "nuid": "23I-3028",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "31"
+    },
+    {
+      "name": "Anas Abdullah",
+      "nuid": "22I-2487",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "5"
+    },
+    {
+      "name": "Hassan Qureshi",
+      "nuid": "23I-3029",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "32"
+    },
+    {
+      "name": "Jibran Malik",
+      "nuid": "22I-2517",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "6"
+    },
+    {
+      "name": "Ayesha Gohar",
+      "nuid": "23I-3030",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "33"
+    },
+    {
+      "name": "Hamna Abbas",
+      "nuid": "22I-2542",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "7"
+    },
+    {
+      "name": "Hamza Khan",
+      "nuid": "23I-3032",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "34"
+    },
+    {
+      "name": "Ali Khan",
+      "nuid": "22I-2547",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "8"
+    },
+    {
+      "name": "Areej Hamid",
+      "nuid": "23I-3041",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "35"
+    },
+    {
+      "name": "Iman Zohra",
+      "nuid": "22I-2572",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "9"
+    },
+    {
+      "name": "Sammad Israr",
+      "nuid": "23I-3042",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "36"
+    },
+    {
+      "name": "Mohammad Ibraheem",
+      "nuid": "22I-2603",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "10"
+    },
+    {
+      "name": "Maryam Iftikhar",
+      "nuid": "23I-3046",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "37"
+    },
+    {
+      "name": "Humair Naseer",
+      "nuid": "22I-2632",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "11"
+    },
+    {
+      "name": "Muhammad Ammar",
+      "nuid": "23I-3052",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "38"
+    },
+    {
+      "name": "Haseeb Ur Rehman",
+      "nuid": "22I-2643",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "12"
+    },
+    {
+      "name": "Ahmed Ali",
+      "nuid": "23I-3054",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "39"
+    },
+    {
+      "name": "Shayan Asghar",
+      "nuid": "22I-2675",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "13"
+    },
+    {
+      "name": "Azfaar Salahuddin",
+      "nuid": "23I-3055",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "40"
+    },
+    {
+      "name": "Burhan Haider",
+      "nuid": "22I-2730",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "14"
+    },
+    {
+      "name": "Ahmed Hassan",
+      "nuid": "23I-3057",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "41"
+    },
+    {
+      "name": "Muhammad Talha",
+      "nuid": "22I-8798",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "15"
+    },
+    {
+      "name": "Sameer Mufti",
+      "nuid": "23I-3061",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "42"
+    },
+    {
+      "name": "Hayyan Faisal",
+      "nuid": "23F-3108",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "16"
+    },
+    {
+      "name": "Muhammad Irfan",
+      "nuid": "23I-3065",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "43"
+    },
+    {
+      "name": "Hashaam Waheed",
+      "nuid": "23I-0002",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "17"
+    },
+    {
+      "name": "Shace Tariq",
+      "nuid": "23I-3069",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "44"
+    },
+    {
+      "name": "Arsal Temuri",
+      "nuid": "23I-0016",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "18"
+    },
+    {
+      "name": "Sakeena Batool",
+      "nuid": "23I-3071",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "45"
+    },
+    {
+      "name": "Zainab Tahir",
+      "nuid": "23I-0042",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "19"
+    },
+    {
+      "name": "Haseeb Sajjad",
+      "nuid": "23I-3074",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "46"
+    },
+    {
+      "name": "Shah Faisal",
+      "nuid": "23I-0058",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "20"
+    },
+    {
+      "name": "Alishba Rubab",
+      "nuid": "23I-3075",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "47"
+    },
+    {
+      "name": "Ali Sajjad",
+      "nuid": "23I-0110",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "21"
+    },
+    {
+      "name": "Saad Ahmad",
+      "nuid": "23I-3076",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "48"
+    },
+    {
+      "name": "Mahyar Zeb",
+      "nuid": "23I-2031",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "22"
+    },
+    {
+      "name": "Abdul Haseeb",
+      "nuid": "23I-3077",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "49"
+    },
+    {
+      "name": "Muhammad Ahmad",
+      "nuid": "23I-2516",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "23"
+    },
+    {
+      "name": "Areesha Gul",
+      "nuid": "23I-3080",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "50"
+    },
+    {
+      "name": "Yasim Malik",
+      "nuid": "23I-3001",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "24"
+    },
+    {
+      "name": "Abdullah Javed",
+      "nuid": "23I-3010",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "IT Lab 4",
+      "seat": "25"
+    },
+    {
+      "name": "Kashan Ali",
+      "nuid": "24I-2135",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "49"
+    },
+    {
+      "name": "Ayesha",
+      "nuid": "24I-6559",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "50"
+    },
+    {
+      "name": "Jan Muhammad",
+      "nuid": "24I-2051",
+      "paper": "CL3001,BCY-4B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "1"
+    },
+    {
+      "name": "Wajiha Abbasi",
+      "nuid": "24I-2059",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "4"
+    },
+    {
+      "name": "Muhammad Saim",
+      "nuid": "24I-2064",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "7"
+    },
+    {
+      "name": "Aneeqa Wali",
+      "nuid": "23I-3090",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "2"
+    },
+    {
+      "name": "Abdul Rahim",
+      "nuid": "24I-2065",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "10"
+    },
+    {
+      "name": "Hamad Khan",
+      "nuid": "23I-3095",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "5"
+    },
+    {
+      "name": "Talha Ahmed",
+      "nuid": "24I-2066",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "13"
+    },
+    {
+      "name": "Hasham Munawar",
+      "nuid": "23I-3099",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "8"
+    },
+    {
+      "name": "Hafsah Yasir",
+      "nuid": "24I-2069",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "16"
+    },
+    {
+      "name": "Rameesha Nadeem",
+      "nuid": "23I-3100",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "11"
+    },
+    {
+      "name": "Ibrahim Shahzad",
+      "nuid": "24I-2076",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "19"
+    },
+    {
+      "name": "Abdul Moeed",
+      "nuid": "23I-3101",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "14"
+    },
+    {
+      "name": "Khuzaymah Umer",
+      "nuid": "24I-2079",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "22"
+    },
+    {
+      "name": "Muhammad Umer",
+      "nuid": "23I-6129",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "17"
+    },
+    {
+      "name": "Saraan Sikandar",
+      "nuid": "24I-2080",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "24"
+    },
+    {
+      "name": "Ahmad Hassan",
+      "nuid": "23L-3048",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "20"
+    },
+    {
+      "name": "Muhammad Subhan",
+      "nuid": "24I-2082",
+      "paper": "CL3001,BSE-6A - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "26"
+    },
+    {
+      "name": "Amna Zainab",
+      "nuid": "24I-2085",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "28"
+    },
+    {
+      "name": "Fatima Azhar",
+      "nuid": "24I-2088",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "30"
+    },
+    {
+      "name": "Itra Aqeel",
+      "nuid": "21I-0769",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "3"
+    },
+    {
+      "name": "Muhammad Ali",
+      "nuid": "24I-2089",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "32"
+    },
+    {
+      "name": "Ali Hassan",
+      "nuid": "22I-1545",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "6"
+    },
+    {
+      "name": "Fatima Manzoor",
+      "nuid": "24I-2091",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "34"
+    },
+    {
+      "name": "Yahya Hassan",
+      "nuid": "22I-1549",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "9"
+    },
+    {
+      "name": "Uswa Farman",
+      "nuid": "24I-2093",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "36"
+    },
+    {
+      "name": "Umair Farooq",
+      "nuid": "22I-2508",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "12"
+    },
+    {
+      "name": "Zubair Tariq",
+      "nuid": "24I-2095",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "38"
+    },
+    {
+      "name": "Ahmed Javaid",
+      "nuid": "22I-2530",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "15"
+    },
+    {
+      "name": "Amish Munir",
+      "nuid": "24I-2099",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "39"
+    },
+    {
+      "name": "Ali Hamza",
+      "nuid": "22I-2535",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "18"
+    },
+    {
+      "name": "Abdullah Sajid",
+      "nuid": "24I-2101",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "40"
+    },
+    {
+      "name": "Shafiq Ullah",
+      "nuid": "22I-2556",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "21"
+    },
+    {
+      "name": "Tehrem Wasim",
+      "nuid": "24I-2102",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "41"
+    },
+    {
+      "name": "Noman Ahmed",
+      "nuid": "22I-2563",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "23"
+    },
+    {
+      "name": "Urba Kaleem",
+      "nuid": "24I-2108",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "42"
+    },
+    {
+      "name": "Saad Mehboob",
+      "nuid": "22I-2577",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "25"
+    },
+    {
+      "name": "Azlan Ali",
+      "nuid": "24I-2110",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "43"
+    },
+    {
+      "name": "Muhammad Saleh",
+      "nuid": "22I-2583",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "27"
+    },
+    {
+      "name": "Arhum Ahmed",
+      "nuid": "24I-2120",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "44"
+    },
+    {
+      "name": "Omer Afzal",
+      "nuid": "22I-2593",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "29"
+    },
+    {
+      "name": "Muhammad Asad",
+      "nuid": "24I-2122",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "45"
+    },
+    {
+      "name": "Saroash Waseem",
+      "nuid": "22I-2609",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "31"
+    },
+    {
+      "name": "Basit Hafeez",
+      "nuid": "24I-2129",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "46"
+    },
+    {
+      "name": "Ammar Yasar",
+      "nuid": "22I-2611",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "33"
+    },
+    {
+      "name": "Hamza Adil",
+      "nuid": "24I-2130",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "47"
+    },
+    {
+      "name": "Murtaza Kamal",
+      "nuid": "22I-2622",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "35"
+    },
+    {
+      "name": "Hamid Nadeem",
+      "nuid": "24I-2133",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "48"
+    },
+    {
+      "name": "Saadullah",
+      "nuid": "22I-8795",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab I",
+      "seat": "37"
+    },
+    {
+      "name": "Moeez Abid",
+      "nuid": "23I-3033",
+      "paper": "CL3001,BSE-6B - Computer Networks",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "22"
+    },
+    {
+      "name": "Ayesha Khan",
+      "nuid": "23I-3037",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "23"
+    },
+    {
+      "name": "Usman Asif",
+      "nuid": "22I-8802",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "1"
+    },
+    {
+      "name": "Dawoood Javed",
+      "nuid": "23I-3038",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "24"
+    },
+    {
+      "name": "Zainab Naeem",
+      "nuid": "23I-0065",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "2"
+    },
+    {
+      "name": "Qasim Shams",
+      "nuid": "23I-3044",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "25"
+    },
+    {
+      "name": "Huzaifa Tahir",
+      "nuid": "23I-0088",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "3"
+    },
+    {
+      "name": "Saad Abdullah",
+      "nuid": "23I-3045",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "26"
+    },
+    {
+      "name": "Sheharyar Ali",
+      "nuid": "23I-0097",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "4"
+    },
+    {
+      "name": "Muhammad Hashir",
+      "nuid": "23I-3047",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "27"
+    },
+    {
+      "name": "Adil Taimoor",
+      "nuid": "23I-0104",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "5"
+    },
+    {
+      "name": "Manahil Fatima",
+      "nuid": "23I-3053",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "28"
+    },
+    {
+      "name": "Syed Ijtaba Rizvi",
+      "nuid": "23I-0112",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "6"
+    },
+    {
+      "name": "Inam Ullah",
+      "nuid": "23I-3058",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "29"
+    },
+    {
+      "name": "Faez Ahmed",
+      "nuid": "23I-0598",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "7"
+    },
+    {
+      "name": "Qadeer Raza",
+      "nuid": "23I-3059",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "30"
+    },
+    {
+      "name": "Hussnain Haider",
+      "nuid": "23I-0695",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "8"
+    },
+    {
+      "name": "Immad Baber",
+      "nuid": "23I-3062",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "31"
+    },
+    {
+      "name": "Amir Shahzad",
+      "nuid": "23I-2011",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "9"
+    },
+    {
+      "name": "Uzair Majeed",
+      "nuid": "23I-3063",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "32"
+    },
+    {
+      "name": "Sana Idrees",
+      "nuid": "23I-2039",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "10"
+    },
+    {
+      "name": "Ayesha Naveed",
+      "nuid": "23I-3068",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "33"
+    },
+    {
+      "name": "Manahil",
+      "nuid": "23I-3000",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "11"
+    },
+    {
+      "name": "Haifa Yousaf",
+      "nuid": "23I-3072",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "34"
+    },
+    {
+      "name": "Tanees Fatima",
+      "nuid": "23I-3003",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "12"
+    },
+    {
+      "name": "Amna Shahzad",
+      "nuid": "23I-3073",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "35"
+    },
+    {
+      "name": "Maryam Farooq",
+      "nuid": "23I-3005",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "13"
+    },
+    {
+      "name": "Noor Alam",
+      "nuid": "23I-3089",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "36"
+    },
+    {
+      "name": "Maryam Fatima",
+      "nuid": "23I-3007",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "14"
+    },
+    {
+      "name": "Zaki Haider",
+      "nuid": "23I-3091",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "37"
+    },
+    {
+      "name": "Rizwan Saeed",
+      "nuid": "23I-3009",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "15"
+    },
+    {
+      "name": "Akbar Hussain",
+      "nuid": "23I-3094",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "38"
+    },
+    {
+      "name": "Abdullah Tariq",
+      "nuid": "23I-3011",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "16"
+    },
+    {
+      "name": "Taha Salam",
+      "nuid": "23I-3096",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "39"
+    },
+    {
+      "name": "Ahnaf Abdullah",
+      "nuid": "23I-3012",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "17"
+    },
+    {
+      "name": "Burhan Aslam",
+      "nuid": "23I-3097",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "40"
+    },
+    {
+      "name": "Abdul Basit",
+      "nuid": "23I-3018",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "18"
+    },
+    {
+      "name": "Salman Ahmed",
+      "nuid": "23I-6029",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "41"
+    },
+    {
+      "name": "Usman Gohar",
+      "nuid": "23I-3020",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "19"
+    },
+    {
+      "name": "Zain Ul Hassan",
+      "nuid": "23I-6030",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "42"
+    },
+    {
+      "name": "Nisha Zafran",
+      "nuid": "23I-3023",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "20"
+    },
+    {
+      "name": "Muhammad Anas",
+      "nuid": "23I-3026",
+      "paper": "CL3001,BSE-6B - Computer Networks Lab",
+      "time": "1:00-4:00",
+      "class": "Margallah Lab III",
+      "seat": "21"
+    }
+  ]
 }

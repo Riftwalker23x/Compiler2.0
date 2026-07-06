@@ -23,8 +23,11 @@ import imaplib
 import json
 import os
 import re
+import shutil
 import ssl
 import io
+import subprocess
+import tempfile
 import pypdf
 from datetime import datetime, timezone
 from email.header import decode_header
@@ -121,13 +124,38 @@ def decode_mime_header(value: str) -> str:
 
 
 def extract_pdf_text(payload: bytes) -> str:
-    """Extract all textual data from a raw PDF attachment binary stream."""
+    """Extract text from a PDF, preserving column layout.
+
+    FAST seating sheets are two-column positional tables, so column layout must
+    be kept. Prefer `pdftotext -layout` (poppler); fall back to pypdf's layout
+    mode if the binary isn't present (e.g. on Vercel).
+    """
+    if shutil.which("pdftotext"):
+        tmp_path = None
+        try:
+            with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
+                tmp.write(payload)
+                tmp_path = tmp.name
+            result = subprocess.run(
+                ["pdftotext", "-layout", tmp_path, "-"],
+                capture_output=True, timeout=60,
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                return result.stdout.decode("utf-8", errors="replace")
+        except Exception:
+            pass
+        finally:
+            if tmp_path and os.path.exists(tmp_path):
+                os.unlink(tmp_path)
+
     text_content = []
     try:
-        pdf_file = io.BytesIO(payload)
-        reader = pypdf.PdfReader(pdf_file)
+        reader = pypdf.PdfReader(io.BytesIO(payload))
         for page in reader.pages:
-            page_text = page.extract_text()
+            try:
+                page_text = page.extract_text(extraction_mode="layout")
+            except TypeError:
+                page_text = page.extract_text()
             if page_text:
                 text_content.append(page_text)
         return "\n".join(text_content)
@@ -390,10 +418,75 @@ def normalize_entry(entry: dict[str, str]) -> dict[str, str]:
     return {k: v for k, v in normalized.items() if v}
 
 
+# ── FAST exam seating-sheet parser (two-column positional layout) ──────────────
+# Handles the jsPDF "SEATING PLAN" sheets: shared Date/Slot/Venue headers, a
+# course/paper line, and two side-by-side "S# Roll No. Student Name Seat" tables.
+
+FAST_REC = re.compile(r"^\s*(\d{1,3})\s+(\d{2}[A-Za-z]-\d{4})\s+(.+?)\s+(\d{1,3})\s*$")
+FAST_PAPER = re.compile(r"^\s*([A-Z]{2,3}\d{3,4}\s*,\s*[A-Z0-9\-/]+)\s*-?\s*(.*)$")
+
+
+def _clean_paper(code: str, rest: str) -> str:
+    rest = re.sub(r"\s+", " ", rest or "").rstrip("- ").strip()
+    code = re.sub(r"\s+", "", code)
+    return f"{code} - {rest}" if rest else code
+
+
+def parse_fast_seating(text: str) -> tuple[list[dict[str, str]], str]:
+    """Parse a FAST seating sheet. Returns (students, exam_date)."""
+    date = slot = venue = paper = ""
+    split = 43
+    students: list[dict[str, str]] = []
+
+    for raw in text.splitlines():
+        line = raw.rstrip()
+
+        m = re.search(r"Date:\s*([A-Za-z0-9,/ ]+?)(?:\s{2,}|$)", line)
+        if m:
+            date = m.group(1).strip()
+        m = re.search(r"Slot:\s*([0-9:apmAPM.\- ]+?)(?:\s{2,}|Venue|$)", line)
+        if m:
+            slot = m.group(1).strip()
+        m = re.search(r"Venue:\s*(.+?)\s*$", line)
+        if m:
+            venue, paper = m.group(1).strip(), ""
+        if re.search(r"S#\s+Roll", line):
+            second = line.find("S#", line.find("S#") + 1)
+            if second > 0:
+                split = second
+
+        for half in (line[:split], line[split:]):
+            rec = FAST_REC.match(half)
+            if rec:
+                name = re.sub(r"\s+\d{1,3}$", "", rec.group(3).strip())
+                name = re.sub(r"\s+", " ", name).strip()
+                students.append({
+                    "name": name,
+                    "nuid": rec.group(2).upper(),
+                    "seat": rec.group(4),
+                    "paper": paper,
+                    "time": slot,
+                    "class": venue,
+                })
+                continue
+            stripped = half.strip()
+            paper_match = FAST_PAPER.match(half)
+            if paper_match and re.match(r"^[A-Z]{2,3}\d{3,4}", stripped):
+                paper = _clean_paper(paper_match.group(1), paper_match.group(2))
+            elif paper and re.fullmatch(r"[A-Za-z]{2,6}", stripped) and not paper.endswith("Lab"):
+                paper = re.sub(r"\s+", " ", f"{paper} {stripped}")
+
+    return students, date
+
+
 def parse_seating_plan_email(body: str, subject: str) -> dict[str, Any]:
-    students = parse_tabular_body(body)
-    if not students:
-        students = parse_key_value_body(body)
+    # FAST positional seating sheet first; fall back to generic table / key-value.
+    fast_students, exam_date = parse_fast_seating(body)
+    if fast_students:
+        students = fast_students
+    else:
+        students = parse_tabular_body(body) or parse_key_value_body(body)
+        exam_date = ""
 
     cleaned = [normalize_entry(s) for s in students]
     cleaned = [s for s in cleaned if s.get("name") or s.get("nuid")]
@@ -404,12 +497,15 @@ def parse_seating_plan_email(body: str, subject: str) -> dict[str, Any]:
             "Verify table alignment formats inside the source file."
         )
 
-    return {
+    document: dict[str, Any] = {
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "source_subject": subject,
         "count": len(cleaned),
         "students": cleaned,
     }
+    if exam_date:
+        document["exam_date"] = exam_date
+    return document
 
 
 # ── GitHub REST API commit ─────────────────────────────────────────────────────
