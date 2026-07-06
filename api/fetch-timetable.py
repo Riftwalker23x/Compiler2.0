@@ -37,7 +37,9 @@ from urllib.request import Request, urlopen
 
 GMAIL_IMAP_HOST = "imap.gmail.com"
 GMAIL_IMAP_PORT = 993
-SUBJECT_KEYWORD = "seatingplan"
+# Substring the email subject must contain (case-insensitive). Kept broad on
+# purpose so it matches "Seating Plan", "seatingplan", "seating chart", etc.
+SUBJECT_KEYWORD = "seating"
 REPO_FILE_PATH = "dbfolder/seating-plan.json"
 
 # Column header aliases → canonical JSON field names
@@ -213,13 +215,24 @@ def fetch_latest_seating_email() -> tuple[str, str, bytes]:
         mail.login(user, password)
         mail.select("INBOX")
 
-        status, data = mail.search(None, "UNSEEN", f'(SUBJECT "{SUBJECT_KEYWORD}")')
-        if status != "OK":
-            raise RuntimeError(f"IMAP search failed: {status}")
+        # Prefer the newest UNREAD matching email; if none is found (e.g. it was
+        # already opened), fall back to the newest matching email regardless of
+        # read state so an opened email still gets processed.
+        ids: list[bytes] = []
+        for criteria in (
+            ("UNSEEN", f'(SUBJECT "{SUBJECT_KEYWORD}")'),
+            (f'(SUBJECT "{SUBJECT_KEYWORD}")',),
+        ):
+            status, data = mail.search(None, *criteria)
+            if status != "OK":
+                raise RuntimeError(f"IMAP search failed: {status}")
+            found = data[0].split() if data and data[0] else []
+            if found:
+                ids = found
+                break
 
-        ids = data[0].split() if data and data[0] else []
         if not ids:
-            raise RuntimeError('No unread emails found with "seatingplan" in the subject')
+            raise RuntimeError('No emails found with "seating" in the subject')
 
         latest_id = ids[-1]
         status, fetched = mail.fetch(latest_id, "(RFC822)")
@@ -520,9 +533,9 @@ def run_cli() -> int:
     try:
         subject, body, _raw = fetch_latest_seating_email()
     except RuntimeError as exc:
-        # A scheduled run with no new email is a no-op, not a failure.
-        if "No unread emails" in str(exc):
-            print("No new seating-plan email found - nothing to sync.")
+        # A scheduled run with no matching email is a no-op, not a failure.
+        if "No emails found" in str(exc):
+            print("No seating-plan email found - nothing to sync.")
             return 0
         raise
     document = parse_seating_plan_email(body, subject)
