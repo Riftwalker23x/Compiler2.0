@@ -435,6 +435,51 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   .rsel{font-size:11px;padding:8px 8px}
   .flabel{font-size:8px;letter-spacing:2px}
 }
+.header-top{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:22px;
+    margin-top:8px;
+}
+
+.header-logo{
+    height:85px;
+    width:auto;
+}
+
+.header-x{
+    font-family:'VT323', monospace;
+    font-size:48px;
+    color:#0a7a3a;
+    font-weight:bold;
+}
+
+.header-vtable{
+    font-family:'VT323', monospace;
+    font-size:85px;
+    color:#0a7a3a;
+    font-weight:bold;
+    letter-spacing:6px;
+    line-height:1;
+}
+
+.header-campus{
+    margin-top:10px;
+    text-align:center;
+    font-family:'VT323', monospace;
+    font-size:34px;
+    letter-spacing:3px;
+    color:#0a7a3a;
+}
+
+.header-live{
+    margin-top:8px;
+    text-align:center;
+    font-family:'Share Tech Mono', monospace;
+    font-size:18px;
+    color:#2d8a50;
+}
 </style>
 
 <div id="app">
@@ -444,26 +489,31 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 <div class="shell">
 
   <div class="hdr">
-    <div class="hdr-brand">
-      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-        <rect x="2" y="2" width="36" height="36" rx="6" stroke="#0a7a3a" stroke-width="2.5" fill="none"/>
-        <text x="20" y="27" font-family="VT323,monospace" font-size="26" fill="#0a7a3a" text-anchor="middle" letter-spacing="2">CS</text>
-      </svg>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" alt="Compiler Society" class="hdr-logo-img">
-      <div class="hdr-brand-text">
-        <div class="hdr-org">COMPILER SOCIETY</div>
-        <div class="hdr-logo">FAST NUCES</div>
-      </div>
+    <div class="hdr">
+
+    <div class="header-top">
+
+        <img src="logo.png" class="header-logo">
+
+        <span class="header-x">X</span>
+
+        <span class="header-vtable">VTABLE</span>
+
     </div>
-    <div class="hdr-sub">ISB CAMPUS — ACADEMIC TERMINAL v5.0</div>
-    <div class="live-bar">
-      <span class="live-dot"></span>
-      <span id="clk">--:-- --</span>
-      <span style="opacity:.4">|</span>
-      <span id="clk-day">---</span>
-      <span style="opacity:.4">|</span>
-      <span id="sheet-sync">SHEET: STARTING...</span>
+
+    <div class="header-campus">
+        Fast NUCES Islamabad
     </div>
-  </div>
+
+    <div class="header-live">
+        <span id="liveDay"></span>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <span id="liveDate"></span>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <span id="liveTime"></span>
+    </div>
+
+</div>
 
   <div class="nav" role="tablist">
     <button class="nav-card active" id="nc0" onclick="sw(0)" role="tab" aria-selected="true" tabindex="0">
