@@ -45,11 +45,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # --ignore-unmatch: some of these files only appear once their
+          # Add each output only if it exists - some appear only once their
           # feature has synced at least once (e.g. showup-sheet-source.json is
-          # created only after a show-up email's sheet link is discovered), so
-          # a plain "git add" would abort with exit 128 on the missing path.
-          git add --ignore-unmatch dbfolder/seating-plan.json dbfolder/exam-schedule-*.json dbfolder/showup-schedule-*.json dbfolder/showup-sheet-source.json
+          # created only after a show-up email's sheet link is discovered), and
+          # a plain "git add" of a missing path aborts the whole step.
+          for f in dbfolder/seating-plan.json dbfolder/exam-schedule-*.json dbfolder/showup-schedule-*.json dbfolder/showup-sheet-source.json; do
+            [ -e "$f" ] && git add "$f"
+          done
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
