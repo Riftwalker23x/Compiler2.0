@@ -43,8 +43,17 @@ jobs:
           git add dbfolder/showup-schedule-*.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
-          else
-            git commit -m "Update show up schedule from live Google Sheet"
-            git pull --rebase origin main || true
-            git push
+            exit 0
           fi
+          git commit -m "Update show up schedule from live Google Sheet"
+          # Can race with sync-seating-plan.yml pushing to the same repo -
+          # retry with a fresh rebase instead of failing the run.
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push; then
+              exit 0
+            fi
+            echo "Push attempt $attempt failed, retrying..."
+            sleep $((RANDOM % 8 + 3))
+          done
+          echo "Push failed after 5 attempts"
+          exit 1

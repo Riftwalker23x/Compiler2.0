@@ -48,8 +48,19 @@ jobs:
           git add dbfolder/seating-plan.json dbfolder/exam-schedule-*.json dbfolder/showup-schedule-*.json dbfolder/showup-sheet-source.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
-          else
-            git commit -m "Sync seating plan / exam schedule / show up schedule from Gmail"
-            git pull --rebase origin main || true
-            git push
+            exit 0
           fi
+          git commit -m "Sync seating plan / exam schedule / show up schedule from Gmail"
+          # This workflow can be triggered concurrently (Apps Script dispatch +
+          # the 30-min schedule + poll-showup-sheet.yml all write to dbfolder/),
+          # so a push can race and get rejected as non-fast-forward. Retry with
+          # a rebase onto the latest remote each time instead of failing the run.
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push; then
+              exit 0
+            fi
+            echo "Push attempt $attempt failed, retrying..."
+            sleep $((RANDOM % 8 + 3))
+          done
+          echo "Push failed after 5 attempts"
+          exit 1
