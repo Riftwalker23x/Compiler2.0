@@ -741,10 +741,14 @@ def parse_seating_plan_email(body: str, subject: str, pdf_bytes: bytes | None = 
 #   "CS2005 Database Systems\nBS(CS) (A,B,C,D,E,F,G)\nBS(AI) (A,B,C)\n2024"
 # with the batch year and any department/section group on their own lines.
 
-EXAM_SLOT_COLUMNS = {2: "9:00 to 12:00 PM", 4: "1:00 to 4:00 PM", 6: "5:00 to 8:00 PM"}  # 1-indexed: B,D,F
+# Time-slot columns are detected dynamically per sheet from the header row -
+# the Final Exam Schedule has 3 slots (9-12, 1-4, 5-8) in columns B/D/F, but a
+# Sessional schedule has 8 one-hour slots (B/D/F/H/J/L/N/P), so a hardcoded set
+# silently dropped every paper past the third column.
+EXAM_TIME_HEADER_RE = re.compile(r"\d{1,2}:\d{2}\s*(?:to|-)\s*\d{1,2}:\d{2}", re.I)
 EXAM_SCHOOL_SHEETS = [(re.compile(r"FSC", re.I), "computing"),
                       (re.compile(r"FSM", re.I), "business"),
-                      (re.compile(r"FSE", re.I), "engineering")]
+                      (re.compile(r"\bFSE\b|\bEE\b", re.I), "engineering")]
 
 EXAM_CODE_RE = re.compile(r"^([A-Z]{2,3}\d{3,4})\s*(.*)$", re.S)
 EXAM_YEAR_LINE_RE = re.compile(r"^(20\d{2})$")
@@ -834,18 +838,36 @@ def parse_exam_paper_cell(text: str) -> dict[str, Any] | None:
     }
 
 
+def _detect_exam_slot_columns(rows: list) -> dict[int, str]:
+    """Find the time-slot header row and return {0-based col index: time label}.
+    Works for any number of slots (3 for Final, 8 for Sessional, ...)."""
+    for row in rows:
+        slots: dict[int, str] = {}
+        for i, cell in enumerate(row):
+            v = cell.value
+            if v is not None and EXAM_TIME_HEADER_RE.search(str(v)):
+                slots[i] = re.sub(r"\s+", " ", str(v)).strip()
+        if len(slots) >= 2:  # a real header row has multiple time cells
+            return slots
+    return {}
+
+
 def parse_exam_schedule_sheet(ws: Any) -> list[dict[str, Any]]:
+    rows = list(ws.iter_rows())
+    slot_columns = _detect_exam_slot_columns(rows)
+    if not slot_columns:
+        return []
     exams: list[dict[str, Any]] = []
     current_date = ""
-    for row in ws.iter_rows():
+    for row in rows:
         if len(row) > 0 and row[0].value is not None:
             iso = _excel_serial_to_iso_date(row[0].value)
             if iso:
                 current_date = iso
-        for col_idx, slot_label in EXAM_SLOT_COLUMNS.items():
-            if col_idx - 1 >= len(row):
+        for col_idx, slot_label in slot_columns.items():
+            if col_idx >= len(row):
                 continue
-            cell_value = row[col_idx - 1].value
+            cell_value = row[col_idx].value
             if cell_value is None:
                 continue
             parsed = parse_exam_paper_cell(str(cell_value))
@@ -866,8 +888,107 @@ def parse_exam_schedule_sheet(ws: Any) -> list[dict[str, Any]]:
     return exams
 
 
+# ── FAST Midterm/Sessional Exam Schedule parser (room-grid layout) ─────────────
+# Some "schedule" emails are a Midterm/Sessional schedule, not the Final Exam
+# Schedule - a completely different layout: one row per ROOM (not per stacked
+# paper), columns are Date (A) / Room (B) / one course per time-slot (C, E, G).
+# Course cells have NO department/section info at all (e.g. just
+# "MT-1003 Calculus and Analytical Geometry") - there's nothing to filter by
+# dept/batch/section, so this is shown as a single flat table instead. A
+# course spanning multiple rooms is a merged cell in the source (only the
+# top-left cell of the merge carries the value), so merges must be forward-
+# filled before reading the grid.
+
+MIDTERM_HEADER_TIME_RE = re.compile(r"^\d{1,2}:\d{2}\s*(?:-|to)\s*\d{1,2}:\d{2}", re.I)
+MIDTERM_CODE_RE = re.compile(r"^([A-Z]{2,3}-?\d{3,4})\s+(.*)$", re.S)
+# A trailing full-row note (e.g. "Midterm Exams of ... will be held later.")
+# is often a merge spanning ALL columns, which would otherwise forward-fill
+# into the room/course columns too and look like fake data - require the
+# room column to at least START with a room-code-like prefix (e.g. "C-301",
+# "A-101  1st flr", "B-019") to guard against that.
+MIDTERM_ROOM_RE = re.compile(r"^[A-Z]{1,3}-?\d+")
+MIDTERM_SLOT_COLS = (2, 4, 6)  # 0-indexed: C, E, G
+
+
+def _fill_merged_values(ws: Any) -> list[list[Any]]:
+    """Materialize a worksheet into a 2D value grid, forward-filling merged
+    ranges so every cell in a merge carries the top-left anchor's value
+    (openpyxl only stores the value on that anchor cell)."""
+    rows = list(ws.iter_rows())
+    grid: list[list[Any]] = [[c.value for c in row] for row in rows]
+    try:
+        merges = list(ws.merged_cells.ranges)
+    except Exception:
+        merges = []
+    for rng in merges:
+        if rng.min_row - 1 >= len(grid) or rng.min_col - 1 >= len(grid[rng.min_row - 1]):
+            continue
+        anchor_val = grid[rng.min_row - 1][rng.min_col - 1]
+        for r in range(rng.min_row, rng.max_row + 1):
+            if r - 1 >= len(grid):
+                continue
+            row_list = grid[r - 1]
+            for c in range(rng.min_col, rng.max_col + 1):
+                c0 = c - 1
+                while len(row_list) <= c0:
+                    row_list.append(None)
+                if row_list[c0] is None:
+                    row_list[c0] = anchor_val
+    return grid
+
+
+def parse_midterm_schedule_sheet(ws: Any) -> list[dict[str, Any]]:
+    grid = _fill_merged_values(ws)
+
+    header_idx = next(
+        (i for i, row in enumerate(grid) if len(row) > 2 and MIDTERM_HEADER_TIME_RE.match(str(row[2] or ""))),
+        None,
+    )
+    if header_idx is None:
+        return []
+    slot_labels = {
+        c: str(grid[header_idx][c]).strip()
+        for c in MIDTERM_SLOT_COLS if c < len(grid[header_idx]) and grid[header_idx][c]
+    }
+
+    exams: list[dict[str, Any]] = []
+    current_date = ""
+    for row in grid[header_idx + 1:]:
+        date_val = row[0] if len(row) > 0 else None
+        if date_val is not None:
+            iso = _excel_serial_to_iso_date(date_val)
+            if iso:
+                current_date = iso
+        room = str(row[1]).strip() if len(row) > 1 and row[1] else ""
+        if not room or not MIDTERM_ROOM_RE.match(room):
+            continue
+        for col in MIDTERM_SLOT_COLS:
+            if col >= len(row) or not row[col]:
+                continue
+            cell_text = str(row[col]).strip()
+            m = MIDTERM_CODE_RE.match(cell_text)
+            exams.append({
+                "date": current_date or None,
+                "day": _iso_date_day_name(current_date) or None,
+                "time": slot_labels.get(col, ""),
+                "room": room,
+                "code": m.group(1) if m else None,
+                "course": m.group(2).strip() if m else cell_text,
+            })
+    return exams
+
+
 def parse_exam_schedule_workbook(xlsx_bytes: bytes, subject: str, filename: str = "") -> dict[str, dict[str, Any]]:
-    """Parse the Final Exam Schedule workbook. Returns {school: document}."""
+    """Parse an exam-schedule workbook. Returns {school: document}.
+
+    Tries the Final Exam Schedule's dept/section matrix format first; if a
+    sheet yields nothing there (e.g. a Midterm/Sessional schedule, which uses
+    a different room-grid layout with no dept/section info at all), falls
+    back to the flat room-grid parser for that same sheet. The resulting
+    document always has both "exams" (dept/batch-filterable) and
+    "flat_exams" (shown as one plain table, no filtering) - whichever format
+    was actually found populates one of the two; the other stays empty.
+    """
     import openpyxl  # local import: only needed for the exam-schedule route
 
     wb = openpyxl.load_workbook(io.BytesIO(xlsx_bytes), data_only=True, read_only=True)
@@ -877,15 +998,18 @@ def parse_exam_schedule_workbook(xlsx_bytes: bytes, subject: str, filename: str 
             school = next((key for pattern, key in EXAM_SCHOOL_SHEETS if pattern.search(sheet_name)), None)
             if not school:
                 continue
-            exams = parse_exam_schedule_sheet(wb[sheet_name])
-            if not exams:
+            ws = wb[sheet_name]
+            exams = parse_exam_schedule_sheet(ws)
+            flat_exams = [] if exams else parse_midterm_schedule_sheet(ws)
+            if not exams and not flat_exams:
                 continue
             documents[school] = {
                 "updated_at": datetime.now(timezone.utc).isoformat(),
                 "source_subject": subject,
                 "source_filename": filename,
-                "count": len(exams),
+                "count": len(exams) + len(flat_exams),
                 "exams": exams,
+                "flat_exams": flat_exams,
             }
     finally:
         wb.close()
@@ -1256,6 +1380,11 @@ def run_cli() -> int:
         prefix = SCHEDULE_FILE_PREFIX[kind]
         for school, doc in documents.items():
             path = f"dbfolder/{prefix}-{school}.json"
+            # Each new schedule email fully REPLACES the previous one - the
+            # latest emailed schedule is the current one. (A dept/section
+            # schedule like the Final/Sessional populates "exams"; a room-grid
+            # Midterm populates "flat_exams"; the unused array stays empty so
+            # the old format's data doesn't linger.)
             _write_json_file(path, doc)
             print(f"Wrote {path}: {doc['count']} exam entries (subject: {subject!r}, file: {attachment_filename!r})")
     return 0
