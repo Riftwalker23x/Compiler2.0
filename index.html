@@ -2815,6 +2815,7 @@ function copyEmailById(id,btn){
 ══════════════════════════════════════════ */
 const FACULTY_SHEET_ID="1HF6g11HUJdnHo9D35fvtCzSxR2fTeu_K";
 const FACULTY_SHEET_GID="473774965";
+const FACULTY_FALLBACK_DATA_URL="faculty_data.json";
 const FACULTY_SHEET_CACHE_KEY="faculty_sheet_designations_v3";
 const FACULTY_SHEET_REFRESH_MS=24*60*60*1000;
 let _facultySheetTimer=null;
@@ -3318,18 +3319,42 @@ function fetchFacultyGVizJsonp(){
 
 async function fetchFacultySheetData() {
   try {
-    const res = await fetch(facultySheetGVizUrl(), { cache: 'no-store' });
-    if (!res.ok) throw new Error(`Faculty sheet GViz HTTP ${res.status}`);
-    return parseFacultyGViz(parseGVizText(await res.text()));
-  } catch (gvizErr) {
+    const res = await fetch(facultySheetCsvUrl(), { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Faculty sheet CSV HTTP ${res.status}`);
+    const csvText = await res.text();
+    if (csvText && csvText.toLowerCase().includes('faculty')) {
+      return parseFacultyCsv(csvText);
+    }
+    throw new Error('Faculty CSV export was empty');
+  } catch (csvErr) {
     try {
-      return parseFacultyGViz(await fetchFacultyGVizJsonp());
-    } catch (jsonpErr) {
-      const res = await fetch(facultySheetCsvUrl(), { cache: 'no-store' });
-      if (!res.ok) throw new Error(`Faculty sheet CSV HTTP ${res.status}`);
-      return parseFacultyCsv(await res.text());
+      const res = await fetch(facultySheetGVizUrl(), { cache: 'no-store' });
+      if (!res.ok) throw new Error(`Faculty sheet GViz HTTP ${res.status}`);
+      return parseFacultyGViz(parseGVizText(await res.text()));
+    } catch (gvizErr) {
+      try {
+        return parseFacultyGViz(await fetchFacultyGVizJsonp());
+      } catch (jsonpErr) {
+        throw new Error(`Live faculty sheet unavailable: ${csvErr.message}`);
+      }
     }
   }
+}
+
+async function loadFacultyFallbackData() {
+  try {
+    const res = await fetch(FACULTY_FALLBACK_DATA_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Fallback faculty JSON HTTP ${res.status}`);
+    const data = await res.json();
+    if (data && typeof data === 'object' && Object.keys(data).length) {
+      FACULTY_DATA = data;
+      renderFacultyVault();
+      return true;
+    }
+  } catch (err) {
+    console.warn('Faculty fallback JSON failed:', err);
+  }
+  return false;
 }
 
 function readFacultySheetCache(allowStale = false) {
@@ -3363,6 +3388,8 @@ async function refreshFacultySheetData(force = false) {
     if (staleCache) {
       FACULTY_DATA = staleCache.facultyData;
       renderFacultyVault();
+    } else {
+      await loadFacultyFallbackData();
     }
   }
 }
