@@ -1,270 +1,223 @@
-<<<<<<< HEAD
-[2026-07-08 01:47:16] [INFO] generate_timetable.py started — mode=generate
-[2026-07-08 01:47:16] [INFO] Python: 3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]
-[2026-07-08 01:47:16] [INFO] Loading credentials from service-account.json
-[2026-07-08 01:47:16] [INFO] Google Sheets API client ready
-[2026-07-08 01:47:16] [INFO] Auto-detecting colour → batch mappings from sheet headers...
-[2026-07-08 01:47:16] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Monday'
-[2026-07-08 01:47:19] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Tuesday'
-[2026-07-08 01:47:21] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Wednesday'
-[2026-07-08 01:47:22] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Thursday'
-[2026-07-08 01:47:23] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Friday'
-[2026-07-08 01:47:24] [INFO] Fetching spreadsheet=1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw tab='Timetable'
-[2026-07-08 01:47:27] [INFO] Fetching spreadsheet=1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU tab='Classes Schedule FSE SP-26'
-[2026-07-08 01:47:29] [INFO] Colour map: {(1, 1, 0.0): '2026', (1, 0.72, 0.25): '2025', (0.5, 0.3, 1): '2025', (0.0, 0.96, 0.0): '2025', (0.0, 0.0, 1): '2025', (0.9, 0.17, 0.02): '2025', (0.4, 1, 1): 'MS', (0.43, 0.32, 0.0): '2024', (0.21, 0.11, 0.46): '2024', (0.15, 0.31, 0.07): '2024', (0.03, 0.22, 0.39): '2024', (0.52, 0.13, 0.05): '2024', (0.75, 0.75, 0.75): 'MS', (0.76, 0.58, 0.0): '2023', (0.69, 0.5, 0.84): '2023', (0.42, 0.66, 0.31): '2023', (0.35, 0.62, 0.85): '2023', (0.87, 0.49, 0.42): '2023', (1, 0.6, 0.0): 'MS', (1, 0.0, 0.0): 'MS', (1, 0.9, 0.6): '2022', (0.71, 0.65, 0.84): '2022', (0.71, 0.84, 0.66): '2022', (0.67, 0.8, 0.92): '2022', (0.96, 0.8, 0.8): '2022', (0.77, 0.88, 0.7): 'MS', (1, 0.7, 0.4): '2011', (0.85, 0.85, 0.85): '2026'}
-[2026-07-08 01:47:29] [INFO] --- COMPUTING --- sheet: https://docs.google.com/spreadsheets/d/1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY
-[2026-07-08 01:47:29] [INFO]   Actual tabs in sheet: ['Welcome', 'Tuesday', 'Monday', 'Wednesday', 'Monday (May 11)', 'Sat (May 09)', 'Thursday', 'Friday', 'Sat (25 Apr)', 'Sat (May 02)', 'Tuesday (May 12)', 'Saturday (Feb.14,2025)']
-[2026-07-08 01:47:29] [INFO]   Configured tabs    : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-[2026-07-08 01:47:29] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Monday'
-[2026-07-08 01:47:30] [INFO]   computing/Monday: 226 entries parsed
-[2026-07-08 01:47:30] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Tuesday'
-[2026-07-08 01:47:32] [INFO]   computing/Tuesday: 274 entries parsed
-[2026-07-08 01:47:32] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Wednesday'
-[2026-07-08 01:47:33] [INFO]   computing/Wednesday: 255 entries parsed
-[2026-07-08 01:47:33] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Thursday'
-[2026-07-08 01:47:34] [INFO]   computing/Thursday: 276 entries parsed
-[2026-07-08 01:47:34] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Friday'
-[2026-07-08 01:47:35] [INFO]   computing/Friday: 71 entries parsed
-[2026-07-08 01:47:35] [INFO]   computing total: 1102 entries, 10 depts
-[2026-07-08 01:47:35] [INFO] Wrote db\timetable-computing.json (1102 entries, 10 depts)
-[2026-07-08 01:47:35] [INFO] --- BUSINESS --- sheet: https://docs.google.com/spreadsheets/d/1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw
-[2026-07-08 01:47:36] [INFO]   Actual tabs in sheet: ['Ramzan Timetable', 'Timetable', 'Course Plan']
-[2026-07-08 01:47:36] [INFO]   Configured tabs    : ['Timetable']
-[2026-07-08 01:47:36] [INFO] Fetching spreadsheet=1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw tab='Timetable'
-[2026-07-08 01:47:38] [INFO]   business/Timetable: 490 entries parsed
-[2026-07-08 01:47:38] [INFO]   business total: 490 entries, 4 depts
-[2026-07-08 01:47:38] [INFO] Wrote db\timetable-business.json (490 entries, 4 depts)
-[2026-07-08 01:47:38] [INFO] --- ENGINEERING --- sheet: https://docs.google.com/spreadsheets/d/1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU
-[2026-07-08 01:47:39] [INFO]   Actual tabs in sheet: ['Week 5 Cancellations', 'Week 3 cancellations', 'Week 2 cancellations', 'Ramadan Classes Schedule Sp-26', '17th Week Reschedule', 'Classes Schedule FSE SP-26', 'Academic Plan', 'Courses SP-26']
-[2026-07-08 01:47:39] [INFO]   Configured tabs    : ['Classes Schedule FSE SP-26']
-[2026-07-08 01:47:39] [INFO] Fetching spreadsheet=1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU tab='Classes Schedule FSE SP-26'
-[2026-07-08 01:47:40] [INFO]   FSE: fetching courses tab 'Courses SP-26' for structural lookup
-[2026-07-08 01:47:40] [INFO] Fetching spreadsheet=1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU tab='Courses SP-26'
-[2026-07-08 01:47:42] [INFO]   FSE: Courses tab parsed — 82 rows, 66 unique course names
-[2026-07-08 01:47:42] [INFO]   FSE: found 10 header rows
-[2026-07-08 01:47:42] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis' section A (candidates: ['CE', 'EE']) — defaulting to BS EE
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis' section B (candidates: ['CE', 'EE']) — defaulting to BS EE
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Differential Equations' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. Fundamentals' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Under. of Holy Quran I & II' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. Fundamentals' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Differential Equations' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Analog & Digital Comm.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Signal & Systems' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Signal & Systems' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: ambiguous dept for 'Digital Logic Design' section A (candidates: ['CE', 'EE']) — defaulting to BS EE
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Engineering Economics' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Communication Skills' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Signal & Systems' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Communication Skills' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Engineering Economics' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Introduction to IOT' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Entrepreneurship' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Entrepreneurship' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis Lab' section B (candidates: ['CE', 'EE']) — defaulting to BS EE
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Data Structures and Algo Lab' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Feedback & Control Systems Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Systems Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Signal & Systems Lab' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Signal & Systems Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Introduction to IOT Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Industrial Processes Cont. Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Differential Equations' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Differential Equations' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Object Oriented Data Str.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electrical Network Anal.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electrical Network Anal.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Probability & Random Prs.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Understanding of Holy Quran I & II' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Computer Architecture' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Operating Systems' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Basic Mech. Engg' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Tech. Communcation Skills.' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Data Structures Algo.' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Sys.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Probability & Random Prs.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Operating Systems' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Feedback Control Syst.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Probability & Random Prs.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Sys.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Digital Signal Processing' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Engineering Economics' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Power Electronics' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis Lab' section C (candidates: ['CE', 'EE']) — defaulting to BS EE
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. Fundamentals Lab' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Object Oriented Data Structures -Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Operating Systems Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Systems Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Power Electronics Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis' section A (candidates: ['CE', 'EE']) — defaulting to BS EE
-[2026-07-08 01:47:42] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis' section B (candidates: ['CE', 'EE']) — defaulting to BS EE
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Differential Equations' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Object Oriented Data Str.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Analog & Digital Comm.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Differential Equations' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Differential Equations' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Probability & Random Prs.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Signal & Systems' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Computer Architecture' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Communication Skills' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Signal & Systems' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Probability & Random Prs.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Feedback Control Syst.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Entrepreneurship' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Network Programming' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Entrepreneurship' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'VLSI' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electrical Network Anal. Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. Fundamentals Lab' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Data Structures and Algo Lab' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Signal & Systems Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Digital Signal Processing Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'VLSI Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Computer Architecture Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Computer Architecture Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: ambiguous dept for 'Pakistan Studies' section A (candidates: ['CE', 'EE']) — defaulting to BS EE
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Differential Equations' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electrical Network Anal.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Differential Equations' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electrical Network Anal.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. Fundamentals' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Understanding of Holy Quran I & II' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Signal & Systems' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Data Structures Algo.' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Network Programming' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: ambiguous dept for 'Digital Logic Design' section A (candidates: ['CE', 'EE']) — defaulting to BS EE
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Sys.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Engineering Economics' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Feedback Control Syst.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Sys.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Feedback Control Syst.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Communication Skills' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'VLSI' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Introduction to IOT' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Industrial Procsses Cont.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Industrial Procsses Cont.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Operating Systems Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Introduction to IOT Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Signal & Systems Lab' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Signal & Systems Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. Fundamentals Lab' (dept CE) — falling back to keyword heuristic
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Feedback & Control Systems Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis Lab' section A (candidates: ['CE', 'EE']) — defaulting to BS EE
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Systems Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Differential Equations' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: ambiguous dept for 'Pakistan Studies' section B (candidates: ['CE', 'EE']) — defaulting to BS EE
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Linear Algebra & Diff. Equ.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Tech. Comm. Skills.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Tech. Comm. Skills.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Probability & Random Prs.' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Basic Mech. Engg' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Computer Architecture' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Computer Architecture' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Operating Systems' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Operating Systems' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Digital Signal Processing' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Power Electronics' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Analog & Digital Comm. Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electrical Network Anal. Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Systems Lab' — falling back to keyword heuristic (BS EE)
-[2026-07-08 01:47:42] [WARN]   FSE cross-validation: 32 Courses-tab entries not found in schedule output:
-[2026-07-08 01:47:42] [WARN]     - Programming for Engineers [EE 2025, code CS1011]
-[2026-07-08 01:47:42] [WARN]     - Programming for Engineers Lab [EE 2025, code CL1011]
-[2026-07-08 01:47:42] [WARN]     - Engineering Workshop [EE 2025, code EL1006]
-[2026-07-08 01:47:42] [WARN]     - Engineering Workshop [CE 2025, code EL1006]
-[2026-07-08 01:47:42] [WARN]     - Diferential Equation [EE 2025, code MT1006]
-[2026-07-08 01:47:42] [WARN]     - Diferential Equation [CE 2025, code MT1006]
-[2026-07-08 01:47:42] [WARN]     - Programming Fundamentals [CE 2025, code CS1002]
-[2026-07-08 01:47:42] [WARN]     - Programming Fundamentals Lab [CE 2025, code CL1002]
-[2026-07-08 01:47:42] [WARN]     - Understanding of Holy Quran-I [CE 2025, code SS1021]
-[2026-07-08 01:47:42] [WARN]     - Understanding of Holy Quran-I [EE MS, code SS1021]
-[2026-07-08 01:47:42] [WARN]     - Understanding of Holy Quran-II [CE 2025, code SS1022]
-[2026-07-08 01:47:42] [WARN]     - Understanding of Holy Quran-II [EE MS, code SS1022]
-[2026-07-08 01:47:42] [WARN]     - Object Oriented Data Structures (Repeat) [EE 2024, code CS-2021]
-[2026-07-08 01:47:42] [WARN]     - Object Oriented Data Structures Lab (Repeat) [EE 2024, code CL-2021]
-[2026-07-08 01:47:42] [WARN]     - Electrical Network Analysis (Repeat) [EE 2024, code EE-2004]
-[2026-07-08 01:47:42] [WARN]     - Electrical Network Analysis Lab (Repeat) [EE 2024, code EL-2004]
-[2026-07-08 01:47:42] [WARN]     - Electro Mechanical Systems [EE 2024, code EE-2015]
-[2026-07-08 01:47:42] [WARN]     - Electro Mechanical Systems Lab [EE 2024, code EL-2015]
-[2026-07-08 01:47:42] [WARN]     - Signals and Systems [EE 2024, code EE-2008]
-[2026-07-08 01:47:42] [WARN]     - Signals and Systems [CE 2024, code EE2008]
-[2026-07-08 01:47:42] [WARN]     - Signals and Systems Lab [EE 2024, code EL-2008]
-[2026-07-08 01:47:42] [WARN]     - Signals and Systems Lab [CE 2024, code EL2008]
-[2026-07-08 01:47:42] [WARN]     - Digital Logic Design - Lab [EE 2024, code EL-1005]
-[2026-07-08 01:47:42] [WARN]     - Probability and Random Processes [EE 2024, code EE-2011]
-[2026-07-08 01:47:42] [WARN]     - Technical Communication Skills [EE 2024, code SS2001]
-[2026-07-08 01:47:42] [WARN]     - Technical Communication Skills [CE 2024, code SS2001]
-[2026-07-08 01:47:42] [WARN]     - Data Structures and Algorithms [CE 2024, code CS2002]
-[2026-07-08 01:47:42] [WARN]     - Data Structures and Algorithms Lab [CE 2024, code CL2002]
-[2026-07-08 01:47:42] [WARN]     - SoC Packaging and Signal Integrity [EE MS, code EE5004]
-[2026-07-08 01:47:42] [WARN]     - IC Design Project: Concept to Chip Tapeout [EE MS, code EE5009]
-[2026-07-08 01:47:42] [WARN]     - Mixed Signal Integrated Circuit Design [EE MS, code EE5005]
-[2026-07-08 01:47:42] [WARN]     - VLSI Design Verification and Test [EE MS, code EE5048]
-[2026-07-08 01:47:42] [INFO]   FSE regression check passed — no repeat-course leaks in BS CE/2025
-[2026-07-08 01:47:42] [INFO]   engineering/Classes Schedule FSE SP-26: 203 entries parsed
-[2026-07-08 01:47:42] [INFO]   engineering total: 203 entries, 3 depts
-[2026-07-08 01:47:42] [INFO] Wrote db\timetable-engineering.json (203 entries, 3 depts)
-[2026-07-08 01:47:42] [INFO] Done. Total entries: 1795. Depts: ['BS AI', 'BS Accounting & Finance', 'BS Business Administration', 'BS Business Analytics', 'BS CE', 'BS CS', 'BS CY', 'BS DS', 'BS EE', 'BS Fintech', 'BS SE', 'MS (AI)', 'MS (CS)', 'MS (CY)', 'MS (DS)', 'MS (SE)', 'MS EE']
-=======
-[2026-07-08 00:08:53] [INFO] generate_timetable.py started — mode=generate
-[2026-07-08 00:08:53] [INFO] Python: 3.12.6 (tags/v3.12.6:a4a2d2b, Sep  6 2024, 20:11:23) [MSC v.1940 64 bit (AMD64)]
-[2026-07-08 00:08:53] [INFO] Loading credentials from service-account.json
-[2026-07-08 00:08:53] [INFO] Google Sheets API client ready
-[2026-07-08 00:08:53] [INFO] Auto-detecting colour → batch mappings from sheet headers...
-[2026-07-08 00:08:53] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Monday'
-[2026-07-08 00:08:57] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Tuesday'
-[2026-07-08 00:08:58] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Wednesday'
-[2026-07-08 00:08:58] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Thursday'
-[2026-07-08 00:09:00] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Friday'
-[2026-07-08 00:09:01] [INFO] Fetching spreadsheet=1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw tab='Timetable'
-[2026-07-08 00:09:03] [INFO] Fetching spreadsheet=1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU tab='Classes Schedule FSE SP-26'
-[2026-07-08 00:09:04] [INFO] Colour map: {(1, 1, 0.0): '2026', (1, 0.72, 0.25): '2025', (0.5, 0.3, 1): '2025', (0.0, 0.96, 0.0): '2025', (0.0, 0.0, 1): '2025', (0.9, 0.17, 0.02): '2025', (0.4, 1, 1): 'MS', (0.43, 0.32, 0.0): '2024', (0.21, 0.11, 0.46): '2024', (0.15, 0.31, 0.07): '2024', (0.03, 0.22, 0.39): '2024', (0.52, 0.13, 0.05): '2024', (0.75, 0.75, 0.75): 'MS', (0.76, 0.58, 0.0): '2023', (0.69, 0.5, 0.84): '2023', (0.42, 0.66, 0.31): '2023', (0.35, 0.62, 0.85): '2023', (0.87, 0.49, 0.42): '2023', (1, 0.6, 0.0): 'MS', (1, 0.0, 0.0): 'MS', (1, 0.9, 0.6): '2022', (0.71, 0.65, 0.84): '2022', (0.71, 0.84, 0.66): '2022', (0.67, 0.8, 0.92): '2022', (0.96, 0.8, 0.8): '2022', (0.77, 0.88, 0.7): 'MS', (1, 0.7, 0.4): '2011', (0.85, 0.85, 0.85): '2026'}
-[2026-07-08 00:09:04] [INFO] --- COMPUTING --- sheet: https://docs.google.com/spreadsheets/d/1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY
-[2026-07-08 00:09:05] [INFO]   Actual tabs in sheet: ['Welcome', 'Tuesday', 'Monday', 'Wednesday', 'Monday (May 11)', 'Sat (May 09)', 'Thursday', 'Friday', 'Sat (25 Apr)', 'Sat (May 02)', 'Tuesday (May 12)', 'Saturday (Feb.14,2025)']
-[2026-07-08 00:09:05] [INFO]   Configured tabs    : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-[2026-07-08 00:09:05] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Monday'
-[2026-07-08 00:09:06] [INFO]   computing/Monday: 226 entries parsed
-[2026-07-08 00:09:06] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Tuesday'
-[2026-07-08 00:09:07] [INFO]   computing/Tuesday: 274 entries parsed
-[2026-07-08 00:09:07] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Wednesday'
-[2026-07-08 00:09:08] [INFO]   computing/Wednesday: 255 entries parsed
-[2026-07-08 00:09:08] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Thursday'
-[2026-07-08 00:09:08] [INFO]   computing/Thursday: 276 entries parsed
-[2026-07-08 00:09:08] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Friday'
-[2026-07-08 00:09:09] [INFO]   computing/Friday: 71 entries parsed
-[2026-07-08 00:09:09] [INFO]   computing total: 1102 entries, 10 depts
-[2026-07-08 00:09:09] [INFO] Wrote db\timetable-computing.json (1102 entries, 10 depts)
-[2026-07-08 00:09:09] [INFO] --- BUSINESS --- sheet: https://docs.google.com/spreadsheets/d/1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw
-[2026-07-08 00:09:10] [INFO]   Actual tabs in sheet: ['Ramzan Timetable', 'Timetable', 'Course Plan']
-[2026-07-08 00:09:10] [INFO]   Configured tabs    : ['Timetable']
-[2026-07-08 00:09:10] [INFO] Fetching spreadsheet=1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw tab='Timetable'
-[2026-07-08 00:09:12] [INFO]   business/Timetable: 490 entries parsed
-[2026-07-08 00:09:12] [INFO]   business total: 490 entries, 4 depts
-[2026-07-08 00:09:12] [INFO] Wrote db\timetable-business.json (490 entries, 4 depts)
-[2026-07-08 00:09:12] [INFO] --- ENGINEERING --- sheet: https://docs.google.com/spreadsheets/d/1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU
-[2026-07-08 00:09:13] [INFO]   Actual tabs in sheet: ['Week 5 Cancellations', 'Week 3 cancellations', 'Week 2 cancellations', 'Ramadan Classes Schedule Sp-26', '17th Week Reschedule', 'Classes Schedule FSE SP-26', 'Academic Plan', 'Courses SP-26']
-[2026-07-08 00:09:13] [INFO]   Configured tabs    : ['Classes Schedule FSE SP-26']
-[2026-07-08 00:09:13] [INFO] Fetching spreadsheet=1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU tab='Classes Schedule FSE SP-26'
-[2026-07-08 00:09:14] [INFO]   FSE: found 10 header rows
-[2026-07-08 00:09:14] [INFO]   engineering/Classes Schedule FSE SP-26: 203 entries parsed
-[2026-07-08 00:09:14] [INFO]   engineering total: 203 entries, 3 depts
-[2026-07-08 00:09:14] [INFO] Wrote db\timetable-engineering.json (203 entries, 3 depts)
-[2026-07-08 00:09:14] [INFO] Done. Total entries: 1795. Depts: ['BS AI', 'BS Accounting & Finance', 'BS Business Administration', 'BS Business Analytics', 'BS CE', 'BS CS', 'BS CY', 'BS DS', 'BS EE', 'BS Fintech', 'BS SE', 'MS (AI)', 'MS (CS)', 'MS (CY)', 'MS (DS)', 'MS (SE)', 'MS EE']
->>>>>>> b01a2bf4b5de3f323b56685ca1c0b397c5e6b788
+[2026-07-08 01:58:36] [INFO] generate_timetable.py started — mode=generate
+[2026-07-08 01:58:36] [INFO] Python: 3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]
+[2026-07-08 01:58:36] [INFO] Loading credentials from service-account.json
+[2026-07-08 01:58:36] [INFO] Google Sheets API client ready
+[2026-07-08 01:58:36] [INFO] Auto-detecting colour → batch mappings from sheet headers...
+[2026-07-08 01:58:36] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Monday'
+[2026-07-08 01:58:38] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Tuesday'
+[2026-07-08 01:58:40] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Wednesday'
+[2026-07-08 01:58:41] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Thursday'
+[2026-07-08 01:58:42] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Friday'
+[2026-07-08 01:58:43] [INFO] Fetching spreadsheet=1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw tab='Timetable'
+[2026-07-08 01:58:45] [INFO] Fetching spreadsheet=1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU tab='Classes Schedule FSE SP-26'
+[2026-07-08 01:58:46] [INFO] Colour map: {(1, 1, 0.0): '2026', (1, 0.72, 0.25): '2025', (0.5, 0.3, 1): '2025', (0.0, 0.96, 0.0): '2025', (0.0, 0.0, 1): '2025', (0.9, 0.17, 0.02): '2025', (0.4, 1, 1): 'MS', (0.43, 0.32, 0.0): '2024', (0.21, 0.11, 0.46): '2024', (0.15, 0.31, 0.07): '2024', (0.03, 0.22, 0.39): '2024', (0.52, 0.13, 0.05): '2024', (0.75, 0.75, 0.75): 'MS', (0.76, 0.58, 0.0): '2023', (0.69, 0.5, 0.84): '2023', (0.42, 0.66, 0.31): '2023', (0.35, 0.62, 0.85): '2023', (0.87, 0.49, 0.42): '2023', (1, 0.6, 0.0): 'MS', (1, 0.0, 0.0): 'MS', (1, 0.9, 0.6): '2022', (0.71, 0.65, 0.84): '2022', (0.71, 0.84, 0.66): '2022', (0.67, 0.8, 0.92): '2022', (0.96, 0.8, 0.8): '2022', (0.77, 0.88, 0.7): 'MS', (1, 0.7, 0.4): '2011', (0.85, 0.85, 0.85): '2026'}
+[2026-07-08 01:58:46] [INFO] --- COMPUTING --- sheet: https://docs.google.com/spreadsheets/d/1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY
+[2026-07-08 01:58:46] [INFO]   Actual tabs in sheet: ['Welcome', 'Tuesday', 'Monday', 'Wednesday', 'Monday (May 11)', 'Sat (May 09)', 'Thursday', 'Friday', 'Sat (25 Apr)', 'Sat (May 02)', 'Tuesday (May 12)', 'Saturday (Feb.14,2025)']
+[2026-07-08 01:58:46] [INFO]   Configured tabs    : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+[2026-07-08 01:58:46] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Monday'
+[2026-07-08 01:58:47] [INFO]   computing/Monday: 226 entries parsed
+[2026-07-08 01:58:47] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Tuesday'
+[2026-07-08 01:58:48] [INFO]   computing/Tuesday: 274 entries parsed
+[2026-07-08 01:58:48] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Wednesday'
+[2026-07-08 01:58:49] [INFO]   computing/Wednesday: 255 entries parsed
+[2026-07-08 01:58:49] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Thursday'
+[2026-07-08 01:58:50] [INFO]   computing/Thursday: 276 entries parsed
+[2026-07-08 01:58:50] [INFO] Fetching spreadsheet=1ZQJqdArlwCS965uw4sbJrB6j8rEPfZerMT7X8qkXSzY tab='Friday'
+[2026-07-08 01:58:51] [INFO]   computing/Friday: 71 entries parsed
+[2026-07-08 01:58:51] [INFO]   computing total: 1102 entries, 10 depts
+[2026-07-08 01:58:51] [INFO] Wrote db\timetable-computing.json (1102 entries, 10 depts)
+[2026-07-08 01:58:51] [INFO] --- BUSINESS --- sheet: https://docs.google.com/spreadsheets/d/1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw
+[2026-07-08 01:58:52] [INFO]   Actual tabs in sheet: ['Ramzan Timetable', 'Timetable', 'Course Plan']
+[2026-07-08 01:58:52] [INFO]   Configured tabs    : ['Timetable']
+[2026-07-08 01:58:52] [INFO] Fetching spreadsheet=1m5yFyi0QgWx0JhdEicQQL2JOEpSmcmVDOIi15_4p9Dw tab='Timetable'
+[2026-07-08 01:58:54] [INFO]   business/Timetable: 490 entries parsed
+[2026-07-08 01:58:54] [INFO]   business total: 490 entries, 4 depts
+[2026-07-08 01:58:54] [INFO] Wrote db\timetable-business.json (490 entries, 4 depts)
+[2026-07-08 01:58:54] [INFO] --- ENGINEERING --- sheet: https://docs.google.com/spreadsheets/d/1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU
+[2026-07-08 01:58:55] [INFO]   Actual tabs in sheet: ['Week 5 Cancellations', 'Week 3 cancellations', 'Week 2 cancellations', 'Ramadan Classes Schedule Sp-26', '17th Week Reschedule', 'Classes Schedule FSE SP-26', 'Academic Plan', 'Courses SP-26']
+[2026-07-08 01:58:55] [INFO]   Configured tabs    : ['Classes Schedule FSE SP-26']
+[2026-07-08 01:58:55] [INFO] Fetching spreadsheet=1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU tab='Classes Schedule FSE SP-26'
+[2026-07-08 01:58:56] [INFO]   FSE: fetching courses tab 'Courses SP-26' for structural lookup
+[2026-07-08 01:58:56] [INFO] Fetching spreadsheet=1S3mWYvoM7HbIeiqAbt65FngdmYDUA8MWOQSjcUYsFXU tab='Courses SP-26'
+[2026-07-08 01:58:57] [INFO]   FSE: Courses tab parsed — 82 rows, 66 unique course names
+[2026-07-08 01:58:57] [INFO]   FSE: found 10 header rows
+[2026-07-08 01:58:57] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis' section A (candidates: ['CE', 'EE']) — defaulting to BS EE
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis' section B (candidates: ['CE', 'EE']) — defaulting to BS EE
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Differential Equations' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. Fundamentals' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Under. of Holy Quran I & II' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. Fundamentals' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Differential Equations' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Analog & Digital Comm.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Signal & Systems' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Signal & Systems' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: ambiguous dept for 'Digital Logic Design' section A (candidates: ['CE', 'EE']) — defaulting to BS EE
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Engineering Economics' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Communication Skills' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Signal & Systems' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Communication Skills' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Engineering Economics' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Introduction to IOT' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Entrepreneurship' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Entrepreneurship' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis Lab' section B (candidates: ['CE', 'EE']) — defaulting to BS EE
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Data Structures and Algo Lab' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Feedback & Control Systems Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Systems Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Signal & Systems Lab' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Signal & Systems Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Introduction to IOT Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Industrial Processes Cont. Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Differential Equations' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Differential Equations' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Object Oriented Data Str.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electrical Network Anal.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electrical Network Anal.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Probability & Random Prs.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Understanding of Holy Quran I & II' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Computer Architecture' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Operating Systems' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Basic Mech. Engg' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Tech. Communcation Skills.' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Data Structures Algo.' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Sys.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Probability & Random Prs.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Operating Systems' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Feedback Control Syst.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Probability & Random Prs.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Sys.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Digital Signal Processing' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Engineering Economics' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Power Electronics' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis Lab' section C (candidates: ['CE', 'EE']) — defaulting to BS EE
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. Fundamentals Lab' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Object Oriented Data Structures -Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Operating Systems Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Systems Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Power Electronics Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis' section A (candidates: ['CE', 'EE']) — defaulting to BS EE
+[2026-07-08 01:58:57] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis' section B (candidates: ['CE', 'EE']) — defaulting to BS EE
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Differential Equations' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Object Oriented Data Str.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Analog & Digital Comm.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Differential Equations' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Differential Equations' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Probability & Random Prs.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Signal & Systems' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Computer Architecture' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Communication Skills' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Signal & Systems' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Probability & Random Prs.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Feedback Control Syst.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Entrepreneurship' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Network Programming' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Entrepreneurship' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'VLSI' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electrical Network Anal. Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. Fundamentals Lab' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Data Structures and Algo Lab' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Signal & Systems Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Digital Signal Processing Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'VLSI Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Computer Architecture Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Computer Architecture Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: ambiguous dept for 'Pakistan Studies' section A (candidates: ['CE', 'EE']) — defaulting to BS EE
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Differential Equations' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electrical Network Anal.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Differential Equations' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electrical Network Anal.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. Fundamentals' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Understanding of Holy Quran I & II' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Signal & Systems' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Data Structures Algo.' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Network Programming' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: ambiguous dept for 'Digital Logic Design' section A (candidates: ['CE', 'EE']) — defaulting to BS EE
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Sys.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Engineering Economics' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Feedback Control Syst.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Sys.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Feedback Control Syst.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Communication Skills' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'VLSI' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Introduction to IOT' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Industrial Procsses Cont.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Industrial Procsses Cont.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Operating Systems Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Introduction to IOT Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Engineering Workshop Lab' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Signal & Systems Lab' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Signal & Systems Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. Fundamentals Lab' (dept CE) — falling back to keyword heuristic
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Feedback & Control Systems Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: ambiguous dept for 'Linear Circuit Analysis Lab' section A (candidates: ['CE', 'EE']) — defaulting to BS EE
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Systems Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Differential Equations' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: ambiguous dept for 'Pakistan Studies' section B (candidates: ['CE', 'EE']) — defaulting to BS EE
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Prog. For Engineers' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Linear Algebra & Diff. Equ.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Tech. Comm. Skills.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Tech. Comm. Skills.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Probability & Random Prs.' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Basic Mech. Engg' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Computer Architecture' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Computer Architecture' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Operating Systems' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Operating Systems' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Digital Signal Processing' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Power Electronics' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Analog & Digital Comm. Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electrical Network Anal. Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE: no Courses-tab match for 'Electro-Mechanical Systems Lab' — falling back to keyword heuristic (BS EE)
+[2026-07-08 01:58:57] [WARN]   FSE cross-validation: 32 Courses-tab entries not found in schedule output:
+[2026-07-08 01:58:57] [WARN]     - Programming for Engineers [EE 2025, code CS1011]
+[2026-07-08 01:58:57] [WARN]     - Programming for Engineers Lab [EE 2025, code CL1011]
+[2026-07-08 01:58:57] [WARN]     - Engineering Workshop [EE 2025, code EL1006]
+[2026-07-08 01:58:57] [WARN]     - Engineering Workshop [CE 2025, code EL1006]
+[2026-07-08 01:58:57] [WARN]     - Diferential Equation [EE 2025, code MT1006]
+[2026-07-08 01:58:57] [WARN]     - Diferential Equation [CE 2025, code MT1006]
+[2026-07-08 01:58:57] [WARN]     - Programming Fundamentals [CE 2025, code CS1002]
+[2026-07-08 01:58:57] [WARN]     - Programming Fundamentals Lab [CE 2025, code CL1002]
+[2026-07-08 01:58:57] [WARN]     - Understanding of Holy Quran-I [CE 2025, code SS1021]
+[2026-07-08 01:58:57] [WARN]     - Understanding of Holy Quran-I [EE MS, code SS1021]
+[2026-07-08 01:58:57] [WARN]     - Understanding of Holy Quran-II [CE 2025, code SS1022]
+[2026-07-08 01:58:57] [WARN]     - Understanding of Holy Quran-II [EE MS, code SS1022]
+[2026-07-08 01:58:57] [WARN]     - Object Oriented Data Structures (Repeat) [EE 2024, code CS-2021]
+[2026-07-08 01:58:57] [WARN]     - Object Oriented Data Structures Lab (Repeat) [EE 2024, code CL-2021]
+[2026-07-08 01:58:57] [WARN]     - Electrical Network Analysis (Repeat) [EE 2024, code EE-2004]
+[2026-07-08 01:58:57] [WARN]     - Electrical Network Analysis Lab (Repeat) [EE 2024, code EL-2004]
+[2026-07-08 01:58:57] [WARN]     - Electro Mechanical Systems [EE 2024, code EE-2015]
+[2026-07-08 01:58:57] [WARN]     - Electro Mechanical Systems Lab [EE 2024, code EL-2015]
+[2026-07-08 01:58:57] [WARN]     - Signals and Systems [EE 2024, code EE-2008]
+[2026-07-08 01:58:57] [WARN]     - Signals and Systems [CE 2024, code EE2008]
+[2026-07-08 01:58:57] [WARN]     - Signals and Systems Lab [EE 2024, code EL-2008]
+[2026-07-08 01:58:57] [WARN]     - Signals and Systems Lab [CE 2024, code EL2008]
+[2026-07-08 01:58:57] [WARN]     - Digital Logic Design - Lab [EE 2024, code EL-1005]
+[2026-07-08 01:58:57] [WARN]     - Probability and Random Processes [EE 2024, code EE-2011]
+[2026-07-08 01:58:57] [WARN]     - Technical Communication Skills [EE 2024, code SS2001]
+[2026-07-08 01:58:57] [WARN]     - Technical Communication Skills [CE 2024, code SS2001]
+[2026-07-08 01:58:57] [WARN]     - Data Structures and Algorithms [CE 2024, code CS2002]
+[2026-07-08 01:58:57] [WARN]     - Data Structures and Algorithms Lab [CE 2024, code CL2002]
+[2026-07-08 01:58:57] [WARN]     - SoC Packaging and Signal Integrity [EE MS, code EE5004]
+[2026-07-08 01:58:57] [WARN]     - IC Design Project: Concept to Chip Tapeout [EE MS, code EE5009]
+[2026-07-08 01:58:57] [WARN]     - Mixed Signal Integrated Circuit Design [EE MS, code EE5005]
+[2026-07-08 01:58:57] [WARN]     - VLSI Design Verification and Test [EE MS, code EE5048]
+[2026-07-08 01:58:57] [INFO]   FSE regression check passed — no repeat-course leaks in BS CE/2025
+[2026-07-08 01:58:57] [INFO]   engineering/Classes Schedule FSE SP-26: 203 entries parsed
+[2026-07-08 01:58:57] [INFO]   engineering total: 203 entries, 3 depts
+[2026-07-08 01:58:57] [INFO] Wrote db\timetable-engineering.json (203 entries, 3 depts)
+[2026-07-08 01:58:57] [INFO] Done. Total entries: 1795. Depts: ['BS AI', 'BS Accounting & Finance', 'BS Business Administration', 'BS Business Analytics', 'BS CE', 'BS CS', 'BS CY', 'BS DS', 'BS EE', 'BS Fintech', 'BS SE', 'MS (AI)', 'MS (CS)', 'MS (CY)', 'MS (DS)', 'MS (SE)', 'MS EE']
