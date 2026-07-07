@@ -1261,27 +1261,6 @@ def _write_json_file(path: str, document: dict[str, Any]) -> None:
         json.dump(document, fh, indent=2, ensure_ascii=False)
 
 
-def _merge_exam_schedule_document(path: str, new_doc: dict[str, Any]) -> dict[str, Any]:
-    """The Final Exam Schedule (dept/section matrix -> "exams") and a
-    Midterm/Sessional schedule (flat room-grid -> "flat_exams") both arrive as
-    "schedule" emails and share the same output file, but a single workbook is
-    only ever one format at a time - so a freshly-parsed doc always has one of
-    "exams"/"flat_exams" empty. Preserve whichever one the previous sync found,
-    so a new Midterm email doesn't wipe out the last Final schedule (or vice
-    versa)."""
-    try:
-        with open(path, encoding="utf-8") as fh:
-            existing = json.load(fh)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return new_doc
-    if not new_doc.get("exams") and existing.get("exams"):
-        new_doc["exams"] = existing["exams"]
-    if not new_doc.get("flat_exams") and existing.get("flat_exams"):
-        new_doc["flat_exams"] = existing["flat_exams"]
-    new_doc["count"] = len(new_doc.get("exams") or []) + len(new_doc.get("flat_exams") or [])
-    return new_doc
-
-
 # ── Vercel handler ───────────────────────────────────────────────────────────
 
 class handler(BaseHTTPRequestHandler):
@@ -1379,8 +1358,11 @@ def run_cli() -> int:
         prefix = SCHEDULE_FILE_PREFIX[kind]
         for school, doc in documents.items():
             path = f"dbfolder/{prefix}-{school}.json"
-            if kind == "exam_schedule":
-                doc = _merge_exam_schedule_document(path, doc)
+            # Each new schedule email fully REPLACES the previous one - the
+            # latest emailed schedule is the current one. (A dept/section
+            # schedule like the Final/Sessional populates "exams"; a room-grid
+            # Midterm populates "flat_exams"; the unused array stays empty so
+            # the old format's data doesn't linger.)
             _write_json_file(path, doc)
             print(f"Wrote {path}: {doc['count']} exam entries (subject: {subject!r}, file: {attachment_filename!r})")
     return 0

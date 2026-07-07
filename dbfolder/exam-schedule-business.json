@@ -1,49 +1,564 @@
 {
-  "updated_at": "2026-07-07T15:42:27.562Z",
-  "source_subject": "Midterm Examination Schedule Summer 2026 (Draft)",
-  "source_filename": "Mid Examination Schedule Summer 2026 (Draft) as on 07-07-2025.xlsx",
-  "exams": [],
-  "flat_exams": [
+  "updated_at": "2026-07-07T19:04:53.157091+00:00",
+  "source_subject": "Schedule",
+  "source_filename": "Schedule of 2nd Sessional Examination Spring 2026  ( Version Final) as on 03 04 2026.xlsx",
+  "count": 39,
+  "exams": [
     {
-      "date": "2026-07-13",
-      "day": "Monday",
-      "time": "09:00-11:00",
-      "room": "A-101  1st flr",
+      "date": "2026-04-09",
+      "day": "Thursday",
+      "time": "9:00 to 12:00 PM",
       "code": "AF1002",
-      "course": "Financial Accounting \r\nBAF-9A, 9B"
+      "course": "Financial Accounting",
+      "batch": "2025",
+      "sections": {
+        "AF": [
+          "2A",
+          "B"
+        ],
+        "FT": [
+          "2A",
+          "B",
+          "C",
+          "D"
+        ],
+        "BA": [
+          "2A",
+          "B",
+          "C"
+        ]
+      },
+      "notes": "BBA-2A,B,C,D"
     },
     {
-      "date": "2026-07-13",
-      "day": "Monday",
-      "time": "11:30-01:30",
-      "room": "A-101  1st flr",
-      "code": "MT2004",
-      "course": "Business Math –II\r\nBAF-9A"
+      "date": "2026-04-09",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AF2004",
+      "course": "Business Finance",
+      "batch": "2024",
+      "sections": {
+        "BA": [
+          "4A",
+          "B",
+          "C"
+        ]
+      },
+      "notes": "B(AF)-4A,B,C; BBA-4A,B,C"
     },
     {
-      "date": "2026-07-14",
-      "day": "Tuesday",
-      "time": "09:00-11:00",
-      "room": "A-101  1st flr",
+      "date": "2026-04-09",
+      "day": "Thursday",
+      "time": "5:00 to 8:00 PM",
+      "code": "AF4007",
+      "course": "Financial Risk Mgmt.",
+      "batch": "2022",
+      "sections": {
+        "AF": [
+          "8A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-09",
+      "day": "Thursday",
+      "time": "5:00 to 8:00 PM",
+      "code": "BA4002",
+      "course": "Predictive Analytics",
+      "batch": "2022",
+      "sections": {
+        "BA": [
+          "8A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-09",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AF3001",
+      "course": "Financial Management",
+      "batch": "2024",
+      "sections": {
+        "FT": [
+          "4A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-09",
+      "day": "Thursday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AF3006",
+      "course": "Financing New Ventures",
+      "batch": "2022",
+      "sections": {
+        "FT": [
+          "8A"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-09",
+      "day": "Thursday",
+      "time": "1:00 to 4:00 PM",
+      "code": "MG6003",
+      "course": "Research and Theory in Management",
+      "batch": null,
+      "sections": {},
+      "notes": "PMG-2A; (2 Hours )"
+    },
+    {
+      "date": "2026-04-10",
+      "day": "Friday",
+      "time": "9:00 to 12:00 PM",
+      "code": "MG1001",
+      "course": "Fundamentals of Management",
+      "batch": "2025",
+      "sections": {
+        "AF": [
+          "2A",
+          "B"
+        ],
+        "FT": [
+          "2A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-10",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "MT1002",
+      "course": "Business Math – I",
+      "batch": "2025",
+      "sections": {},
+      "notes": "BBA-2A"
+    },
+    {
+      "date": "2026-04-10",
+      "day": "Friday",
+      "time": "5:00 to 8:00 PM",
+      "code": "AF4012",
+      "course": "Financial Risk Analytics and Derivatives",
+      "batch": "2022",
+      "sections": {
+        "FT": [
+          "8A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-10",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AF3004",
+      "course": "Accounting for Decision Making",
+      "batch": "2023",
+      "sections": {
+        "AF": [
+          "6A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-10",
+      "day": "Friday",
+      "time": "9:00 to 12:00 PM",
+      "code": "MG1002",
+      "course": "Marketing Management",
+      "batch": "2025",
+      "sections": {
+        "BA": [
+          "2A",
+          "B",
+          "C"
+        ]
+      },
+      "notes": "BBA-2A,B,C,D"
+    },
+    {
+      "date": "2026-04-10",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AF3008",
+      "course": "Business Research and Data Mining",
+      "batch": "2023",
+      "sections": {
+        "FT": [
+          "6A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-10",
+      "day": "Friday",
+      "time": "5:00 to 8:00 PM",
+      "code": "BA4010",
+      "course": "Human Resource Metrics and Analytics",
+      "batch": "2022",
+      "sections": {
+        "BA": [
+          "8A"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-10",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "MG6016",
+      "course": "-Seminars in Management PMG-3A",
+      "batch": null,
+      "sections": {},
+      "notes": "(2 Hours )"
+    },
+    {
+      "date": "2026-04-10",
+      "day": "Friday",
+      "time": "5:00 to 8:00 PM",
+      "code": "BA2006",
+      "course": "Fundamentals of Business Analytics",
+      "batch": "2024",
+      "sections": {},
+      "notes": "B(BA)-4A,B,C"
+    },
+    {
+      "date": "2026-04-10",
+      "day": "Friday",
+      "time": "9:00 to 12:00 PM",
+      "code": "MG4013",
+      "course": "Business Strategy",
+      "batch": "2022",
+      "sections": {
+        "BA": [
+          "8A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-10",
+      "day": "Friday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AF6001",
+      "course": "-Contemporary Trends in Finance PMG-1A  (2 Hours )",
+      "batch": null,
+      "sections": {}
+    },
+    {
+      "date": "2026-04-10",
+      "day": "Friday",
+      "time": "5:00 to 8:00 PM",
+      "code": "MG2011",
+      "course": "Environmental Science and Sustainability for Business",
+      "batch": "2024",
+      "sections": {
+        "FT": [
+          "6A",
+          "B",
+          "C",
+          "D"
+        ]
+      },
+      "notes": "BBA-4A,B,C"
+    },
+    {
+      "date": "2026-04-11",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
       "code": "MG2008",
-      "course": "Data Analysis for Business I\r\nBBA-9A"
+      "course": "Data Analysis for Business I",
+      "batch": "2025",
+      "sections": {
+        "AF": [
+          "2A",
+          "B"
+        ],
+        "FT": [
+          "2A",
+          "B",
+          "C",
+          "D"
+        ],
+        "BA": [
+          "2A",
+          "B",
+          "C"
+        ]
+      },
+      "notes": "BBA-2A,B,C,D"
     },
     {
-      "date": "2026-07-14",
-      "day": "Tuesday",
-      "time": "11:30-01:30",
-      "room": "A-101  1st flr",
-      "code": "CS2016",
-      "course": "- Programming for Business BFT-09A"
+      "date": "2026-04-11",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "FT4004",
+      "course": "FinTech Product Management",
+      "batch": "2022",
+      "sections": {
+        "FT": [
+          "8A"
+        ]
+      }
     },
     {
-      "date": "2026-07-14",
-      "day": "Tuesday",
-      "time": "11:30-01:30",
-      "room": "A-102 1st flr",
-      "code": "CS4089",
-      "course": "Programming for Business Applications MSBA-9A"
+      "date": "2026-04-11",
+      "day": "Saturday",
+      "time": "5:00 to 8:00 PM",
+      "code": "SS2008",
+      "course": "Business Communication–I",
+      "batch": "2022",
+      "sections": {},
+      "notes": "BBA-8A; BSBA-8A"
+    },
+    {
+      "date": "2026-04-11",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "AF3002",
+      "course": "Financial Statement Analysis",
+      "batch": "2023",
+      "sections": {
+        "AF": [
+          "6A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-11",
+      "day": "Saturday",
+      "time": "5:00 to 8:00 PM",
+      "code": "MG2010",
+      "course": "Business Communication",
+      "batch": "2023",
+      "sections": {
+        "FT": [
+          "6A",
+          "B"
+        ],
+        "BA": [
+          "6A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-11",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "BA3005",
+      "course": "Database Systems for Business",
+      "batch": "2023",
+      "sections": {
+        "BA": [
+          "6A",
+          "B"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-11",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "MG3033",
+      "course": "-Principles of Leadership",
+      "batch": "2022",
+      "sections": {},
+      "notes": "BAF-8A"
+    },
+    {
+      "date": "2026-04-11",
+      "day": "Saturday",
+      "time": "5:00 to 8:00 PM",
+      "code": "MG2010",
+      "course": "Business Communication",
+      "batch": "2024",
+      "sections": {},
+      "notes": "BBA-4A,B,C"
+    },
+    {
+      "date": "2026-04-11",
+      "day": "Saturday",
+      "time": "9:00 to 12:00 PM",
+      "code": "BA3004",
+      "course": "-Database Systems for Business",
+      "batch": null,
+      "sections": {
+        "BA": [
+          "8A"
+        ]
+      },
+      "notes": "3004"
+    },
+    {
+      "date": "2026-04-11",
+      "day": "Saturday",
+      "time": "1:00 to 4:00 PM",
+      "code": "SS1006",
+      "course": "English – II",
+      "batch": "2025",
+      "sections": {
+        "AF": [
+          "2A",
+          "B"
+        ],
+        "FT": [
+          "2A",
+          "B",
+          "C",
+          "D"
+        ],
+        "BA": [
+          "2A",
+          "B",
+          "C"
+        ]
+      },
+      "notes": "BBA-2A,B,C,D; (Presentations)"
+    },
+    {
+      "date": "2026-04-11",
+      "day": "Saturday",
+      "time": "5:00 to 8:00 PM",
+      "code": "MG4002",
+      "course": "Communication for Managers",
+      "batch": "2022",
+      "sections": {},
+      "notes": "BFT-8A"
+    },
+    {
+      "date": "2026-04-11",
+      "day": "Saturday",
+      "time": "5:00 to 8:00 PM",
+      "code": "SS1021",
+      "course": "Understanding of Holy Quran I",
+      "batch": "2026",
+      "sections": {},
+      "notes": "PMG-1A"
+    },
+    {
+      "date": "2026-04-13",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AF1001",
+      "course": "Fundamentals of Accounting",
+      "batch": "2025",
+      "sections": {
+        "BA": [
+          "2A"
+        ]
+      },
+      "notes": "BBA-2A"
+    },
+    {
+      "date": "2026-04-13",
+      "day": "Monday",
+      "time": "1:00 to 4:00 PM",
+      "code": "MG2009",
+      "course": "Data Analysis for Business II",
+      "batch": "2024",
+      "sections": {
+        "FT": [
+          "4A",
+          "B",
+          "C",
+          "D"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-13",
+      "day": "Monday",
+      "time": "5:00 to 8:00 PM",
+      "code": "MG4521",
+      "course": "Digital Marketing",
+      "batch": "2023",
+      "sections": {},
+      "notes": "BBA-6A"
+    },
+    {
+      "date": "2026-04-13",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AF4018",
+      "course": "Equity Analysis and Pricing",
+      "batch": "2022",
+      "sections": {
+        "AF": [
+          "8A"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-13",
+      "day": "Monday",
+      "time": "5:00 to 8:00 PM",
+      "code": "MT2004",
+      "course": "Business Math – II",
+      "batch": "2024",
+      "sections": {
+        "AF": [
+          "2A",
+          "B",
+          "C"
+        ],
+        "BA": [
+          "2A",
+          "B",
+          "C"
+        ]
+      },
+      "notes": "BBA-2A,B,C"
+    },
+    {
+      "date": "2026-04-13",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "AF4018",
+      "course": "Equity Analysis and Pricing",
+      "batch": "2023",
+      "sections": {
+        "AF": [
+          "8A"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-13",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "FT4003",
+      "course": "Data Driven Fintech",
+      "batch": "2022",
+      "sections": {
+        "FT": [
+          "8A"
+        ]
+      }
+    },
+    {
+      "date": "2026-04-13",
+      "day": "Monday",
+      "time": "9:00 to 12:00 PM",
+      "code": "MG4032",
+      "course": "Advertising",
+      "batch": "2022",
+      "sections": {},
+      "notes": "BBA-8A"
     }
   ],
-  "count": 5
+  "flat_exams": []
 }

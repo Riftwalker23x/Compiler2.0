@@ -3,63 +3,6 @@
   "source_subject": "Midterm Examination Schedule Summer 2026 (Draft)",
   "source_filename": "Mid Examination Schedule Summer 2026 (Draft) as on 07-07-2025.xlsx",
   "exams": [],
-  "flat_exams": [
-    {
-      "date": "2026-07-13",
-      "day": "Monday",
-      "time": "09:00 to 11:00 AM",
-      "room": "B-019",
-      "code": "EE2008",
-      "course": "- Signals and Systems A"
-    },
-    {
-      "date": "2026-07-13",
-      "day": "Monday",
-      "time": "11:30-01:30",
-      "room": "B-019",
-      "code": "EE1005",
-      "course": "Digital Logic Design A"
-    },
-    {
-      "date": "2026-07-13",
-      "day": "Monday",
-      "time": "09:00 to 11:00 AM",
-      "room": "B-020",
-      "code": "EE1001",
-      "course": "- Linear Circuit Anlysis.  AB"
-    },
-    {
-      "date": "2026-07-14",
-      "day": "Tuesday",
-      "time": "09:00 to 11:00 AM",
-      "room": "B-019",
-      "code": "MT2008",
-      "course": "Multivariable Calculus AB"
-    },
-    {
-      "date": "2026-07-14",
-      "day": "Tuesday",
-      "time": "11:30-01:30",
-      "room": "B-019",
-      "code": "CS1002",
-      "course": "- Programming Fundamentals A"
-    },
-    {
-      "date": "2026-07-14",
-      "day": "Tuesday",
-      "time": "09:00 to 11:00 AM",
-      "room": "B-020",
-      "code": "MT1006",
-      "course": "Differential Equations AB"
-    },
-    {
-      "date": "2026-07-14",
-      "day": "Tuesday",
-      "time": "11:30-01:30",
-      "room": "B-020",
-      "code": "CS1011",
-      "course": "Programming for Engineers A"
-    }
-  ],
-  "count": 7
+  "flat_exams": [],
+  "count": 0
 }
