@@ -1497,7 +1497,7 @@ function applyRepeatModeUI(){
   batchSel.style.display=repeat?'none':'';
   courseSel.style.display=repeat?'':'none';
   batchLabel.textContent=repeat?'COURSE':'BATCH YEAR';
-  if(secCell) secCell.style.display=repeat?'':'none';
+  if(secCell) secCell.style.display=repeat?'none':'';
   if(!repeat) return;
   const prefs=readTTPrefs();
   fillSelectOptions(courseSel,repeatCourseNames(buildRepeatIndex()),null,'-- Course --');
