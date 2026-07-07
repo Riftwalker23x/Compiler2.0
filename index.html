@@ -19,24 +19,24 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .nav{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin:16px 18px 0}
 .nav-card{border:2px solid rgba(0,120,60,0.2);padding:16px;border-radius:10px;transition:all .25s;background:rgba(255,255,255,0.78);position:relative;overflow:hidden;font-family:inherit;font-size:inherit;text-align:inherit;width:100%;cursor:pointer;display:block;text-decoration:none;color:inherit}
 .nav-card:focus-visible{outline:3px solid #0a7a3a;outline-offset:2px}
-.nav-card.active{border-color:#0a7a3a;background:#fff;box-shadow:0 4px 18px rgba(10,122,58,0.13)}
+.nav-card.active{border-color:#0a7a3a;background:#fff;box-shadow:0 4px 18px rgba(10,122,58,0.13);transform:translateY(-1px)}
 .nav-card:hover:not(.active){border-color:#0a7a3a;background:rgba(255,255,255,0.92)}
 .nav-indicator{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 8px 8px;background:transparent;transition:background .25s}
 .nav-card.active .nav-indicator{background:#0a7a3a}
 .nav-badge{font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:3px;border:1px solid rgba(0,120,60,0.25);color:#2d8a50;display:inline-block;margin-bottom:7px;background:rgba(0,120,60,0.05)}
 .nav-card.active .nav-badge{color:#0a7a3a;border-color:#0a7a3a;background:rgba(10,122,58,0.09)}
-.nav-icon{font-family:'VT323',monospace;font-size:30px;color:#5a9a6a;line-height:1;margin-bottom:3px}
+.nav-icon{font-family:'VT323',monospace;font-size:30px;color:#2d6a45;line-height:1;margin-bottom:3px}
 .nav-card.active .nav-icon{color:#0a7a3a}
-.nav-title{font-family:'VT323',monospace;font-size:21px;letter-spacing:3px;color:#4a8a60;word-break:keep-all}
+.nav-title{font-family:'VT323',monospace;font-size:21px;letter-spacing:3px;color:#1f5c3c;word-break:keep-all}
 .nav-card.active .nav-title{color:#0a7a3a}
-.nav-desc{font-size:9px;letter-spacing:1px;color:#3d7a55;margin-top:3px;word-break:keep-all}
-.nav-card.active .nav-desc{color:#2d8a50}
+.nav-desc{font-size:9px;letter-spacing:1px;color:#2d5b3e;margin-top:3px;word-break:keep-all}
+.nav-card.active .nav-desc{color:#1d4d32}
 
 .content{margin:0 18px 20px;border:2px solid rgba(0,120,60,0.15);border-top:none;border-radius:0 0 10px 10px;background:rgba(255,255,255,0.82);padding:20px;min-height:480px}
 .panel{display:none}.panel.on{display:block}
 
 .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
-.flabel{font-size:9px;letter-spacing:3px;color:#2d8a50;display:block;margin-bottom:5px;font-weight:600}
+.flabel{font-size:9px;letter-spacing:3px;color:#2b5b3d;display:block;margin-bottom:5px;font-weight:600}
 .rsel{width:100%;background:#f8fff8;border:1.5px solid rgba(0,120,60,0.3);color:#1a4a2e;font-family:'Share Tech Mono',monospace;font-size:12px;padding:9px 10px;border-radius:6px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' fill='none' stroke='%230a7a3a' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;min-width:0}
 .rsel:focus{border-color:#0a7a3a;box-shadow:0 0 0 2px rgba(10,122,58,0.15)}
 .rsel:disabled{opacity:.45;cursor:not-allowed}
@@ -45,14 +45,14 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 
 .tt-shell{max-width:900px;margin:0 auto}
 .tt-hero{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:16px 18px;margin-bottom:14px;border:1.5px solid rgba(0,120,60,0.18);border-radius:12px;background:linear-gradient(180deg,rgba(248,255,248,.96),rgba(232,245,236,.88))}
-.tt-kicker{font-size:9px;letter-spacing:4px;color:#3d7a55;margin-bottom:6px}
+.tt-kicker{font-size:9px;letter-spacing:4px;color:#3d7a55;margin-bottom:6px;font-weight:600}
 .tt-title{font-family:'VT323',monospace;font-size:38px;letter-spacing:4px;color:#0a7a3a;line-height:1}
-.tt-copy{font-size:12px;line-height:1.6;color:#2d8a50;max-width:54ch;margin-top:8px}
+.tt-copy{font-size:12px;line-height:1.6;color:#2a5b3f;max-width:54ch;margin-top:8px}
 .tt-live-badge{font-family:'VT323',monospace;font-size:16px;letter-spacing:3px;padding:8px 12px;border-radius:999px;border:1px solid rgba(0,120,60,0.2);background:#fff;color:#0a7a3a;white-space:nowrap;flex-shrink:0}
 .tt-form{padding:16px 18px;border:1.5px solid rgba(0,120,60,0.16);border-radius:12px;background:#fff;margin-bottom:14px}
 .tt-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 .tt-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
-.tt-hint{font-size:9px;letter-spacing:2px;color:#3d7a55}
+.tt-hint{font-size:9px;letter-spacing:2px;color:#2f5a3f;font-weight:600}
 .tt-out{padding:16px 18px;border:1.5px solid rgba(0,120,60,0.16);border-radius:12px;background:#fff}
 .tt-summary{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .tt-summary-pill{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;color:#0a7a3a}
@@ -72,8 +72,11 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .tt-sec{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;color:#2d8a50}
 .tt-room{font-family:'VT323',monospace;font-size:18px;letter-spacing:1px;color:#0a7a3a}
 .tt-time{font-size:10px;letter-spacing:1px;color:#2d8a50}
-.tt-empty-card{text-align:center;padding:34px 16px;color:#3d7a55;font-size:12px;letter-spacing:2px}
+.tt-empty-card{text-align:center;padding:34px 16px;color:#3d7a55;font-size:12px;letter-spacing:2px;border:1.5px dashed rgba(10,122,58,0.24);border-radius:12px;background:linear-gradient(180deg,#fcfffc 0%,#f4fbf4 100%)}
 .tt-empty-card .empty{padding:0}
+.tt-empty-icon{font-family:'VT323',monospace;font-size:42px;color:#0a7a3a;display:block;margin:0 auto 10px;padding:8px 12px;border-radius:999px;background:#e9f7eb;border:1px solid rgba(10,122,58,0.16);width:max-content}
+.tt-empty-title{font-family:'VT323',monospace;font-size:22px;letter-spacing:2px;color:#0a7a3a;margin-bottom:6px}
+.tt-empty-copy{font-size:11px;line-height:1.6;color:#2f5a3f;max-width:46ch;margin:0 auto}
 
 .tbl{width:100%;border-collapse:collapse;table-layout:fixed}
 .tbl th{background:#e8f5ec;color:#0a7a3a;font-size:10px;letter-spacing:2px;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.2)}
@@ -382,14 +385,16 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   .hdr-sub{font-size:8px;letter-spacing:3px}
   .live-bar{gap:6px;font-size:9px;letter-spacing:1px}
   .live-bar span[style*="opacity"]{margin:0 2px}
-  .header-logo{height:100px}
-  .header-x{font-size:32px}
-  .header-vtable{font-size:56px;letter-spacing:3px}
-  .header-campus{font-size:22px}
-  .header-live{font-size:13px}
+  .header-top{gap:10px;flex-wrap:wrap}
+  .header-logo{height:auto;max-height:100px;width:auto;max-width:100%}
+  .header-x{font-size:28px}
+  .header-vtable{font-size:44px;letter-spacing:3px}
+  .header-campus{font-size:20px;letter-spacing:2px}
+  .header-live{font-size:12px}
 
   .tt-grid{grid-template-columns:1fr 1fr;gap:8px}
   .tt-hero{flex-direction:column;gap:10px;padding:12px 14px}
+  .tt-result-table{display:block;overflow-x:auto;white-space:nowrap}
   .tt-title{font-size:24px;letter-spacing:3px}
   .tt-live-badge{font-size:12px;letter-spacing:2px;padding:5px 10px;align-self:flex-start}
   .tt-form{padding:12px}
@@ -436,11 +441,12 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   .content{padding:8px;margin:0 4px 8px}
   .hdr-logo{font-size:18px;letter-spacing:3px}
   .live-bar{font-size:8px}
-  .header-logo{height:76px}
-  .header-x{font-size:24px}
-  .header-vtable{font-size:40px;letter-spacing:2px}
-  .header-campus{font-size:17px}
-  .header-live{font-size:11px}
+  .header-top{gap:6px}
+  .header-logo{max-height:76px}
+  .header-x{font-size:20px}
+  .header-vtable{font-size:32px;letter-spacing:1px}
+  .header-campus{font-size:15px;letter-spacing:1px}
+  .header-live{font-size:10px}
   .rooms-grid{grid-template-columns:1fr}
   .rsel{font-size:11px;padding:8px 8px}
   .flabel{font-size:8px;letter-spacing:2px}
@@ -451,11 +457,13 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     align-items:center;
     gap:22px;
     margin-top:8px;
+    flex-wrap:wrap;
 }
 
 .header-logo{
     height:150px;
     width:auto;
+    max-width:100%;
 }
 
 .header-x{
@@ -528,42 +536,42 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   <div class="nav" role="tablist">
     <button class="nav-card active" id="nc0" onclick="sw(0)" role="tab" aria-selected="true" tabindex="0">
       <div class="nav-badge">PANEL 01</div>
-      <div class="nav-icon">⏱️</div>
+      <div class="nav-icon">◷</div>
       <div class="nav-title">CLASS TIMETABLE</div>
       <div class="nav-desc">DEPT / BATCH / SECTION / DAY</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc1" onclick="sw(1)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 02</div>
-      <div class="nav-icon">🛋️</div>
+      <div class="nav-icon">▣</div>
       <div class="nav-title">FREE ROOMS</div>
       <div class="nav-desc">BLOCK / FLOOR — SLOT TIMELINE</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc5" onclick="sw(5)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 03</div>
-      <div class="nav-icon">&#127891;</div>
+      <div class="nav-icon">◭</div>
       <div class="nav-title">FACULTY</div>
       <div class="nav-desc">DIRECTORY</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc3" onclick="sw(3)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 04</div>
-      <div class="nav-icon">✍🏻</div>
+      <div class="nav-icon">✎</div>
       <div class="nav-title">EXAM SCHEDULE</div>
       <div class="nav-desc">S1 / S2 / FINAL EXAMS</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc4" onclick="sw(4)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 05</div>
-      <div class="nav-icon">🪑</div>
+      <div class="nav-icon">◨</div>
       <div class="nav-title">SEATING PLAN</div>
       <div class="nav-desc">EXAM SEAT LOOKUP</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc2" onclick="sw(2)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 06</div>
-      <div class="nav-icon">🗓️</div>
+      <div class="nav-icon">◫</div>
       <div class="nav-title">SHOW UP SCHEDULE</div>
       <div class="nav-desc">DEPT / BATCH / SECTION</div>
       <div class="nav-indicator"></div>
@@ -581,7 +589,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
             <div class="tt-title">CLASS TIMETABLE</div>
             <div class="tt-copy">Choose your department, batch year, day, and section to load the timetable from the live Google Sheet.</div>
           </div>
-          <div class="tt-live-badge">LIVE SHEET SYNC</div>
+          <div class="tt-live-badge">SYNCED ✓</div>
         </div>
 
         <div class="tt-form">
@@ -619,7 +627,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
         </div>
 
         <div class="tt-out" id="tt-out">
-          <div class="tt-empty-card"><div class="nav-icon" style="font-size:36px;margin-bottom:8px;color:#3d7a55">&#9632;</div><div class="empty">SELECT OPTIONS ABOVE TO VIEW THE TIMETABLE</div></div>
+          <div class="tt-empty-card"><div class="tt-empty-icon">◻</div><div class="tt-empty-title">Ready for your timetable</div><div class="tt-empty-copy">Choose school, department, batch, day, and section to load the current schedule.</div></div>
         </div>
       </div>
     </div>
@@ -701,7 +709,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
           </select>
         </div>
       </div>
-      <div class="exam-header-badge fin" id="showup-source-badge" style="display:inline-block;margin-bottom:12px">🗓️ SHOW UP SCHEDULE</div>
+      <div class="exam-header-badge fin" id="showup-source-badge" style="display:inline-block;margin-bottom:12px">◫ SHOW UP SCHEDULE</div>
       <div id="showup-out"></div>
     </div>
 
@@ -727,7 +735,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
           </select>
         </div>
       </div>
-      <div class="exam-header-badge fin" id="exam-source-badge" style="display:inline-block;margin-bottom:12px">✍🏻 FINAL EXAM SCHEDULE</div>
+      <div class="exam-header-badge fin" id="exam-source-badge" style="display:inline-block;margin-bottom:12px">✎ FINAL EXAM SCHEDULE</div>
       <div id="exam-flat-out"></div>
       <div id="exam-out"></div>
     </div>
@@ -746,7 +754,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     <!-- PANEL 5: Faculty Vault -->
     <div class="panel" id="p5">
       <div class="fv-top-bar">
-        <span class="fv-top-label">&#127891; FACULTY VAULT</span>
+        <span class="fv-top-label">◭ FACULTY VAULT</span>
       </div>
       <div class="fv-form">
         <div class="fv-grid">
@@ -2389,7 +2397,7 @@ function refreshShowupSourceBadge(){
   const badge=document.getElementById('showup-source-badge');
   if(!badge) return;
   const label=(_showupData&&(_showupData.source_filename||_showupData.source_subject))||'SHOW UP SCHEDULE';
-  badge.innerHTML=`🗓️ ${escHtml(label)}`;
+  badge.innerHTML=`◫ ${escHtml(label)}`;
 }
 
 function refreshShowupSectionOptions(){
@@ -2565,7 +2573,7 @@ function refreshExamSourceBadge(){
   const badge=document.getElementById('exam-source-badge');
   if(!badge) return;
   const label=(_examData&&(_examData.source_filename||_examData.source_subject))||'FINAL EXAM SCHEDULE';
-  badge.innerHTML=`✍🏻 ${escHtml(label)}`;
+  badge.innerHTML=`✎ ${escHtml(label)}`;
 }
 
 function onExamDeptChange(){ saveExamPrefs(); renderExamSchedule(); }
@@ -3484,14 +3492,14 @@ function renderFacultyVault() {
   
   const schoolData = FACULTY_DATA[school];
   if (!schoolData) {
-    grid.innerHTML = '<div class="fv-empty"><span class="fv-empty-icon">&#127891;</span><div class="fv-empty-txt">SELECT A SCHOOL TO BEGIN</div></div>';
+    grid.innerHTML = '<div class="fv-empty"><span class="fv-empty-icon">◭</span><div class="fv-empty-txt">SELECT A SCHOOL TO BEGIN</div></div>';
     countEl.textContent = '0 MEMBERS';
     return;
   }
   
   const deptData = schoolData.departments[dept];
   if (!deptData) {
-    grid.innerHTML = '<div class="fv-empty"><span class="fv-empty-icon">&#127891;</span><div class="fv-empty-txt">SELECT A DEPARTMENT</div></div>';
+    grid.innerHTML = '<div class="fv-empty"><span class="fv-empty-icon">◭</span><div class="fv-empty-txt">SELECT A DEPARTMENT</div></div>';
     countEl.textContent = '0 MEMBERS';
     return;
   }
