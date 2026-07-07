@@ -507,10 +507,43 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 }
 .header-live-item{display:inline-flex;align-items:center;white-space:nowrap}
 .header-live-sep{color:#4b7d5b;opacity:.85}
+.header-logo{cursor:pointer}
+
+/* ── Compiler Run game ── */
+.cr-overlay{position:fixed;inset:0;background:rgba(4,20,10,0.82);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px}
+.cr-overlay.on{display:flex}
+.cr-modal{background:#f4fff7;border:2px solid #0a7a3a;border-radius:14px;box-shadow:0 10px 40px rgba(10,122,58,0.35);width:100%;max-width:760px;padding:16px 18px 20px;position:relative;font-family:'Share Tech Mono',monospace}
+.cr-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px}
+.cr-title{font-family:'VT323',monospace;font-size:34px;letter-spacing:4px;color:#0a7a3a;line-height:1}
+.cr-sub{font-size:11px;letter-spacing:2px;color:#2d8a50;margin-top:2px}
+.cr-close{background:rgba(10,122,58,0.1);border:1px solid rgba(10,122,58,0.3);color:#0a7a3a;font-family:'VT323',monospace;font-size:20px;padding:2px 12px;border-radius:6px;cursor:pointer;letter-spacing:1px}
+.cr-close:hover{background:#0a7a3a;color:#fff}
+.cr-canvas-wrap{position:relative;border:2px solid rgba(10,122,58,0.25);border-radius:10px;overflow:hidden;background:#fbfffc}
+#cr-canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
+.cr-hint{margin-top:10px;font-size:11px;letter-spacing:1px;color:#4a8a60;text-align:center}
+.cr-hint b{color:#0a7a3a}
+@media(max-width:560px){ .cr-title{font-size:26px} }
 </style>
 
 <div id="app">
 <canvas id="bg3d"></canvas>
+
+<!-- Compiler Run game (double-click the logo to open) -->
+<div class="cr-overlay" id="cr-overlay">
+  <div class="cr-modal">
+    <div class="cr-head">
+      <div>
+        <div class="cr-title">&#128421; COMPILER RUN</div>
+        <div class="cr-sub">DODGE THE VIRUS &#129440; &nbsp;·&nbsp; DUCK UNDER THE AI</div>
+      </div>
+      <button class="cr-close" onclick="closeCompilerRun()">&#10005; ESC</button>
+    </div>
+    <div class="cr-canvas-wrap">
+      <canvas id="cr-canvas" width="720" height="220"></canvas>
+    </div>
+    <div class="cr-hint"><b>SPACE</b> / <b>&#8593;</b> / tap = jump &nbsp;·&nbsp; <b>&#8595;</b> = duck &nbsp;·&nbsp; <b>P</b> = pause</div>
+  </div>
+</div>
 <div class="corner c-tl"></div><div class="corner c-tr"></div>
 <div class="corner c-bl"></div><div class="corner c-br"></div>
 <div class="shell">
@@ -520,7 +553,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 
     <div class="header-top">
 
-        <img src="logo.png" class="header-logo">
+        <img src="logo.png" class="header-logo" id="header-logo" title="Double-click to play Compiler Run">
 
         <span class="header-x">X</span>
 
@@ -3576,5 +3609,182 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     t++;requestAnimationFrame(draw);
   }
   draw();
+})();
+
+/* ══════════════════════════════════════════
+   COMPILER RUN  — Chrome-dino-style endless runner
+   Player = desktop 🖥️ · ground obstacle = virus 🦠 · flyer = "AI"
+   Opens on double-click of the logo.
+══════════════════════════════════════════ */
+(function CompilerRun(){
+  const overlay=document.getElementById('cr-overlay');
+  const canvas=document.getElementById('cr-canvas');
+  if(!overlay||!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const GROUND=H-26;              // y of ground line
+  const HI_KEY='compiler_run_hi';
+
+  const GREEN='#0a7a3a', GREEN2='#2d8a50', RED='#b3261e', BLUE='#1a4a8a';
+  let hi=parseInt(localStorage.getItem(HI_KEY)||'0',10)||0;
+
+  let player, obstacles, speed, score, spawnTimer, state, rafId, lastT;
+  // state: 'ready' | 'run' | 'over' | 'paused'
+
+  function reset(){
+    player={x:64,w:40,h:40,duckH:24,y:GROUND-40,vy:0,ducking:false,onGround:true};
+    obstacles=[];
+    speed=6;
+    score=0;
+    spawnTimer=48;
+    state='ready';
+  }
+
+  function jump(){
+    if(state==='ready'){ state='run'; return; }
+    if(state==='over'){ reset(); state='run'; return; }
+    if(state!=='run') return;
+    if(player.onGround){ player.vy=-13.2; player.onGround=false; }
+  }
+  function setDuck(on){ if(state==='run') player.ducking=on; }
+
+  function spawn(){
+    // ~30% flyers once the game has some speed, else viruses
+    const flyer = speed>7.4 && Math.random()<0.32;
+    if(flyer){
+      const hoverHigh = Math.random()<0.5;
+      const h=26, w=42;
+      const y = hoverHigh ? GROUND-78 : GROUND-46;   // duck-under vs jump-over
+      obstacles.push({type:'ai', x:W+10, y, w, h});
+    } else {
+      const big = Math.random()<0.35;
+      const s = big?40:30;
+      obstacles.push({type:'virus', x:W+10, y:GROUND-s, w:s, h:s});
+    }
+  }
+
+  function hit(a,b){
+    // shrink boxes a touch for fair collisions
+    const pad=6;
+    return a.x+pad < b.x+b.w-pad && a.x+a.w-pad > b.x+pad &&
+           a.y+pad < b.y+b.h-pad && a.y+a.h-pad > b.y+pad;
+  }
+
+  function update(){
+    if(state!=='run') return;
+    // player physics
+    player.vy += 0.72;                       // gravity
+    player.y += player.vy;
+    if(player.y >= GROUND-player.h){ player.y=GROUND-player.h; player.vy=0; player.onGround=true; }
+    const curH = player.ducking && player.onGround ? player.duckH : player.h;
+    const pbox={x:player.x, y:GROUND-curH, w:player.w, h:curH};
+
+    // obstacles
+    for(const o of obstacles) o.x -= speed;
+    obstacles = obstacles.filter(o=>o.x + o.w > -4);
+    if(--spawnTimer<=0){
+      spawn();
+      const base = Math.max(46, 92 - speed*3);
+      spawnTimer = base + Math.random()*44;
+    }
+
+    // collisions
+    for(const o of obstacles){ if(hit(pbox,o)){ gameOver(); break; } }
+
+    // score + difficulty
+    score += 1;
+    if(score % 8 === 0 && speed < 15) speed += 0.045;
+  }
+
+  function gameOver(){
+    state='over';
+    hi=Math.max(hi, Math.floor(score/6));
+    localStorage.setItem(HI_KEY, String(hi));
+  }
+
+  // ── drawing ──
+  function emoji(ch,x,y,size){ ctx.font=size+'px "Segoe UI Emoji","Noto Color Emoji",serif'; ctx.textBaseline='alphabetic'; ctx.fillText(ch,x,y); }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // sky grid backdrop
+    ctx.strokeStyle='rgba(10,122,58,0.06)'; ctx.lineWidth=1;
+    for(let x=(-(score*speed*0)%40); x<W; x+=40){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,GROUND); ctx.stroke(); }
+
+    // ground
+    ctx.strokeStyle=GREEN; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(0,GROUND+1); ctx.lineTo(W,GROUND+1); ctx.stroke();
+    ctx.setLineDash([4,10]); ctx.strokeStyle='rgba(10,122,58,0.4)';
+    const off=(score*speed)%14;
+    ctx.beginPath(); ctx.moveTo(-off,GROUND+8); ctx.lineTo(W,GROUND+8); ctx.stroke(); ctx.setLineDash([]);
+
+    // player (desktop). duck = smaller so AI passes overhead
+    const ph = player.ducking && player.onGround ? player.duckH : player.h;
+    emoji('🖥️', player.x, GROUND-2 - (ph-player.h)*0 , ph+8);
+
+    // obstacles
+    for(const o of obstacles){
+      if(o.type==='virus'){
+        emoji('🦠', o.x, o.y+o.h, o.h+6);
+      } else {
+        // "AI" flyer chip
+        ctx.fillStyle=BLUE; roundRect(o.x,o.y,o.w,o.h,6); ctx.fill();
+        ctx.fillStyle='#fff'; ctx.font='bold 18px "VT323",monospace'; ctx.textBaseline='middle'; ctx.textAlign='center';
+        ctx.fillText('AI', o.x+o.w/2, o.y+o.h/2+1);
+        ctx.textAlign='left';
+      }
+    }
+
+    // score
+    ctx.fillStyle=GREEN2; ctx.font='20px "VT323",monospace'; ctx.textBaseline='alphabetic'; ctx.textAlign='right';
+    ctx.fillText('HI '+String(hi).padStart(5,'0')+'   '+String(Math.floor(score/6)).padStart(5,'0'), W-12, 26);
+    ctx.textAlign='left';
+
+    if(state==='ready') centerText('DOUBLE-CLICK DONE! PRESS SPACE / TAP TO RUN', GREEN);
+    if(state==='paused') centerText('PAUSED — PRESS P', GREEN);
+    if(state==='over'){
+      centerText('SYSTEM CRASH! PRESS SPACE / TAP TO RETRY', RED, -14);
+      ctx.fillStyle=GREEN; ctx.font='18px "VT323",monospace'; ctx.textAlign='center';
+      ctx.fillText('SCORE '+Math.floor(score/6)+'   ·   BEST '+hi, W/2, H/2+16); ctx.textAlign='left';
+    }
+  }
+  function roundRect(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+  function centerText(t,color,dy){ ctx.fillStyle=color; ctx.font='22px "VT323",monospace'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(t, W/2, H/2+(dy||0)); ctx.textAlign='left'; ctx.textBaseline='alphabetic'; }
+
+  function loop(t){
+    if(!overlay.classList.contains('on')) return;      // stopped
+    update();
+    draw();
+    rafId=requestAnimationFrame(loop);
+  }
+
+  // ── controls ──
+  function onKey(e){
+    if(!overlay.classList.contains('on')) return;
+    if(e.code==='Space'||e.code==='ArrowUp'){ e.preventDefault(); jump(); }
+    else if(e.code==='ArrowDown'){ e.preventDefault(); setDuck(true); }
+    else if(e.key==='Escape'){ closeCompilerRun(); }
+    else if(e.key==='p'||e.key==='P'){ if(state==='run')state='paused'; else if(state==='paused')state='run'; }
+  }
+  function onKeyUp(e){ if(e.code==='ArrowDown') setDuck(false); }
+  document.addEventListener('keydown',onKey);
+  document.addEventListener('keyup',onKeyUp);
+  canvas.addEventListener('pointerdown',e=>{ e.preventDefault(); jump(); });
+
+  window.openCompilerRun=function(){
+    reset();
+    overlay.classList.add('on');
+    cancelAnimationFrame(rafId);
+    rafId=requestAnimationFrame(loop);
+  };
+  window.closeCompilerRun=function(){
+    overlay.classList.remove('on');
+    cancelAnimationFrame(rafId);
+  };
+
+  overlay.addEventListener('pointerdown',e=>{ if(e.target===overlay) closeCompilerRun(); });
+
+  const logo=document.getElementById('header-logo');
+  if(logo) logo.addEventListener('dblclick', ()=>window.openCompilerRun());
 })();
 </script>
