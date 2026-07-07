@@ -534,7 +534,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     <div class="cr-head">
       <div>
         <div class="cr-title">&#128421; COMPILER RUN</div>
-        <div class="cr-sub">JUMP OVER THE VIRUS &#129440; &nbsp;&amp;&nbsp; THE AI</div>
+        <div class="cr-sub">JUMP OVER THE VIRUS &#129440; &nbsp;·&nbsp; DUCK UNDER THE AI</div>
       </div>
       <button class="cr-close" onclick="closeCompilerRun()">&#10005; ESC</button>
     </div>
@@ -3631,9 +3631,9 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
   // state: 'ready' | 'run' | 'over' | 'paused'
 
   function reset(){
-    player={x:60,w:26,h:26,y:GROUND-26,vy:0,onGround:true};
+    player={x:60,w:26,h:28,duckH:14,y:GROUND-28,vy:0,ducking:false,onGround:true};
     obstacles=[];
-    speed=6;
+    speed=3.6;                 // 40% slower than before
     score=0;
     spawnTimer=48;
     state='ready';
@@ -3645,14 +3645,15 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     if(state!=='run') return;
     if(player.onGround){ player.vy=-12.4; player.onGround=false; }
   }
+  function setDuck(on){ if(state==='run') player.ducking=on; }
 
   function spawn(){
-    // ~30% AI flyers once there's some speed - both viruses and AI sit low
-    // enough to clear with a single jump (jump is the only control).
-    const flyer = speed>7.2 && Math.random()<0.3;
+    // ~30% AI flyers once there's some speed. Viruses sit on the ground
+    // (jump over); AI flies high (duck under).
+    const flyer = speed>4.3 && Math.random()<0.3;
     if(flyer){
-      const h=24, w=40;
-      obstacles.push({type:'ai', x:W+10, y:GROUND-40, w, h});   // jump-over height
+      const h=26, w=40;
+      obstacles.push({type:'ai', x:W+10, y:GROUND-42, w, h});   // hits a standing PC, clears a ducking one
     } else {
       const big = Math.random()<0.35;
       const s = big?32:24;
@@ -3662,7 +3663,7 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
 
   function hit(a,b){
     // shrink boxes a touch for fair collisions
-    const pad=6;
+    const pad=4;
     return a.x+pad < b.x+b.w-pad && a.x+a.w-pad > b.x+pad &&
            a.y+pad < b.y+b.h-pad && a.y+a.h-pad > b.y+pad;
   }
@@ -3673,7 +3674,8 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     player.vy += 0.72;                       // gravity
     player.y += player.vy;
     if(player.y >= GROUND-player.h){ player.y=GROUND-player.h; player.vy=0; player.onGround=true; }
-    const pbox={x:player.x, y:player.y, w:player.w, h:player.h};
+    const curH = player.ducking && player.onGround ? player.duckH : player.h;
+    const pbox={x:player.x, y:GROUND-curH, w:player.w, h:curH};
 
     // obstacles
     for(const o of obstacles) o.x -= speed;
@@ -3687,9 +3689,9 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     // collisions
     for(const o of obstacles){ if(hit(pbox,o)){ gameOver(); break; } }
 
-    // score + difficulty
+    // score + difficulty (scaled 40% slower)
     score += 1;
-    if(score % 8 === 0 && speed < 15) speed += 0.045;
+    if(score % 8 === 0 && speed < 9) speed += 0.027;
   }
 
   function gameOver(){
@@ -3714,8 +3716,10 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     const off=(score*speed)%14;
     ctx.beginPath(); ctx.moveTo(-off,GROUND+8); ctx.lineTo(W,GROUND+8); ctx.stroke(); ctx.setLineDash([]);
 
-    // player (desktop)
-    emoji('🖥️', player.x, player.y+player.h+8, player.h+8);
+    // player (desktop) - shrinks when ducking so the AI passes overhead
+    const ph = player.ducking && player.onGround ? player.duckH : player.h;
+    const baseY = (player.onGround ? GROUND : player.y+player.h) + 6;
+    emoji('🖥️', player.x, baseY, ph+8);
 
     // obstacles
     for(const o of obstacles){
@@ -3752,13 +3756,16 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     rafId=requestAnimationFrame(loop);
   }
 
-  // ── controls: jump is the only action ──
+  // ── controls: SPACE/Up jump over viruses · Down ducks under the AI ──
   function onKey(e){
     if(!overlay.classList.contains('on')) return;
-    if(e.code==='Space'){ e.preventDefault(); jump(); }
+    if(e.code==='Space'||e.code==='ArrowUp'){ e.preventDefault(); jump(); }
+    else if(e.code==='ArrowDown'){ e.preventDefault(); setDuck(true); }
     else if(e.key==='Escape'){ closeCompilerRun(); }
   }
+  function onKeyUp(e){ if(e.code==='ArrowDown') setDuck(false); }
   document.addEventListener('keydown',onKey);
+  document.addEventListener('keyup',onKeyUp);
   canvas.addEventListener('pointerdown',e=>{ e.preventDefault(); jump(); });
 
   window.openCompilerRun=function(){
