@@ -1,7 +1,8 @@
 <style>
-@import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=VT323&display=swap');
+:root{--font-sans:'Inter','Segoe UI',Arial,sans-serif;--font-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;--font-display:'VT323','Courier New',monospace}
 *{box-sizing:border-box;margin:0;padding:0}
-#app{background:#f0f7f0;font-family:'Share Tech Mono',monospace;color:#1a4a2e;border-radius:14px;overflow:hidden;position:relative;min-height:760px}
+#app{background:#f0f7f0;font-family:var(--font-sans);color:#1a4a2e;border-radius:14px;overflow:hidden;position:relative;min-height:760px}
 canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .shell{position:relative;z-index:10}
 .hdr{text-align:center;padding:16px 16px 10px;border-bottom:2px solid rgba(0,120,60,0.18);background:rgba(255,255,255,0.72)}
@@ -23,60 +24,60 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .nav-card:hover:not(.active){border-color:#0a7a3a;background:rgba(255,255,255,0.92)}
 .nav-indicator{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 8px 8px;background:transparent;transition:background .25s}
 .nav-card.active .nav-indicator{background:#0a7a3a}
-.nav-badge{font-size:9px;letter-spacing:.4px;padding:2px 7px;border-radius:3px;border:1px solid rgba(0,120,60,0.25);color:#27553a;display:inline-block;margin-bottom:7px;background:rgba(0,120,60,0.05);font-weight:600}
+.nav-badge{font-family:var(--font-sans);font-size:9px;letter-spacing:.02em;padding:2px 7px;border-radius:3px;border:1px solid rgba(0,120,60,0.25);color:#27553a;display:inline-block;margin-bottom:7px;background:rgba(0,120,60,0.05);font-weight:700}
 .nav-card.active .nav-badge{color:#0a7a3a;border-color:#0a7a3a;background:rgba(10,122,58,0.09)}
-.nav-icon{font-family:'VT323',monospace;font-size:30px;color:#2d6a45;line-height:1;margin-bottom:3px}
+.nav-icon{font-family:var(--font-display);font-size:30px;color:#2d6a45;line-height:1;margin-bottom:3px}
 .nav-card.active .nav-icon{color:#0a7a3a}
-.nav-title{font-family:'VT323',monospace;font-size:21px;letter-spacing:2px;color:#1f5c3c;word-break:keep-all}
+.nav-title{font-family:var(--font-display);font-size:21px;letter-spacing:2px;color:#1f5c3c;word-break:keep-all;text-transform:none}
 .nav-card.active .nav-title{color:#0a7a3a}
-.nav-desc{font-size:9px;letter-spacing:.2px;color:#234f3b;margin-top:3px;word-break:keep-all;font-weight:600;text-transform:none}
+.nav-desc{font-family:var(--font-sans);font-size:9px;letter-spacing:.01em;color:#234f3b;margin-top:3px;word-break:keep-all;font-weight:600;text-transform:none}
 .nav-card.active .nav-desc{color:#1d4d32}
 
 .content{margin:0 18px 20px;border:2px solid rgba(0,120,60,0.15);border-top:none;border-radius:0 0 10px 10px;background:rgba(255,255,255,0.82);padding:20px;min-height:480px}
 .panel{display:none}.panel.on{display:block}
 
 .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
-.flabel{font-size:9px;letter-spacing:3px;color:#2b5b3d;display:block;margin-bottom:5px;font-weight:600}
-.rsel{width:100%;background:#f8fff8;border:1.5px solid rgba(0,120,60,0.3);color:#1a4a2e;font-family:'Share Tech Mono',monospace;font-size:12px;padding:9px 10px;border-radius:6px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' fill='none' stroke='%230a7a3a' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;min-width:0}
+.flabel{font-family:var(--font-sans);font-size:10px;letter-spacing:.03em;color:#2b5b3d;display:block;margin-bottom:5px;font-weight:700;text-transform:none}
+.rsel{width:100%;background:#f8fff8;border:1.5px solid rgba(0,120,60,0.3);color:#1a4a2e;font-family:var(--font-mono);font-size:12px;padding:9px 10px;border-radius:6px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' fill='none' stroke='%230a7a3a' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;min-width:0}
 .rsel:focus{border-color:#0a7a3a;box-shadow:0 0 0 2px rgba(10,122,58,0.15)}
 .rsel:disabled{opacity:.45;cursor:not-allowed}
-.go{font-family:'VT323',monospace;font-size:20px;letter-spacing:3px;padding:10px 32px;background:#0a7a3a;border:none;color:#fff;cursor:pointer;border-radius:6px;margin-bottom:18px;transition:all .2s;display:block}
+.go{font-family:var(--font-display);font-size:20px;letter-spacing:2px;padding:10px 32px;background:#0a7a3a;border:none;color:#fff;cursor:pointer;border-radius:6px;margin-bottom:18px;transition:all .2s;display:block}
 .go:hover{background:#0d9a4a}.go:active{transform:scale(.97)}
 
 .tt-shell{max-width:900px;margin:0 auto}
 .tt-hero{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:16px 18px;margin-bottom:14px;border:1.5px solid rgba(0,120,60,0.18);border-radius:12px;background:linear-gradient(180deg,rgba(248,255,248,.96),rgba(232,245,236,.88))}
-.tt-kicker{font-size:9px;letter-spacing:2px;color:#27553a;margin-bottom:6px;font-weight:700;text-transform:uppercase}
-.tt-title{font-family:'VT323',monospace;font-size:38px;letter-spacing:3px;color:#0a7a3a;line-height:1}
-.tt-copy{font-size:13px;line-height:1.6;color:#234f3b;max-width:54ch;margin-top:8px;font-weight:500;letter-spacing:0;text-transform:none}
-.tt-live-badge{font-family:'VT323',monospace;font-size:16px;letter-spacing:2px;padding:8px 12px;border-radius:999px;border:1px solid rgba(0,120,60,0.2);background:#fff;color:#0a7a3a;white-space:nowrap;flex-shrink:0}
+.tt-kicker{font-family:var(--font-sans);font-size:10px;letter-spacing:.06em;color:#27553a;margin-bottom:6px;font-weight:700;text-transform:none}
+.tt-title{font-family:var(--font-display);font-size:38px;letter-spacing:2px;color:#0a7a3a;line-height:1}
+.tt-copy{font-family:var(--font-sans);font-size:13px;line-height:1.6;color:#234f3b;max-width:54ch;margin-top:8px;font-weight:500;letter-spacing:0;text-transform:none}
+.tt-live-badge{font-family:var(--font-mono);font-size:14px;letter-spacing:.02em;padding:8px 12px;border-radius:999px;border:1px solid rgba(0,120,60,0.2);background:#fff;color:#0a7a3a;white-space:nowrap;flex-shrink:0}
 .tt-form{padding:16px 18px;border:1.5px solid rgba(0,120,60,0.16);border-radius:12px;background:#fff;margin-bottom:14px}
 .tt-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 .tt-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
-.tt-hint{font-size:10px;letter-spacing:0;color:#234f3b;font-weight:600;text-transform:none}
+.tt-hint{font-family:var(--font-sans);font-size:10px;letter-spacing:0;color:#234f3b;font-weight:600;text-transform:none}
 .tt-out{padding:16px 18px;border:1.5px solid rgba(0,120,60,0.16);border-radius:12px;background:#fff}
 .tt-summary{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .tt-summary-pill{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;color:#0a7a3a}
 .tt-summary-meta{font-size:10px;letter-spacing:1px;color:#3d7a55}
 .tt-result-table{width:100%;border-collapse:collapse;table-layout:fixed}
-.tt-result-table th{background:#e8f5ec;color:#0a7a3a;font-size:10px;letter-spacing:2px;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.18)}
-.tt-result-table td{padding:10px 12px;border:1px solid rgba(0,120,60,0.1);font-size:12px;color:#1a4a2e;vertical-align:top}
+.tt-result-table th{background:#e8f5ec;color:#0a7a3a;font-family:var(--font-sans);font-size:10px;letter-spacing:.04em;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.18)}
+.tt-result-table td{padding:10px 12px;border:1px solid rgba(0,120,60,0.1);font-size:12px;color:#1a4a2e;vertical-align:top;font-family:var(--font-sans)}
 .tt-result-table tr:nth-child(even) td{background:#f8fff8}
 .tt-result-table tr:hover td{background:#f0fff4}
-.tt-course{font-size:12px}
+.tt-course{font-size:12px;font-family:var(--font-sans)}
 .tt-course.tt-repeat{background:#fff3cd;color:#856404;border:1px solid #ffe08a;border-radius:4px;padding:1px 7px;display:inline-block}
-.tt-note{display:inline-block;font-size:9px;letter-spacing:1px;padding:1px 6px;border-radius:4px;margin-right:6px;vertical-align:middle;font-family:'Share Tech Mono',monospace;white-space:nowrap}
+.tt-note{display:inline-block;font-size:9px;letter-spacing:0;padding:1px 6px;border-radius:4px;margin-right:6px;vertical-align:middle;font-family:var(--font-mono);white-space:nowrap}
 .tt-note.resch{background:#ffe8cc;color:#8a4b00;border:1px solid #ffca8a}
 .tt-note.cancel{background:#f8d7da;color:#8a1a1a;border:1px solid #f1a9a0;text-decoration:none}
 .tt-course.is-cancelled{text-decoration:line-through;opacity:.7}
-.tt-day{font-size:11px;letter-spacing:1px;color:#1a4a2e}
-.tt-sec{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;color:#2d8a50}
-.tt-room{font-family:'VT323',monospace;font-size:18px;letter-spacing:1px;color:#0a7a3a}
-.tt-time{font-size:10px;letter-spacing:1px;color:#2d8a50}
-.tt-empty-card{text-align:center;padding:34px 16px;color:#3d7a55;font-size:12px;letter-spacing:2px;border:1.5px dashed rgba(10,122,58,0.24);border-radius:12px;background:linear-gradient(180deg,#fcfffc 0%,#f4fbf4 100%)}
+.tt-day{font-size:11px;letter-spacing:0;color:#1a4a2e;font-family:var(--font-sans)}
+.tt-sec{font-family:var(--font-mono);font-size:11px;letter-spacing:0;color:#2d8a50}
+.tt-room{font-family:var(--font-mono);font-size:18px;letter-spacing:0;color:#0a7a3a}
+.tt-time{font-family:var(--font-mono);font-size:10px;letter-spacing:0;color:#2d8a50}
+.tt-empty-card{text-align:center;padding:34px 16px;color:#3d7a55;font-size:12px;letter-spacing:.02em;border:1.5px dashed rgba(10,122,58,0.24);border-radius:12px;background:linear-gradient(180deg,#fcfffc 0%,#f4fbf4 100%)}
 .tt-empty-card .empty{padding:0}
-.tt-empty-icon{font-family:'VT323',monospace;font-size:42px;color:#0a7a3a;display:block;margin:0 auto 10px;padding:8px 12px;border-radius:999px;background:#e9f7eb;border:1px solid rgba(10,122,58,0.16);width:max-content}
-.tt-empty-title{font-family:'VT323',monospace;font-size:22px;letter-spacing:2px;color:#0a7a3a;margin-bottom:6px}
-.tt-empty-copy{font-size:11px;line-height:1.6;color:#2f5a3f;max-width:46ch;margin:0 auto}
+.tt-empty-icon{font-family:var(--font-display);font-size:42px;color:#0a7a3a;display:block;margin:0 auto 10px;padding:8px 12px;border-radius:999px;background:#e9f7eb;border:1px solid rgba(10,122,58,0.16);width:max-content}
+.tt-empty-title{font-family:var(--font-display);font-size:22px;letter-spacing:2px;color:#0a7a3a;margin-bottom:6px}
+.tt-empty-copy{font-family:var(--font-sans);font-size:11px;line-height:1.6;color:#2f5a3f;max-width:46ch;margin:0 auto}
 
 .tbl{width:100%;border-collapse:collapse;table-layout:fixed}
 .tbl th{background:#e8f5ec;color:#0a7a3a;font-size:10px;letter-spacing:2px;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.2)}
@@ -545,43 +546,43 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     <button class="nav-card active" id="nc0" onclick="sw(0)" role="tab" aria-selected="true" tabindex="0">
       <div class="nav-badge">PANEL 01</div>
       <div class="nav-icon">◷</div>
-      <div class="nav-title">CLASS TIMETABLE</div>
-      <div class="nav-desc">DEPT / BATCH / SECTION / DAY</div>
+      <div class="nav-title">Class timetable</div>
+      <div class="nav-desc">Dept / batch / section / day</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc1" onclick="sw(1)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 02</div>
       <div class="nav-icon">▣</div>
-      <div class="nav-title">FREE ROOMS</div>
-      <div class="nav-desc">BLOCK / FLOOR — SLOT TIMELINE</div>
+      <div class="nav-title">Free rooms</div>
+      <div class="nav-desc">Block / floor — slot timeline</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc5" onclick="sw(5)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 03</div>
       <div class="nav-icon">◭</div>
-      <div class="nav-title">FACULTY</div>
-      <div class="nav-desc">DIRECTORY</div>
+      <div class="nav-title">Faculty</div>
+      <div class="nav-desc">Directory</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc3" onclick="sw(3)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 04</div>
       <div class="nav-icon">✎</div>
-      <div class="nav-title">EXAM SCHEDULE</div>
-      <div class="nav-desc">S1 / S2 / FINAL EXAMS</div>
+      <div class="nav-title">Exam schedule</div>
+      <div class="nav-desc">S1 / S2 / final exams</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc4" onclick="sw(4)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 05</div>
       <div class="nav-icon">◨</div>
-      <div class="nav-title">SEATING PLAN</div>
-      <div class="nav-desc">EXAM SEAT LOOKUP</div>
+      <div class="nav-title">Seating plan</div>
+      <div class="nav-desc">Exam seat lookup</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc2" onclick="sw(2)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 06</div>
       <div class="nav-icon">◫</div>
-      <div class="nav-title">SHOW UP SCHEDULE</div>
-      <div class="nav-desc">DEPT / BATCH / SECTION</div>
+      <div class="nav-title">Show up schedule</div>
+      <div class="nav-desc">Dept / batch / section</div>
       <div class="nav-indicator"></div>
     </button>
   </div>
@@ -593,11 +594,11 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
       <div class="tt-shell">
         <div class="tt-hero">
           <div>
-            <div class="tt-kicker">FAST ISLAMABAD · BACHELORS TIMETABLE</div>
-            <div class="tt-title">CLASS TIMETABLE</div>
+            <div class="tt-kicker">Fast Islamabad · bachelor timetable</div>
+            <div class="tt-title">Class timetable</div>
             <div class="tt-copy">Choose your department, batch year, day, and section to load the timetable from the live Google Sheet.</div>
           </div>
-          <div class="tt-live-badge">SYNCED ✓</div>
+          <div class="tt-live-badge">Synced ✓</div>
         </div>
 
         <div class="tt-form">
@@ -629,7 +630,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
             </div>
           </div>
           <div class="tt-actions">
-            <button class="go" onclick="loadTT()">&#9658; GET TIMETABLE</button>
+            <button class="go" onclick="loadTT()">&#9658; Get timetable</button>
             <div class="tt-hint">Selections are remembered automatically on this device.</div>
           </div>
         </div>
