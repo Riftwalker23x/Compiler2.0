@@ -54,6 +54,8 @@ Our mission is to streamline the FAST experience across all campuses and program
 
 ![Homepage](Visuals/HomepageCompiler.png)
 
+VTable is a campus utility dashboard made to bring the everyday FAST student workflow into one place. The home page is the entry point for the tools students need most often: checking their timetable, finding free rooms, looking up faculty, and taking a quick break with Compiler Run. Instead of treating these as separate scattered tasks, the app keeps them under one clean interface. It is designed to be practical first, so every section focuses on a real campus problem rather than extra clutter. The result is a lightweight companion for navigating academic schedules, room availability, and faculty information throughout the day.
+
 ### Timetable
 
 ![Timetable](Visuals/TimeTable.png)
