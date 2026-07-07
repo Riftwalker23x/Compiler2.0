@@ -3674,8 +3674,13 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     player.vy += 0.72;                       // gravity
     player.y += player.vy;
     if(player.y >= GROUND-player.h){ player.y=GROUND-player.h; player.vy=0; player.onGround=true; }
-    const curH = player.ducking && player.onGround ? player.duckH : player.h;
-    const pbox={x:player.x, y:GROUND-curH, w:player.w, h:curH};
+    // Hitbox follows the player: ducking only shrinks it while grounded; while
+    // airborne it must sit at the actual jump height (player.y), not the ground -
+    // otherwise jumping "over" a virus still collides.
+    let curH, curTop;
+    if(player.ducking && player.onGround){ curH=player.duckH; curTop=GROUND-curH; }
+    else { curH=player.h; curTop=player.y; }
+    const pbox={x:player.x, y:curTop, w:player.w, h:curH};
 
     // obstacles
     for(const o of obstacles) o.x -= speed;
