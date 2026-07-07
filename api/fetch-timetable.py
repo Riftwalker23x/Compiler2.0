@@ -741,10 +741,14 @@ def parse_seating_plan_email(body: str, subject: str, pdf_bytes: bytes | None = 
 #   "CS2005 Database Systems\nBS(CS) (A,B,C,D,E,F,G)\nBS(AI) (A,B,C)\n2024"
 # with the batch year and any department/section group on their own lines.
 
-EXAM_SLOT_COLUMNS = {2: "9:00 to 12:00 PM", 4: "1:00 to 4:00 PM", 6: "5:00 to 8:00 PM"}  # 1-indexed: B,D,F
+# Time-slot columns are detected dynamically per sheet from the header row -
+# the Final Exam Schedule has 3 slots (9-12, 1-4, 5-8) in columns B/D/F, but a
+# Sessional schedule has 8 one-hour slots (B/D/F/H/J/L/N/P), so a hardcoded set
+# silently dropped every paper past the third column.
+EXAM_TIME_HEADER_RE = re.compile(r"\d{1,2}:\d{2}\s*(?:to|-)\s*\d{1,2}:\d{2}", re.I)
 EXAM_SCHOOL_SHEETS = [(re.compile(r"FSC", re.I), "computing"),
                       (re.compile(r"FSM", re.I), "business"),
-                      (re.compile(r"FSE", re.I), "engineering")]
+                      (re.compile(r"\bFSE\b|\bEE\b", re.I), "engineering")]
 
 EXAM_CODE_RE = re.compile(r"^([A-Z]{2,3}\d{3,4})\s*(.*)$", re.S)
 EXAM_YEAR_LINE_RE = re.compile(r"^(20\d{2})$")
@@ -834,18 +838,36 @@ def parse_exam_paper_cell(text: str) -> dict[str, Any] | None:
     }
 
 
+def _detect_exam_slot_columns(rows: list) -> dict[int, str]:
+    """Find the time-slot header row and return {0-based col index: time label}.
+    Works for any number of slots (3 for Final, 8 for Sessional, ...)."""
+    for row in rows:
+        slots: dict[int, str] = {}
+        for i, cell in enumerate(row):
+            v = cell.value
+            if v is not None and EXAM_TIME_HEADER_RE.search(str(v)):
+                slots[i] = re.sub(r"\s+", " ", str(v)).strip()
+        if len(slots) >= 2:  # a real header row has multiple time cells
+            return slots
+    return {}
+
+
 def parse_exam_schedule_sheet(ws: Any) -> list[dict[str, Any]]:
+    rows = list(ws.iter_rows())
+    slot_columns = _detect_exam_slot_columns(rows)
+    if not slot_columns:
+        return []
     exams: list[dict[str, Any]] = []
     current_date = ""
-    for row in ws.iter_rows():
+    for row in rows:
         if len(row) > 0 and row[0].value is not None:
             iso = _excel_serial_to_iso_date(row[0].value)
             if iso:
                 current_date = iso
-        for col_idx, slot_label in EXAM_SLOT_COLUMNS.items():
-            if col_idx - 1 >= len(row):
+        for col_idx, slot_label in slot_columns.items():
+            if col_idx >= len(row):
                 continue
-            cell_value = row[col_idx - 1].value
+            cell_value = row[col_idx].value
             if cell_value is None:
                 continue
             parsed = parse_exam_paper_cell(str(cell_value))
