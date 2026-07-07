@@ -49,7 +49,7 @@ jobs:
           # feature has synced at least once (e.g. showup-sheet-source.json is
           # created only after a show-up email's sheet link is discovered), and
           # a plain "git add" of a missing path aborts the whole step.
-          for f in dbfolder/seating-plan.json dbfolder/exam-schedule-*.json dbfolder/showup-schedule-*.json dbfolder/showup-sheet-source.json; do
+          for f in db/seating-plan.json db/exam-schedule-*.json db/showup-schedule-*.json db/showup-sheet-source.json; do
             [ -e "$f" ] && git add "$f"
           done
           if git diff --cached --quiet; then
@@ -58,7 +58,7 @@ jobs:
           fi
           git commit -m "Sync seating plan / exam schedule / show up schedule from Gmail"
           # This workflow can be triggered concurrently (Apps Script dispatch +
-          # the 30-min schedule + poll-showup-sheet.yml all write to dbfolder/),
+          # the 30-min schedule + poll-showup-sheet.yml all write to db/),
           # so a push can race and get rejected as non-fast-forward. Retry with
           # a rebase onto the latest remote each time instead of failing the run.
           for attempt in 1 2 3 4 5; do

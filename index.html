@@ -787,7 +787,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
         <input class="sp-search-input" id="sp-query" type="text" placeholder="ENTER YOUR NAME OR NUID..." maxlength="80" onkeydown="if(event.key==='Enter')searchSeatingPlan()">
         <button class="sp-search-btn" id="sp-search-btn" onclick="searchSeatingPlan()">&#9658; FIND SEAT</button>
       </div>
-      <div class="sp-hint">SEARCH BY FULL NAME OR NUID (e.g. 21L-1234) — DATA FROM dbfolder/seating-plan.json</div>
+      <div class="sp-hint">SEARCH BY FULL NAME OR NUID (e.g. 21L-1234) — DATA FROM db/seating-plan.json</div>
       <div class="sp-status" id="sp-status"></div>
       <div class="sp-result-wrap" id="sp-result"></div>
     </div>
@@ -2388,12 +2388,12 @@ initLiveSheetSync();
 
 /* ══════════════════════════════════════════
    SHOW UP SCHEDULE
-   Real data, loaded from dbfolder/showup-schedule-<school>.json (synced from
+   Real data, loaded from db/showup-schedule-<school>.json (synced from
    an emailed workbook whose subject contains "showup"). Same matrix layout
    and JSON shape as the Final Exam Schedule (date/time-slot cells with
    BS(dept) (sections) groups per course).
 ══════════════════════════════════════════ */
-const SHOWUP_SCHEDULE_URL='dbfolder/showup-schedule-computing.json';
+const SHOWUP_SCHEDULE_URL='db/showup-schedule-computing.json';
 let _showupData=null;
 let _showupLoadPromise=null;
 
@@ -2531,9 +2531,9 @@ function initShowupSchedulePanel(){
 function dFmt(d){const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return `${d.getDate()} ${M[d.getMonth()]} ${d.getFullYear()}`;}
 function dDay(d){return["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()];}
 
-/* Real data, loaded from dbfolder/exam-schedule-<school>.json (synced from the
+/* Real data, loaded from db/exam-schedule-<school>.json (synced from the
    Final Examination Schedule xlsx via the Gmail sync backend). */
-const EXAM_SCHEDULE_URL='dbfolder/exam-schedule-computing.json';
+const EXAM_SCHEDULE_URL='db/exam-schedule-computing.json';
 let _examData=null;
 let _examLoadPromise=null;
 
@@ -2697,7 +2697,7 @@ function initExamSchedulePanel(){
 /* ══════════════════════════════════════════
    SEATING PLAN
 ══════════════════════════════════════════ */
-const SEATING_PLAN_URL='dbfolder/seating-plan.json';
+const SEATING_PLAN_URL='db/seating-plan.json';
 let _seatingData=null;
 let _seatingLoadPromise=null;
 
@@ -2820,7 +2820,7 @@ function searchSeatingPlan(){
   }).catch(()=>{
     status.textContent='COULD NOT LOAD SEATING DATA — FILE MAY NOT BE SYNCED YET';
     status.className='sp-status err';
-    result.innerHTML=`<div class="sp-empty"><span class="sp-empty-icon">&#9888;</span><div class="sp-empty-txt">dbfolder/seating-plan.json UNAVAILABLE</div></div>`;
+    result.innerHTML=`<div class="sp-empty"><span class="sp-empty-icon">&#9888;</span><div class="sp-empty-txt">db/seating-plan.json UNAVAILABLE</div></div>`;
   }).finally(()=>{
     btn.disabled=false;
   });

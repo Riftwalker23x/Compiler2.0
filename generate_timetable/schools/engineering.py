@@ -1,127 +1,50 @@
-#!/usr/bin/env python3
-
-"""
-FSE (Faculty/School of Engineering) timetable parser.
-
-This module is completely separate from the FCS (computing) and FSM
-(business) parsers in generate_timetable.py — the FSE sheet has its own
-grid layout, its own course-title conventions, and (uniquely among the
-three schools) a second tab, "Courses SP-26", that acts as the authoritative
-source of truth for which department/batch a course belongs to.
-
-It is wired into generate_timetable.py as a drop-in replacement for the
-engineering branch only. Nothing about the FCS or FSM parsers changes.
-
---------------------------------------------------------------------------
-Why this module exists (bug writeup / fix plan)
---------------------------------------------------------------------------
-The previous engineering parser inferred batch year purely from course-name
-keywords (infer_fse_batch) and fanned a course out to every department
-mentioned in its title suffix (fse_resolve_departments), with no way to
-tell a genuine joint-core course ("Linear Circuit Analysis EE-CE-A", taught
-to both current batches) apart from an EE course that also happens to be a
-repeat/retake opportunity for CE students ("Applied Calculus EE-CE-A").
-That's how Applied Calculus / Applied Physics Lab leaked into BS CE/2025/A
-as if they were part of CE's normal batch curriculum.
-
-Fix, phase by phase:
-  Phase 1 — Parse the "(EE & CE Repeat)" / "(Repeat)" annotation off the
-            Courses SP-26 tab and carry an explicit is_repeat flag through
-            the pipeline. Repeat offerings go into a separate REPEAT bucket
-            (tt[dept]["REPEAT"][section]) instead of the primary batch —
-            mirroring the yellow-highlight REPEAT_BATCH_KEY convention
-            already used by the FCS parser.
-  Phase 2 — Replace infer_fse_batch's keyword guessing with a structural
-            lookup: {(dept, course_name) -> batch_year}, built from the
-            Courses SP-26 tab's semester-header blocks (the authoritative
-            source), keyed by normalized course name (the schedule grid
-            doesn't carry course codes, only titles).
-  Phase 3 — Only fan a course out to multiple departments when the Courses
-            tab shows it's a genuine joint/current-batch course for both —
-            not just because the schedule cell's suffix says "EE-CE".
-  Phase 4 — Dead code removal: the main script had two definitions of
-            parse_engineering_grid; the first (unreachable, room-block based)
-            is deleted as part of this refactor.
-  Phase 5 — Cross-validation: after parsing, walk the Courses tab and flag
-            any (dept, course) entry that never showed up in the schedule
-            output, and log (live, via dlog_warn) any schedule entry that
-            couldn't be traced back to a Courses-tab row.
-  Phase 6 — Regression guard: assert that known EE-repeat course names never
-            land in BS CE/2025's normal Monday bucket again.
-"""
+"""Engineering-school timetable parser."""
 
 import re
+from types import SimpleNamespace
 
-# ---------------------------------------------------------------------------
-# Constants
-# ---------------------------------------------------------------------------
-
-ENGINEERING_PROGRAMS = {"EE", "CE"}
-
-# Regex for extracting section info from the trailing part of an FSE
-# schedule-grid course title (the "Classes Schedule FSE SP-26" tab).
-# Matches patterns like:
-#   "... A"         -> programs=[], section="A"
-#   "... CE-A"      -> programs=["CE"], section="A"
-#   "... EE-CE-A"   -> programs=["EE","CE"], section="A"
-#   "... Int-A"     -> programs=["Int"], section="A"  (treated specially)
-#   "... CE/A"      -> programs=["CE"], section="A"
-#   "... CE- A"     -> programs=["CE"], section="A"  (space-tolerant)
-FSE_SECTION_RE = re.compile(
-    r'^(.*?)\s+'                       # course name (greedy until last whitespace block)
-    r'('
-    r'(?:[A-Z][A-Za-z]*[-/])*'         # zero or more PROG- or PROG/ prefixes
-    r'(?:\s*)'                          # optional space (handles "CE- A")
-    r'([A-Z])'                          # single trailing section letter
-    r')\s*$'
+from ..config import (
+    COURSES_HEADER_BATCH_ONLY_RE,
+    COURSES_HEADER_DEPT_BATCH_RE,
+    COURSES_HEADER_MSPHD_RE,
+    COURSES_HEADER_SEMESTER_RE,
+    COURSES_SECTION_COLS,
+    ENGINEERING_PROGRAMS,
+    FSE_SECTION_RE,
+    FSE_SUFFIX_RE,
+    FSE_VALID_SECTIONS,
+    REGRESSION_FORBIDDEN_COURSES,
+    REGRESSION_WATCH_BATCH,
+    REGRESSION_WATCH_DAY,
+    REGRESSION_WATCH_DEPT,
+    REPEAT_ANNOTATION_RE,
+    REPEAT_ANNOTATION_STOPWORDS,
+    REPEAT_BATCH_KEY,
+    SCHOOLS,
+)
+from ..google_sheets import fetch_sheet_with_colours, get_sheet_tab_names
+from ..helpers import (
+    add_course,
+    clean,
+    dlog,
+    dlog_error,
+    dlog_warn,
+    normalise_room,
+    one_line,
 )
 
-# More structured regex for the suffix itself — used after splitting
-FSE_SUFFIX_RE = re.compile(
-    r'^((?:[A-Z][A-Za-z]*[-/])*)\s*([A-Z])$'
+COMMON = SimpleNamespace(
+    dlog=dlog,
+    dlog_error=dlog_error,
+    dlog_warn=dlog_warn,
+    one_line=one_line,
+    clean=clean,
+    fetch_sheet_with_colours=fetch_sheet_with_colours,
+    normalise_room=normalise_room,
+    add_course=add_course,
+    DAYS=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    REPEAT_BATCH_KEY=REPEAT_BATCH_KEY,
 )
-
-# Known section letters for validation
-FSE_VALID_SECTIONS = set("ABCD")
-
-# Regex used to pull dept + batch out of a "Courses SP-26" semester-header
-# cell (e.g. "2nd Semester    Batch BS(EE) 2025"). Whitespace is normalized
-# to single spaces before matching.
-COURSES_HEADER_DEPT_BATCH_RE = re.compile(
-    r'Batch\s+BS\s*\(\s*([A-Za-z]+)\s*\)\s+(\d{4})', re.IGNORECASE
-)
-# Shared/general block, no dept split, e.g. "6th Semester   Batch 2023"
-COURSES_HEADER_BATCH_ONLY_RE = re.compile(r'Batch\s+(\d{4})', re.IGNORECASE)
-# MS/PhD block, e.g. "MS/PhD EE"
-COURSES_HEADER_MSPHD_RE = re.compile(r'MS\s*/\s*PhD\s+([A-Za-z]+)', re.IGNORECASE)
-COURSES_HEADER_SEMESTER_RE = re.compile(r'(\d+)\w{2}\s+Semester', re.IGNORECASE)
-
-# Parenthetical annotation on a Courses-tab title that marks a repeat /
-# retake offering, e.g. "Applied Calculus (EE & CE Repeat)", "OOP (Repeat)".
-REPEAT_ANNOTATION_RE = re.compile(r'\(([^)]*repeat[^)]*)\)', re.IGNORECASE)
-REPEAT_ANNOTATION_STOPWORDS = {"REPEAT", "AND", "FOR", "OF", "THE"}
-
-# Section-letter columns (Section-A/B/C/D) on the Courses SP-26 tab, 0-indexed.
-COURSES_SECTION_COLS = list(zip(range(6, 10), "ABCD"))
-
-# --- Phase 6: regression guard --------------------------------------------
-# Course names that are known EE-repeat offerings (per the bug that
-# motivated this refactor) and must NEVER show up in CE's *normal* batch
-# bucket — they belong in the REPEAT bucket instead.
-REGRESSION_WATCH_DEPT = "BS CE"
-REGRESSION_WATCH_BATCH = "2025"
-REGRESSION_WATCH_DAY = "Monday"
-REGRESSION_FORBIDDEN_COURSES = {
-    "applied calculus",
-    "applications of ict",
-    "applications of ict lab",
-    "applied physics",
-    "applied physics lab",
-}
-
-# ---------------------------------------------------------------------------
-# Text / matching helpers
-# ---------------------------------------------------------------------------
 
 def normalize_course_name(name):
     """
@@ -787,3 +710,58 @@ def run_regression_check(tt, common):
              f"{REGRESSION_WATCH_DEPT}/{REGRESSION_WATCH_BATCH}")
 
     return offenders
+
+
+def generate(service):
+    school_name = "engineering"
+    school_info = SCHOOLS[school_name]
+    tt = {}
+    total = 0
+
+    sheet_url = f"https://docs.google.com/spreadsheets/d/{school_info['id']}"
+    dlog(f"--- {school_name.upper()} --- sheet: {sheet_url}")
+    actual_tabs = get_sheet_tab_names(service, school_info["id"])
+    dlog(f"  Actual tabs in sheet: {actual_tabs}")
+    configured_tabs = school_info["tabs"]
+    dlog(f"  Configured tabs    : {configured_tabs}")
+
+    missing = [t for t in configured_tabs if t not in actual_tabs]
+    if missing:
+        dlog_error(
+            f"  MISMATCH: tabs {missing} not found in sheet. Available: {actual_tabs}"
+        )
+        dlog_warn(
+            f"  Fix: update SCHOOLS['{school_name}']['tabs'] to match one of: {actual_tabs}"
+        )
+
+    for tab in configured_tabs:
+        print(f"  Fetching {school_name}/{tab}...", end=" ", flush=True)
+
+        try:
+            text_grid, colour_grid = fetch_sheet_with_colours(
+                service, school_info["id"], tab
+            )
+        except Exception as e:
+            print(f"ERROR: {e}")
+            dlog_error(f"  fetch failed for {school_name}/{tab}: {e}")
+            continue
+
+        if not text_grid:
+            print("empty ??? skipped")
+            dlog_warn(f"  {school_name}/{tab} returned empty grid")
+            continue
+
+        course_lookup = build_course_lookup(service, school_info, common=COMMON)
+        added, matched_records = parse_engineering_grid(
+            text_grid, colour_grid, tt, course_lookup, common=COMMON
+        )
+        if course_lookup:
+            cross_validate(course_lookup, matched_records, common=COMMON)
+        run_regression_check(tt, common=COMMON)
+
+        total += added
+        print(f"{added} entries")
+        dlog(f"  {school_name}/{tab}: {added} entries parsed")
+
+    dlog(f"  {school_name} total: {total} entries, {len(tt)} depts")
+    return tt, total

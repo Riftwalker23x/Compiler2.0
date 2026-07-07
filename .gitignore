@@ -1,4 +1,25 @@
+# Secrets / local credentials
 service-account.json
+
+# Python cache / build output
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Logs
 *.log
+debugLog.txt
+api/log.txt
+
+# Generated timetable/output data
+db/timetable-*.json
+db/repeat-*.json
+dbfolder/*.json
+output.txt
+
+# Local editor / agent clutter
+.vscode/
+.claude/
+.orchids/
