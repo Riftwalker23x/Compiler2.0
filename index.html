@@ -534,14 +534,13 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     <div class="cr-head">
       <div>
         <div class="cr-title">&#128421; COMPILER RUN</div>
-        <div class="cr-sub">DODGE THE VIRUS &#129440; &nbsp;·&nbsp; DUCK UNDER THE AI</div>
+        <div class="cr-sub">JUMP OVER THE VIRUS &#129440; &nbsp;&amp;&nbsp; THE AI</div>
       </div>
       <button class="cr-close" onclick="closeCompilerRun()">&#10005; ESC</button>
     </div>
     <div class="cr-canvas-wrap">
       <canvas id="cr-canvas" width="720" height="220"></canvas>
     </div>
-    <div class="cr-hint"><b>SPACE</b> / <b>&#8593;</b> / tap = jump &nbsp;·&nbsp; <b>&#8595;</b> = duck &nbsp;·&nbsp; <b>P</b> = pause</div>
   </div>
 </div>
 <div class="corner c-tl"></div><div class="corner c-tr"></div>
@@ -3632,7 +3631,7 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
   // state: 'ready' | 'run' | 'over' | 'paused'
 
   function reset(){
-    player={x:64,w:40,h:40,duckH:24,y:GROUND-40,vy:0,ducking:false,onGround:true};
+    player={x:60,w:26,h:26,y:GROUND-26,vy:0,onGround:true};
     obstacles=[];
     speed=6;
     score=0;
@@ -3644,21 +3643,19 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     if(state==='ready'){ state='run'; return; }
     if(state==='over'){ reset(); state='run'; return; }
     if(state!=='run') return;
-    if(player.onGround){ player.vy=-13.2; player.onGround=false; }
+    if(player.onGround){ player.vy=-12.4; player.onGround=false; }
   }
-  function setDuck(on){ if(state==='run') player.ducking=on; }
 
   function spawn(){
-    // ~30% flyers once the game has some speed, else viruses
-    const flyer = speed>7.4 && Math.random()<0.32;
+    // ~30% AI flyers once there's some speed - both viruses and AI sit low
+    // enough to clear with a single jump (jump is the only control).
+    const flyer = speed>7.2 && Math.random()<0.3;
     if(flyer){
-      const hoverHigh = Math.random()<0.5;
-      const h=26, w=42;
-      const y = hoverHigh ? GROUND-78 : GROUND-46;   // duck-under vs jump-over
-      obstacles.push({type:'ai', x:W+10, y, w, h});
+      const h=24, w=40;
+      obstacles.push({type:'ai', x:W+10, y:GROUND-40, w, h});   // jump-over height
     } else {
       const big = Math.random()<0.35;
-      const s = big?40:30;
+      const s = big?32:24;
       obstacles.push({type:'virus', x:W+10, y:GROUND-s, w:s, h:s});
     }
   }
@@ -3676,8 +3673,7 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     player.vy += 0.72;                       // gravity
     player.y += player.vy;
     if(player.y >= GROUND-player.h){ player.y=GROUND-player.h; player.vy=0; player.onGround=true; }
-    const curH = player.ducking && player.onGround ? player.duckH : player.h;
-    const pbox={x:player.x, y:GROUND-curH, w:player.w, h:curH};
+    const pbox={x:player.x, y:player.y, w:player.w, h:player.h};
 
     // obstacles
     for(const o of obstacles) o.x -= speed;
@@ -3718,9 +3714,8 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     const off=(score*speed)%14;
     ctx.beginPath(); ctx.moveTo(-off,GROUND+8); ctx.lineTo(W,GROUND+8); ctx.stroke(); ctx.setLineDash([]);
 
-    // player (desktop). duck = smaller so AI passes overhead
-    const ph = player.ducking && player.onGround ? player.duckH : player.h;
-    emoji('🖥️', player.x, GROUND-2 - (ph-player.h)*0 , ph+8);
+    // player (desktop)
+    emoji('🖥️', player.x, player.y+player.h+8, player.h+8);
 
     // obstacles
     for(const o of obstacles){
@@ -3740,10 +3735,9 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     ctx.fillText('HI '+String(hi).padStart(5,'0')+'   '+String(Math.floor(score/6)).padStart(5,'0'), W-12, 26);
     ctx.textAlign='left';
 
-    if(state==='ready') centerText('DOUBLE-CLICK DONE! PRESS SPACE / TAP TO RUN', GREEN);
-    if(state==='paused') centerText('PAUSED — PRESS P', GREEN);
+    if(state==='ready') centerText('PRESS SPACE TO RUN', GREEN);
     if(state==='over'){
-      centerText('SYSTEM CRASH! PRESS SPACE / TAP TO RETRY', RED, -14);
+      centerText('SYSTEM CRASH! PRESS SPACE TO RETRY', RED, -14);
       ctx.fillStyle=GREEN; ctx.font='18px "VT323",monospace'; ctx.textAlign='center';
       ctx.fillText('SCORE '+Math.floor(score/6)+'   ·   BEST '+hi, W/2, H/2+16); ctx.textAlign='left';
     }
@@ -3758,17 +3752,13 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     rafId=requestAnimationFrame(loop);
   }
 
-  // ── controls ──
+  // ── controls: jump is the only action ──
   function onKey(e){
     if(!overlay.classList.contains('on')) return;
-    if(e.code==='Space'||e.code==='ArrowUp'){ e.preventDefault(); jump(); }
-    else if(e.code==='ArrowDown'){ e.preventDefault(); setDuck(true); }
+    if(e.code==='Space'){ e.preventDefault(); jump(); }
     else if(e.key==='Escape'){ closeCompilerRun(); }
-    else if(e.key==='p'||e.key==='P'){ if(state==='run')state='paused'; else if(state==='paused')state='run'; }
   }
-  function onKeyUp(e){ if(e.code==='ArrowDown') setDuck(false); }
   document.addEventListener('keydown',onKey);
-  document.addEventListener('keyup',onKeyUp);
   canvas.addEventListener('pointerdown',e=>{ e.preventDefault(); jump(); });
 
   window.openCompilerRun=function(){
