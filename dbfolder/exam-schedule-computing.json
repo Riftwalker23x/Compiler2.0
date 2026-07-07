@@ -1,8 +1,8 @@
 {
-  "updated_at": "2026-07-06T21:41:11.260Z",
+  "updated_at": "2026-07-07T15:42:27.562Z",
   "source_subject": "Final Examination Schedule Spring 2026 (imported from xlsx)",
   "source_filename": "Version Final Schedule of Final Examination Spring 2026  as on 11-05-2026.xlsx",
-  "count": 158,
+  "count": 171,
   "exams": [
     {
       "date": "2026-05-18",
@@ -2565,6 +2565,112 @@
           "B"
         ]
       }
+    }
+  ],
+  "flat_exams": [
+    {
+      "date": "2026-07-13",
+      "day": "Monday",
+      "time": "09:00-11:00",
+      "room": "C-301",
+      "code": "MT-1003",
+      "course": "Calculus and Analytical Geometry"
+    },
+    {
+      "date": "2026-07-13",
+      "day": "Monday",
+      "time": "11:30-01:30",
+      "room": "C-301",
+      "code": "MT-2005",
+      "course": "Probability and Satistics"
+    },
+    {
+      "date": "2026-07-13",
+      "day": "Monday",
+      "time": "02:00-04:00",
+      "room": "C-301",
+      "code": "MT-1008",
+      "course": "Multivariable Calculus"
+    },
+    {
+      "date": "2026-07-13",
+      "day": "Monday",
+      "time": "09:00-11:00",
+      "room": "C-302",
+      "code": "MT-1003",
+      "course": "Calculus and Analytical Geometry"
+    },
+    {
+      "date": "2026-07-13",
+      "day": "Monday",
+      "time": "11:30-01:30",
+      "room": "C-302",
+      "code": "MT-2005",
+      "course": "Probability and Satistics"
+    },
+    {
+      "date": "2026-07-13",
+      "day": "Monday",
+      "time": "02:00-04:00",
+      "room": "C-302",
+      "code": "MT-1008",
+      "course": "Multivariable Calculus"
+    },
+    {
+      "date": "2026-07-14",
+      "day": "Tuesday",
+      "time": "09:00-11:00",
+      "room": "C-301",
+      "code": "CS1004",
+      "course": "Object Oriented Programming"
+    },
+    {
+      "date": "2026-07-14",
+      "day": "Tuesday",
+      "time": "11:30-01:30",
+      "room": "C-301",
+      "code": "MT-1004",
+      "course": "Linear Algebra"
+    },
+    {
+      "date": "2026-07-14",
+      "day": "Tuesday",
+      "time": "02:00-04:00",
+      "room": "C-301",
+      "code": "NS-1001",
+      "course": "Applied Physics"
+    },
+    {
+      "date": "2026-07-14",
+      "day": "Tuesday",
+      "time": "09:00-11:00",
+      "room": "C-302",
+      "code": "CS1004",
+      "course": "Object Oriented Programming"
+    },
+    {
+      "date": "2026-07-14",
+      "day": "Tuesday",
+      "time": "11:30-01:30",
+      "room": "C-302",
+      "code": "MT-1004",
+      "course": "Linear Algebra"
+    },
+    {
+      "date": "2026-07-14",
+      "day": "Tuesday",
+      "time": "02:00-04:00",
+      "room": "C-302",
+      "code": "NS-1001",
+      "course": "Applied Physics"
+    },
+    {
+      "date": "2026-07-14",
+      "day": "Tuesday",
+      "time": "11:30-01:30",
+      "room": "C-303",
+      "code": "EE1005",
+      "course": "Digital Logic Design"
     }
   ]
 }

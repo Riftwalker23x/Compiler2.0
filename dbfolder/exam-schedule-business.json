@@ -1,0 +1,49 @@
+{
+  "updated_at": "2026-07-07T15:42:27.562Z",
+  "source_subject": "Midterm Examination Schedule Summer 2026 (Draft)",
+  "source_filename": "Mid Examination Schedule Summer 2026 (Draft) as on 07-07-2025.xlsx",
+  "exams": [],
+  "flat_exams": [
+    {
+      "date": "2026-07-13",
+      "day": "Monday",
+      "time": "09:00-11:00",
+      "room": "A-101  1st flr",
+      "code": "AF1002",
+      "course": "Financial Accounting \r\nBAF-9A, 9B"
+    },
+    {
+      "date": "2026-07-13",
+      "day": "Monday",
+      "time": "11:30-01:30",
+      "room": "A-101  1st flr",
+      "code": "MT2004",
+      "course": "Business Math –II\r\nBAF-9A"
+    },
+    {
+      "date": "2026-07-14",
+      "day": "Tuesday",
+      "time": "09:00-11:00",
+      "room": "A-101  1st flr",
+      "code": "MG2008",
+      "course": "Data Analysis for Business I\r\nBBA-9A"
+    },
+    {
+      "date": "2026-07-14",
+      "day": "Tuesday",
+      "time": "11:30-01:30",
+      "room": "A-101  1st flr",
+      "code": "CS2016",
+      "course": "- Programming for Business BFT-09A"
+    },
+    {
+      "date": "2026-07-14",
+      "day": "Tuesday",
+      "time": "11:30-01:30",
+      "room": "A-102 1st flr",
+      "code": "CS4089",
+      "course": "Programming for Business Applications MSBA-9A"
+    }
+  ],
+  "count": 5
+}

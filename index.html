@@ -728,6 +728,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
         </div>
       </div>
       <div class="exam-header-badge fin" id="exam-source-badge" style="display:inline-block;margin-bottom:12px">✍🏻 FINAL EXAM SCHEDULE</div>
+      <div id="exam-flat-out"></div>
       <div id="exam-out"></div>
     </div>
 
@@ -2495,10 +2496,51 @@ function loadExamScheduleData(){
     .then(data=>{
       _examData=data||{};
       if(!Array.isArray(_examData.exams)) _examData.exams=[];
+      if(!Array.isArray(_examData.flat_exams)) _examData.flat_exams=[];
       return _examData;
     })
     .catch(err=>{ _examLoadPromise=null; throw err; });
   return _examLoadPromise;
+}
+
+// Some "schedule" emails are a Midterm/Sessional schedule rather than the
+// Final Exam Schedule - a room-grid layout with no department/section info
+// at all per course, so it's shown as one flat table (no dept/batch/section
+// filtering applies to it) instead of going through examsForDeptBatch.
+function renderFlatExamSchedule(){
+  const out=document.getElementById('exam-flat-out');
+  if(!out) return;
+  const flat=(_examData&&_examData.flat_exams)||[];
+  if(!flat.length){ out.innerHTML=''; return; }
+  const sorted=[...flat].sort((a,b)=>(a.date||'').localeCompare(b.date||'')||(a.time||'').localeCompare(b.time||''));
+  const rows=sorted.map(e=>{
+    const d=e.date?new Date(e.date+'T00:00:00'):null;
+    const cd=d?examCountdown(d):null;
+    return `<tr>
+      <td><div class="exam-course-name">${escHtml(e.code||'')} ${escHtml(e.course||'')}</div></td>
+      <td>
+        <div class="exam-date-pill fin">${d?dDay(d)+', '+dFmt(d):'—'}</div>
+        <div class="exam-time-txt">${escHtml(e.time||'')}</div>
+        ${cd?`<span class="exam-countdown ${cd.cls}">${cd.label}</span>`:''}
+      </td>
+      <td><div class="exam-room-txt">${escHtml(e.room||'—')}</div></td>
+    </tr>`;
+  }).join('');
+  out.innerHTML=`
+    <div class="exam-header-bar">
+      <span class="exam-header-label">MIDTERM / SESSIONAL SCHEDULE — ALL COURSES</span>
+      <span class="exam-header-badge fin">NO DEPT FILTER</span>
+    </div>
+    <div class="exam-table-wrap" style="margin-bottom:18px">
+      <table class="exam-tbl">
+        <thead><tr>
+          <th class="fin" style="width:48%">COURSE</th>
+          <th class="fin" style="width:32%">DATE &amp; TIME</th>
+          <th class="fin" style="width:20%">ROOM</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
 }
 
 function examsForDeptBatch(dept,batch){
@@ -2595,6 +2637,7 @@ function initExamSchedulePanel(){
     if(prefs.dept&&deptSel) deptSel.value=prefs.dept;
     if(prefs.batch&&batchSel) batchSel.value=prefs.batch;
     refreshExamSourceBadge();
+    renderFlatExamSchedule();
     renderExamSchedule();
   }).catch(()=>{
     const out=document.getElementById('exam-out');
