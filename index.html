@@ -382,6 +382,11 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   .hdr-sub{font-size:8px;letter-spacing:3px}
   .live-bar{gap:6px;font-size:9px;letter-spacing:1px}
   .live-bar span[style*="opacity"]{margin:0 2px}
+  .header-logo{height:100px}
+  .header-x{font-size:32px}
+  .header-vtable{font-size:56px;letter-spacing:3px}
+  .header-campus{font-size:22px}
+  .header-live{font-size:13px}
 
   .tt-grid{grid-template-columns:1fr 1fr;gap:8px}
   .tt-hero{flex-direction:column;gap:10px;padding:12px 14px}
@@ -431,6 +436,11 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   .content{padding:8px;margin:0 4px 8px}
   .hdr-logo{font-size:18px;letter-spacing:3px}
   .live-bar{font-size:8px}
+  .header-logo{height:76px}
+  .header-x{font-size:24px}
+  .header-vtable{font-size:40px;letter-spacing:2px}
+  .header-campus{font-size:17px}
+  .header-live{font-size:11px}
   .rooms-grid{grid-template-columns:1fr}
   .rsel{font-size:11px;padding:8px 8px}
   .flabel{font-size:8px;letter-spacing:2px}
@@ -444,7 +454,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 }
 
 .header-logo{
-    height:85px;
+    height:150px;
     width:auto;
 }
 
@@ -506,11 +516,11 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     </div>
 
     <div class="header-live">
+        <span id="liveTime"></span>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
         <span id="liveDay"></span>
         &nbsp;&nbsp;|&nbsp;&nbsp;
         <span id="liveDate"></span>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        <span id="liveTime"></span>
     </div>
 
 </div>
@@ -797,6 +807,27 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   </div>
 </div>
 
+<script>
+(function headerLiveClock(){
+  const dayEl=document.getElementById('liveDay');
+  const dateEl=document.getElementById('liveDate');
+  const timeEl=document.getElementById('liveTime');
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function pad(n){return n<10?'0'+n:n}
+  function tick(){
+    const now=new Date();
+    if(dayEl) dayEl.textContent=now.toLocaleDateString('en-US',{weekday:'long'});
+    if(dateEl) dateEl.textContent=`${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    if(timeEl){
+      let h=now.getHours();const m=pad(now.getMinutes());const s=pad(now.getSeconds());
+      const ampm=h>=12?'PM':'AM';h=h%12;if(h===0)h=12;
+      timeEl.textContent=`${pad(h)}:${m}:${s} ${ampm}`;
+    }
+  }
+  tick();
+  setInterval(tick,1000);
+})();
+</script>
 <script>
 /* ══════════════════════════════════════════
    TIMETABLE DATA
