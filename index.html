@@ -1,7 +1,8 @@
 <style>
-@import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=VT323&display=swap');
+:root{--font-sans:'Inter','Segoe UI',Arial,sans-serif;--font-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;--font-display:'VT323','Courier New',monospace}
 *{box-sizing:border-box;margin:0;padding:0}
-#app{background:#f0f7f0;font-family:'Share Tech Mono',monospace;color:#1a4a2e;border-radius:14px;overflow:hidden;position:relative;min-height:760px}
+#app{background:#f0f7f0;font-family:var(--font-sans);color:#1a4a2e;border-radius:14px;overflow:hidden;position:relative;min-height:760px}
 canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .shell{position:relative;z-index:10}
 .hdr{text-align:center;padding:16px 16px 10px;border-bottom:2px solid rgba(0,120,60,0.18);background:rgba(255,255,255,0.72)}
@@ -19,61 +20,64 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .nav{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin:16px 18px 0}
 .nav-card{border:2px solid rgba(0,120,60,0.2);padding:16px;border-radius:10px;transition:all .25s;background:rgba(255,255,255,0.78);position:relative;overflow:hidden;font-family:inherit;font-size:inherit;text-align:inherit;width:100%;cursor:pointer;display:block;text-decoration:none;color:inherit}
 .nav-card:focus-visible{outline:3px solid #0a7a3a;outline-offset:2px}
-.nav-card.active{border-color:#0a7a3a;background:#fff;box-shadow:0 4px 18px rgba(10,122,58,0.13)}
+.nav-card.active{border-color:#0a7a3a;background:#fff;box-shadow:0 4px 18px rgba(10,122,58,0.13);transform:translateY(-1px)}
 .nav-card:hover:not(.active){border-color:#0a7a3a;background:rgba(255,255,255,0.92)}
 .nav-indicator{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 8px 8px;background:transparent;transition:background .25s}
 .nav-card.active .nav-indicator{background:#0a7a3a}
-.nav-badge{font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:3px;border:1px solid rgba(0,120,60,0.25);color:#2d8a50;display:inline-block;margin-bottom:7px;background:rgba(0,120,60,0.05)}
+.nav-badge{font-family:var(--font-sans);font-size:9px;letter-spacing:.02em;padding:2px 7px;border-radius:3px;border:1px solid rgba(0,120,60,0.25);color:#27553a;display:inline-block;margin-bottom:7px;background:rgba(0,120,60,0.05);font-weight:700}
 .nav-card.active .nav-badge{color:#0a7a3a;border-color:#0a7a3a;background:rgba(10,122,58,0.09)}
-.nav-icon{font-family:'VT323',monospace;font-size:30px;color:#5a9a6a;line-height:1;margin-bottom:3px}
+.nav-icon{font-family:var(--font-display);font-size:30px;color:#2d6a45;line-height:1;margin-bottom:3px}
 .nav-card.active .nav-icon{color:#0a7a3a}
-.nav-title{font-family:'VT323',monospace;font-size:21px;letter-spacing:3px;color:#4a8a60;word-break:keep-all}
+.nav-title{font-family:var(--font-display);font-size:21px;letter-spacing:2px;color:#1f5c3c;word-break:keep-all;text-transform:none}
 .nav-card.active .nav-title{color:#0a7a3a}
-.nav-desc{font-size:9px;letter-spacing:1px;color:#3d7a55;margin-top:3px;word-break:keep-all}
-.nav-card.active .nav-desc{color:#2d8a50}
+.nav-desc{font-family:var(--font-sans);font-size:9px;letter-spacing:.01em;color:#234f3b;margin-top:3px;word-break:keep-all;font-weight:600;text-transform:none}
+.nav-card.active .nav-desc{color:#1d4d32}
 
 .content{margin:0 18px 20px;border:2px solid rgba(0,120,60,0.15);border-top:none;border-radius:0 0 10px 10px;background:rgba(255,255,255,0.82);padding:20px;min-height:480px}
 .panel{display:none}.panel.on{display:block}
 
 .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
-.flabel{font-size:9px;letter-spacing:3px;color:#2d8a50;display:block;margin-bottom:5px;font-weight:600}
-.rsel{width:100%;background:#f8fff8;border:1.5px solid rgba(0,120,60,0.3);color:#1a4a2e;font-family:'Share Tech Mono',monospace;font-size:12px;padding:9px 10px;border-radius:6px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' fill='none' stroke='%230a7a3a' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;min-width:0}
+.flabel{font-family:var(--font-sans);font-size:10px;letter-spacing:.03em;color:#2b5b3d;display:block;margin-bottom:5px;font-weight:700;text-transform:none}
+.rsel{width:100%;background:#f8fff8;border:1.5px solid rgba(0,120,60,0.3);color:#1a4a2e;font-family:var(--font-mono);font-size:12px;padding:9px 10px;border-radius:6px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' fill='none' stroke='%230a7a3a' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;min-width:0}
 .rsel:focus{border-color:#0a7a3a;box-shadow:0 0 0 2px rgba(10,122,58,0.15)}
 .rsel:disabled{opacity:.45;cursor:not-allowed}
-.go{font-family:'VT323',monospace;font-size:20px;letter-spacing:3px;padding:10px 32px;background:#0a7a3a;border:none;color:#fff;cursor:pointer;border-radius:6px;margin-bottom:18px;transition:all .2s;display:block}
+.go{font-family:var(--font-display);font-size:20px;letter-spacing:2px;padding:10px 32px;background:#0a7a3a;border:none;color:#fff;cursor:pointer;border-radius:6px;margin-bottom:18px;transition:all .2s;display:block}
 .go:hover{background:#0d9a4a}.go:active{transform:scale(.97)}
 
 .tt-shell{max-width:900px;margin:0 auto}
 .tt-hero{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:16px 18px;margin-bottom:14px;border:1.5px solid rgba(0,120,60,0.18);border-radius:12px;background:linear-gradient(180deg,rgba(248,255,248,.96),rgba(232,245,236,.88))}
-.tt-kicker{font-size:9px;letter-spacing:4px;color:#3d7a55;margin-bottom:6px}
-.tt-title{font-family:'VT323',monospace;font-size:38px;letter-spacing:4px;color:#0a7a3a;line-height:1}
-.tt-copy{font-size:12px;line-height:1.6;color:#2d8a50;max-width:54ch;margin-top:8px}
-.tt-live-badge{font-family:'VT323',monospace;font-size:16px;letter-spacing:3px;padding:8px 12px;border-radius:999px;border:1px solid rgba(0,120,60,0.2);background:#fff;color:#0a7a3a;white-space:nowrap;flex-shrink:0}
+.tt-kicker{font-family:var(--font-sans);font-size:10px;letter-spacing:.06em;color:#27553a;margin-bottom:6px;font-weight:700;text-transform:none}
+.tt-title{font-family:var(--font-display);font-size:38px;letter-spacing:2px;color:#0a7a3a;line-height:1}
+.tt-copy{font-family:var(--font-sans);font-size:13px;line-height:1.6;color:#234f3b;max-width:54ch;margin-top:8px;font-weight:500;letter-spacing:0;text-transform:none}
+.tt-live-badge{font-family:var(--font-mono);font-size:14px;letter-spacing:.02em;padding:8px 12px;border-radius:999px;border:1px solid rgba(0,120,60,0.2);background:#fff;color:#0a7a3a;white-space:nowrap;flex-shrink:0}
 .tt-form{padding:16px 18px;border:1.5px solid rgba(0,120,60,0.16);border-radius:12px;background:#fff;margin-bottom:14px}
 .tt-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 .tt-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
-.tt-hint{font-size:9px;letter-spacing:2px;color:#3d7a55}
+.tt-hint{font-family:var(--font-sans);font-size:10px;letter-spacing:0;color:#234f3b;font-weight:600;text-transform:none}
 .tt-out{padding:16px 18px;border:1.5px solid rgba(0,120,60,0.16);border-radius:12px;background:#fff}
 .tt-summary{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .tt-summary-pill{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;color:#0a7a3a}
 .tt-summary-meta{font-size:10px;letter-spacing:1px;color:#3d7a55}
 .tt-result-table{width:100%;border-collapse:collapse;table-layout:fixed}
-.tt-result-table th{background:#e8f5ec;color:#0a7a3a;font-size:10px;letter-spacing:2px;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.18)}
-.tt-result-table td{padding:10px 12px;border:1px solid rgba(0,120,60,0.1);font-size:12px;color:#1a4a2e;vertical-align:top}
+.tt-result-table th{background:#e8f5ec;color:#0a7a3a;font-family:var(--font-sans);font-size:10px;letter-spacing:.04em;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.18)}
+.tt-result-table td{padding:10px 12px;border:1px solid rgba(0,120,60,0.1);font-size:12px;color:#1a4a2e;vertical-align:top;font-family:var(--font-sans)}
 .tt-result-table tr:nth-child(even) td{background:#f8fff8}
 .tt-result-table tr:hover td{background:#f0fff4}
-.tt-course{font-size:12px}
+.tt-course{font-size:12px;font-family:var(--font-sans)}
 .tt-course.tt-repeat{background:#fff3cd;color:#856404;border:1px solid #ffe08a;border-radius:4px;padding:1px 7px;display:inline-block}
-.tt-note{display:inline-block;font-size:9px;letter-spacing:1px;padding:1px 6px;border-radius:4px;margin-right:6px;vertical-align:middle;font-family:'Share Tech Mono',monospace;white-space:nowrap}
+.tt-note{display:inline-block;font-size:9px;letter-spacing:0;padding:1px 6px;border-radius:4px;margin-right:6px;vertical-align:middle;font-family:var(--font-mono);white-space:nowrap}
 .tt-note.resch{background:#ffe8cc;color:#8a4b00;border:1px solid #ffca8a}
 .tt-note.cancel{background:#f8d7da;color:#8a1a1a;border:1px solid #f1a9a0;text-decoration:none}
 .tt-course.is-cancelled{text-decoration:line-through;opacity:.7}
-.tt-day{font-size:11px;letter-spacing:1px;color:#1a4a2e}
-.tt-sec{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;color:#2d8a50}
-.tt-room{font-family:'VT323',monospace;font-size:18px;letter-spacing:1px;color:#0a7a3a}
-.tt-time{font-size:10px;letter-spacing:1px;color:#2d8a50}
-.tt-empty-card{text-align:center;padding:34px 16px;color:#3d7a55;font-size:12px;letter-spacing:2px}
+.tt-day{font-size:11px;letter-spacing:0;color:#1a4a2e;font-family:var(--font-sans)}
+.tt-sec{font-family:var(--font-mono);font-size:11px;letter-spacing:0;color:#2d8a50}
+.tt-room{font-family:var(--font-mono);font-size:18px;letter-spacing:0;color:#0a7a3a}
+.tt-time{font-family:var(--font-mono);font-size:10px;letter-spacing:0;color:#2d8a50}
+.tt-empty-card{text-align:center;padding:34px 16px;color:#3d7a55;font-size:12px;letter-spacing:.02em;border:1.5px dashed rgba(10,122,58,0.24);border-radius:12px;background:linear-gradient(180deg,#fcfffc 0%,#f4fbf4 100%)}
 .tt-empty-card .empty{padding:0}
+.tt-empty-icon{font-family:var(--font-display);font-size:42px;color:#0a7a3a;display:block;margin:0 auto 10px;padding:8px 12px;border-radius:999px;background:#e9f7eb;border:1px solid rgba(10,122,58,0.16);width:max-content}
+.tt-empty-title{font-family:var(--font-display);font-size:22px;letter-spacing:2px;color:#0a7a3a;margin-bottom:6px}
+.tt-empty-copy{font-family:var(--font-sans);font-size:11px;line-height:1.6;color:#2f5a3f;max-width:46ch;margin:0 auto}
 
 .tbl{width:100%;border-collapse:collapse;table-layout:fixed}
 .tbl th{background:#e8f5ec;color:#0a7a3a;font-size:10px;letter-spacing:2px;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.2)}
@@ -382,14 +386,16 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   .hdr-sub{font-size:8px;letter-spacing:3px}
   .live-bar{gap:6px;font-size:9px;letter-spacing:1px}
   .live-bar span[style*="opacity"]{margin:0 2px}
-  .header-logo{height:100px}
-  .header-x{font-size:32px}
-  .header-vtable{font-size:56px;letter-spacing:3px}
-  .header-campus{font-size:22px}
-  .header-live{font-size:13px}
+  .header-top{gap:10px;flex-wrap:wrap}
+  .header-logo{height:auto;max-height:100px;width:auto;max-width:100%}
+  .header-x{font-size:28px}
+  .header-vtable{font-size:44px;letter-spacing:3px}
+  .header-campus{font-size:20px;letter-spacing:2px}
+  .header-live{font-size:12px}
 
   .tt-grid{grid-template-columns:1fr 1fr;gap:8px}
   .tt-hero{flex-direction:column;gap:10px;padding:12px 14px}
+  .tt-result-table{display:block;overflow-x:auto;white-space:nowrap}
   .tt-title{font-size:24px;letter-spacing:3px}
   .tt-live-badge{font-size:12px;letter-spacing:2px;padding:5px 10px;align-self:flex-start}
   .tt-form{padding:12px}
@@ -436,11 +442,12 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   .content{padding:8px;margin:0 4px 8px}
   .hdr-logo{font-size:18px;letter-spacing:3px}
   .live-bar{font-size:8px}
-  .header-logo{height:76px}
-  .header-x{font-size:24px}
-  .header-vtable{font-size:40px;letter-spacing:2px}
-  .header-campus{font-size:17px}
-  .header-live{font-size:11px}
+  .header-top{gap:6px}
+  .header-logo{max-height:76px}
+  .header-x{font-size:20px}
+  .header-vtable{font-size:32px;letter-spacing:1px}
+  .header-campus{font-size:15px;letter-spacing:1px}
+  .header-live{font-size:10px}
   .rooms-grid{grid-template-columns:1fr}
   .rsel{font-size:11px;padding:8px 8px}
   .flabel{font-size:8px;letter-spacing:2px}
@@ -451,11 +458,13 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     align-items:center;
     gap:22px;
     margin-top:8px;
+    flex-wrap:wrap;
 }
 
 .header-logo{
     height:150px;
     width:auto;
+    max-width:100%;
 }
 
 .header-x{
@@ -479,21 +488,61 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     text-align:center;
     font-family:'VT323', monospace;
     font-size:34px;
-    letter-spacing:3px;
-    color:#0a7a3a;
+    letter-spacing:2px;
+    color:#1d4d32;
+    font-weight:600;
 }
 
 .header-live{
     margin-top:8px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:6px 10px;
+    flex-wrap:wrap;
     text-align:center;
     font-family:'Share Tech Mono', monospace;
     font-size:18px;
-    color:#2d8a50;
+    color:#27553a;
 }
+.header-live-item{display:inline-flex;align-items:center;white-space:nowrap}
+.header-live-sep{color:#4b7d5b;opacity:.85}
+.header-logo{cursor:pointer}
+
+/* ── Compiler Run game ── */
+.cr-overlay{position:fixed;inset:0;background:rgba(4,20,10,0.82);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px}
+.cr-overlay.on{display:flex}
+.cr-modal{background:#f4fff7;border:2px solid #0a7a3a;border-radius:14px;box-shadow:0 10px 40px rgba(10,122,58,0.35);width:100%;max-width:760px;padding:16px 18px 20px;position:relative;font-family:'Share Tech Mono',monospace}
+.cr-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px}
+.cr-title{font-family:'VT323',monospace;font-size:34px;letter-spacing:4px;color:#0a7a3a;line-height:1}
+.cr-sub{font-size:11px;letter-spacing:2px;color:#2d8a50;margin-top:2px}
+.cr-close{background:rgba(10,122,58,0.1);border:1px solid rgba(10,122,58,0.3);color:#0a7a3a;font-family:'VT323',monospace;font-size:20px;padding:2px 12px;border-radius:6px;cursor:pointer;letter-spacing:1px}
+.cr-close:hover{background:#0a7a3a;color:#fff}
+.cr-canvas-wrap{position:relative;border:2px solid rgba(10,122,58,0.25);border-radius:10px;overflow:hidden;background:#fbfffc}
+#cr-canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
+.cr-hint{margin-top:10px;font-size:11px;letter-spacing:1px;color:#4a8a60;text-align:center}
+.cr-hint b{color:#0a7a3a}
+@media(max-width:560px){ .cr-title{font-size:26px} }
 </style>
 
 <div id="app">
 <canvas id="bg3d"></canvas>
+
+<!-- Compiler Run game (double-click the logo to open) -->
+<div class="cr-overlay" id="cr-overlay">
+  <div class="cr-modal">
+    <div class="cr-head">
+      <div>
+        <div class="cr-title">&#128421; COMPILER RUN</div>
+        <div class="cr-sub">JUMP OVER THE VIRUS &#129440; &nbsp;·&nbsp; DUCK UNDER THE AI</div>
+      </div>
+      <button class="cr-close" onclick="closeCompilerRun()">&#10005; ESC</button>
+    </div>
+    <div class="cr-canvas-wrap">
+      <canvas id="cr-canvas" width="720" height="220"></canvas>
+    </div>
+  </div>
+</div>
 <div class="corner c-tl"></div><div class="corner c-tr"></div>
 <div class="corner c-bl"></div><div class="corner c-br"></div>
 <div class="shell">
@@ -503,7 +552,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 
     <div class="header-top">
 
-        <img src="logo.png" class="header-logo">
+        <img src="logo.png" class="header-logo" id="header-logo" title="Double-click to play Compiler Run">
 
         <span class="header-x">X</span>
 
@@ -516,11 +565,11 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     </div>
 
     <div class="header-live">
-        <span id="liveTime"></span>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        <span id="liveDay"></span>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        <span id="liveDate"></span>
+        <span class="header-live-item" id="liveTime"></span>
+        <span class="header-live-sep">|</span>
+        <span class="header-live-item" id="liveDay"></span>
+        <span class="header-live-sep">|</span>
+        <span class="header-live-item" id="liveDate"></span>
     </div>
 
 </div>
@@ -528,44 +577,44 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   <div class="nav" role="tablist">
     <button class="nav-card active" id="nc0" onclick="sw(0)" role="tab" aria-selected="true" tabindex="0">
       <div class="nav-badge">PANEL 01</div>
-      <div class="nav-icon">⏱️</div>
-      <div class="nav-title">CLASS TIMETABLE</div>
-      <div class="nav-desc">DEPT / BATCH / SECTION / DAY</div>
+      <div class="nav-icon">◷</div>
+      <div class="nav-title">Class timetable</div>
+      <div class="nav-desc">Dept / batch / section / day</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc1" onclick="sw(1)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 02</div>
-      <div class="nav-icon">🛋️</div>
-      <div class="nav-title">FREE ROOMS</div>
-      <div class="nav-desc">BLOCK / FLOOR — SLOT TIMELINE</div>
+      <div class="nav-icon">▣</div>
+      <div class="nav-title">Free rooms</div>
+      <div class="nav-desc">Block / floor — slot timeline</div>
       <div class="nav-indicator"></div>
     </button>
-    <button class="nav-card" id="nc2" onclick="sw(2)" role="tab" aria-selected="false" tabindex="-1">
+    <button class="nav-card" id="nc5" onclick="sw(5)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 03</div>
-      <div class="nav-icon">🗓️</div>
-      <div class="nav-title">SHOW UP SCHEDULE</div>
-      <div class="nav-desc">DEPT / BATCH / SECTION</div>
+      <div class="nav-icon">◭</div>
+      <div class="nav-title">Faculty</div>
+      <div class="nav-desc">Directory</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc3" onclick="sw(3)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 04</div>
-      <div class="nav-icon">✍🏻</div>
-      <div class="nav-title">EXAM SCHEDULE</div>
-      <div class="nav-desc">S1 / S2 / FINAL EXAMS</div>
+      <div class="nav-icon">✎</div>
+      <div class="nav-title">Exam schedule</div>
+      <div class="nav-desc">S1 / S2 / final exams</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc4" onclick="sw(4)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 05</div>
-      <div class="nav-icon">🪑</div>
-      <div class="nav-title">SEATING PLAN</div>
-      <div class="nav-desc">EXAM SEAT LOOKUP</div>
+      <div class="nav-icon">◨</div>
+      <div class="nav-title">Seating plan</div>
+      <div class="nav-desc">Exam seat lookup</div>
       <div class="nav-indicator"></div>
     </button>
-    <button class="nav-card" id="nc5" onclick="sw(5)" role="tab" aria-selected="false" tabindex="-1">
+    <button class="nav-card" id="nc2" onclick="sw(2)" role="tab" aria-selected="false" tabindex="-1">
       <div class="nav-badge">PANEL 06</div>
-      <div class="nav-icon">&#127891;</div>
-      <div class="nav-title">FACULTY</div>
-      <div class="nav-desc">DIRECTORY</div>
+      <div class="nav-icon">◫</div>
+      <div class="nav-title">Show up schedule</div>
+      <div class="nav-desc">Dept / batch / section</div>
       <div class="nav-indicator"></div>
     </button>
   </div>
@@ -577,11 +626,11 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
       <div class="tt-shell">
         <div class="tt-hero">
           <div>
-            <div class="tt-kicker">FAST ISLAMABAD · BACHELORS TIMETABLE</div>
-            <div class="tt-title">CLASS TIMETABLE</div>
+            <div class="tt-kicker">Fast Islamabad · bachelor timetable</div>
+            <div class="tt-title">Class timetable</div>
             <div class="tt-copy">Choose your department, batch year, day, and section to load the timetable from the live Google Sheet.</div>
           </div>
-          <div class="tt-live-badge">LIVE SHEET SYNC</div>
+          <div class="tt-live-badge">Synced ✓</div>
         </div>
 
         <div class="tt-form">
@@ -613,13 +662,13 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
             </div>
           </div>
           <div class="tt-actions">
-            <button class="go" onclick="loadTT()">&#9658; GET TIMETABLE</button>
+            <button class="go" onclick="loadTT()">&#9658; Get timetable</button>
             <div class="tt-hint">Selections are remembered automatically on this device.</div>
           </div>
         </div>
 
         <div class="tt-out" id="tt-out">
-          <div class="tt-empty-card"><div class="nav-icon" style="font-size:36px;margin-bottom:8px;color:#3d7a55">&#9632;</div><div class="empty">SELECT OPTIONS ABOVE TO VIEW THE TIMETABLE</div></div>
+          <div class="tt-empty-card"><div class="tt-empty-icon">◻</div><div class="tt-empty-title">Ready for your timetable</div><div class="tt-empty-copy">Choose school, department, batch, day, and section to load the current schedule.</div></div>
         </div>
       </div>
     </div>
@@ -701,7 +750,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
           </select>
         </div>
       </div>
-      <div class="exam-header-badge fin" id="showup-source-badge" style="display:inline-block;margin-bottom:12px">🗓️ SHOW UP SCHEDULE</div>
+      <div class="exam-header-badge fin" id="showup-source-badge" style="display:inline-block;margin-bottom:12px">◫ SHOW UP SCHEDULE</div>
       <div id="showup-out"></div>
     </div>
 
@@ -727,7 +776,8 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
           </select>
         </div>
       </div>
-      <div class="exam-header-badge fin" id="exam-source-badge" style="display:inline-block;margin-bottom:12px">✍🏻 FINAL EXAM SCHEDULE</div>
+      <div class="exam-header-badge fin" id="exam-source-badge" style="display:inline-block;margin-bottom:12px">✎ FINAL EXAM SCHEDULE</div>
+      <div id="exam-flat-out"></div>
       <div id="exam-out"></div>
     </div>
 
@@ -745,7 +795,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     <!-- PANEL 5: Faculty Vault -->
     <div class="panel" id="p5">
       <div class="fv-top-bar">
-        <span class="fv-top-label">&#127891; FACULTY VAULT</span>
+        <span class="fv-top-label">◭ FACULTY VAULT</span>
       </div>
       <div class="fv-form">
         <div class="fv-grid">
@@ -1496,7 +1546,7 @@ function applyRepeatModeUI(){
   batchSel.style.display=repeat?'none':'';
   courseSel.style.display=repeat?'':'none';
   batchLabel.textContent=repeat?'COURSE':'BATCH YEAR';
-  if(secCell) secCell.style.display=repeat?'':'none';
+  if(secCell) secCell.style.display=repeat?'none':'';
   if(!repeat) return;
   const prefs=readTTPrefs();
   fillSelectOptions(courseSel,repeatCourseNames(buildRepeatIndex()),null,'-- Course --');
@@ -2388,7 +2438,7 @@ function refreshShowupSourceBadge(){
   const badge=document.getElementById('showup-source-badge');
   if(!badge) return;
   const label=(_showupData&&(_showupData.source_filename||_showupData.source_subject))||'SHOW UP SCHEDULE';
-  badge.innerHTML=`🗓️ ${escHtml(label)}`;
+  badge.innerHTML=`◫ ${escHtml(label)}`;
 }
 
 function refreshShowupSectionOptions(){
@@ -2495,10 +2545,51 @@ function loadExamScheduleData(){
     .then(data=>{
       _examData=data||{};
       if(!Array.isArray(_examData.exams)) _examData.exams=[];
+      if(!Array.isArray(_examData.flat_exams)) _examData.flat_exams=[];
       return _examData;
     })
     .catch(err=>{ _examLoadPromise=null; throw err; });
   return _examLoadPromise;
+}
+
+// Some "schedule" emails are a Midterm/Sessional schedule rather than the
+// Final Exam Schedule - a room-grid layout with no department/section info
+// at all per course, so it's shown as one flat table (no dept/batch/section
+// filtering applies to it) instead of going through examsForDeptBatch.
+function renderFlatExamSchedule(){
+  const out=document.getElementById('exam-flat-out');
+  if(!out) return;
+  const flat=(_examData&&_examData.flat_exams)||[];
+  if(!flat.length){ out.innerHTML=''; return; }
+  const sorted=[...flat].sort((a,b)=>(a.date||'').localeCompare(b.date||'')||(a.time||'').localeCompare(b.time||''));
+  const rows=sorted.map(e=>{
+    const d=e.date?new Date(e.date+'T00:00:00'):null;
+    const cd=d?examCountdown(d):null;
+    return `<tr>
+      <td><div class="exam-course-name">${escHtml(e.code||'')} ${escHtml(e.course||'')}</div></td>
+      <td>
+        <div class="exam-date-pill fin">${d?dDay(d)+', '+dFmt(d):'—'}</div>
+        <div class="exam-time-txt">${escHtml(e.time||'')}</div>
+        ${cd?`<span class="exam-countdown ${cd.cls}">${cd.label}</span>`:''}
+      </td>
+      <td><div class="exam-room-txt">${escHtml(e.room||'—')}</div></td>
+    </tr>`;
+  }).join('');
+  out.innerHTML=`
+    <div class="exam-header-bar">
+      <span class="exam-header-label">MIDTERM / SESSIONAL SCHEDULE — ALL COURSES</span>
+      <span class="exam-header-badge fin">NO DEPT FILTER</span>
+    </div>
+    <div class="exam-table-wrap" style="margin-bottom:18px">
+      <table class="exam-tbl">
+        <thead><tr>
+          <th class="fin" style="width:48%">COURSE</th>
+          <th class="fin" style="width:32%">DATE &amp; TIME</th>
+          <th class="fin" style="width:20%">ROOM</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
 }
 
 function examsForDeptBatch(dept,batch){
@@ -2523,7 +2614,7 @@ function refreshExamSourceBadge(){
   const badge=document.getElementById('exam-source-badge');
   if(!badge) return;
   const label=(_examData&&(_examData.source_filename||_examData.source_subject))||'FINAL EXAM SCHEDULE';
-  badge.innerHTML=`✍🏻 ${escHtml(label)}`;
+  badge.innerHTML=`✎ ${escHtml(label)}`;
 }
 
 function onExamDeptChange(){ saveExamPrefs(); renderExamSchedule(); }
@@ -2595,6 +2686,7 @@ function initExamSchedulePanel(){
     if(prefs.dept&&deptSel) deptSel.value=prefs.dept;
     if(prefs.batch&&batchSel) batchSel.value=prefs.batch;
     refreshExamSourceBadge();
+    renderFlatExamSchedule();
     renderExamSchedule();
   }).catch(()=>{
     const out=document.getElementById('exam-out');
@@ -2772,6 +2864,7 @@ function copyEmailById(id,btn){
 ══════════════════════════════════════════ */
 const FACULTY_SHEET_ID="1HF6g11HUJdnHo9D35fvtCzSxR2fTeu_K";
 const FACULTY_SHEET_GID="473774965";
+const FACULTY_FALLBACK_DATA_URL="faculty_data.json";
 const FACULTY_SHEET_CACHE_KEY="faculty_sheet_designations_v3";
 const FACULTY_SHEET_REFRESH_MS=24*60*60*1000;
 let _facultySheetTimer=null;
@@ -3275,18 +3368,42 @@ function fetchFacultyGVizJsonp(){
 
 async function fetchFacultySheetData() {
   try {
-    const res = await fetch(facultySheetGVizUrl(), { cache: 'no-store' });
-    if (!res.ok) throw new Error(`Faculty sheet GViz HTTP ${res.status}`);
-    return parseFacultyGViz(parseGVizText(await res.text()));
-  } catch (gvizErr) {
+    const res = await fetch(facultySheetCsvUrl(), { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Faculty sheet CSV HTTP ${res.status}`);
+    const csvText = await res.text();
+    if (csvText && csvText.toLowerCase().includes('faculty')) {
+      return parseFacultyCsv(csvText);
+    }
+    throw new Error('Faculty CSV export was empty');
+  } catch (csvErr) {
     try {
-      return parseFacultyGViz(await fetchFacultyGVizJsonp());
-    } catch (jsonpErr) {
-      const res = await fetch(facultySheetCsvUrl(), { cache: 'no-store' });
-      if (!res.ok) throw new Error(`Faculty sheet CSV HTTP ${res.status}`);
-      return parseFacultyCsv(await res.text());
+      const res = await fetch(facultySheetGVizUrl(), { cache: 'no-store' });
+      if (!res.ok) throw new Error(`Faculty sheet GViz HTTP ${res.status}`);
+      return parseFacultyGViz(parseGVizText(await res.text()));
+    } catch (gvizErr) {
+      try {
+        return parseFacultyGViz(await fetchFacultyGVizJsonp());
+      } catch (jsonpErr) {
+        throw new Error(`Live faculty sheet unavailable: ${csvErr.message}`);
+      }
     }
   }
+}
+
+async function loadFacultyFallbackData() {
+  try {
+    const res = await fetch(FACULTY_FALLBACK_DATA_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Fallback faculty JSON HTTP ${res.status}`);
+    const data = await res.json();
+    if (data && typeof data === 'object' && Object.keys(data).length) {
+      FACULTY_DATA = data;
+      renderFacultyVault();
+      return true;
+    }
+  } catch (err) {
+    console.warn('Faculty fallback JSON failed:', err);
+  }
+  return false;
 }
 
 function readFacultySheetCache(allowStale = false) {
@@ -3320,6 +3437,8 @@ async function refreshFacultySheetData(force = false) {
     if (staleCache) {
       FACULTY_DATA = staleCache.facultyData;
       renderFacultyVault();
+    } else {
+      await loadFacultyFallbackData();
     }
   }
 }
@@ -3414,14 +3533,14 @@ function renderFacultyVault() {
   
   const schoolData = FACULTY_DATA[school];
   if (!schoolData) {
-    grid.innerHTML = '<div class="fv-empty"><span class="fv-empty-icon">&#127891;</span><div class="fv-empty-txt">SELECT A SCHOOL TO BEGIN</div></div>';
+    grid.innerHTML = '<div class="fv-empty"><span class="fv-empty-icon">◭</span><div class="fv-empty-txt">SELECT A SCHOOL TO BEGIN</div></div>';
     countEl.textContent = '0 MEMBERS';
     return;
   }
   
   const deptData = schoolData.departments[dept];
   if (!deptData) {
-    grid.innerHTML = '<div class="fv-empty"><span class="fv-empty-icon">&#127891;</span><div class="fv-empty-txt">SELECT A DEPARTMENT</div></div>';
+    grid.innerHTML = '<div class="fv-empty"><span class="fv-empty-icon">◭</span><div class="fv-empty-txt">SELECT A DEPARTMENT</div></div>';
     countEl.textContent = '0 MEMBERS';
     return;
   }
@@ -3489,5 +3608,185 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     t++;requestAnimationFrame(draw);
   }
   draw();
+})();
+
+/* ══════════════════════════════════════════
+   COMPILER RUN  — Chrome-dino-style endless runner
+   Player = desktop 🖥️ · ground obstacle = virus 🦠 · flyer = "AI"
+   Opens on double-click of the logo.
+══════════════════════════════════════════ */
+(function CompilerRun(){
+  const overlay=document.getElementById('cr-overlay');
+  const canvas=document.getElementById('cr-canvas');
+  if(!overlay||!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const GROUND=H-26;              // y of ground line
+  const HI_KEY='compiler_run_hi';
+
+  const GREEN='#0a7a3a', GREEN2='#2d8a50', RED='#b3261e', BLUE='#1a4a8a';
+  let hi=parseInt(localStorage.getItem(HI_KEY)||'0',10)||0;
+
+  let player, obstacles, speed, score, spawnTimer, state, rafId, lastT;
+  // state: 'ready' | 'run' | 'over' | 'paused'
+
+  function reset(){
+    player={x:60,w:26,h:28,duckH:14,y:GROUND-28,vy:0,ducking:false,onGround:true};
+    obstacles=[];
+    speed=3.6;                 // 40% slower than before
+    score=0;
+    spawnTimer=48;
+    state='ready';
+  }
+
+  function jump(){
+    if(state==='ready'){ state='run'; return; }
+    if(state==='over'){ reset(); state='run'; return; }
+    if(state!=='run') return;
+    if(player.onGround){ player.vy=-12.4; player.onGround=false; }
+  }
+  function setDuck(on){ if(state==='run') player.ducking=on; }
+
+  function spawn(){
+    // ~30% AI flyers once there's some speed. Viruses sit on the ground
+    // (jump over); AI flies high (duck under).
+    const flyer = speed>4.3 && Math.random()<0.3;
+    if(flyer){
+      const h=26, w=40;
+      obstacles.push({type:'ai', x:W+10, y:GROUND-42, w, h});   // hits a standing PC, clears a ducking one
+    } else {
+      const big = Math.random()<0.35;
+      const s = big?32:24;
+      obstacles.push({type:'virus', x:W+10, y:GROUND-s, w:s, h:s});
+    }
+  }
+
+  function hit(a,b){
+    // shrink boxes a touch for fair collisions
+    const pad=4;
+    return a.x+pad < b.x+b.w-pad && a.x+a.w-pad > b.x+pad &&
+           a.y+pad < b.y+b.h-pad && a.y+a.h-pad > b.y+pad;
+  }
+
+  function update(){
+    if(state!=='run') return;
+    // player physics
+    player.vy += 0.72;                       // gravity
+    player.y += player.vy;
+    if(player.y >= GROUND-player.h){ player.y=GROUND-player.h; player.vy=0; player.onGround=true; }
+    // Hitbox follows the player: ducking only shrinks it while grounded; while
+    // airborne it must sit at the actual jump height (player.y), not the ground -
+    // otherwise jumping "over" a virus still collides.
+    let curH, curTop;
+    if(player.ducking && player.onGround){ curH=player.duckH; curTop=GROUND-curH; }
+    else { curH=player.h; curTop=player.y; }
+    const pbox={x:player.x, y:curTop, w:player.w, h:curH};
+
+    // obstacles
+    for(const o of obstacles) o.x -= speed;
+    obstacles = obstacles.filter(o=>o.x + o.w > -4);
+    if(--spawnTimer<=0){
+      spawn();
+      const base = Math.max(46, 92 - speed*3);
+      spawnTimer = base + Math.random()*44;
+    }
+
+    // collisions
+    for(const o of obstacles){ if(hit(pbox,o)){ gameOver(); break; } }
+
+    // score + difficulty (scaled 40% slower)
+    score += 1;
+    if(score % 8 === 0 && speed < 9) speed += 0.027;
+  }
+
+  function gameOver(){
+    state='over';
+    hi=Math.max(hi, Math.floor(score/6));
+    localStorage.setItem(HI_KEY, String(hi));
+  }
+
+  // ── drawing ──
+  function emoji(ch,x,y,size){ ctx.font=size+'px "Segoe UI Emoji","Noto Color Emoji",serif'; ctx.textBaseline='alphabetic'; ctx.fillText(ch,x,y); }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // sky grid backdrop
+    ctx.strokeStyle='rgba(10,122,58,0.06)'; ctx.lineWidth=1;
+    for(let x=(-(score*speed*0)%40); x<W; x+=40){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,GROUND); ctx.stroke(); }
+
+    // ground
+    ctx.strokeStyle=GREEN; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(0,GROUND+1); ctx.lineTo(W,GROUND+1); ctx.stroke();
+    ctx.setLineDash([4,10]); ctx.strokeStyle='rgba(10,122,58,0.4)';
+    const off=(score*speed)%14;
+    ctx.beginPath(); ctx.moveTo(-off,GROUND+8); ctx.lineTo(W,GROUND+8); ctx.stroke(); ctx.setLineDash([]);
+
+    // player (desktop) - shrinks when ducking so the AI passes overhead
+    const ph = player.ducking && player.onGround ? player.duckH : player.h;
+    const baseY = (player.onGround ? GROUND : player.y+player.h) + 6;
+    emoji('🖥️', player.x, baseY, ph+8);
+
+    // obstacles
+    for(const o of obstacles){
+      if(o.type==='virus'){
+        emoji('🦠', o.x, o.y+o.h, o.h+6);
+      } else {
+        // "AI" flyer chip
+        ctx.fillStyle=BLUE; roundRect(o.x,o.y,o.w,o.h,6); ctx.fill();
+        ctx.fillStyle='#fff'; ctx.font='bold 18px "VT323",monospace'; ctx.textBaseline='middle'; ctx.textAlign='center';
+        ctx.fillText('AI', o.x+o.w/2, o.y+o.h/2+1);
+        ctx.textAlign='left';
+      }
+    }
+
+    // score
+    ctx.fillStyle=GREEN2; ctx.font='20px "VT323",monospace'; ctx.textBaseline='alphabetic'; ctx.textAlign='right';
+    ctx.fillText('HI '+String(hi).padStart(5,'0')+'   '+String(Math.floor(score/6)).padStart(5,'0'), W-12, 26);
+    ctx.textAlign='left';
+
+    if(state==='ready') centerText('PRESS SPACE TO RUN', GREEN);
+    if(state==='over'){
+      centerText('SYSTEM CRASH! PRESS SPACE TO RETRY', RED, -14);
+      ctx.fillStyle=GREEN; ctx.font='18px "VT323",monospace'; ctx.textAlign='center';
+      ctx.fillText('SCORE '+Math.floor(score/6)+'   ·   BEST '+hi, W/2, H/2+16); ctx.textAlign='left';
+    }
+  }
+  function roundRect(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+  function centerText(t,color,dy){ ctx.fillStyle=color; ctx.font='22px "VT323",monospace'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(t, W/2, H/2+(dy||0)); ctx.textAlign='left'; ctx.textBaseline='alphabetic'; }
+
+  function loop(t){
+    if(!overlay.classList.contains('on')) return;      // stopped
+    update();
+    draw();
+    rafId=requestAnimationFrame(loop);
+  }
+
+  // ── controls: SPACE/Up jump over viruses · Down ducks under the AI ──
+  function onKey(e){
+    if(!overlay.classList.contains('on')) return;
+    if(e.code==='Space'||e.code==='ArrowUp'){ e.preventDefault(); jump(); }
+    else if(e.code==='ArrowDown'){ e.preventDefault(); setDuck(true); }
+    else if(e.key==='Escape'){ closeCompilerRun(); }
+  }
+  function onKeyUp(e){ if(e.code==='ArrowDown') setDuck(false); }
+  document.addEventListener('keydown',onKey);
+  document.addEventListener('keyup',onKeyUp);
+  canvas.addEventListener('pointerdown',e=>{ e.preventDefault(); jump(); });
+
+  window.openCompilerRun=function(){
+    reset();
+    overlay.classList.add('on');
+    cancelAnimationFrame(rafId);
+    rafId=requestAnimationFrame(loop);
+  };
+  window.closeCompilerRun=function(){
+    overlay.classList.remove('on');
+    cancelAnimationFrame(rafId);
+  };
+
+  overlay.addEventListener('pointerdown',e=>{ if(e.target===overlay) closeCompilerRun(); });
+
+  const logo=document.getElementById('header-logo');
+  if(logo) logo.addEventListener('dblclick', ()=>window.openCompilerRun());
 })();
 </script>
