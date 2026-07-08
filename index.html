@@ -681,7 +681,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
         </div>
         <div class="profile-actions" id="profile-actions" hidden>
           <button class="profile-save-btn" id="profile-save-btn" type="button" onclick="saveProfileCookie()">Save profile</button>
-          <button class="profile-bell-btn" id="profile-bell-btn" type="button" onclick="enableSeatAlerts()">🔔 Enable seat alerts</button>
+          <button class="profile-bell-btn" id="profile-bell-btn" type="button" onclick="enableSeatAlerts()">🔔 Enable notifications</button>
           <button class="profile-delete-btn" id="profile-delete-btn" type="button" onclick="deleteSavedProfile()">Delete profile</button>
         </div>
         <div class="profile-status" id="profile-push-status" style="margin-top:6px;margin-bottom:0"></div>
@@ -699,7 +699,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   <img class="pwa-install-icon" src="/icons/icon-192.png" alt="V Table">
   <div class="pwa-install-text">
     <span class="pwa-install-title">Download V Table app</span>
-    <span class="pwa-install-sub">Install it on your phone for quick access & seat alerts.</span>
+    <span class="pwa-install-sub">Install it on your phone for quick access & notifications.</span>
   </div>
   <button class="pwa-install-btn" id="pwa-install-btn" type="button">Install</button>
   <button class="pwa-install-close" id="pwa-install-close" type="button" aria-label="Dismiss">×</button>
@@ -709,7 +709,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     <h3>Install V Table</h3>
     <div class="pwa-ios-step"><span>1.</span><div>Tap the <b>Share</b> button in Safari’s toolbar (the square with an ↑ arrow).</div></div>
     <div class="pwa-ios-step"><span>2.</span><div>Scroll down and tap <b>Add to Home Screen</b>.</div></div>
-    <div class="pwa-ios-step"><span>3.</span><div>Tap <b>Add</b> — then open <b>V Table</b> from your home screen to enable seat alerts.</div></div>
+    <div class="pwa-ios-step"><span>3.</span><div>Tap <b>Add</b> — then open <b>V Table</b> from your home screen to enable notifications.</div></div>
     <button class="pwa-ios-close" id="pwa-ios-close" type="button">Got it</button>
   </div>
 </div>
@@ -1535,7 +1535,7 @@ async function enableSeatAlerts(){
       })
     });
     if(!res.ok) throw new Error('HTTP '+res.status);
-    setPushStatus('✓ Seat alerts are on for '+profile.nuid+'.');
+    setPushStatus('✓ Notifications are on for '+profile.nuid+'.');
   }catch(err){
     console.warn('enableSeatAlerts failed:',err);
     setPushStatus('Could not enable alerts right now. '+(err.message||err));
