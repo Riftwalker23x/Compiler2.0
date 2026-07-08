@@ -24,11 +24,20 @@
       "section": "G",
       "department": "BS CS",
       "batch": "25",
-      "highScore": 63,
-      "achievedAt": "2026-07-08T22:07:35.296Z"
+      "highScore": 934,
+      "achievedAt": "2026-07-08T22:09:40.118Z"
     }
   },
   "leaderboard": [
+    {
+      "nuid": "25I-0816",
+      "name": "Hammad Rehan",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 934,
+      "achievedAt": "2026-07-08T22:09:40.118Z"
+    },
     {
       "nuid": "25I-0632",
       "name": "Wajeeh Imran",
@@ -46,15 +55,6 @@
       "batch": "25",
       "highScore": 210,
       "achievedAt": "2026-07-08T21:58:50.569Z"
-    },
-    {
-      "nuid": "25I-0816",
-      "name": "Hammad Rehan",
-      "section": "G",
-      "department": "BS CS",
-      "batch": "25",
-      "highScore": 63,
-      "achievedAt": "2026-07-08T22:07:35.296Z"
     }
   ]
 }
