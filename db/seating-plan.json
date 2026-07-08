@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-07-07T19:00:08.181277+00:00",
-  "source_subject": "Seating Plan",
-  "count": 1170,
+  "updated_at": "2026-07-08T06:04:58.120093+00:00",
+  "source_subject": "Seating Plan 20",
+  "count": 1172,
   "students": [
     {
       "name": "Aaliyan Malik",
@@ -9362,7 +9362,28 @@
       "time": "1:00-4:00",
       "class": "IT Lab 2",
       "seat": "46"
+    },
+    {
+      "name": "Ayesha",
+      "nuid": "20I-098",
+      "section": "A",
+      "department": "AI",
+      "batch": "20",
+      "paper": "",
+      "time": "",
+      "class": "",
+      "seat": ""
+    },
+    {
+      "name": "Wajeeh",
+      "nuid": "20I-0909",
+      "section": "G",
+      "department": "CS",
+      "batch": "20",
+      "paper": "",
+      "time": "",
+      "class": "",
+      "seat": ""
     }
-  ],
-  "exam_date": "Thu,04,Jun,26"
+  ]
 }

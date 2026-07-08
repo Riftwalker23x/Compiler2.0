@@ -508,6 +508,51 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .header-live-item{display:inline-flex;align-items:center;white-space:nowrap}
 .header-live-sep{color:#4b7d5b;opacity:.85}
 .header-logo{cursor:pointer}
+.profile-launcher{position:fixed;top:16px;left:16px;z-index:45;width:46px;height:46px;border:none;border-radius:50%;display:grid;place-items:center;background:#ffffff;border:2px solid rgba(10,122,58,0.24);box-shadow:0 8px 24px rgba(10,122,58,0.16);color:#0a7a3a;font-size:22px;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.profile-launcher:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(10,122,58,0.2)}
+.profile-launcher:focus-visible{outline:3px solid rgba(10,122,58,0.28);outline-offset:2px}
+.profile-modal-backdrop{position:fixed;inset:0;background:rgba(4,20,10,0.68);z-index:55;display:flex;align-items:center;justify-content:center;padding:16px}
+.profile-modal-backdrop[hidden]{display:none}
+.profile-modal{width:min(100%,380px);background:#fff;border:2px solid rgba(10,122,58,0.24);border-radius:14px;box-shadow:0 12px 40px rgba(10,122,58,0.22);overflow:hidden}
+.profile-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:16px 18px;background:linear-gradient(135deg,#e8f5ec,#f8fff8);border-bottom:1px solid rgba(10,122,58,0.16)}
+.profile-modal-kicker{font-size:9px;letter-spacing:2px;color:#2d8a50;text-transform:uppercase;font-weight:700}
+.profile-modal-title{font-family:'VT323',monospace;font-size:28px;letter-spacing:2px;color:#0a7a3a;line-height:1}
+.profile-close{width:34px;height:34px;border:none;border-radius:50%;background:#fff;border:1px solid rgba(10,122,58,0.22);color:#0a7a3a;cursor:pointer;font-size:20px;display:grid;place-items:center}
+.profile-close:hover{background:#0a7a3a;color:#fff}
+.profile-modal-body{padding:16px 18px 18px}
+.profile-help{font-size:12px;line-height:1.6;color:#1f5c3c;margin-bottom:10px}
+.profile-input-row{display:flex;gap:8px;margin-bottom:8px}
+.profile-input{flex:1;background:#f8fff8;border:1.5px solid rgba(10,122,58,0.28);border-radius:8px;padding:10px 12px;font-size:13px;color:#1a4a2e;outline:none}
+.profile-input:focus{border-color:#0a7a3a;box-shadow:0 0 0 2px rgba(10,122,58,0.12)}
+.profile-sync-btn{background:#0a7a3a;border:none;border-radius:8px;padding:10px 14px;color:#fff;font-family:'VT323',monospace;font-size:18px;letter-spacing:1px;cursor:pointer}
+.profile-sync-btn:hover{background:#0d9a4a}
+.profile-status{font-size:11px;letter-spacing:.3px;color:#4a8a60;min-height:16px;margin-bottom:12px}
+.profile-status.is-error{color:#c02626;font-weight:600}
+.profile-form{border:1.5px solid rgba(10,122,58,0.18);border-radius:10px;padding:12px;background:#f9fffa;margin-top:8px}
+.profile-form-title{font-family:'VT323',monospace;font-size:20px;letter-spacing:1px;color:#0a7a3a;margin-bottom:8px}
+.profile-form-grid{display:grid;gap:8px}
+.profile-form-grid .profile-item{display:flex;flex-direction:column;gap:4px}
+.profile-input[disabled]{background:#eef5ef;color:#5b7c64;cursor:not-allowed}
+.profile-save-btn{margin-top:8px;width:100%;background:#0a7a3a;border:none;border-radius:8px;padding:10px 14px;color:#fff;font-family:'VT323',monospace;font-size:18px;letter-spacing:1px;cursor:pointer}
+.profile-save-btn:hover{background:#0d9a4a}
+.profile-actions{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.profile-delete-btn{width:100%;background:#f6d0d0;border:1px solid #e49494;border-radius:8px;padding:10px 14px;color:#7f1d1d;font-family:'VT323',monospace;font-size:16px;letter-spacing:1px;cursor:pointer}
+.profile-delete-btn:hover{background:#f2b8b8}
+.profile-success-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:70;display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:999px;background:rgba(19,118,67,0.16);backdrop-filter:blur(6px);border:1px solid rgba(29,136,77,0.34);box-shadow:0 10px 30px rgba(9,78,47,0.2);color:#0e6234;min-width:260px;justify-content:center}
+.profile-success-toast[hidden]{display:none}
+.profile-success-toast.is-error{background:rgba(185,28,28,0.14);border-color:rgba(185,28,28,0.36);box-shadow:0 10px 30px rgba(120,20,20,0.2);color:#a01818}
+.profile-success-icon{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#1f8f4c;color:#fff;font-weight:700;font-size:16px}
+.profile-success-toast.is-error .profile-success-icon{background:#c02626}
+.profile-success-text{font-family:'VT323',monospace;font-size:18px;letter-spacing:1px}
+.profile-card{border:1.5px solid rgba(10,122,58,0.18);border-radius:10px;padding:12px;background:#f9fffa}
+.profile-card-top{font-family:'VT323',monospace;font-size:22px;letter-spacing:1px;color:#0a7a3a;margin-bottom:10px}
+.profile-card-grid{display:grid;gap:8px}
+.profile-item{background:#fff;border:1px solid rgba(10,122,58,0.12);border-radius:8px;padding:10px 12px}
+.profile-label{font-size:9px;letter-spacing:2px;color:#2d8a50;text-transform:uppercase;margin-bottom:3px}
+.profile-value{font-family:'Share Tech Mono',monospace;font-size:13px;color:#1a4a2e;word-break:break-word}
+.profile-card[hidden],.profile-form[hidden]{display:none}
+.profile-input-row[hidden],.profile-help[hidden],.profile-status[hidden]{display:none}
+@media(max-width:560px){.profile-launcher{top:12px;left:12px;width:42px;height:42px;font-size:20px}.profile-modal{width:100%}}
 
 /* ── Compiler Run game ── */
 .cr-overlay{position:fixed;inset:0;background:rgba(4,20,10,0.82);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px}
@@ -545,6 +590,78 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 </div>
 <div class="corner c-tl"></div><div class="corner c-tr"></div>
 <div class="corner c-bl"></div><div class="corner c-br"></div>
+<button class="profile-launcher" id="profile-launcher" type="button" aria-label="Open student profile" title="Open student profile">👤</button>
+<div class="profile-modal-backdrop" id="profile-modal-backdrop" hidden>
+  <div class="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+    <div class="profile-modal-head">
+      <div>
+        <div class="profile-modal-kicker">Student profile</div>
+        <div class="profile-modal-title" id="profile-modal-title">Make your profile</div>
+      </div>
+      <button class="profile-close" type="button" onclick="closeProfileModal()" aria-label="Close profile">×</button>
+    </div>
+    <div class="profile-modal-body">
+      <div class="profile-help" id="profile-sync-help">You only need to enter your NU ID to sync your profile.</div>
+      <div class="profile-input-row" id="profile-sync-row">
+        <input class="profile-input" id="profile-nuid" type="text" placeholder="Enter NU ID (e.g. 25I-0000)" maxlength="20" onkeydown="if(event.key==='Enter')syncProfile()">
+        <button class="profile-sync-btn" type="button" onclick="syncProfile()">Sync</button>
+      </div>
+      <div class="profile-status" id="profile-status">Type your NU ID and press sync.</div>
+      <div class="profile-form" id="profile-registration" hidden>
+        <div class="profile-form-title">Add your profile</div>
+        <div class="profile-help">We could not find your NU ID yet. Enter your details below.</div>
+        <div class="profile-form-grid">
+          <div class="profile-item">
+            <label class="profile-label" for="profile-name">Name</label>
+            <input class="profile-input" id="profile-name" type="text" placeholder="Enter full name">
+          </div>
+          <div class="profile-item">
+            <label class="profile-label" for="profile-section-input">Section</label>
+            <input class="profile-input" id="profile-section-input" type="text" placeholder="e.g. A">
+          </div>
+          <div class="profile-item">
+            <label class="profile-label" for="profile-department-input">Department</label>
+            <input class="profile-input" id="profile-department-input" type="text" placeholder="e.g. CS">
+          </div>
+          <div class="profile-item">
+            <label class="profile-label" for="profile-batch-input">Batch</label>
+            <input class="profile-input" id="profile-batch-input" type="text" placeholder="Detected from NU ID" disabled>
+          </div>
+        </div>
+        <button class="profile-save-btn" type="button" onclick="registerProfile()">Save profile</button>
+      </div>
+      <div class="profile-card" id="profile-card" hidden>
+        <div class="profile-card-top" id="profile-card-top">Student</div>
+        <div class="profile-card-grid">
+          <div class="profile-item">
+            <div class="profile-label">NU ID</div>
+            <div class="profile-value" id="profile-nuid-display">-</div>
+          </div>
+          <div class="profile-item">
+            <div class="profile-label">Section</div>
+            <div class="profile-value" id="profile-section">-</div>
+          </div>
+          <div class="profile-item">
+            <div class="profile-label">Batch</div>
+            <div class="profile-value" id="profile-batch">-</div>
+          </div>
+          <div class="profile-item">
+            <div class="profile-label">Department</div>
+            <div class="profile-value" id="profile-department">-</div>
+          </div>
+        </div>
+        <div class="profile-actions" id="profile-actions" hidden>
+          <button class="profile-save-btn" id="profile-save-btn" type="button" onclick="saveProfileCookie()">Save profile</button>
+          <button class="profile-delete-btn" id="profile-delete-btn" type="button" onclick="deleteSavedProfile()">Delete profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="profile-success-toast" id="profile-success-toast" hidden>
+  <div class="profile-success-icon">✓</div>
+  <div class="profile-success-text" id="profile-success-text">Your profile has been saved</div>
+</div>
 <div class="shell">
 
   <div class="hdr">
@@ -877,6 +994,380 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   tick();
   setInterval(tick,1000);
 })();
+</script>
+<script>
+let PROFILE_STUDENTS_CACHE=null;
+let PROFILE_SYNC_IN_PROGRESS=false;
+const PROFILE_STORAGE_KEY='vtable_profile_nuid';
+const PROFILE_COOKIE_KEY='vtable_profile';
+let PROFILE_SUCCESS_TIMEOUT=null;
+
+function getProfileCookie(){
+  // Prefer localStorage (works on file:// where cookies are blocked), fall back to cookie.
+  try{
+    const stored=localStorage.getItem(PROFILE_COOKIE_KEY);
+    if(stored) return JSON.parse(stored);
+  }catch(err){ /* localStorage unavailable */ }
+  const cookies=document.cookie ? document.cookie.split(';') : [];
+  const match=cookies.map(cookie=>cookie.trim()).find(cookie=>cookie.startsWith(`${PROFILE_COOKIE_KEY}=`));
+  if(!match) return null;
+  try{
+    return JSON.parse(decodeURIComponent(match.slice(PROFILE_COOKIE_KEY.length+1)));
+  }catch(err){
+    return null;
+  }
+}
+function setProfileCookie(profile){
+  const json=JSON.stringify(profile);
+  try{ localStorage.setItem(PROFILE_COOKIE_KEY,json); }catch(err){ /* ignore */ }
+  // Also set a cookie when the protocol supports it (http/https).
+  try{ document.cookie=`${PROFILE_COOKIE_KEY}=${encodeURIComponent(json)}; path=/; max-age=31536000; SameSite=Lax`; }catch(err){ /* ignore */ }
+}
+function clearProfileCookie(){
+  try{ localStorage.removeItem(PROFILE_COOKIE_KEY); }catch(err){ /* ignore */ }
+  try{ document.cookie=`${PROFILE_COOKIE_KEY}=; path=/; max-age=0; SameSite=Lax`; }catch(err){ /* ignore */ }
+}
+function showProfileSuccessToast(message,isError){
+  const toast=document.getElementById('profile-success-toast');
+  const text=document.getElementById('profile-success-text');
+  const icon=toast?.querySelector('.profile-success-icon');
+  if(text && message) text.textContent=message;
+  if(toast) toast.classList.toggle('is-error',Boolean(isError));
+  if(icon) icon.textContent=isError?'✕':'✓';
+  if(toast){
+    toast.hidden=false;
+    if(PROFILE_SUCCESS_TIMEOUT) clearTimeout(PROFILE_SUCCESS_TIMEOUT);
+    PROFILE_SUCCESS_TIMEOUT=setTimeout(()=>{ if(toast) toast.hidden=true; },1800);
+  }
+}
+function setProfileSyncVisible(visible){
+  const row=document.getElementById('profile-sync-row');
+  const help=document.getElementById('profile-sync-help');
+  const status=document.getElementById('profile-status');
+  if(row) row.hidden=!visible;
+  if(help) help.hidden=!visible;
+  if(status) status.hidden=!visible;
+}
+function showProfileActions(saveVisible, deleteVisible){
+  const actions=document.getElementById('profile-actions');
+  const saveBtn=document.getElementById('profile-save-btn');
+  const deleteBtn=document.getElementById('profile-delete-btn');
+  if(actions) actions.hidden=!(saveVisible||deleteVisible);
+  if(saveBtn) saveBtn.hidden=!saveVisible;
+  if(deleteBtn) deleteBtn.hidden=!deleteVisible;
+}
+function buildSavedProfileFromDom(){
+  const nuid=(document.getElementById('profile-nuid')?.value||document.getElementById('profile-nuid-display')?.textContent||'').trim().toUpperCase();
+  const profile={
+    nuid,
+    name: document.getElementById('profile-card-top')?.textContent?.trim() || 'Student',
+    section: document.getElementById('profile-section')?.textContent?.trim() || '-',
+    department: document.getElementById('profile-department')?.textContent?.trim() || '-',
+    batch: document.getElementById('profile-batch')?.textContent?.trim() || '-'
+  };
+  return profile;
+}
+function renderProfileCard(profile){
+  const card=document.getElementById('profile-card');
+  const registration=document.getElementById('profile-registration');
+  const top=document.getElementById('profile-card-top');
+  const nuidEl=document.getElementById('profile-nuid-display');
+  const sectionEl=document.getElementById('profile-section');
+  const batchEl=document.getElementById('profile-batch');
+  const deptEl=document.getElementById('profile-department');
+  if(!profile){
+    if(card) card.hidden=true;
+    if(registration) registration.hidden=true;
+    return;
+  }
+  if(top) top.textContent=profile.name || 'Student';
+  if(nuidEl) nuidEl.textContent=profile.nuid || '-';
+  if(sectionEl) sectionEl.textContent=profile.section || '-';
+  if(batchEl) batchEl.textContent=profile.batch || '-';
+  if(deptEl) deptEl.textContent=profile.department || '-';
+  if(card) card.hidden=false;
+  if(registration) registration.hidden=true;
+}
+function clearRegistrationFields(){
+  ['profile-name','profile-section-input','profile-department-input','profile-batch-input'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+}
+function resetProfileModal(){
+  const input=document.getElementById('profile-nuid');
+  const status=document.getElementById('profile-status');
+  const card=document.getElementById('profile-card');
+  const registration=document.getElementById('profile-registration');
+  if(input) input.value='';
+  clearRegistrationFields();
+  if(card) card.hidden=true;
+  if(registration) registration.hidden=true;
+  setProfileSyncVisible(true);
+  showProfileActions(false,false);
+  if(status) status.textContent='Type your NU ID and press sync.';
+}
+function saveProfileCookie(){
+  const status=document.getElementById('profile-status');
+  const profile=buildSavedProfileFromDom();
+  if(!profile.nuid){
+    if(status) status.textContent='Sync a profile first before saving it.';
+    return;
+  }
+  setProfileCookie(profile);
+  renderProfileCard(profile);
+  showProfileActions(false,true);
+  setProfileSyncVisible(false);
+  showProfileSuccessToast('Your profile has been saved');
+  if(status) status.textContent='Profile saved locally on this browser.';
+  closeProfileModal();
+}
+function deleteSavedProfile(){
+  if(!window.confirm('Delete this saved profile from this browser?')) return;
+  clearProfileCookie();
+  try{ localStorage.removeItem(PROFILE_STORAGE_KEY); }catch(err){ /* ignore */ }
+  const input=document.getElementById('profile-nuid');
+  if(input) input.value='';
+  resetProfileModal();
+  const status=document.getElementById('profile-status');
+  if(status) status.textContent='Saved profile removed. You can sync again.';
+  showProfileSuccessToast('Your profile has been deleted',true);
+  closeProfileModal();
+}
+function openProfileModal(){
+  const backdrop=document.getElementById('profile-modal-backdrop');
+  const input=document.getElementById('profile-nuid');
+  const status=document.getElementById('profile-status');
+  const registration=document.getElementById('profile-registration');
+  const card=document.getElementById('profile-card');
+  if(backdrop){ backdrop.hidden=false; }
+  const savedProfile=getProfileCookie();
+  const savedNuid=localStorage.getItem(PROFILE_STORAGE_KEY)||'';
+  if(input){
+    input.value=savedProfile?.nuid || savedNuid || '';
+    input.focus();
+  }
+  if(savedProfile){
+    setProfileSyncVisible(false);
+    renderProfileCard(savedProfile);
+    showProfileActions(false,true);
+    if(card) card.hidden=false;
+    if(registration) registration.hidden=true;
+    return;
+  }
+  setProfileSyncVisible(true);
+  if(card) card.hidden=true;
+  if(registration) registration.hidden=true;
+  showProfileActions(false,false);
+  if(status) status.textContent='Type your NU ID and press sync.';
+}
+function closeProfileModal(){
+  const backdrop=document.getElementById('profile-modal-backdrop');
+  if(backdrop){ backdrop.hidden=true; }
+}
+function deptCodeToLabel(code){
+  const normalized=(code||'').toUpperCase();
+  switch(normalized){
+    case 'BAI': return 'BS AI';
+    case 'CS': return 'BS CS';
+    case 'SE': return 'BS SE';
+    case 'DS': return 'BS DS';
+    case 'CY': return 'BS CY';
+    default: return normalized || 'Unknown';
+  }
+}
+function parseProfileFromStudent(student){
+  const explicitDepartment=(student.department||'').trim().toUpperCase();
+  const explicitSection=(student.section||'').trim().toUpperCase();
+  const explicitBatch=(student.batch||'').trim();
+
+  let department=explicitDepartment;
+  let batch=explicitBatch;
+  let section=explicitSection;
+
+  if(!department || !batch || !section){
+    const paper=(student.paper||'').trim();
+    const rawMatch=paper.match(/([A-Za-z]{2,4})-?(\d+)([A-Za-z]\d*)?/i);
+    if(rawMatch){
+      department=rawMatch[1].toUpperCase();
+      batch=rawMatch[2]||batch;
+      section=(rawMatch[3]||'').toUpperCase();
+    }
+  }
+
+  const sectionLabel = section || (batch ? `${batch}` : '') || (student.class || '').trim();
+  return {
+    name: student.name || 'Student',
+    nuid: student.nuid || '',
+    department: deptCodeToLabel(department),
+    batch,
+    section: sectionLabel,
+    room: student.class || '-'
+  };
+}
+function getProfileDataFileForNuid(nuid){
+  const match=String(nuid||'').trim().match(/^(\d{2})/);
+  const year=match ? match[1] : '';
+  if(['22','23','24','25','26'].includes(year)) return `./db/${year}.json`;
+  return './db/seating-plan.json';
+}
+function formatNuid(raw){
+  const cleaned=String(raw||'').trim().toUpperCase().replace(/\s+/g,'');
+  // Accept forms like 25i0632, 25I0632, 25-I-0632, 25I-0632 -> 25I-0632
+  const m=cleaned.match(/^(\d{2})-?([A-Z])-?(\d{3,4})$/);
+  if(m) return `${m[1]}${m[2]}-${m[3]}`;
+  return cleaned;
+}
+// Valid NU ID = batch year 20-26 + campus letter (I,L,K,F,P,M) + exactly 4 digits.
+// Returns an error message string if invalid, or null if valid.
+function validateNuid(raw){
+  const cleaned=String(raw||'').trim().toUpperCase().replace(/[\s-]+/g,'');
+  if(!cleaned) return 'Please enter your NU ID first.';
+  const year=cleaned.slice(0,2);
+  if(!/^\d{2}$/.test(year) || Number(year)<22 || Number(year)>26){
+    return 'Invalid NU ID: it must start with a batch year from 22 to 26 (e.g. 25I-0632).';
+  }
+  const letter=cleaned.slice(2,3);
+  if(!/[ILKFPM]/.test(letter)){
+    return 'Invalid NU ID: the year must be followed by a campus letter I, L, K, F, P or M (e.g. 25I-0632).';
+  }
+  const digits=cleaned.slice(3);
+  if(!/^\d{4}$/.test(digits)){
+    return 'Invalid NU ID: it must end with exactly 4 digits (e.g. 25I-0632).';
+  }
+  return null;
+}
+function getBatchFromNuid(nuid){
+  const match=String(nuid||'').trim().match(/^(\d{2})/);
+  return match ? match[1] : '';
+}
+function updateProfileRegistrationFields(nuid){
+  const batchInput=document.getElementById('profile-batch-input');
+  const registration=document.getElementById('profile-registration');
+  const batch=getBatchFromNuid(nuid);
+  // Start each lookup with a clean form so a previous entry never carries over.
+  clearRegistrationFields();
+  if(batchInput){ batchInput.value=batch; }
+  if(registration){ registration.hidden=!nuid; }
+}
+async function loadProfileStudents(nuid){
+  const cacheKey=`profile:${String(nuid||'').trim().toUpperCase()}`;
+  if(PROFILE_STUDENTS_CACHE && PROFILE_STUDENTS_CACHE.cacheKey===cacheKey) return PROFILE_STUDENTS_CACHE.students;
+  const sourceFile=getProfileDataFileForNuid(nuid);
+  try{
+    const res=await fetch(sourceFile,{cache:'no-store'});
+    if(!res.ok) throw new Error('Profile data unavailable');
+    const data=await res.json();
+    const students=Array.isArray(data.students)?data.students:[];
+    PROFILE_STUDENTS_CACHE={cacheKey,students};
+    return students;
+  }catch(err){
+    console.warn('Profile sync failed:', err);
+    PROFILE_STUDENTS_CACHE={cacheKey,students:[]};
+    return [];
+  }
+}
+async function syncProfile(){
+  if(PROFILE_SYNC_IN_PROGRESS) return;
+  const input=document.getElementById('profile-nuid');
+  const status=document.getElementById('profile-status');
+  const card=document.getElementById('profile-card');
+  const registration=document.getElementById('profile-registration');
+  const top=document.getElementById('profile-card-top');
+  const sectionEl=document.getElementById('profile-section');
+  const batchEl=document.getElementById('profile-batch');
+  const deptEl=document.getElementById('profile-department');
+  const validationError=validateNuid(input?.value||'');
+  if(validationError){
+    if(status){ status.textContent=validationError; status.classList.add('is-error'); }
+    if(card) card.hidden=true;
+    return;
+  }
+  const nuid=formatNuid(input?.value||'');
+  if(input) input.value=nuid;
+  if(status) status.classList.remove('is-error');
+  updateProfileRegistrationFields(nuid);
+  localStorage.setItem(PROFILE_STORAGE_KEY,nuid);
+  if(status) status.textContent='Syncing profile...';
+  PROFILE_SYNC_IN_PROGRESS=true;
+  try{
+    const students=await loadProfileStudents(nuid);
+    const match=students.find(student=>String(student.nuid||'').trim().toUpperCase()===nuid);
+    if(!match){
+      if(status) status.textContent='No student found for that NU ID.';
+      if(card) card.hidden=true;
+      if(registration) registration.hidden=false;
+      return;
+    }
+    const profile=parseProfileFromStudent(match);
+    renderProfileCard(profile);
+    const savedProfile=getProfileCookie();
+    const hasSavedProfile=Boolean(savedProfile && String(savedProfile.nuid||'').trim().toUpperCase()===nuid);
+    showProfileActions(!hasSavedProfile, hasSavedProfile);
+    if(status) status.textContent=hasSavedProfile ? 'Profile synced successfully. Your saved profile is shown.' : 'Profile synced successfully. Save it locally to keep it on this browser.';
+  }catch(err){
+    if(status) status.textContent='Unable to load profile right now.';
+    if(card) card.hidden=true;
+  }finally{
+    PROFILE_SYNC_IN_PROGRESS=false;
+  }
+}
+async function registerProfile(){
+  const nuid=(document.getElementById('profile-nuid')?.value||'').trim().toUpperCase();
+  const name=(document.getElementById('profile-name')?.value||'').trim();
+  const section=(document.getElementById('profile-section-input')?.value||'').trim();
+  const department=(document.getElementById('profile-department-input')?.value||'').trim();
+  const batch=getBatchFromNuid(nuid);
+  const status=document.getElementById('profile-status');
+  const card=document.getElementById('profile-card');
+  const registration=document.getElementById('profile-registration');
+  if(!nuid||!name||!section||!department||!batch){
+    if(status) status.textContent='Please fill in your name, section, department, and NU ID.';
+    return;
+  }
+  if(status) status.textContent='Saving profile...';
+  try{
+    const payload={nuid,name,section,department,batch};
+    const urls=[
+      '/api/profile',
+      './api/profile',
+      'http://127.0.0.1:8000/api/profile',
+      'http://localhost:8000/api/profile'
+    ];
+    let lastError=null;
+    let data={};
+    let response=null;
+    for(const url of urls){
+      try{
+        response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        data=await response.json().catch(()=>({}));
+        if(response.ok){ break; }
+        throw new Error(data.error||`HTTP ${response.status}`);
+      }catch(err){
+        lastError=err;
+      }
+    }
+    if(!response||!response.ok){ throw lastError||new Error('Failed to save profile'); }
+    const studentData=data.student||payload;
+    PROFILE_STUDENTS_CACHE={cacheKey:`profile:${nuid}`,students:[...(PROFILE_STUDENTS_CACHE?.students||[]),studentData]};
+    renderProfileCard({name:studentData.name||'Student',section:studentData.section||'-',batch:studentData.batch||'-',department:studentData.department||'-'});
+    showProfileActions(true,false);
+    if(card) card.hidden=false;
+    if(registration) registration.hidden=true;
+    if(status) status.textContent='Profile saved to the matching year file. Save it locally to keep it on this browser.';
+  }catch(err){
+    console.warn('Profile register failed:', err);
+    if(status) status.textContent=`Profile could not be saved right now. ${err.message || err}`;
+  }
+}
+window.openProfileModal=openProfileModal;
+window.closeProfileModal=closeProfileModal;
+window.syncProfile=syncProfile;
+window.registerProfile=registerProfile;
+window.saveProfileCookie=saveProfileCookie;
+window.deleteSavedProfile=deleteSavedProfile;
+document.getElementById('profile-launcher')?.addEventListener('click',openProfileModal);
+document.getElementById('profile-modal-backdrop')?.addEventListener('click',event=>{ if(event.target.id==='profile-modal-backdrop') closeProfileModal(); });
 </script>
 <script>
 /* ══════════════════════════════════════════
