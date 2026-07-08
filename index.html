@@ -1248,7 +1248,8 @@ function updateProfileRegistrationFields(nuid){
   // Start each lookup with a clean form so a previous entry never carries over.
   clearRegistrationFields();
   if(batchInput){ batchInput.value=batch; }
-  if(registration){ registration.hidden=!nuid; }
+  // Do NOT reveal the form here; it is only shown after a lookup finds no match,
+  // otherwise it flashes on screen while the data is still loading.
 }
 async function loadProfileStudents(nuid){
   const cacheKey=`profile:${String(nuid||'').trim().toUpperCase()}`;
@@ -1288,6 +1289,9 @@ async function syncProfile(){
   if(status) status.classList.remove('is-error');
   updateProfileRegistrationFields(nuid);
   localStorage.setItem(PROFILE_STORAGE_KEY,nuid);
+  // Clean loading state: hide both the card and the registration form while fetching.
+  if(card) card.hidden=true;
+  if(registration) registration.hidden=true;
   if(status) status.textContent='Syncing profile...';
   PROFILE_SYNC_IN_PROGRESS=true;
   try{
