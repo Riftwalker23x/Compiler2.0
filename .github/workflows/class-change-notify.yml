@@ -1,0 +1,59 @@
+name: Class cancel/reschedule notifications
+
+# Fires when a timetable JSON is updated (regenerated and pushed). Uses `on:
+# push` with a path filter because those commits come from a real user push,
+# which does trigger push workflows. The state file this writes
+# (db/class-notify-state.json) is committed by the Actions bot and does not match
+# the trigger path, so there is no loop.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "db/timetable-computing.json"
+      - "db/timetable-business.json"
+      - "db/timetable-engineering.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Send class cancel/reschedule push notifications
+        env:
+          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_SUBJECT: mailto:compilersociety@gmail.com
+        run: |
+          npm install web-push --no-save --silent
+          node scripts/send-class-push.mjs
+
+      - name: Commit notification state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          [ -e db/class-notify-state.json ] && git add db/class-notify-state.json
+          if git diff --cached --quiet; then
+            echo "No state changes to commit"
+            exit 0
+          fi
+          git commit -m "Update class notification state"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push; then
+              exit 0
+            fi
+            echo "Push attempt $attempt failed, retrying..."
+            sleep $((RANDOM % 8 + 3))
+          done
+          echo "Push failed after 5 attempts"
+          exit 1
