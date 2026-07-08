@@ -10,9 +10,9 @@
 <link rel="icon" type="image/png" href="/icons/icon-192.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=VT323&display=swap');
-:root{--font-sans:'Inter','Segoe UI',Arial,sans-serif;--font-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;--font-display:'VT323','Courier New',monospace;--accent:#0f6b3b;--accent-strong:#0b522d;--text:#163524;--muted:#3d5a4a;--muted-light:#6b8f78;--surface:#f7fcf7;--surface-strong:#ffffff;--border:rgba(15,107,59,0.18)}
+:root{--font-sans:'Inter','Segoe UI',Arial,sans-serif;--font-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;--font-display:'VT323','Courier New',monospace;--accent:#0f6b3b;--accent-strong:#0b522d;--text:#163524;--muted:#3d5a4a;--muted-light:#6b8f78;--surface:#f7fcf7;--surface-strong:#ffffff;--border:rgba(15,107,59,0.18);--success:#0e8f42;--warning:#b86c00;--danger:#c93322;--info:#1a4a8a}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#eef7ef;color:var(--text);font-family:var(--font-sans)}
+body{background:#eef7ef;color:var(--text);font-family:var(--font-sans)}body::after{content:'';display:block;height:72px}
 #app{background:var(--surface);font-family:var(--font-sans);color:var(--text);border-radius:14px;overflow:hidden;position:relative;min-height:760px;padding-bottom:60px;box-shadow:0 16px 48px rgba(11,82,45,0.08)}
 canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .shell{position:relative;z-index:10}
@@ -67,6 +67,12 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .tt-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
 .tt-hint{font-family:var(--font-sans);font-size:10px;letter-spacing:0;color:#234f3b;font-weight:600;text-transform:none}
 .tt-out{padding:16px 18px;border:1.5px solid rgba(0,120,60,0.16);border-radius:12px;background:#fff}
+.tt-skeleton{display:flex;flex-direction:column;gap:8px}
+.tt-skeleton-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,120,60,0.08)}
+.tt-skeleton-row:last-child{border-bottom:none}
+.tt-skeleton-bar{height:12px;border-radius:4px;background:linear-gradient(90deg,#e0f0e4 25%,#f0faf2 50%,#e0f0e4 75%);background-size:200% 100%;animation:shimmer 1.4s ease-in-out infinite}
+.tt-skeleton-bar.wide{width:100%}.tt-skeleton-bar.med{width:60%}.tt-skeleton-bar.narrow{width:35%}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .tt-summary{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .tt-summary-pill{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;color:var(--accent)}
 .tt-summary-meta{font-size:10px;letter-spacing:1px;color:#3d7a55}
@@ -120,7 +126,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 /* ── Room cards ── */
 .result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:6px}
 .result-label{font-size:10px;letter-spacing:2px;color:var(--muted)}
-.result-count{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px}
+.result-count{font-family:var(--font-mono);font-size:16px;letter-spacing:1px}
 .result-count.green{color:#0a7a3a}.result-count.red{color:#c05020}
 .rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 
@@ -128,7 +134,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .room-card{position:relative;border-radius:10px;overflow:hidden;transition:transform .15s,box-shadow .15s}
 .room-card:hover{transform:translateY(-2px)}
 .room-card-head{padding:14px 14px 10px;border-bottom:1px solid rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:space-between;gap:6px}
-.room-card-name{font-family:'VT323',monospace;font-size:30px;letter-spacing:2px;line-height:1;color:#fff}
+.room-card-name{font-family:var(--font-mono);font-size:24px;letter-spacing:2px;line-height:1;color:#fff}
 .room-card-body{padding:8px 12px 10px}
 
 /* FREE NOW — full green */
@@ -295,7 +301,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .exam-date-pill.s2{background:#7a1a6a}
 .exam-date-pill.fin{background:#8a1a1a}
 .exam-time-txt{font-size:10px;letter-spacing:1px;color:var(--muted);margin-top:3px}
-.exam-room-txt{font-family:'VT323',monospace;font-size:15px;letter-spacing:1px;color:#0a7a3a}
+.exam-room-txt{font-family:var(--font-mono);font-size:13px;letter-spacing:1px;color:#0a7a3a}
 .exam-countdown{font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:3px;display:inline-block;margin-top:3px}
 .exam-countdown.soon{background:#fff3cd;color:#856404;border:1px solid #ffc107}
 .exam-countdown.upcoming{background:#e8f5ec;color:#0a7a3a;border:1px solid rgba(0,120,60,0.25)}
@@ -395,8 +401,9 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
   .nav-indicator{height:2px}
 
   .content{margin:0 8px 12px;padding:12px;min-height:300px}
-  .hdr{padding:10px 8px 8px}
+  .hdr{padding:10px 8px 8px;transition:transform .3s ease,opacity .3s ease}
   .hdr{padding:8px 8px 6px}
+  .hdr.hidden{transform:translateY(-100%);opacity:0;pointer-events:none}
   .hdr-logo{font-size:18px;letter-spacing:3px}
   .hdr-org{font-size:10px;letter-spacing:2px}
   .hdr-sub{font-size:7px;letter-spacing:2px}
@@ -594,7 +601,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
 .profile-value{font-family:'Share Tech Mono',monospace;font-size:13px;color:#1a4a2e;word-break:break-word}
 .profile-card[hidden],.profile-form[hidden]{display:none}
 .profile-input-row[hidden],.profile-help[hidden],.profile-status[hidden]{display:none}
-@media(max-width:560px){.profile-launcher{top:12px;left:12px;width:42px;height:42px;font-size:20px}.profile-modal{width:100%}}
+@media(max-width:560px){.profile-launcher{top:12px;left:12px;width:42px;height:42px}.profile-modal{width:100%}}
 
 /* ── Compiler Run game ── */
 .cr-overlay{position:fixed;inset:0;background:rgba(4,20,10,0.82);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px}
@@ -632,7 +639,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
 </div>
 <div class="corner c-tl"></div><div class="corner c-tr"></div>
 <div class="corner c-bl"></div><div class="corner c-br"></div>
-<button class="profile-launcher" id="profile-launcher" type="button" aria-label="Open student profile" title="Open student profile">👤</button>
+<button class="profile-launcher" id="profile-launcher" type="button" aria-label="Open student profile" title="Open student profile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></button>
 <div class="profile-modal-backdrop" id="profile-modal-backdrop" hidden>
   <div class="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
     <div class="profile-modal-head">
@@ -969,7 +976,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
         <input class="sp-search-input" id="sp-query" type="text" placeholder="ENTER YOUR NAME OR NUID..." maxlength="80" onkeydown="if(event.key==='Enter')searchSeatingPlan()">
         <button class="sp-search-btn" id="sp-search-btn" onclick="searchSeatingPlan()">&#9658; FIND SEAT</button>
       </div>
-      <div class="sp-hint">SEARCH BY FULL NAME OR NUID (e.g. 21L-1234) — DATA FROM db/seating-plan.json</div>
+      <div class="sp-hint">SEARCH BY FULL NAME OR NUID (e.g. 21L-1234)</div>
       <div class="sp-status" id="sp-status"></div>
       <div class="sp-result-wrap" id="sp-result"></div>
     </div>
@@ -1039,7 +1046,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
   </main>
   <footer class="site-footer" role="contentinfo">
     <span>Live timetable, exam seat, room availability, and faculty directory for FAST NUCES Islamabad.</span>
-    <span>Data synced from Google Sheets &amp; JSON sources · <span id="footer-last-sync">Loading...</span></span>
+    <span>Timetable data synced periodically · <span id="footer-last-sync">Loading...</span></span>
   </footer>
 </div>
 
@@ -1062,6 +1069,24 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
   }
   tick();
   setInterval(tick,1000);
+})();
+(function headerScrollHide(){
+  let lastY=0;
+  const hdr=document.querySelector('.hdr');
+  if(!hdr||window.innerWidth>700) return;
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(!ticking){
+      requestAnimationFrame(()=>{
+        const y=window.scrollY;
+        if(y>80&&y>lastY+10) hdr.classList.add('hidden');
+        else if(y<lastY-10||y<80) hdr.classList.remove('hidden');
+        lastY=y;
+        ticking=false;
+      });
+      ticking=true;
+    }
+  },{passive:true});
 })();
 </script>
 <script>
@@ -1809,7 +1834,7 @@ function setSheetStatus(msg,ok=true){
   if(!el) return;
   el.textContent=msg;
   el.title=msg;
-  el.style.color=ok?'#0a7a3a':'#b05a00';
+  el.style.color=ok?'var(--success)':'var(--warning)';
 }
 function updateFooterSyncTime(){
   const el=document.getElementById('footer-last-sync');
@@ -3093,7 +3118,15 @@ function loadRepeatTT(){
     }).join('')}</tbody>
   </table>`;
 }
+function showTTSkeleton(){
+  const out=document.getElementById('tt-out');
+  if(!out) return;
+  out.innerHTML='<div class="tt-skeleton">'+
+    Array(4).fill('<div class="tt-skeleton-row"><div class="tt-skeleton-bar wide"></div><div class="tt-skeleton-bar med"></div><div class="tt-skeleton-bar narrow"></div></div>').join('')+
+  '</div>';
+}
 function loadTT(){
+  showTTSkeleton();
   const dep=document.getElementById('dept').value;
   if(dep===REPEAT_DEPT){loadRepeatTT();return;}
   const bat=document.getElementById('batch').value;
@@ -3232,8 +3265,7 @@ function saveShowupPrefs(){
 function refreshShowupSourceBadge(){
   const badge=document.getElementById('showup-source-badge');
   if(!badge) return;
-  const label=(_showupData&&(_showupData.source_filename||_showupData.source_subject))||'SHOW UP SCHEDULE';
-  badge.innerHTML=`◫ ${escHtml(label)}`;
+  badge.innerHTML='◫ SHOW UP SCHEDULE';
 }
 
 function refreshShowupSectionOptions(){
@@ -3403,13 +3435,10 @@ function saveExamPrefs(){
   try{ localStorage.setItem(EXAM_PREF_KEY,JSON.stringify({dept,batch})); }catch(e){}
 }
 
-// Badge shows the actual source file/subject of the synced workbook, so it's
-// obvious which emailed sheet the schedule came from.
 function refreshExamSourceBadge(){
   const badge=document.getElementById('exam-source-badge');
   if(!badge) return;
-  const label=(_examData&&(_examData.source_filename||_examData.source_subject))||'FINAL EXAM SCHEDULE';
-  badge.innerHTML=`✎ ${escHtml(label)}`;
+  badge.innerHTML='✎ EXAM SCHEDULE';
 }
 
 function onExamDeptChange(){ saveExamPrefs(); renderExamSchedule(); }
@@ -3623,7 +3652,7 @@ function searchSeatingPlan(){
   }).catch(()=>{
     status.textContent='COULD NOT LOAD SEATING DATA — FILE MAY NOT BE SYNCED YET';
     status.className='sp-status err';
-    result.innerHTML=`<div class="sp-empty"><span class="sp-empty-icon" aria-hidden="true">&#9888;</span><div class="sp-empty-txt">db/seating-plan.json UNAVAILABLE</div></div>`;
+      result.innerHTML=`<div class="sp-empty"><span class="sp-empty-icon" aria-hidden="true">&#9888;</span><div class="sp-empty-txt">SEATING DATA UNAVAILABLE</div></div>`;
   }).finally(()=>{
     btn.disabled=false;
   });
