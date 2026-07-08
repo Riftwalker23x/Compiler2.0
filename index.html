@@ -4839,7 +4839,17 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
   picker&&picker.addEventListener('pointerdown',e=>{ if(e.target===picker) window.closeGamePicker(); });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&picker&&picker.classList.contains('on')) window.closeGamePicker(); });
   const logo=document.getElementById('header-logo');
-  if(logo) logo.addEventListener('dblclick', ()=>window.openGamePicker());
+  if(logo){
+    logo.addEventListener('dblclick', ()=>window.openGamePicker());
+    // Touch screens don't fire a reliable dblclick — detect a manual double-tap.
+    let lastTap=0;
+    logo.addEventListener('pointerup', e=>{
+      const now=Date.now();
+      if(now-lastTap>0 && now-lastTap<450){ e.preventDefault(); window.openGamePicker(); lastTap=0; }
+      else lastTap=now;
+    });
+    logo.style.touchAction='manipulation'; // avoid the browser's tap-to-zoom delay
+  }
 })();
 
 // ══════════════════════════════════════════
