@@ -33,8 +33,8 @@
       "section": "G",
       "department": "BS CS",
       "batch": "25",
-      "highScore": 81,
-      "achievedAt": "2026-07-08T22:38:28.730Z"
+      "highScore": 4450,
+      "achievedAt": "2026-07-08T22:53:18.986Z"
     },
     "25I-0656": {
       "nuid": "25I-0656",
@@ -47,6 +47,15 @@
     }
   },
   "leaderboard": [
+    {
+      "nuid": "25I-0665",
+      "name": "Shahzaib Ali",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 4450,
+      "achievedAt": "2026-07-08T22:53:18.986Z"
+    },
     {
       "nuid": "25I-0816",
       "name": "Hammad Rehan",
@@ -82,15 +91,6 @@
       "batch": "25",
       "highScore": 210,
       "achievedAt": "2026-07-08T21:58:50.569Z"
-    },
-    {
-      "nuid": "25I-0665",
-      "name": "Shahzaib Ali",
-      "section": "G",
-      "department": "BS CS",
-      "batch": "25",
-      "highScore": 81,
-      "achievedAt": "2026-07-08T22:38:28.730Z"
     }
   ]
 }
