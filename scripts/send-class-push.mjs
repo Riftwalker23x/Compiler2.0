@@ -1,12 +1,13 @@
 // Runs when a timetable JSON changes. Notifies affected users (matched by
 // department + batch + section) when a class becomes Cancelled or Rescheduled.
 //
-// De-dup is PER DEVICE: db/class-notify-state.json maps each subscription
-// endpoint -> { slotKey: "status|time|venue" } that it has already been told
-// about. A device is notified about a given change exactly once; re-runs with
-// the same data send nothing to it, but a device that has not yet seen the
-// change still gets it. A later, different change to the same class (new
-// time/venue, or re-cancel after going back to normal) notifies again.
+// De-dup is PER DEVICE and PERMANENT: db/class-notify-state.json maps each
+// subscription endpoint -> { "<slotKey>||<status|time|venue>": true } for every
+// cancel/reschedule that device has already been sent. We only ever send a
+// cancel/reschedule a device has NOT received before; anything it already got
+// is never sent again (whether or not it was opened), even though that entry
+// keeps living in the timetable JSON. A genuinely different change to the same
+// class (new time/venue) is a new composite, so it is sent.
 //
 // Env: VAPID_PRIVATE_KEY, VAPID_PUBLIC_KEY (required), VAPID_SUBJECT (optional)
 // Reads:  db/timetable-*.json, db/push-subscriptions.json
@@ -56,11 +57,13 @@ for (const f of files) {
     for (const batch of Object.keys(tt[dep] || {})) {
       for (const section of Object.keys(tt[dep][batch] || {})) {
         for (const day of Object.keys(tt[dep][batch][section] || {})) {
-          (tt[dep][batch][section][day] || []).forEach((c, idx) => {
+          (tt[dep][batch][section][day] || []).forEach((c) => {
             const status = classStatus(c.name);
             const course = cleanCourseName(c.name);
             slots.push({
-              slotKey: [dep, batch, section, day, course, idx].join('|'),
+              // No array index in the key: stable identity of a class so a
+              // reordered JSON does not look like a brand-new class.
+              slotKey: [dep, batch, section, day, course].join('|'),
               value: `${status}|${c.time || ''}|${c.location || ''}`,
               status,
               deptKey: deptKeyOf(dep), batch: fullBatch(batch), secLetter: sectionLetter(section),
@@ -96,10 +99,10 @@ if (Array.isArray(subs)) {
 
     // Only this device's matching, currently cancelled/rescheduled classes.
     const mine = slots.filter((s) => s.status !== 'Normal' && s.deptKey === dep && s.batch === batch && s.secLetter === secLetter);
-    const mineKeys = new Set(mine.map((s) => s.slotKey));
 
     for (const s of mine) {
-      if (seen[s.slotKey] === s.value) { continue; } // this device already got this exact change
+      const composite = `${s.slotKey}||${s.value}`;
+      if (seen[composite]) { continue; } // this device already received this exact cancel/reschedule
       const body = s.status === 'Cancelled'
         ? `Dear ${name}, your class ${s.course} (${s.section}) has been cancelled.`
         : `Dear ${name}, your class ${s.course} (${s.section}) has been rescheduled to ${s.time} at ${s.venue}.`;
@@ -109,17 +112,13 @@ if (Array.isArray(subs)) {
       });
       try {
         await webpush.sendNotification(subscription, payload);
-        seen[s.slotKey] = s.value; // remember this device has now been told
+        seen[composite] = true; // remember permanently — never send this one to this device again
         sent++;
       } catch (err) {
         const code = err?.statusCode;
         if (code !== 404 && code !== 410) console.warn(`class push failed (${code || 'err'}): ${err?.message || err}`);
       }
     }
-    // Forget slots that are no longer cancelled/rescheduled, so if they change
-    // again later this device is notified afresh.
-    for (const k of Object.keys(seen)) { if (!mineKeys.has(k)) delete seen[k]; }
-    if (Object.keys(seen).length === 0) delete state[endpoint];
   }
 }
 
