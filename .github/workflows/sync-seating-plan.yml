@@ -41,6 +41,18 @@ jobs:
           GMAIL_PASS: ${{ secrets.GMAIL_PASS }}
         run: python api/fetch-timetable.py
 
+      - name: Send seat-alert push notifications
+        # Notifies each subscribed device whose NU ID appears in the seating plan
+        # and whose seat details changed. No-op if there are no subscriptions or
+        # no changes. Requires VAPID_* repo secrets; skips itself if unset.
+        env:
+          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_SUBJECT: mailto:compilersociety@gmail.com
+        run: |
+          npm install web-push --no-save --silent
+          node scripts/send-seating-push.mjs
+
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
@@ -49,7 +61,7 @@ jobs:
           # feature has synced at least once (e.g. showup-sheet-source.json is
           # created only after a show-up email's sheet link is discovered), and
           # a plain "git add" of a missing path aborts the whole step.
-          for f in db/seating-plan.json db/exam-schedule-*.json db/showup-schedule-*.json db/showup-sheet-source.json; do
+          for f in db/seating-plan.json db/exam-schedule-*.json db/showup-schedule-*.json db/showup-sheet-source.json db/push-subscriptions.json db/push-state.json; do
             [ -e "$f" ] && git add "$f"
           done
           if git diff --cached --quiet; then
