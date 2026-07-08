@@ -636,6 +636,8 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
 .cr-lb-row-me{background:rgba(10,122,58,0.1)}
 .cr-lb-row-me td{color:#0a7a3a;font-weight:700}
 .cr-lb-empty{padding:14px 12px;text-align:center;font-size:11px;color:var(--muted)}
+.cr-lb-table td.cr-lb-cta{padding:16px 12px;text-align:center;font-size:12px;font-weight:700;color:#c02626;cursor:pointer;letter-spacing:.5px}
+.cr-lb-table td.cr-lb-cta:hover{text-decoration:underline}
 @media(max-width:560px){ .cr-title{font-size:26px} .cr-lb-table{font-size:11px} .cr-lb-table th,.cr-lb-table td{padding:5px 8px} }
 </style>
 
@@ -4609,6 +4611,11 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     if(status) status.textContent=LB_STATUS;
     const profile=(typeof getProfileCookie==='function') ? getProfileCookie() : null;
     const myNuid=profile && profile.nuid ? String(profile.nuid).toUpperCase() : null;
+    // No saved profile -> scores are hidden behind a red "make your profile" prompt.
+    if(!myNuid){
+      body.innerHTML='<tr><td colspan="4" class="cr-lb-cta" onclick="closeCompilerRun();openProfileModal()">&#9888; Make your profile to join the leaderboard &mdash; tap here</td></tr>';
+      return;
+    }
     if(!entries || entries.length===0){
       body.innerHTML='<tr><td colspan="4" class="cr-lb-empty">No scores yet &mdash; be the first!</td></tr>';
       return;
@@ -4625,14 +4632,15 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
+  let LB_LOADED_ONCE=false;
   async function loadLeaderboard(){
-    LB_STATUS='Loading...';
-    renderLeaderboard(null);
+    if(!LB_LOADED_ONCE){ LB_STATUS='Loading...'; renderLeaderboard(null); }
     try{
       const res=await fetch('/api/leaderboard');
       if(!res.ok) throw new Error('bad status');
       const data=await res.json();
       LB_STATUS='';
+      LB_LOADED_ONCE=true;
       renderLeaderboard(data.leaderboard||[]);
     }catch(err){
       LB_STATUS='Could not load leaderboard.';
@@ -4737,16 +4745,23 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
   document.addEventListener('keyup',onKeyUp);
   canvas.addEventListener('pointerdown',e=>{ e.preventDefault(); jump(); });
 
+  // Keep the board live while the game is open: refresh every 15s so new top
+  // scores from other players appear without reopening.
+  let lbPollId=null;
   window.openCompilerRun=function(){
     reset();
     overlay.classList.add('on');
     cancelAnimationFrame(rafId);
     rafId=requestAnimationFrame(loop);
     loadLeaderboard();
+    clearInterval(lbPollId);
+    lbPollId=setInterval(loadLeaderboard,15000);
   };
   window.closeCompilerRun=function(){
     overlay.classList.remove('on');
     cancelAnimationFrame(rafId);
+    clearInterval(lbPollId);
+    lbPollId=null;
   };
 
   overlay.addEventListener('pointerdown',e=>{ if(e.target===overlay) closeCompilerRun(); });

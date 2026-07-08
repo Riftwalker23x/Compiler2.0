@@ -1,26 +1,60 @@
 // api/leaderboard.js
 // Vercel serverless function backing the Compiler Run shared leaderboard.
 //
-// IMPORTANT: On Vercel, a deployed function's filesystem is READ-ONLY except
-// for /tmp. The previous version wrote to `db/leaderboard.json` inside the
-// deployment bundle, which throws (EROFS) on every POST in production and
-// crashes the function uncaught (FUNCTION_INVOCATION_FAILED). This version:
-//   - reads the bundled `db/leaderboard.json` as read-only SEED data
-//   - reads/writes the LIVE data at /tmp/leaderboard.json (writable)
-//   - never lets an unhandled exception escape the handler
+// Persistence: db/leaderboard.json in the GitHub repo, read/written via the
+// GitHub Contents API (same pattern as api/subscribe.js) — Vercel's own
+// filesystem is read-only and /tmp is wiped on cold starts/redeploys, so the
+// repo file is the durable store. Keeps each player's best score; serves the
+// top 10.
 //
-// CAVEAT (unchanged from before, now actually load-bearing): /tmp is
-// per-instance and ephemeral. It survives repeated calls to a warm
-// instance, but a new deploy, scale-out, or cold start after idle can wipe
-// it. Fine for a demo/class session. For real persistence, migrate to
-// Vercel KV or Supabase, keeping this same JSON shape.
+// Env (already configured for subscriptions): GH_TOKEN, optional GH_REPO /
+// GH_BRANCH.
 
-import { promises as fs } from 'fs';
-import path from 'path';
-
-const SEED_PATH = path.join(process.cwd(), 'db', 'leaderboard.json');
-const LIVE_PATH = path.join('/tmp', 'leaderboard.json');
+const LB_PATH = 'db/leaderboard.json';
 const MAX_ENTRIES = 10;
+
+function repo() { return process.env.GH_REPO || 'Riftwalker23x/Compiler2.0'; }
+function branch() { return process.env.GH_BRANCH || 'main'; }
+
+async function ghGet(token) {
+  const url = `https://api.github.com/repos/${repo()}/contents/${LB_PATH}?ref=${branch()}`;
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'User-Agent': 'compiler2-leaderboard',
+    },
+  });
+  if (res.status === 404) return { db: emptyDB(), sha: null };
+  if (!res.ok) throw new Error(`read leaderboard failed (${res.status})`);
+  const data = await res.json();
+  let db = emptyDB();
+  try {
+    db = normalizeDB(JSON.parse(Buffer.from(data.content || '', 'base64').toString('utf-8')));
+  } catch { db = emptyDB(); }
+  return { db, sha: data.sha };
+}
+
+async function ghPut(token, db, sha) {
+  const url = `https://api.github.com/repos/${repo()}/contents/${LB_PATH}`;
+  const body = {
+    message: 'Update Compiler Run leaderboard',
+    content: Buffer.from(JSON.stringify(db, null, 2) + '\n').toString('base64'),
+    branch: branch(),
+  };
+  if (sha) body.sha = sha;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'User-Agent': 'compiler2-leaderboard',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`write leaderboard failed (${res.status})`);
+}
 
 function emptyDB() {
   return { players: {}, leaderboard: [] };
@@ -31,30 +65,6 @@ function normalizeDB(parsed) {
     players: (parsed && parsed.players) || {},
     leaderboard: Array.isArray(parsed && parsed.leaderboard) ? parsed.leaderboard : [],
   };
-}
-
-async function readDB() {
-  // 1. Prefer the live, writable copy in /tmp (has real submitted scores).
-  try {
-    const raw = await fs.readFile(LIVE_PATH, 'utf-8');
-    return normalizeDB(JSON.parse(raw));
-  } catch (err) {
-    // Not there yet (cold instance) — fall through to seed.
-  }
-  // 2. Fall back to the read-only bundled seed file.
-  try {
-    const raw = await fs.readFile(SEED_PATH, 'utf-8');
-    return normalizeDB(JSON.parse(raw));
-  } catch (err) {
-    // Seed missing/corrupt — start fresh rather than failing the request.
-    return emptyDB();
-  }
-}
-
-async function writeDB(data) {
-  // /tmp always exists on Vercel; no mkdir needed, but keep it defensive.
-  await fs.mkdir(path.dirname(LIVE_PATH), { recursive: true });
-  await fs.writeFile(LIVE_PATH, JSON.stringify(data, null, 2), 'utf-8');
 }
 
 function rebuildLeaderboard(players) {
@@ -68,9 +78,20 @@ function rebuildLeaderboard(players) {
 }
 
 export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Cache-Control', 'no-store');
+  if (req.method === 'OPTIONS') return res.status(204).end();
+
   try {
+    const token = process.env.GH_TOKEN;
+    if (!token) {
+      return res.status(500).json({ error: 'Server not configured (missing GH_TOKEN)' });
+    }
+
     if (req.method === 'GET') {
-      const db = await readDB();
+      const { db } = await ghGet(token);
       return res.status(200).json({ leaderboard: db.leaderboard });
     }
 
@@ -84,38 +105,48 @@ export default async function handler(req, res) {
       if (!nuid || typeof nuid !== 'string') {
         return res.status(400).json({ error: 'nuid is required' });
       }
-      const numericScore = Number(score);
-      if (!Number.isFinite(numericScore)) {
-        return res.status(400).json({ error: 'score must be a number' });
+      const numericScore = Math.floor(Number(score));
+      if (!Number.isFinite(numericScore) || numericScore < 0 || numericScore > 1000000) {
+        return res.status(400).json({ error: 'score must be a valid number' });
       }
 
-      const db = await readDB();
-      const key = nuid.trim().toUpperCase();
-      const existing = db.players[key];
+      // Retry a few times: concurrent submissions change the file sha.
+      let lastErr;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const { db, sha } = await ghGet(token);
+        const key = nuid.trim().toUpperCase();
+        const existing = db.players[key];
 
-      if (!existing || numericScore > existing.highScore) {
+        if (existing && numericScore <= existing.highScore) {
+          // Not a new personal best — nothing to write, return current board.
+          return res.status(200).json({ leaderboard: db.leaderboard, improved: false });
+        }
+
         db.players[key] = {
           nuid: key,
-          name: (name && String(name)) || existing?.name || 'Unknown',
-          section: (section && String(section)) || existing?.section || '-',
-          department: (department && String(department)) || existing?.department || '-',
-          batch: (batch && String(batch)) || existing?.batch || '-',
+          name: (name && String(name).slice(0, 60)) || existing?.name || 'Unknown',
+          section: (section && String(section).slice(0, 10)) || existing?.section || '-',
+          department: (department && String(department).slice(0, 20)) || existing?.department || '-',
+          batch: (batch && String(batch).slice(0, 8)) || existing?.batch || '-',
           highScore: numericScore,
           achievedAt: new Date().toISOString(),
         };
+        db.leaderboard = rebuildLeaderboard(db.players);
+
+        try {
+          await ghPut(token, db, sha);
+          return res.status(200).json({ leaderboard: db.leaderboard, improved: true });
+        } catch (e) {
+          lastErr = e;
+          await new Promise((r) => setTimeout(r, 700));
+        }
       }
-
-      db.leaderboard = rebuildLeaderboard(db.players);
-      await writeDB(db);
-
-      return res.status(200).json({ leaderboard: db.leaderboard });
+      throw lastErr || new Error('Could not save score');
     }
 
     res.setHeader('Allow', ['GET', 'POST']);
     return res.status(405).json({ error: `Method ${req.method} not allowed` });
   } catch (err) {
-    // Never let this escape uncaught again — always send a real response
-    // with the actual error message so DevTools shows something useful.
     console.error('leaderboard API error:', err);
     return res.status(500).json({ error: 'Internal error', message: err?.message || String(err) });
   }
