@@ -10,17 +10,19 @@
 <link rel="icon" type="image/png" href="/icons/icon-192.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=VT323&display=swap');
-:root{--font-sans:'Inter','Segoe UI',Arial,sans-serif;--font-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;--font-display:'VT323','Courier New',monospace}
+:root{--font-sans:'Inter','Segoe UI',Arial,sans-serif;--font-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;--font-display:'VT323','Courier New',monospace;--accent:#0f6b3b;--accent-strong:#0b522d;--text:#163524;--muted:#3d5a4a;--muted-light:#6b8f78;--surface:#f7fcf7;--surface-strong:#ffffff;--border:rgba(15,107,59,0.18)}
 *{box-sizing:border-box;margin:0;padding:0}
-#app{background:#f0f7f0;font-family:var(--font-sans);color:#1a4a2e;border-radius:14px;overflow:hidden;position:relative;min-height:760px}
+body{background:#eef7ef;color:var(--text);font-family:var(--font-sans)}
+#app{background:var(--surface);font-family:var(--font-sans);color:var(--text);border-radius:14px;overflow:hidden;position:relative;min-height:760px;padding-bottom:60px;box-shadow:0 16px 48px rgba(11,82,45,0.08)}
 canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .shell{position:relative;z-index:10}
-.hdr{text-align:center;padding:16px 16px 10px;border-bottom:2px solid rgba(0,120,60,0.18);background:rgba(255,255,255,0.72)}
+.hdr{text-align:center;padding:16px 16px 10px;border-bottom:2px solid var(--border);background:rgba(255,255,255,0.84)}
+.sr-only{position:absolute!important;clip:rect(1px,1px,1px,1px);width:1px;height:1px;overflow:hidden;white-space:nowrap}
 .hdr-brand{display:flex;align-items:center;justify-content:center;gap:10px}
 .hdr-brand svg{flex-shrink:0;display:block}
 .hdr-logo{font-family:'VT323',monospace;font-size:34px;letter-spacing:8px;color:#0a7a3a;line-height:1;word-break:keep-all}
-.hdr-org{font-family:'VT323',monospace;font-size:14px;letter-spacing:4px;color:#2d8a50;line-height:1}
-.hdr-sub{font-size:10px;letter-spacing:5px;color:#2d8a50;margin-top:2px}
+.hdr-org{font-family:'VT323',monospace;font-size:14px;letter-spacing:4px;color:#1f6b3e;line-height:1}
+.hdr-sub{font-size:10px;letter-spacing:5px;color:#1f6b3e;margin-top:2px}
 .live-bar{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:6px;font-size:11px;letter-spacing:2px;color:#0a7a3a;font-family:'Share Tech Mono',monospace;flex-wrap:wrap}
 .live-dot{width:8px;height:8px;border-radius:50%;background:#0a7a3a;display:inline-block;animation:pulse 1.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
@@ -43,12 +45,12 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .nav-desc{font-family:var(--font-sans);font-size:9px;letter-spacing:.01em;color:#234f3b;margin-top:3px;word-break:keep-all;font-weight:600;text-transform:none}
 .nav-card.active .nav-desc{color:#1d4d32}
 
-.content{margin:0 18px 20px;border:2px solid rgba(0,120,60,0.15);border-top:none;border-radius:0 0 10px 10px;background:rgba(255,255,255,0.82);padding:20px;min-height:480px}
+.content{margin:0 18px 20px;border:2px solid rgba(0,120,60,0.15);border-top:none;border-radius:0 0 10px 10px;background:rgba(255,255,255,0.9);padding:20px;min-height:480px}
 .panel{display:none}.panel.on{display:block}
 
 .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
-.flabel{font-family:var(--font-sans);font-size:10px;letter-spacing:.03em;color:#2b5b3d;display:block;margin-bottom:5px;font-weight:700;text-transform:none}
-.rsel{width:100%;background:#f8fff8;border:1.5px solid rgba(0,120,60,0.3);color:#1a4a2e;font-family:var(--font-mono);font-size:12px;padding:9px 10px;border-radius:6px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' fill='none' stroke='%230a7a3a' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;min-width:0}
+.flabel{font-family:var(--font-sans);font-size:10px;letter-spacing:.03em;color:var(--muted);display:block;margin-bottom:5px;font-weight:700;text-transform:none}
+.rsel{width:100%;background:#f8fff8;border:1.5px solid rgba(0,120,60,0.3);color:var(--text);font-family:var(--font-mono);font-size:12px;padding:9px 10px;border-radius:6px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' fill='none' stroke='%230f6b3b' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;min-width:0}
 .rsel:focus{border-color:#0a7a3a;box-shadow:0 0 0 2px rgba(10,122,58,0.15)}
 .rsel:disabled{opacity:.45;cursor:not-allowed}
 .go{font-family:var(--font-display);font-size:20px;letter-spacing:2px;padding:10px 32px;background:#0a7a3a;border:none;color:#fff;cursor:pointer;border-radius:6px;margin-bottom:18px;transition:all .2s;display:block}
@@ -66,13 +68,16 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .tt-hint{font-family:var(--font-sans);font-size:10px;letter-spacing:0;color:#234f3b;font-weight:600;text-transform:none}
 .tt-out{padding:16px 18px;border:1.5px solid rgba(0,120,60,0.16);border-radius:12px;background:#fff}
 .tt-summary{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.tt-summary-pill{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;color:#0a7a3a}
+.tt-summary-pill{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;color:var(--accent)}
 .tt-summary-meta{font-size:10px;letter-spacing:1px;color:#3d7a55}
 .tt-result-table{width:100%;border-collapse:collapse;table-layout:fixed}
-.tt-result-table th{background:#e8f5ec;color:#0a7a3a;font-family:var(--font-sans);font-size:10px;letter-spacing:.04em;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.18)}
-.tt-result-table td{padding:10px 12px;border:1px solid rgba(0,120,60,0.1);font-size:12px;color:#1a4a2e;vertical-align:top;font-family:var(--font-sans)}
+.tt-result-table thead th{position:sticky;top:0;z-index:2;background:#e8f5ec;color:var(--accent);font-family:var(--font-sans);font-size:10px;letter-spacing:.04em;padding:10px 12px;text-align:left;border:1px solid rgba(0,120,60,0.18)}
+.tt-result-table td{padding:10px 12px;border:1px solid rgba(0,120,60,0.1);font-size:12px;color:var(--text);vertical-align:top;font-family:var(--font-sans)}
 .tt-result-table tr:nth-child(even) td{background:#f8fff8}
 .tt-result-table tr:hover td{background:#f0fff4}
+.tt-result-table tr.is-current td{background:#fff8d6;box-shadow:inset 3px 0 0 var(--accent);}
+.tt-result-table th:nth-child(3),.tt-result-table td:nth-child(3){text-align:right}
+.tt-result-table td:nth-child(3) .tt-time{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--accent-strong)}
 .tt-course{font-size:12px;font-family:var(--font-sans)}
 .tt-course.tt-repeat{background:#fff3cd;color:#856404;border:1px solid #ffe08a;border-radius:4px;padding:1px 7px;display:inline-block}
 .tt-note{display:inline-block;font-size:9px;letter-spacing:0;padding:1px 6px;border-radius:4px;margin-right:6px;vertical-align:middle;font-family:var(--font-mono);white-space:nowrap}
@@ -80,9 +85,9 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .tt-note.cancel{background:#f8d7da;color:#8a1a1a;border:1px solid #f1a9a0;text-decoration:none}
 .tt-course.is-cancelled{text-decoration:line-through;opacity:.7}
 .tt-day{font-size:11px;letter-spacing:0;color:#1a4a2e;font-family:var(--font-sans)}
-.tt-sec{font-family:var(--font-mono);font-size:11px;letter-spacing:0;color:#2d8a50}
+.tt-sec{font-family:var(--font-mono);font-size:11px;letter-spacing:0;color:var(--muted)}
 .tt-room{font-family:var(--font-mono);font-size:18px;letter-spacing:0;color:#0a7a3a}
-.tt-time{font-family:var(--font-mono);font-size:10px;letter-spacing:0;color:#2d8a50}
+.tt-time{font-family:var(--font-mono);font-size:11px;letter-spacing:0;color:var(--accent-strong);font-weight:600}
 .tt-empty-card{text-align:center;padding:34px 16px;color:#3d7a55;font-size:12px;letter-spacing:.02em;border:1.5px dashed rgba(10,122,58,0.24);border-radius:12px;background:linear-gradient(180deg,#fcfffc 0%,#f4fbf4 100%)}
 .tt-empty-card .empty{padding:0}
 .tt-empty-icon{font-family:var(--font-display);font-size:42px;color:#0a7a3a;display:block;margin:0 auto 10px;padding:8px 12px;border-radius:999px;background:#e9f7eb;border:1px solid rgba(10,122,58,0.16);width:max-content}
@@ -105,8 +110,8 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .time-banner{display:flex;align-items:center;justify-content:space-between;background:#e8f5ec;border:1.5px solid rgba(0,120,60,0.25);border-radius:8px;padding:12px 16px;margin-bottom:16px;flex-wrap:wrap;gap:8px}
 .time-banner-left{display:flex;align-items:center;gap:10px}
 .time-big{font-family:'VT323',monospace;font-size:32px;color:#0a7a3a;letter-spacing:3px;line-height:1}
-.time-day-txt{font-size:10px;letter-spacing:2px;color:#2d8a50;margin-top:2px}
-.time-slot{font-size:10px;letter-spacing:1px;color:#2d8a50;background:#fff;border:1px solid rgba(0,120,60,0.2);border-radius:4px;padding:4px 10px}
+.time-day-txt{font-size:10px;letter-spacing:2px;color:var(--muted);margin-top:2px}
+.time-slot{font-size:10px;letter-spacing:1px;color:var(--muted);background:#fff;border:1px solid rgba(0,120,60,0.2);border-radius:4px;padding:4px 10px}
 .time-banner-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .rooms-free-badge{font-family:'VT323',monospace;font-size:20px;letter-spacing:1px;padding:5px 14px;border-radius:6px;white-space:nowrap;border:1.5px solid}
 .rooms-free-badge.some-free{background:#0e8f42;color:#fff;border-color:#0a7a3a}
@@ -114,7 +119,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 
 /* ── Room cards ── */
 .result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:6px}
-.result-label{font-size:10px;letter-spacing:2px;color:#2d8a50}
+.result-label{font-size:10px;letter-spacing:2px;color:var(--muted)}
 .result-count{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px}
 .result-count.green{color:#0a7a3a}.result-count.red{color:#c05020}
 .rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
@@ -159,8 +164,8 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 /* ── Coming Events ── */
 .events-date-banner{background:#e8f5ec;border:1.5px solid rgba(0,120,60,0.25);border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
 .events-date-big{font-family:'VT323',monospace;font-size:28px;color:#0a7a3a;letter-spacing:3px}
-.events-date-sub{font-size:10px;letter-spacing:2px;color:#2d8a50}
-.events-range{font-size:9px;letter-spacing:1px;color:#2d8a50;background:#fff;border:1px solid rgba(0,120,60,0.2);border-radius:4px;padding:4px 10px;margin-left:auto}
+.events-date-sub{font-size:10px;letter-spacing:2px;color:var(--muted)}
+.events-range{font-size:9px;letter-spacing:1px;color:var(--muted);background:#fff;border:1px solid rgba(0,120,60,0.2);border-radius:4px;padding:4px 10px;margin-left:auto}
 .events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .ev-card{background:#fff;border:2px solid rgba(0,120,60,0.2);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .2s}
 .ev-card:hover{border-color:#0a7a3a;transform:translateY(-2px);box-shadow:0 6px 20px rgba(10,122,58,0.15)}
@@ -237,7 +242,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .ev-card-title{font-family:'VT323',monospace;font-size:22px;color:#fff;letter-spacing:1px;line-height:1.1}
 .ev-card-type{font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.6);margin-top:4px;background:rgba(255,255,255,0.15);display:inline-block;padding:2px 7px;border-radius:3px}
 .ev-card-body{padding:10px 14px 12px}
-.ev-card-venue{font-size:10px;letter-spacing:1px;color:#2d8a50;margin-bottom:4px}
+.ev-card-venue{font-size:10px;letter-spacing:1px;color:var(--muted);margin-bottom:4px}
 .ev-card-price{font-family:'VT323',monospace;font-size:18px;color:#0a7a3a;letter-spacing:2px}
 .ev-card-cta{font-size:9px;letter-spacing:2px;color:#3d7a55;margin-top:6px}
 .ev-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:999;display:flex;align-items:center;justify-content:center;padding:16px}
@@ -251,7 +256,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .ev-info-box{flex:1;min-width:110px;background:#f0fff4;border:1px solid rgba(0,120,60,0.2);border-radius:7px;padding:10px 12px}
 .ev-info-label{font-size:8px;letter-spacing:3px;color:#3d7a55;margin-bottom:4px}
 .ev-info-val{font-family:'VT323',monospace;font-size:20px;color:#0a7a3a;letter-spacing:1px}
-.ev-highlights-title{font-size:9px;letter-spacing:3px;color:#2d8a50;margin-bottom:8px}
+.ev-highlights-title{font-size:9px;letter-spacing:3px;color:var(--muted);margin-bottom:8px}
 .ev-highlight-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;font-size:11px;letter-spacing:.5px;color:#1a4a2e;line-height:1.4}
 .ev-highlight-dot{width:6px;height:6px;border-radius:50%;background:#0a7a3a;flex-shrink:0;margin-top:4px}
 .ev-buy-btn{display:block;width:100%;font-family:'VT323',monospace;font-size:22px;letter-spacing:4px;padding:13px;background:#0a7a3a;color:#fff;border:none;border-radius:7px;cursor:pointer;margin-top:16px;transition:all .2s}
@@ -270,7 +275,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .exam-type-btn.s2-active{background:#7a1a6a;border-color:#7a1a6a;color:#fff}
 .exam-type-btn.fin-active{background:#8a1a1a;border-color:#8a1a1a;color:#fff}
 .exam-header-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:6px}
-.exam-header-label{font-size:10px;letter-spacing:2px;color:#2d8a50}
+.exam-header-label{font-size:10px;letter-spacing:2px;color:var(--muted)}
 .exam-header-badge{font-family:'VT323',monospace;font-size:16px;letter-spacing:2px;padding:3px 12px;border-radius:5px;color:#fff}
 .exam-header-badge.s1{background:#1a3a8a}
 .exam-header-badge.s2{background:#7a1a6a}
@@ -289,7 +294,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .exam-date-pill.s1{background:#1a3a8a}
 .exam-date-pill.s2{background:#7a1a6a}
 .exam-date-pill.fin{background:#8a1a1a}
-.exam-time-txt{font-size:10px;letter-spacing:1px;color:#2d8a50;margin-top:3px}
+.exam-time-txt{font-size:10px;letter-spacing:1px;color:var(--muted);margin-top:3px}
 .exam-room-txt{font-family:'VT323',monospace;font-size:15px;letter-spacing:1px;color:#0a7a3a}
 .exam-countdown{font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:3px;display:inline-block;margin-top:3px}
 .exam-countdown.soon{background:#fff3cd;color:#856404;border:1px solid #ffc107}
@@ -319,7 +324,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .sp-spotlight-label{font-size:8px;letter-spacing:3px;color:#3d7a55}
 .sp-spotlight-value{font-family:'VT323',monospace;font-size:28px;letter-spacing:2px;color:#1a4a2e;font-weight:bold;line-height:1.1}
 .sp-seat-block{margin-top:4px;padding-top:14px;border-top:1px dashed rgba(0,120,60,0.2)}
-.sp-seat-label{font-size:9px;letter-spacing:3px;color:#2d8a50;margin-bottom:6px}
+.sp-seat-label{font-size:9px;letter-spacing:3px;color:var(--muted);margin-bottom:6px}
 .sp-seat-value{font-family:'VT323',monospace;font-size:36px;letter-spacing:4px;color:#0a7a3a;line-height:1;background:#f0fff4;border:2px solid rgba(10,122,58,0.25);border-radius:8px;padding:10px 16px;display:inline-block;min-width:120px;text-align:center}
 .sp-empty{text-align:center;padding:40px 20px;color:#5a9a6a}
 .sp-empty-icon{font-family:'VT323',monospace;font-size:52px;color:#5a9a6a;display:block;margin-bottom:6px}
@@ -327,7 +332,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 
 /* ── Faculty Vault ── */
 .fv-top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.fv-top-label{font-size:10px;letter-spacing:2px;color:#2d8a50}
+h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:400;margin:0;padding:0;text-transform:none}
 .fv-form{background:#f0fff4;border:1.5px solid rgba(0,120,60,0.3);border-radius:10px;padding:16px;margin-bottom:16px}
 .fv-grid{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:600px){.fv-grid{grid-template-columns:1fr 1fr 1fr}}
@@ -344,7 +349,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .fv-leader-section{display:flex;flex-direction:column;gap:6px}
 .fv-leader-title{font-family:'VT323',monospace;font-size:16px;color:#0a7a3a;border-bottom:1px dashed rgba(0,120,60,0.2);padding-bottom:4px;font-weight:bold;letter-spacing:1px}
 .fv-leader-details{display:flex;flex-direction:column;gap:4px}
-.fv-contact-label{font-size:8px;letter-spacing:1.5px;color:#2d8a50;margin-right:6px}
+.fv-contact-label{font-size:8px;letter-spacing:1.5px;color:var(--muted);margin-right:6px}
 .fv-contact-value{font-family:'Share Tech Mono',monospace;font-size:13px;color:#1a4a2e;word-break:break-all}
 .fv-email-line{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
 .fv-copy-btn{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;padding:0;border:1.5px solid rgba(10,122,58,0.35);border-radius:5px;background:#f0fff4;color:#0a7a3a;cursor:pointer;transition:all .15s;flex-shrink:0}
@@ -353,7 +358,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .fv-copy-btn.copied{background:#0a7a3a;color:#fff;border-color:#0a7a3a}
 
 .fv-results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;border-bottom:1px solid rgba(0,120,60,0.1);padding-bottom:6px}
-.fv-results-label{font-size:9px;letter-spacing:2px;color:#2d8a50}
+.fv-results-label{font-size:9px;letter-spacing:2px;color:var(--muted)}
 .fv-results-count{font-size:9px;letter-spacing:2px;color:#3d7a55}
 
 .fv-teacher-grid{display:grid;grid-template-columns:1fr;gap:12px}
@@ -391,17 +396,18 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 
   .content{margin:0 8px 12px;padding:12px;min-height:300px}
   .hdr{padding:10px 8px 8px}
-  .hdr-logo{font-size:22px;letter-spacing:4px}
-  .hdr-org{font-size:11px;letter-spacing:2px}
-  .hdr-sub{font-size:8px;letter-spacing:3px}
-  .live-bar{gap:6px;font-size:9px;letter-spacing:1px}
-  .live-bar span[style*="opacity"]{margin:0 2px}
-  .header-top{gap:10px;flex-wrap:wrap}
-  .header-logo{height:auto;max-height:100px;width:auto;max-width:100%}
-  .header-x{font-size:28px}
-  .header-vtable{font-size:44px;letter-spacing:3px}
-  .header-campus{font-size:20px;letter-spacing:2px}
-  .header-live{font-size:12px}
+  .hdr{padding:8px 8px 6px}
+  .hdr-logo{font-size:18px;letter-spacing:3px}
+  .hdr-org{font-size:10px;letter-spacing:2px}
+  .hdr-sub{font-size:7px;letter-spacing:2px}
+  .live-bar{gap:4px;font-size:8px;letter-spacing:1px}
+  .header-top{gap:6px;flex-wrap:wrap}
+  .header-logo{height:auto;max-height:60px;width:auto;max-width:100%}
+  .header-x{font-size:20px}
+  .header-vtable{font-size:32px;letter-spacing:2px}
+  .header-campus{font-size:14px;letter-spacing:1px}
+  .header-live{font-size:9px}
+  .header-live-sep{display:none}
 
   .tt-grid{grid-template-columns:1fr 1fr;gap:8px}
   .tt-hero{flex-direction:column;gap:10px;padding:12px 14px}
@@ -450,14 +456,20 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   .nav-icon{font-size:18px;margin-bottom:0}
   .tt-grid{grid-template-columns:1fr;gap:6px}
   .content{padding:8px;margin:0 4px 8px}
-  .hdr-logo{font-size:18px;letter-spacing:3px}
-  .live-bar{font-size:8px}
-  .header-top{gap:6px}
-  .header-logo{max-height:76px}
-  .header-x{font-size:20px}
-  .header-vtable{font-size:32px;letter-spacing:1px}
-  .header-campus{font-size:15px;letter-spacing:1px}
-  .header-live{font-size:10px}
+  .hdr{padding:6px 6px 4px}
+  .hdr-logo{font-size:15px;letter-spacing:2px}
+  .live-bar{font-size:7px}
+  .header-top{gap:4px}
+  .pwa-install-bar{flex-direction:row;align-items:center;gap:10px;padding:10px 12px}
+  .pwa-install-btn{width:auto;white-space:nowrap}
+  #app{padding-bottom:52px}
+
+  .header-logo{max-height:48px}
+  .header-x{font-size:16px}
+  .header-vtable{font-size:24px;letter-spacing:1px}
+  .header-campus{font-size:12px;letter-spacing:1px}
+  .header-live{font-size:8px}
+  .header-live-sep{display:none}
   .rooms-grid{grid-template-columns:1fr}
   .rsel{font-size:11px;padding:8px 8px}
   .flabel{font-size:8px;letter-spacing:2px}
@@ -525,7 +537,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .profile-modal-backdrop[hidden]{display:none}
 .profile-modal{width:min(100%,380px);background:#fff;border:2px solid rgba(10,122,58,0.24);border-radius:14px;box-shadow:0 12px 40px rgba(10,122,58,0.22);overflow:hidden}
 .profile-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:16px 18px;background:linear-gradient(135deg,#e8f5ec,#f8fff8);border-bottom:1px solid rgba(10,122,58,0.16)}
-.profile-modal-kicker{font-size:9px;letter-spacing:2px;color:#2d8a50;text-transform:uppercase;font-weight:700}
+.profile-modal-kicker{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;font-weight:700}
 .profile-modal-title{font-family:'VT323',monospace;font-size:28px;letter-spacing:2px;color:#0a7a3a;line-height:1}
 .profile-close{width:34px;height:34px;border:none;border-radius:50%;background:#fff;border:1px solid rgba(10,122,58,0.22);color:#0a7a3a;cursor:pointer;font-size:20px;display:grid;place-items:center}
 .profile-close:hover{background:#0a7a3a;color:#fff}
@@ -553,15 +565,16 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .profile-delete-btn:hover{background:#f2b8b8}
 .profile-success-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:70;display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:999px;background:rgba(19,118,67,0.16);backdrop-filter:blur(6px);border:1px solid rgba(29,136,77,0.34);box-shadow:0 10px 30px rgba(9,78,47,0.2);color:#0e6234;min-width:260px;justify-content:center}
 .profile-success-toast[hidden]{display:none}
-.pwa-install-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:12px;max-width:calc(100% - 24px);padding:10px 12px 10px 14px;border-radius:14px;background:#ffffff;border:1px solid rgba(10,122,58,0.24);box-shadow:0 12px 34px rgba(9,78,47,0.24)}
+.pwa-install-bar{display:flex;align-items:center;gap:12px;max-width:100%;padding:12px 16px;border-radius:0;background:#ffffff;border-top:1px solid rgba(10,122,58,0.24);box-shadow:0 -4px 20px rgba(9,78,47,0.12);position:fixed;bottom:0;left:0;right:0;z-index:100}
 .pwa-install-bar[hidden]{display:none}
 .pwa-install-icon{width:40px;height:40px;border-radius:10px;flex-shrink:0;object-fit:cover}
 .pwa-install-text{display:flex;flex-direction:column;line-height:1.25;min-width:0}
-.pwa-install-title{font-family:'VT323',monospace;font-size:20px;letter-spacing:1px;color:#0a7a3a}
+.pwa-install-title{font-family:'VT323',monospace;font-size:20px;letter-spacing:1px;color:var(--accent)}
 .pwa-install-sub{font-size:11px;color:#3d6b4e}
-.pwa-install-btn{background:#0a7a3a;border:none;border-radius:9px;padding:9px 14px;color:#fff;font-family:'VT323',monospace;font-size:17px;letter-spacing:1px;cursor:pointer;white-space:nowrap}
-.pwa-install-btn:hover{background:#0d9a4a}
+.pwa-install-btn{background:var(--accent);border:none;border-radius:9px;padding:9px 14px;color:#fff;font-family:'VT323',monospace;font-size:17px;letter-spacing:1px;cursor:pointer;white-space:nowrap}
+.pwa-install-btn:hover{background:var(--accent-strong)}
 .pwa-install-close{background:none;border:none;color:#6b8f78;font-size:20px;cursor:pointer;padding:2px 6px;line-height:1}
+.site-footer{padding:12px 18px 18px;color:var(--muted);font-size:11px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .pwa-ios-sheet{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center;background:rgba(4,20,10,0.55);padding:14px}
 .pwa-ios-sheet[hidden]{display:none}
 .pwa-ios-card{width:min(100%,420px);background:#fff;border-radius:16px;padding:18px;box-shadow:0 -10px 40px rgba(9,78,47,0.3)}
@@ -577,7 +590,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .profile-card-top{font-family:'VT323',monospace;font-size:22px;letter-spacing:1px;color:#0a7a3a;margin-bottom:10px}
 .profile-card-grid{display:grid;gap:8px}
 .profile-item{background:#fff;border:1px solid rgba(10,122,58,0.12);border-radius:8px;padding:10px 12px}
-.profile-label{font-size:9px;letter-spacing:2px;color:#2d8a50;text-transform:uppercase;margin-bottom:3px}
+.profile-label{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
 .profile-value{font-family:'Share Tech Mono',monospace;font-size:13px;color:#1a4a2e;word-break:break-word}
 .profile-card[hidden],.profile-form[hidden]{display:none}
 .profile-input-row[hidden],.profile-help[hidden],.profile-status[hidden]{display:none}
@@ -589,7 +602,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .cr-modal{background:#f4fff7;border:2px solid #0a7a3a;border-radius:14px;box-shadow:0 10px 40px rgba(10,122,58,0.35);width:100%;max-width:760px;padding:16px 18px 20px;position:relative;font-family:'Share Tech Mono',monospace}
 .cr-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px}
 .cr-title{font-family:'VT323',monospace;font-size:34px;letter-spacing:4px;color:#0a7a3a;line-height:1}
-.cr-sub{font-size:11px;letter-spacing:2px;color:#2d8a50;margin-top:2px}
+.cr-sub{font-size:11px;letter-spacing:2px;color:var(--muted);margin-top:2px}
 .cr-close{background:rgba(10,122,58,0.1);border:1px solid rgba(10,122,58,0.3);color:#0a7a3a;font-family:'VT323',monospace;font-size:20px;padding:2px 12px;border-radius:6px;cursor:pointer;letter-spacing:1px}
 .cr-close:hover{background:#0a7a3a;color:#fff}
 .cr-canvas-wrap{position:relative;border:2px solid rgba(10,122,58,0.25);border-radius:10px;overflow:hidden;background:#fbfffc}
@@ -600,7 +613,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 </style>
 
 <div id="app">
-<canvas id="bg3d"></canvas>
+<canvas id="bg3d" aria-hidden="true"></canvas>
 
 <!-- Compiler Run game (double-click the logo to open) -->
 <div class="cr-overlay" id="cr-overlay">
@@ -696,7 +709,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 
 <!-- Install (Add to Home Screen) prompt -->
 <div class="pwa-install-bar" id="pwa-install-bar" hidden>
-  <img class="pwa-install-icon" src="/icons/icon-192.png" alt="V Table">
+  <img class="pwa-install-icon" src="/icons/icon-192.png" alt="V Table app icon">
   <div class="pwa-install-text">
     <span class="pwa-install-title">Download V Table app</span>
     <span class="pwa-install-sub">Install it on your phone for quick access & notifications.</span>
@@ -714,13 +727,10 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
   </div>
 </div>
 <div class="shell">
-
-  <div class="hdr">
-    <div class="hdr">
-
+  <header class="hdr" role="banner">
     <div class="header-top">
 
-        <img src="Visuals/logo.png" class="header-logo" id="header-logo" title="Double-click to play Compiler Run">
+        <img src="Visuals/logo.png" class="header-logo" id="header-logo" alt="FAST NUCES Islamabad logo" title="Double-click to play Compiler Run">
 
         <span class="header-x">X</span>
 
@@ -728,9 +738,9 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 
     </div>
 
-    <div class="header-campus">
-        Fast NUCES Islamabad
-    </div>
+    <h1 class="header-campus">
+        FAST NUCES Islamabad
+    </h1>
 
     <div class="header-live">
         <span class="header-live-item" id="liveTime"></span>
@@ -740,62 +750,62 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
         <span class="header-live-item" id="liveDate"></span>
     </div>
 
-</div>
+</header>
 
-  <div class="nav" role="tablist">
-    <button class="nav-card active" id="nc0" onclick="sw(0)" role="tab" aria-selected="true" tabindex="0">
-      <div class="nav-badge">PANEL 01</div>
-      <div class="nav-icon">◷</div>
+  <nav class="nav" aria-label="Primary tools" role="tablist">
+    <button class="nav-card active" id="nc0" onclick="sw(0)" role="tab" aria-selected="true" tabindex="0" aria-controls="p0">
+      <div class="nav-badge">TIMETABLE</div>
+      <div class="nav-icon" aria-hidden="true">◷</div>
       <div class="nav-title">Class timetable</div>
       <div class="nav-desc">Dept / batch / section / day</div>
       <div class="nav-indicator"></div>
     </button>
-    <button class="nav-card" id="nc1" onclick="sw(1)" role="tab" aria-selected="false" tabindex="-1">
-      <div class="nav-badge">PANEL 02</div>
-      <div class="nav-icon">▣</div>
+    <button class="nav-card" id="nc1" onclick="sw(1)" role="tab" aria-selected="false" tabindex="-1" aria-controls="p1">
+      <div class="nav-badge">FREE ROOMS</div>
+      <div class="nav-icon" aria-hidden="true">▣</div>
       <div class="nav-title">Free rooms</div>
       <div class="nav-desc">Block / floor — slot timeline</div>
       <div class="nav-indicator"></div>
     </button>
-    <button class="nav-card" id="nc5" onclick="sw(5)" role="tab" aria-selected="false" tabindex="-1">
-      <div class="nav-badge">PANEL 03</div>
-      <div class="nav-icon">◭</div>
+    <button class="nav-card" id="nc5" onclick="sw(5)" role="tab" aria-selected="false" tabindex="-1" aria-controls="p5">
+      <div class="nav-badge">FACULTY</div>
+      <div class="nav-icon" aria-hidden="true">◭</div>
       <div class="nav-title">Faculty</div>
       <div class="nav-desc">Directory</div>
       <div class="nav-indicator"></div>
     </button>
-    <button class="nav-card" id="nc3" onclick="sw(3)" role="tab" aria-selected="false" tabindex="-1">
-      <div class="nav-badge">PANEL 04</div>
-      <div class="nav-icon">✎</div>
+    <button class="nav-card" id="nc3" onclick="sw(3)" role="tab" aria-selected="false" tabindex="-1" aria-controls="p3">
+      <div class="nav-badge">EXAMS</div>
+      <div class="nav-icon" aria-hidden="true">✎</div>
       <div class="nav-title">Exam schedule</div>
       <div class="nav-desc">S1 / S2 / final exams</div>
       <div class="nav-indicator"></div>
     </button>
-    <button class="nav-card" id="nc4" onclick="sw(4)" role="tab" aria-selected="false" tabindex="-1">
-      <div class="nav-badge">PANEL 05</div>
-      <div class="nav-icon">◨</div>
+    <button class="nav-card" id="nc4" onclick="sw(4)" role="tab" aria-selected="false" tabindex="-1" aria-controls="p4">
+      <div class="nav-badge">SEATING</div>
+      <div class="nav-icon" aria-hidden="true">◨</div>
       <div class="nav-title">Seating plan</div>
       <div class="nav-desc">Exam seat lookup</div>
       <div class="nav-indicator"></div>
     </button>
-    <button class="nav-card" id="nc2" onclick="sw(2)" role="tab" aria-selected="false" tabindex="-1">
-      <div class="nav-badge">PANEL 06</div>
-      <div class="nav-icon">◫</div>
+    <button class="nav-card" id="nc2" onclick="sw(2)" role="tab" aria-selected="false" tabindex="-1" aria-controls="p2">
+      <div class="nav-badge">SHOW UP</div>
+      <div class="nav-icon" aria-hidden="true">◫</div>
       <div class="nav-title">Show up schedule</div>
       <div class="nav-desc">Dept / batch / section</div>
       <div class="nav-indicator"></div>
     </button>
-  </div>
+  </nav>
 
-  <div class="content">
+  <main class="content" id="main-content" role="main">
 
     <!-- PANEL 0: Class Timetable -->
-    <div class="panel on" id="p0">
+    <div class="panel on" id="p0" role="tabpanel" aria-labelledby="nc0" aria-hidden="false">
       <div class="tt-shell">
         <div class="tt-hero">
           <div>
             <div class="tt-kicker">Fast Islamabad · bachelor timetable</div>
-            <div class="tt-title">Class timetable</div>
+            <h2 class="tt-title">Class timetable</h2>
             <div class="tt-copy">Choose your department, batch year, day, and section to load the timetable from the live Google Sheet.</div>
           </div>
           <div class="tt-live-badge">Synced ✓</div>
@@ -836,13 +846,14 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
         </div>
 
         <div class="tt-out" id="tt-out">
-          <div class="tt-empty-card"><div class="tt-empty-icon">◻</div><div class="tt-empty-title">Ready for your timetable</div><div class="tt-empty-copy">Choose school, department, batch, day, and section to load the current schedule.</div></div>
+          <div class="tt-empty-card"><div class="tt-empty-icon" aria-hidden="true">◻</div><div class="tt-empty-title">Ready for your timetable</div><div class="tt-empty-copy">Choose school, department, batch, day, and section to load the current schedule.</div></div>
         </div>
       </div>
     </div>
 
     <!-- PANEL 1: Free Rooms -->
-    <div class="panel" id="p1">
+    <div class="panel" id="p1" role="tabpanel" aria-labelledby="nc1" aria-hidden="true">
+      <h2 class="sr-only">Free Rooms</h2>
       <div class="time-banner">
         <div class="time-banner-left">
           <div class="live-dot"></div>
@@ -891,7 +902,8 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     </div>
 
     <!-- PANEL 2: Show Up Schedule -->
-    <div class="panel" id="p2">
+    <div class="panel" id="p2" role="tabpanel" aria-labelledby="nc2" aria-hidden="true">
+      <h2 class="sr-only">Show Up Schedule</h2>
       <div class="exam-filters">
         <div>
           <label class="flabel">DEPARTMENT</label>
@@ -923,7 +935,8 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     </div>
 
     <!-- PANEL 3: Exam Schedule -->
-    <div class="panel" id="p3">
+    <div class="panel" id="p3" role="tabpanel" aria-labelledby="nc3" aria-hidden="true">
+      <h2 class="sr-only">Exam Schedule</h2>
       <div class="exam-filters">
         <div>
           <label class="flabel">DEPARTMENT</label>
@@ -950,7 +963,8 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     </div>
 
     <!-- PANEL 4: Seating Plan -->
-    <div class="panel" id="p4">
+    <div class="panel" id="p4" role="tabpanel" aria-labelledby="nc4" aria-hidden="true">
+      <h2 class="sr-only">Seating Plan</h2>
       <div class="sp-search-row">
         <input class="sp-search-input" id="sp-query" type="text" placeholder="ENTER YOUR NAME OR NUID..." maxlength="80" onkeydown="if(event.key==='Enter')searchSeatingPlan()">
         <button class="sp-search-btn" id="sp-search-btn" onclick="searchSeatingPlan()">&#9658; FIND SEAT</button>
@@ -961,9 +975,9 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
     </div>
 
     <!-- PANEL 5: Faculty Vault -->
-    <div class="panel" id="p5">
+    <div class="panel" id="p5" role="tabpanel" aria-labelledby="nc5" aria-hidden="true">
       <div class="fv-top-bar">
-        <span class="fv-top-label">◭ FACULTY VAULT</span>
+        <h2 class="fv-top-label">◭ FACULTY VAULT</h2>
       </div>
       <div class="fv-form">
         <div class="fv-grid">
@@ -1022,7 +1036,11 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
       </div>
     </div>
 
-  </div>
+  </main>
+  <footer class="site-footer" role="contentinfo">
+    <span>Live timetable, exam seat, room availability, and faculty directory for FAST NUCES Islamabad.</span>
+    <span>Data synced from Google Sheets &amp; JSON sources · <span id="footer-last-sync">Loading...</span></span>
+  </footer>
 </div>
 
 <script>
@@ -1602,7 +1620,32 @@ function initInstallPrompt(){
   iosClose?.addEventListener('click',()=>{ if(iosSheet) iosSheet.hidden=true; });
   iosSheet?.addEventListener('click',e=>{ if(e.target===iosSheet) iosSheet.hidden=true; });
 }
+function initTabKeyboardNavigation(){
+  const tabs=[...document.querySelectorAll('[role="tab"]')];
+  if(!tabs.length) return;
+  tabs.forEach((tab,index)=>{
+    tab.addEventListener('keydown',event=>{
+      const key=event.key;
+      let nextIndex=-1;
+      if(key==='ArrowRight'||key==='ArrowDown') nextIndex=(index+1)%tabs.length;
+      else if(key==='ArrowLeft'||key==='ArrowUp') nextIndex=(index-1+tabs.length)%tabs.length;
+      else if(key==='Home') nextIndex=0;
+      else if(key==='End') nextIndex=tabs.length-1;
+      if(nextIndex>=0){
+        event.preventDefault();
+        const nextTab=tabs[nextIndex];
+        nextTab.focus();
+        const control=nextTab.getAttribute('aria-controls');
+        if(control){
+          const panelIndex=parseInt(control.replace(/^p/,''),10);
+          if(Number.isFinite(panelIndex)) sw(panelIndex);
+        }
+      }
+    });
+  });
+}
 initInstallPrompt();
+initTabKeyboardNavigation();
 window.enableSeatAlerts=enableSeatAlerts;
 window.applyProfileToFacultyVault=applyProfileToFacultyVault;
 document.getElementById('profile-launcher')?.addEventListener('click',openProfileModal);
@@ -1768,6 +1811,10 @@ function setSheetStatus(msg,ok=true){
   el.title=msg;
   el.style.color=ok?'#0a7a3a':'#b05a00';
 }
+function updateFooterSyncTime(){
+  const el=document.getElementById('footer-last-sync');
+  if(el) el.textContent='Last synced: '+new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
+}
 
 function parseGVizText(text){
   const raw=String(text||'').trim();
@@ -1885,6 +1932,7 @@ function applyTimetablePayload(payload,sourceLabel){
   const stamp=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
   const count=typeof payload.count==='number' ? payload.count : countTTEntries(TT);
   setSheetStatus(`${sourceLabel} · ${count} CLASSES · ${stamp}`);
+  updateFooterSyncTime();
 
   const p0=document.getElementById('p0');
   if(p0&&p0.classList.contains('on')) loadTT();
@@ -2116,6 +2164,7 @@ function applyCDRoomOccupancy(occupancy,total,sourceLabel){
   refreshRoomSelectorsAfterDataUpdate();
   const stamp=_cdSheetLastSync.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
   setSheetStatus(`${sourceLabel} · ${total} C/D SLOTS · ${stamp}`);
+  updateFooterSyncTime();
   const p1=document.getElementById('p1');
   if(p1&&p1.classList.contains('on')) onDayChange();
 }
@@ -2654,6 +2703,7 @@ function initLiveSheetSync(){
   _sheetTimer=setInterval(refreshTimetableFromGoogleSheet,GOOGLE_SHEET_REFRESH_MS);
   _cdSheetTimer=setInterval(refreshCDRoomScheduleFromSheet,CD_SHEET_REFRESH_MS);
   _roomTTTimer=setInterval(refreshRoomTimetables,GOOGLE_SHEET_REFRESH_MS);
+  updateFooterSyncTime();
 }
 
 /* ── Time helpers ── */
@@ -2882,12 +2932,12 @@ function onDayChange(){
   const hasUpcoming=!isToday||allRooms.some(room=>getUpcomingSlots(slotsForRoom(room)).length>0);
 
   if(!allRooms.length){
-    res.innerHTML=`<div class="no-rooms"><span class="no-rooms-icon">&#9633;</span><div class="no-rooms-txt">NO ROOMS ON THIS FLOOR</div></div>`;
+    res.innerHTML=`<div class="no-rooms"><span class="no-rooms-icon" aria-hidden="true">&#9633;</span><div class="no-rooms-txt">NO ROOMS ON THIS FLOOR</div></div>`;
     setRoomsFreeBadge(null);
     return;
   }
   if(!hasUpcoming){
-    res.innerHTML=`<div class="no-rooms"><span class="no-rooms-icon">&#9633;</span><div class="no-rooms-txt"><span class="blink">_</span> ALL SLOTS HAVE PASSED FOR TODAY<br>COME BACK TOMORROW</div></div>`;
+    res.innerHTML=`<div class="no-rooms"><span class="no-rooms-icon" aria-hidden="true">&#9633;</span><div class="no-rooms-txt"><span class="blink">_</span> ALL SLOTS HAVE PASSED FOR TODAY<br>COME BACK TOMORROW</div></div>`;
     setRoomsFreeBadge(null);
     return;
   }
@@ -2958,11 +3008,17 @@ function onDayChange(){
 function sw(i){
   ['nc0','nc1','nc2','nc3','nc4','nc5'].forEach((id,j)=>{
     const el=document.getElementById(id);
+    if(!el) return;
     el.className='nav-card'+(j===i?' active':'');
     el.setAttribute('aria-selected',j===i);
-    el.tabIndex=j===i?0:-1;
+    el.setAttribute('tabindex',j===i?0:-1);
   });
-  ['p0','p1','p2','p3','p4','p5'].forEach((id,j)=>document.getElementById(id).className='panel'+(j===i?' on':''));
+  ['p0','p1','p2','p3','p4','p5'].forEach((id,j)=>{
+    const panel=document.getElementById(id);
+    if(!panel) return;
+    panel.className='panel'+(j===i?' on':'');
+    panel.setAttribute('aria-hidden',j===i?'false':'true');
+  });
   if(i===1){
     // Re-check the moment the user opens Free Rooms: recompute against the
     // current time with the data in hand, then pull the latest timetables
@@ -3002,8 +3058,9 @@ function loadRepeatTT(){
   const course=document.getElementById('repeat-course')?.value||'';
   const day=document.getElementById('day')?.value||'';
   const secVal=document.getElementById('sec')?.value||'';
+  const currentSlot=getCurrentSlot();
   if(!course){
-    out.innerHTML='<div class="tt-empty-card"><div class="nav-icon" style="font-size:36px;margin-bottom:8px;color:#3d7a55">&#9633;</div><div class="empty">SELECT A REPEAT COURSE TO VIEW ITS SCHEDULE.</div></div>';
+      out.innerHTML='<div class="tt-empty-card"><div class="tt-empty-icon" aria-hidden="true">◻</div><div class="tt-empty-title">Choose a repeat course</div><div class="tt-empty-copy">Pick a repeat course to view its full schedule for the selected day.</div></div>';
     return;
   }
   saveTTPrefs();
@@ -3021,16 +3078,18 @@ function loadRepeatTT(){
     try{return timeToNumber(a.time)-timeToNumber(b.time);}catch(e){return 0;}
   });
   if(!rows.length){
-    out.innerHTML='<div class="tt-empty-card"><div class="nav-icon" style="font-size:36px;margin-bottom:8px;color:#3d7a55">&#9670;</div><div class="empty">NO REPEAT SESSIONS MATCH THIS SELECTION.</div></div>';
+    out.innerHTML='<div class="tt-empty-card"><div class="nav-icon" aria-hidden="true" style="font-size:36px;margin-bottom:8px;color:#3d7a55">&#9670;</div><div class="empty">NO REPEAT SESSIONS MATCH THIS SELECTION.</div></div>';
     return;
   }
   out.innerHTML=`<table class="tt-result-table">
-    <thead><tr><th style="width:30%">Course</th><th style="width:16%">Day</th><th style="width:14%">Section</th><th style="width:18%">Location</th><th style="width:22%">Time</th></tr></thead>
+    <thead><tr><th style="width:26%">Course</th><th style="width:14%">Day</th><th style="width:12%">Section</th><th style="width:18%">Location</th><th style="width:30%">Time</th></tr></thead>
     <tbody>${rows.map(r=>{
       const secLabel=`${String(r.dept||'').replace(/^BS\s+/,'')}${r.section?('-'+r.section):''}`;
       const note=r.note||extractNote(r.name);
       const cls=/cancel/i.test(note)?'tt-course tt-repeat is-cancelled':'tt-course tt-repeat';
-      return `<tr><td>${noteBadgeHTML(note)}<div class="${cls}">${stripNote(r.name)}</div></td><td><div class="tt-day">${r.day}</div></td><td><div class="tt-sec">${secLabel}</div></td><td><div class="tt-room">${r.location}</div></td><td><div class="tt-time">${r.time}</div></td></tr>`;
+      const isCurrent=currentSlot && String(r.time||'').includes('-') && String(r.time||'').split('-')[0].trim()===currentSlot.split('-')[0].trim();
+      const fmtTime = r.time && r.time.includes('-') ? fmtSlot(r.time) : r.time;
+      return `<tr class="${isCurrent?'is-current':''}"><td>${noteBadgeHTML(note)}<div class="${cls}">${stripNote(r.name)}</div></td><td><div class="tt-day">${r.day}</div></td><td><div class="tt-sec">${secLabel}</div></td><td><div class="tt-room">${r.location}</div></td><td><div class="tt-time">${fmtTime}</div></td></tr>`;
     }).join('')}</tbody>
   </table>`;
 }
@@ -3054,7 +3113,7 @@ function loadTT(){
   const out=document.getElementById('tt-out');
   if(out){
     if(!dep||!bat||!sec||!day){
-      out.innerHTML='<div class="tt-empty-card"><div class="nav-icon" style="font-size:36px;margin-bottom:8px;color:#3d7a55">&#9633;</div><div class="empty">SELECT SCHOOL, DEPT, BATCH, DAY &amp; SECTION TO LOAD THE TIMETABLE.</div></div>';
+      out.innerHTML='<div class="tt-empty-card"><div class="tt-empty-icon" aria-hidden="true">◻</div><div class="tt-empty-title">Select your timetable</div><div class="tt-empty-copy">Choose the school, department, batch, day, and section to view your classes.</div></div>';
       return;
     }
     saveTTPrefs();
@@ -3071,18 +3130,21 @@ function loadTT(){
     const sortedValidEntries=validEntries.sort((a,b)=>timeToNumber(a.time||a.t||'')-timeToNumber(b.time||b.t||''));
     const finalEntries=[...sortedValidEntries,...invalidEntries];
     if(!finalEntries.length){
-      out.innerHTML='<div class="tt-empty-card"><div class="nav-icon" style="font-size:36px;margin-bottom:8px;color:#3d7a55">&#9670;</div><div class="empty">NO CLASSES SCHEDULED FOR THIS DAY.</div></div>';
+      out.innerHTML='<div class="tt-empty-card"><div class="tt-empty-icon" aria-hidden="true">◌</div><div class="tt-empty-title">No classes today</div><div class="tt-empty-copy">This section does not have a class scheduled for the selected day.</div></div>';
       return;
     }
+    const currentSlot=getCurrentSlot();
     out.innerHTML=`<table class="tt-result-table">
-      <thead><tr><th style="width:52%">Course</th><th style="width:20%">Location</th><th style="width:28%">Time</th></tr></thead>
+      <thead><tr><th style="width:38%">Course</th><th style="width:22%">Location</th><th style="width:40%">Time</th></tr></thead>
       <tbody>${finalEntries.map(r=>{
         const name=r.name||r.c||'';
         const location=r.location||r.l||'';
         const time=r.time||r.t||'';
         const note=r.note||extractNote(name);
         const cls=/cancel/i.test(note)?'tt-course is-cancelled':'tt-course';
-        return `<tr><td>${noteBadgeHTML(note)}<div class="${cls}">${stripNote(name)}</div></td><td><div class="tt-room">${location}</div></td><td><div class="tt-time">${time}</div></td></tr>`;
+        const isCurrent=currentSlot && String(time).includes('-') && String(time).split('-')[0].trim()===currentSlot.split('-')[0].trim();
+        const fmtTime = time && time.includes('-') ? fmtSlot(time) : time;
+        return `<tr class="${isCurrent?'is-current':''}"><td>${noteBadgeHTML(note)}<div class="${cls}">${stripNote(name)}</div></td><td><div class="tt-room">${location}</div></td><td><div class="tt-time">${fmtTime}</div></td></tr>`;
       }).join('')}</tbody>
     </table>`;
   }
@@ -3195,7 +3257,7 @@ function renderShowupSchedule(){
   const out=document.getElementById('showup-out');
   if(!out) return;
   if(!dept||!batch){
-    out.innerHTML='<div class="exam-no-data"><span style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9670;</span>SELECT DEPARTMENT &amp; BATCH YEAR TO VIEW THE SCHEDULE</div>';
+    out.innerHTML='<div class="exam-no-data"><span aria-hidden="true" style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9670;</span><h3 class="sr-only">No show up schedule</h3>SELECT DEPARTMENT &amp; BATCH YEAR TO VIEW THE SCHEDULE</div>';
     return;
   }
   saveShowupPrefs();
@@ -3204,7 +3266,7 @@ function renderShowupSchedule(){
   if(sec) data=data.filter(e=>(e.sections[dept]||[]).some(s=>baseSection(s)===sec));
 
   if(!data.length){
-    out.innerHTML='<div class="exam-no-data"><span style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9670;</span>NO SHOW UP SCHEDULE DATA FOR THIS SELECTION</div>';
+    out.innerHTML='<div class="exam-no-data"><span aria-hidden="true" style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9670;</span>NO SHOW UP SCHEDULE DATA FOR THIS SELECTION</div>';
     return;
   }
 
@@ -3254,7 +3316,7 @@ function initShowupSchedulePanel(){
   }).catch(()=>{
     refreshShowupSourceBadge();
     const out=document.getElementById('showup-out');
-    if(out) out.innerHTML='<div class="exam-no-data"><span style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9888;</span>NO SHOW UP SCHEDULE SYNCED YET</div>';
+    if(out) out.innerHTML='<div class="exam-no-data"><span aria-hidden="true" style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9888;</span>NO SHOW UP SCHEDULE SYNCED YET</div>';
   });
 }
 
@@ -3370,14 +3432,14 @@ function renderExamSchedule(){
   const out=document.getElementById('exam-out');
   if(!out) return;
   if(!dept||!batch){
-    out.innerHTML='<div class="exam-no-data"><span style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9956;</span>SELECT DEPARTMENT &amp; BATCH YEAR TO VIEW THE SCHEDULE</div>';
+    out.innerHTML='<div class="exam-no-data"><span aria-hidden="true" style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9956;</span>SELECT DEPARTMENT &amp; BATCH YEAR TO VIEW THE SCHEDULE</div>';
     return;
   }
   saveExamPrefs();
   const data=examsForDeptBatch(dept,batch);
 
   if(!data.length){
-    out.innerHTML=`<div class="exam-no-data"><span style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9956;</span>NO EXAM DATA FOR THIS SELECTION</div>`;
+    out.innerHTML=`<div class="exam-no-data"><span aria-hidden="true" style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9956;</span>NO EXAM DATA FOR THIS SELECTION</div>`;
     return;
   }
 
@@ -3423,7 +3485,7 @@ function initExamSchedulePanel(){
     renderExamSchedule();
   }).catch(()=>{
     const out=document.getElementById('exam-out');
-    if(out) out.innerHTML='<div class="exam-no-data"><span style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9888;</span>COULD NOT LOAD EXAM SCHEDULE DATA</div>';
+    if(out) out.innerHTML='<div class="exam-no-data"><span aria-hidden="true" style="font-family:VT323,monospace;font-size:42px;color:#5a9a6a;display:block;margin-bottom:8px">&#9888;</span>COULD NOT LOAD EXAM SCHEDULE DATA</div>';
   });
 }
 
@@ -3552,7 +3614,7 @@ function searchSeatingPlan(){
     if(!matches.length){
       status.textContent='NO MATCH FOUND — CHECK SPELLING OR TRY YOUR NUID';
       status.className='sp-status err';
-      result.innerHTML=`<div class="sp-empty"><span class="sp-empty-icon">&#9635;</span><div class="sp-empty-txt">NO SEATING RECORD FOR "${escHtml(query.toUpperCase())}"</div></div>`;
+      result.innerHTML=`<div class="sp-empty"><span class="sp-empty-icon" aria-hidden="true">&#9635;</span><div class="sp-empty-txt">NO SEATING RECORD FOR "${escHtml(query.toUpperCase())}"</div></div>`;
       return;
     }
     status.textContent=matches.length>1?`${matches.length} MATCHES FOUND`:'SEAT FOUND';
@@ -3561,7 +3623,7 @@ function searchSeatingPlan(){
   }).catch(()=>{
     status.textContent='COULD NOT LOAD SEATING DATA — FILE MAY NOT BE SYNCED YET';
     status.className='sp-status err';
-    result.innerHTML=`<div class="sp-empty"><span class="sp-empty-icon">&#9888;</span><div class="sp-empty-txt">db/seating-plan.json UNAVAILABLE</div></div>`;
+    result.innerHTML=`<div class="sp-empty"><span class="sp-empty-icon" aria-hidden="true">&#9888;</span><div class="sp-empty-txt">db/seating-plan.json UNAVAILABLE</div></div>`;
   }).finally(()=>{
     btn.disabled=false;
   });
@@ -4274,14 +4336,14 @@ function renderFacultyVault() {
   
   const schoolData = FACULTY_DATA[school];
   if (!schoolData) {
-    grid.innerHTML = '<div class="fv-empty"><span class="fv-empty-icon">◭</span><div class="fv-empty-txt">SELECT A SCHOOL TO BEGIN</div></div>';
+    grid.innerHTML = '<div class="fv-empty"><span class="fv-empty-icon" aria-hidden="true">◭</span><div class="fv-empty-txt">SELECT A SCHOOL TO BEGIN</div></div>';
     countEl.textContent = '0 MEMBERS';
     return;
   }
   
   const deptData = schoolData.departments[dept];
   if (!deptData) {
-    grid.innerHTML = '<div class="fv-empty"><span class="fv-empty-icon">◭</span><div class="fv-empty-txt">SELECT A DEPARTMENT</div></div>';
+    grid.innerHTML = '<div class="fv-empty"><span class="fv-empty-icon" aria-hidden="true">◭</span><div class="fv-empty-txt">SELECT A DEPARTMENT</div></div>';
     countEl.textContent = '0 MEMBERS';
     return;
   }
@@ -4294,7 +4356,7 @@ function renderFacultyVault() {
   countEl.textContent = `${teachers.length} MEMBER${teachers.length !== 1 ? 'S' : ''}`;
   
   if (teachers.length === 0) {
-    grid.innerHTML = `<div class="fv-empty"><span class="fv-empty-icon">&#128100;</span><div class="fv-empty-txt">NO TEACHERS FOUND MATCHING "${escHtml(search.toUpperCase())}"</div></div>`;
+    grid.innerHTML = `<div class="fv-empty"><span class="fv-empty-icon" aria-hidden="true">&#128100;</span><div class="fv-empty-txt">NO TEACHERS FOUND MATCHING "${escHtml(search.toUpperCase())}"</div></div>`;
     return;
   }
   
