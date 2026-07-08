@@ -8,6 +8,15 @@
       "batch": "25",
       "highScore": 1,
       "achievedAt": "2026-07-08T22:58:33.593Z"
+    },
+    "25I-0656": {
+      "nuid": "25I-0656",
+      "name": "Ali Raza",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 0,
+      "achievedAt": "2026-07-08T22:59:12.552Z"
     }
   },
   "leaderboard": [
@@ -19,6 +28,15 @@
       "batch": "25",
       "highScore": 1,
       "achievedAt": "2026-07-08T22:58:33.593Z"
+    },
+    {
+      "nuid": "25I-0656",
+      "name": "Ali Raza",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 0,
+      "achievedAt": "2026-07-08T22:59:12.552Z"
     }
   ]
 }
