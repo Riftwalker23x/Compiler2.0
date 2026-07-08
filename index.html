@@ -623,7 +623,20 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
 #cr-canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
 .cr-hint{margin-top:10px;font-size:11px;letter-spacing:1px;color:#4a8a60;text-align:center}
 .cr-hint b{color:#0a7a3a}
-@media(max-width:560px){ .cr-title{font-size:26px} }
+.cr-lb{margin-top:14px;border:1.5px solid rgba(10,122,58,0.22);border-radius:10px;background:#fbfffc;overflow:hidden}
+.cr-lb-head{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:linear-gradient(135deg,#e8f5ec,#f8fff8);border-bottom:1px solid rgba(10,122,58,0.16)}
+.cr-lb-title{font-family:'VT323',monospace;font-size:18px;letter-spacing:2px;color:#0a7a3a}
+.cr-lb-status{font-size:10px;letter-spacing:1px;color:var(--muted)}
+.cr-lb-table{width:100%;border-collapse:collapse;font-family:'Share Tech Mono',monospace;font-size:12px}
+.cr-lb-table th{text-align:left;padding:6px 12px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid rgba(10,122,58,0.14)}
+.cr-lb-table td{padding:6px 12px;border-bottom:1px solid rgba(10,122,58,0.08);color:#1a4a2e}
+.cr-lb-table tr:last-child td{border-bottom:none}
+.cr-lb-table td.cr-rank{font-family:'VT323',monospace;font-size:16px;color:#0a7a3a;width:30px}
+.cr-lb-table td.cr-score{text-align:right;font-weight:700;color:#0a7a3a}
+.cr-lb-row-me{background:rgba(10,122,58,0.1)}
+.cr-lb-row-me td{color:#0a7a3a;font-weight:700}
+.cr-lb-empty{padding:14px 12px;text-align:center;font-size:11px;color:var(--muted)}
+@media(max-width:560px){ .cr-title{font-size:26px} .cr-lb-table{font-size:11px} .cr-lb-table th,.cr-lb-table td{padding:5px 8px} }
 </style>
 
 <div id="app">
@@ -641,6 +654,18 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
     </div>
     <div class="cr-canvas-wrap">
       <canvas id="cr-canvas" width="720" height="220"></canvas>
+    </div>
+    <div class="cr-lb" id="cr-lb">
+      <div class="cr-lb-head">
+        <div class="cr-lb-title">&#127942; LEADERBOARD</div>
+        <div class="cr-lb-status" id="cr-lb-status">Loading...</div>
+      </div>
+      <table class="cr-lb-table">
+        <thead>
+          <tr><th>Rank</th><th>Name</th><th>Section</th><th style="text-align:right">Score</th></tr>
+        </thead>
+        <tbody id="cr-lb-body"></tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -4568,8 +4593,80 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
 
   function gameOver(){
     state='over';
-    hi=Math.max(hi, Math.floor(score/6));
+    const finalScore=Math.floor(score/6);
+    hi=Math.max(hi, finalScore);
     localStorage.setItem(HI_KEY, String(hi));
+    submitScoreToLeaderboard(finalScore);
+  }
+
+  // ── shared leaderboard (server-backed) ──
+  let LB_STATUS='';
+
+  function renderLeaderboard(entries){
+    const body=document.getElementById('cr-lb-body');
+    const status=document.getElementById('cr-lb-status');
+    if(!body) return;
+    if(status) status.textContent=LB_STATUS;
+    const profile=(typeof getProfileCookie==='function') ? getProfileCookie() : null;
+    const myNuid=profile && profile.nuid ? String(profile.nuid).toUpperCase() : null;
+    if(!entries || entries.length===0){
+      body.innerHTML='<tr><td colspan="4" class="cr-lb-empty">No scores yet &mdash; be the first!</td></tr>';
+      return;
+    }
+    body.innerHTML=entries.map((row,i)=>{
+      const isMe=myNuid && row.nuid && String(row.nuid).toUpperCase()===myNuid;
+      const name=escapeHtml(row.name||'Unknown');
+      const section=escapeHtml(row.section||'-');
+      return `<tr class="${isMe?'cr-lb-row-me':''}"><td class="cr-rank">${i+1}</td><td>${name}</td><td>${section}</td><td class="cr-score">${row.highScore}</td></tr>`;
+    }).join('');
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  async function loadLeaderboard(){
+    LB_STATUS='Loading...';
+    renderLeaderboard(null);
+    try{
+      const res=await fetch('/api/leaderboard');
+      if(!res.ok) throw new Error('bad status');
+      const data=await res.json();
+      LB_STATUS='';
+      renderLeaderboard(data.leaderboard||[]);
+    }catch(err){
+      LB_STATUS='Could not load leaderboard.';
+      renderLeaderboard([]);
+    }
+  }
+
+  async function submitScoreToLeaderboard(finalScore){
+    const profile=(typeof getProfileCookie==='function') ? getProfileCookie() : null;
+    if(!profile || !profile.nuid){
+      // No synced profile — nothing to submit under, just refresh local view.
+      return;
+    }
+    try{
+      const res=await fetch('/api/leaderboard',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          nuid:profile.nuid,
+          name:profile.name,
+          section:profile.section,
+          department:profile.department,
+          batch:profile.batch,
+          score:finalScore
+        })
+      });
+      if(!res.ok) throw new Error('bad status');
+      const data=await res.json();
+      LB_STATUS='';
+      renderLeaderboard(data.leaderboard||[]);
+    }catch(err){
+      LB_STATUS='Could not submit score.';
+      renderLeaderboard(null);
+    }
   }
 
   // ── drawing ──
@@ -4645,6 +4742,7 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     overlay.classList.add('on');
     cancelAnimationFrame(rafId);
     rafId=requestAnimationFrame(loop);
+    loadLeaderboard();
   };
   window.closeCompilerRun=function(){
     overlay.classList.remove('on');
