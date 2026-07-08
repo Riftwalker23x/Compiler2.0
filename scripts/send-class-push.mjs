@@ -1,14 +1,16 @@
-// Runs when a timetable JSON changes. Detects classes that became Cancelled or
-// Rescheduled and notifies affected users (matched by department + batch +
-// section from their stored subscription).
+// Runs when a timetable JSON changes. Notifies affected users (matched by
+// department + batch + section) when a class becomes Cancelled or Rescheduled.
+//
+// De-dup is PER DEVICE: db/class-notify-state.json maps each subscription
+// endpoint -> { slotKey: "status|time|venue" } that it has already been told
+// about. A device is notified about a given change exactly once; re-runs with
+// the same data send nothing to it, but a device that has not yet seen the
+// change still gets it. A later, different change to the same class (new
+// time/venue, or re-cancel after going back to normal) notifies again.
 //
 // Env: VAPID_PRIVATE_KEY, VAPID_PUBLIC_KEY (required), VAPID_SUBJECT (optional)
-//
 // Reads:  db/timetable-*.json, db/push-subscriptions.json
-// Writes: db/class-notify-state.json  (slotKey -> "status|time|venue" last seen)
-//
-// The state file makes this a change detector: first run just records the
-// baseline (no spam); afterwards only slots whose status/time/venue differ fire.
+// Writes: db/class-notify-state.json
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -29,7 +31,7 @@ const subject = process.env.VAPID_SUBJECT || 'mailto:compilersociety@gmail.com';
 if (!priv || !pub) { console.log('VAPID keys not set — skipping class push.'); process.exit(0); }
 webpush.setVapidDetails(subject, pub, priv);
 
-const deptKeyOf = (dep) => String(dep || '').replace(/^BS\s+/i, '').trim().toUpperCase(); // "BS CS" | "CS" -> "CS"
+const deptKeyOf = (dep) => String(dep || '').replace(/^BS\s+/i, '').trim().toUpperCase();
 const fullBatch = (b) => (/^\d{2}$/.test(String(b || '').trim()) ? '20' + String(b).trim() : String(b || '').trim());
 const sectionLetter = (s) => String(s || '').replace(/[^A-Za-z]/g, '').toUpperCase();
 
@@ -43,9 +45,9 @@ function cleanCourseName(name) {
   return String(name || '').replace(/\s*(ReSch(eduled)?|Cancelled|Cancel)\b.*$/i, '').trim() || 'your class';
 }
 
-// Build current snapshot of every class slot across all timetable files.
+// Build the current set of class slots across all timetable files.
 const files = fs.existsSync(DB) ? fs.readdirSync(DB).filter((f) => /^timetable-.*\.json$/.test(f)) : [];
-const current = new Map(); // slotKey -> { value, meta }
+const slots = []; // { slotKey, value, status, deptKey, batch, secLetter, section, course, day, time, venue }
 for (const f of files) {
   const doc = readJson(path.join(DB, f), null);
   const tt = doc && doc.tt ? doc.tt : null;
@@ -54,17 +56,15 @@ for (const f of files) {
     for (const batch of Object.keys(tt[dep] || {})) {
       for (const section of Object.keys(tt[dep][batch] || {})) {
         for (const day of Object.keys(tt[dep][batch][section] || {})) {
-          const slots = tt[dep][batch][section][day] || [];
-          slots.forEach((c, idx) => {
+          (tt[dep][batch][section][day] || []).forEach((c, idx) => {
             const status = classStatus(c.name);
             const course = cleanCourseName(c.name);
-            const key = [dep, batch, section, day, course, idx].join('|');
-            current.set(key, {
+            slots.push({
+              slotKey: [dep, batch, section, day, course, idx].join('|'),
               value: `${status}|${c.time || ''}|${c.location || ''}`,
-              meta: {
-                deptKey: deptKeyOf(dep), batch: fullBatch(batch), secLetter: sectionLetter(section),
-                section, course, day, status, time: c.time || '—', venue: c.location || '—',
-              },
+              status,
+              deptKey: deptKeyOf(dep), batch: fullBatch(batch), secLetter: sectionLetter(section),
+              section, course, day, time: c.time || '—', venue: c.location || '—',
             });
           });
         }
@@ -73,63 +73,58 @@ for (const f of files) {
   }
 }
 
-if (current.size === 0) { console.log('No timetable data — nothing to do.'); process.exit(0); }
-
-const prevState = readJson(STATE, {});
-const firstRun = Object.keys(prevState).length === 0;
-
-// A slot is "changed" if it is now Cancelled/Rescheduled and differs from before.
-const changed = [];
-if (!firstRun) {
-  for (const [key, { value, meta }] of current) {
-    if (meta.status === 'Normal') continue;                 // only cancels/reschedules matter
-    if (prevState[key] === value) continue;                 // unchanged -> no notify
-    changed.push(meta);
-  }
-}
-
-// Persist new snapshot for next run.
-const newState = {};
-for (const [key, { value }] of current) newState[key] = value;
-writeJson(STATE, newState);
-
-if (firstRun) { console.log('First run — recorded class snapshot, no notifications sent.'); process.exit(0); }
-if (changed.length === 0) { console.log('No class cancellations/reschedules.'); process.exit(0); }
+if (slots.length === 0) { console.log('No timetable data — nothing to do.'); process.exit(0); }
 
 const subs = readJson(SUBS, []);
-if (!Array.isArray(subs) || subs.length === 0) { console.log('Classes changed but no subscriptions.'); process.exit(0); }
+const state = readJson(STATE, {}); // { endpoint: { slotKey: value } }
+const liveEndpoints = new Set();
 
 let sent = 0, skipped = 0;
-for (const entry of subs) {
-  const subscription = entry?.subscription;
-  if (!subscription?.endpoint) continue;
-  const dep = deptKeyOf(entry.department);
-  const batch = fullBatch(entry.batch);
-  const secLetter = sectionLetter(entry.section);
-  if (!dep || !batch || !secLetter) { skipped++; continue; }
+if (Array.isArray(subs)) {
+  for (const entry of subs) {
+    const subscription = entry?.subscription;
+    if (!subscription?.endpoint) continue;
+    const endpoint = subscription.endpoint;
+    liveEndpoints.add(endpoint);
+    const dep = deptKeyOf(entry.department);
+    const batch = fullBatch(entry.batch);
+    const secLetter = sectionLetter(entry.section);
+    if (!dep || !batch || !secLetter) { skipped++; continue; }
 
-  const mine = changed.filter((c) => c.deptKey === dep && c.batch === batch && c.secLetter === secLetter);
-  if (mine.length === 0) { skipped++; continue; }
+    const seen = state[endpoint] || (state[endpoint] = {});
+    const name = String(entry.name || '').trim() || 'Student';
 
-  const name = String(entry.name || '').trim() || 'Student';
-  for (const c of mine) {
-    const body = c.status === 'Cancelled'
-      ? `Dear ${name}, your class ${c.course} (${c.section}) has been cancelled.`
-      : `Dear ${name}, your class ${c.course} (${c.section}) has been rescheduled to ${c.time} at ${c.venue}.`;
-    const payload = JSON.stringify({
-      title: c.status === 'Cancelled' ? 'Class cancelled' : 'Class rescheduled',
-      body,
-      url: '/',
-      tag: `class-${c.deptKey}-${c.batch}-${c.secLetter}-${c.course}-${c.day}`,
-    });
-    try {
-      await webpush.sendNotification(subscription, payload);
-      sent++;
-    } catch (err) {
-      const code = err?.statusCode;
-      if (code !== 404 && code !== 410) console.warn(`class push failed (${code || 'err'}): ${err?.message || err}`);
+    // Only this device's matching, currently cancelled/rescheduled classes.
+    const mine = slots.filter((s) => s.status !== 'Normal' && s.deptKey === dep && s.batch === batch && s.secLetter === secLetter);
+    const mineKeys = new Set(mine.map((s) => s.slotKey));
+
+    for (const s of mine) {
+      if (seen[s.slotKey] === s.value) { continue; } // this device already got this exact change
+      const body = s.status === 'Cancelled'
+        ? `Dear ${name}, your class ${s.course} (${s.section}) has been cancelled.`
+        : `Dear ${name}, your class ${s.course} (${s.section}) has been rescheduled to ${s.time} at ${s.venue}.`;
+      const payload = JSON.stringify({
+        title: s.status === 'Cancelled' ? 'Class cancelled' : 'Class rescheduled',
+        body, url: '/', tag: `class-${s.deptKey}-${s.batch}-${s.secLetter}-${s.course}-${s.day}`,
+      });
+      try {
+        await webpush.sendNotification(subscription, payload);
+        seen[s.slotKey] = s.value; // remember this device has now been told
+        sent++;
+      } catch (err) {
+        const code = err?.statusCode;
+        if (code !== 404 && code !== 410) console.warn(`class push failed (${code || 'err'}): ${err?.message || err}`);
+      }
     }
+    // Forget slots that are no longer cancelled/rescheduled, so if they change
+    // again later this device is notified afresh.
+    for (const k of Object.keys(seen)) { if (!mineKeys.has(k)) delete seen[k]; }
+    if (Object.keys(seen).length === 0) delete state[endpoint];
   }
 }
 
-console.log(`Class push summary — sent: ${sent}, skipped: ${skipped}, changed slots: ${changed.length}`);
+// Drop devices that are no longer subscribed.
+for (const ep of Object.keys(state)) { if (!liveEndpoints.has(ep)) delete state[ep]; }
+
+writeJson(STATE, state);
+console.log(`Class push summary — sent: ${sent}, skipped: ${skipped}`);

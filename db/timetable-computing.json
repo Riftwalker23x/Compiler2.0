@@ -2014,7 +2014,7 @@
     "G": {
      "Monday": [
       {
-       "name": "Civics Cancelled",
+       "name": "Civics",
        "location": "C-305",
        "time": "11:30-12:50"
       },
@@ -2026,9 +2026,9 @@
      ],
      "Tuesday": [
       {
-       "name": "OOP ReSch",
-       "location": "C-310",
-       "time": "03:30-04:50"
+       "name": "OOP",
+       "location": "C-303",
+       "time": "08:30-09:50"
       },
       {
        "name": "MV Calculus",
