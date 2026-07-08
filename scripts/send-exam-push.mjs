@@ -85,9 +85,10 @@ for (const entry of subs) {
   const endpoint = subscription.endpoint;
   if (state[endpoint] === id) { skipped++; continue; } // already told them about this schedule
 
+  const name = String(entry.name || '').trim() || 'Student';
   const payload = JSON.stringify({
     title: 'Exam schedule',
-    body: `Your examination schedule for ${examType(doc)} has arrived. Best of luck for your exams 🍀`,
+    body: `Dear ${name}, your examination schedule for ${examType(doc)} has arrived. Best of luck for your exams 🍀`,
     url: '/',
     tag: `exam-${id}`,
   });
