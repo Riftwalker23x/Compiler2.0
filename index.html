@@ -1107,6 +1107,88 @@ function resetProfileModal(){
   showProfileActions(false,false);
   if(status) status.textContent='Type your NU ID and press sync.';
 }
+// ── Use the saved profile to pre-select the schedule tabs ──────────────
+const COMPUTING_DEPTS=['CS','AI','DS','CY','SE']; // School of Computing
+function profileDeptCode(profile){
+  return String(profile?.department||'').replace(/^BS\s+/i,'').trim().toUpperCase();
+}
+function profileFullBatch(profile){
+  const b=String(profile?.batch||'').trim();
+  return /^\d{2}$/.test(b) ? `20${b}` : b; // "25" -> "2025"
+}
+function profileIsComputing(profile){
+  return COMPUTING_DEPTS.includes(profileDeptCode(profile));
+}
+function currentWeekdayName(){
+  const d=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
+  return ['Monday','Tuesday','Wednesday','Thursday','Friday'].includes(d)?d:'';
+}
+function _readPref(key){ try{ const r=localStorage.getItem(key); return r?JSON.parse(r):null; }catch(e){ return null; } }
+function _writePref(key,val){ try{ localStorage.setItem(key,JSON.stringify(val)); }catch(e){} }
+// Seed each tab's remembered-selection store from the profile.
+// force=true (on save) overwrites; force=false (on load) only fills what is missing.
+function seedProfileSchedulePrefs(profile,force){
+  if(!profile) return;
+  const deptLabel=String(profile.department||'').trim();     // "BS CS" (timetable value)
+  const deptCode=profileDeptCode(profile);                   // "CS" (showup/exam value)
+  const fullBatch=profileFullBatch(profile);                 // "2025"
+  const sec=String(profile.section||'').trim().toUpperCase();
+  const computing=profileIsComputing(profile);
+  const today=currentWeekdayName();
+
+  // Timetable
+  const ttExisting=_readPref('fast_timetable_prefs');
+  const tt=(force||!ttExisting)?{}:{...ttExisting};
+  if(force||!ttExisting){
+    if(computing) tt.school='computing';
+    tt.dept=deptLabel; tt.batch=fullBatch; tt.sec=sec; tt.course=tt.course||'';
+  }
+  if(today) tt.day=today; // requirement: default the timetable to the current day
+  _writePref('fast_timetable_prefs',tt);
+
+  // Show Up schedule
+  if(force||!_readPref('fast_showup_prefs')){
+    _writePref('fast_showup_prefs',{dept:deptCode,batch:fullBatch,sec});
+  }
+  // Exam schedule
+  if(force||!_readPref('fast_exam_prefs')){
+    _writePref('fast_exam_prefs',{dept:deptCode,batch:fullBatch});
+  }
+}
+// Apply the profile to the Faculty Vault school selector (School of Computing for CS/AI/DS/CY/SE).
+// Faculty-vault department names keyed by profile department code.
+const FV_DEPT_BY_CODE={
+  CS:'Computer Science',
+  AI:'Artificial Intelligence & Data Science',
+  DS:'Artificial Intelligence & Data Science',
+  SE:'Software Engineering',
+  CY:'Cyber Security'
+};
+function applyProfileToFacultyVault(){
+  const profile=getProfileCookie();
+  if(!profile) return;
+  const schoolSel=document.getElementById('fv-school');
+  const deptSel=document.getElementById('fv-dept');
+  if(!schoolSel||schoolSel.value) return;
+  schoolSel.value=profileIsComputing(profile)?'School of computing':'Sciences and Humanities';
+  if(typeof onFvSchoolChange==='function') onFvSchoolChange(); // populates the dept options
+  const wantDept=FV_DEPT_BY_CODE[profileDeptCode(profile)];
+  if(deptSel&&wantDept&&[...deptSel.options].some(o=>o.value===wantDept)){
+    deptSel.value=wantDept;
+    if(typeof onFvDeptChange==='function') onFvDeptChange();
+  }
+}
+// Re-apply the (now seeded) selections to whichever schedule panel is on screen.
+function applyProfileToOpenScheduleTabs(){
+  const on=id=>document.getElementById(id)?.classList.contains('on');
+  try{
+    if(on('p0')&&typeof refreshTTFilters==='function'){ refreshTTFilters(); if(typeof loadTT==='function') loadTT(); }
+    if(on('p2')&&typeof initShowupSchedulePanel==='function') initShowupSchedulePanel();
+    if(on('p3')&&typeof initExamSchedulePanel==='function') initExamSchedulePanel();
+    if(on('p4')&&typeof initSeatingPlan==='function') initSeatingPlan();
+    if(on('p5')) applyProfileToFacultyVault();
+  }catch(e){ /* ignore */ }
+}
 function saveProfileCookie(){
   const status=document.getElementById('profile-status');
   const profile=buildSavedProfileFromDom();
@@ -1115,12 +1197,14 @@ function saveProfileCookie(){
     return;
   }
   setProfileCookie(profile);
+  seedProfileSchedulePrefs(profile,true);
   renderProfileCard(profile);
   showProfileActions(false,true);
   setProfileSyncVisible(false);
   showProfileSuccessToast('Your profile has been saved');
   if(status) status.textContent='Profile saved locally on this browser.';
   closeProfileModal();
+  applyProfileToOpenScheduleTabs();
 }
 function deleteSavedProfile(){
   if(!window.confirm('Delete this saved profile from this browser?')) return;
@@ -1336,12 +1420,14 @@ function registerProfile(){
   // Profile lives only in this browser (works on any static host, e.g. Vercel).
   const profile={ nuid, name, section, batch, department: deptCodeToLabel(departmentRaw) };
   setProfileCookie(profile);
+  seedProfileSchedulePrefs(profile,true);
   renderProfileCard(profile);
   showProfileActions(false,true);
   setProfileSyncVisible(false);
   showProfileSuccessToast('Your profile has been saved');
   if(status) status.textContent='Profile saved locally on this browser.';
   closeProfileModal();
+  applyProfileToOpenScheduleTabs();
 }
 window.openProfileModal=openProfileModal;
 window.closeProfileModal=closeProfileModal;
@@ -1349,8 +1435,12 @@ window.syncProfile=syncProfile;
 window.registerProfile=registerProfile;
 window.saveProfileCookie=saveProfileCookie;
 window.deleteSavedProfile=deleteSavedProfile;
+window.applyProfileToFacultyVault=applyProfileToFacultyVault;
 document.getElementById('profile-launcher')?.addEventListener('click',openProfileModal);
 document.getElementById('profile-modal-backdrop')?.addEventListener('click',event=>{ if(event.target.id==='profile-modal-backdrop') closeProfileModal(); });
+// On load, seed the schedule tabs from an existing saved profile (fills only what
+// the user hasn't already chosen; the current day is always refreshed).
+try{ const _savedProfile=getProfileCookie(); if(_savedProfile) seedProfileSchedulePrefs(_savedProfile,false); }catch(e){}
 </script>
 <script>
 /* ══════════════════════════════════════════
@@ -2716,7 +2806,7 @@ function sw(i){
   if(i===2) initShowupSchedulePanel();
   if(i===3) initExamSchedulePanel();
   if(i===4) initSeatingPlan();
-  if(i===5){ renderFacultyVault(); }
+  if(i===5){ renderFacultyVault(); applyProfileToFacultyVault(); }
 }
 
 /* ── Timetable panel ── */
@@ -3176,6 +3266,14 @@ let _seatingData=null;
 let _seatingLoadPromise=null;
 
 function initSeatingPlan(){
+  // If a profile is saved, prefill the search with its NU ID and search automatically.
+  const inp=document.getElementById('sp-query');
+  const profile=(typeof getProfileCookie==='function')?getProfileCookie():null;
+  if(inp&&profile&&profile.nuid&&!inp.value.trim()){
+    inp.value=profile.nuid;
+    searchSeatingPlan();
+    return;
+  }
   loadSeatingPlanData().then(()=>{
     const status=document.getElementById('sp-status');
     if(status&&!status.classList.contains('err')){
