@@ -1,0 +1,57 @@
+name: Show-up schedule change notifications
+
+# Runs after the show-up schedule may have changed. The poll workflow re-syncs
+# the live sheet (and commits only real diffs); this then diffs section slots and
+# notifies affected users of a new time/venue. workflow_run is used so the poll's
+# github-actions commit still triggers it (a bot push doesn't fire `on: push`).
+on:
+  workflow_run:
+    workflows:
+      - "Poll live Show Up Schedule sheet"
+      - "Sync seating plan, exam schedule & show up schedule"
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Send show-up change push notifications
+        env:
+          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_SUBJECT: mailto:compilersociety@gmail.com
+        run: |
+          npm install web-push --no-save --silent
+          node scripts/send-showup-push.mjs
+
+      - name: Commit notification state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          [ -e db/showup-notify-state.json ] && git add db/showup-notify-state.json
+          if git diff --cached --quiet; then
+            echo "No state changes to commit"
+            exit 0
+          fi
+          git commit -m "Update show-up notification state"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push; then
+              exit 0
+            fi
+            echo "Push attempt $attempt failed, retrying..."
+            sleep $((RANDOM % 8 + 3))
+          done
+          echo "Push failed after 5 attempts"
+          exit 1
