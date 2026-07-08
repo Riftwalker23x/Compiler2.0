@@ -17,6 +17,15 @@
       "batch": "25",
       "highScore": 210,
       "achievedAt": "2026-07-08T21:58:50.569Z"
+    },
+    "25I-0816": {
+      "nuid": "25I-0816",
+      "name": "Hammad Rehan",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 35,
+      "achievedAt": "2026-07-08T22:07:23.236Z"
     }
   },
   "leaderboard": [
@@ -37,6 +46,15 @@
       "batch": "25",
       "highScore": 210,
       "achievedAt": "2026-07-08T21:58:50.569Z"
+    },
+    {
+      "nuid": "25I-0816",
+      "name": "Hammad Rehan",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 35,
+      "achievedAt": "2026-07-08T22:07:23.236Z"
     }
   ]
 }
