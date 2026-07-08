@@ -64,6 +64,9 @@ export default async function handler(req, res) {
     const payload = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
     const nuid = String(payload.nuid || '').trim().toUpperCase();
     const name = String(payload.name || '').trim();
+    const department = String(payload.department || '').trim();
+    const batch = String(payload.batch || '').trim();
+    const section = String(payload.section || '').trim();
     const subscription = payload.subscription;
     if (!nuid || !subscription || !subscription.endpoint) {
       return res.status(400).json({ ok: false, error: 'nuid and a valid subscription are required' });
@@ -76,7 +79,7 @@ export default async function handler(req, res) {
     for (let attempt = 0; attempt < 3; attempt++) {
       const { subs, sha } = await ghGet(token);
       const filtered = subs.filter((s) => s?.subscription?.endpoint !== subscription.endpoint);
-      filtered.push({ nuid, name, subscription, updated_at: Date.now() });
+      filtered.push({ nuid, name, department, batch, section, subscription, updated_at: Date.now() });
       try {
         await ghPut(token, filtered, sha);
         return res.status(200).json({ ok: true, count: filtered.length });

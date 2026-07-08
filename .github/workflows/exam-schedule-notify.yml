@@ -1,0 +1,57 @@
+name: Exam schedule notifications
+
+# Runs right after the seating/exam/showup sync finishes. Using workflow_run
+# (not push) so it still fires when the sync's github-actions commit updates the
+# exam schedule — a bot push does not trigger `on: push` workflows.
+on:
+  workflow_run:
+    workflows: ["Sync seating plan, exam schedule & show up schedule"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Send exam-schedule push notifications
+        # Notifies each subscribed user whose department + batch + section appear
+        # in a newly arrived exam schedule. No-op without VAPID secrets / subs /
+        # a new schedule.
+        env:
+          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_SUBJECT: mailto:compilersociety@gmail.com
+        run: |
+          npm install web-push --no-save --silent
+          node scripts/send-exam-push.mjs
+
+      - name: Commit notification state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          [ -e db/push-exam-state.json ] && git add db/push-exam-state.json
+          if git diff --cached --quiet; then
+            echo "No state changes to commit"
+            exit 0
+          fi
+          git commit -m "Update exam notification state"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push; then
+              exit 0
+            fi
+            echo "Push attempt $attempt failed, retrying..."
+            sleep $((RANDOM % 8 + 3))
+          done
+          echo "Push failed after 5 attempts"
+          exit 1

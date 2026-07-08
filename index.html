@@ -1525,7 +1525,14 @@ async function enableSeatAlerts(){
     }
     const res=await fetch(PUSH_SUBSCRIBE_URL,{
       method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ nuid:profile.nuid, name:profile.name||'', subscription:sub })
+      body:JSON.stringify({
+        nuid:profile.nuid,
+        name:profile.name||'',
+        department:profile.department||'',
+        batch:profile.batch||'',
+        section:profile.section||'',
+        subscription:sub
+      })
     });
     if(!res.ok) throw new Error('HTTP '+res.status);
     setPushStatus('✓ Seat alerts are on for '+profile.nuid+'.');
