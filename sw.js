@@ -3,6 +3,10 @@
 self.addEventListener('install', event => { self.skipWaiting(); });
 self.addEventListener('activate', event => { event.waitUntil(self.clients.claim()); });
 
+// A fetch handler is required for the app to be installable (PWA). We just pass
+// requests through to the network — no offline caching (data must stay fresh).
+self.addEventListener('fetch', event => { /* network passthrough */ });
+
 self.addEventListener('push', event => {
   let data = {};
   try { data = event.data ? event.data.json() : {}; }
