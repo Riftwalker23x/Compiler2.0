@@ -1,0 +1,15 @@
+[
+  {
+    "nuid": "25I-0632",
+    "name": "Wajeeh Imran",
+    "subscription": {
+      "endpoint": "https://fcm.googleapis.com/fcm/send/cPqyfeJCDog:APA91bEv03lbKA6xRdfB7YDM06xOcGuMF1vAzj98HlgZBYnoMPAkzTalFVxr4sDSvf8Bd6D47Dc_-4c9k2F9G4RfFQc7tK9IWriYfvPccGK_3ELsjMEx7dDO33oCd-6ApuAJl4T48bZF",
+      "expirationTime": null,
+      "keys": {
+        "p256dh": "BKUM0SpnNlWFHjr944Erg0jWQjtn_4n6eSpfqeH9pdmbyNMBT2nhLIx7OPx63ZPKKBvZaiYlyWWw64Xuo4P47UQ",
+        "auth": "WSSVx8sHs5MZBqiLQYCBqg"
+      }
+    },
+    "updated_at": 1783522937099
+  }
+]
