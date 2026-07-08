@@ -4871,9 +4871,9 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
 
   function spawn(){
     const fromLeft=Math.random()<0.5;
-    const y=26+Math.random()*(H-90);
+    const y=20+Math.random()*(H-120);
     const spd=1.7+Math.random()*1.5+score*0.03;
-    ducks.push({ x:fromLeft?-26:W+26, y, vx:spd*(fromLeft?1:-1), vy:(Math.random()-0.5)*1.4, w:30, h:26, alive:true, flash:0 });
+    ducks.push({ x:fromLeft?-56:W+56, y, vx:spd*(fromLeft?1:-1), vy:(Math.random()-0.5)*1.4, w:54, h:44, alive:true, flash:0 });
   }
 
   function update(){
@@ -4937,15 +4937,48 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
   }
 
   // ── drawing ──
-  function emoji(ch,x,y,size){ ctx.font=size+'px "Segoe UI Emoji","Noto Color Emoji",serif'; ctx.textBaseline='alphabetic'; ctx.fillText(ch,x,y); }
+  // A bold, high-contrast duck drawn with shapes (emoji renders too faint on
+  // some devices). Facing right by default; flipped for left-moving ducks.
+  function drawDuck(d){
+    const dir=d.vx<0?-1:1;
+    ctx.save();
+    ctx.translate(d.x+d.w/2, d.y+d.h/2);
+    ctx.scale(dir,1);
+    const bw=d.w, bh=d.h;
+    ctx.lineWidth=2.5; ctx.strokeStyle='#5a3610';
+    // body
+    ctx.fillStyle='#f0a93a';
+    ctx.beginPath(); ctx.ellipse(-bw*0.06, bh*0.10, bw*0.42, bh*0.30, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    // tail
+    ctx.beginPath(); ctx.moveTo(-bw*0.42, bh*0.02); ctx.lineTo(-bw*0.56,-bh*0.14); ctx.lineTo(-bw*0.40,-bh*0.10); ctx.closePath(); ctx.fill(); ctx.stroke();
+    // wing
+    ctx.fillStyle='#d98a26';
+    ctx.beginPath(); ctx.ellipse(-bw*0.10, bh*0.04, bw*0.24, bh*0.16, -0.25, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    // head (mallard green for contrast)
+    ctx.fillStyle='#1e7d34';
+    ctx.beginPath(); ctx.arc(bw*0.30, -bh*0.24, bh*0.26, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    // beak
+    ctx.fillStyle='#f4a200';
+    ctx.beginPath(); ctx.moveTo(bw*0.48,-bh*0.28); ctx.lineTo(bw*0.72,-bh*0.20); ctx.lineTo(bw*0.48,-bh*0.12); ctx.closePath(); ctx.fill(); ctx.stroke();
+    // eye
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(bw*0.34,-bh*0.30, 3.2, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle='#000'; ctx.beginPath(); ctx.arc(bw*0.35,-bh*0.30, 1.7, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+  function drawHit(d){
+    const cx=d.x+d.w/2, cy=d.y+d.h/2;
+    ctx.fillStyle='#e23b2e'; ctx.beginPath(); ctx.arc(cx,cy, d.h*0.4, 0, Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(cx-8,cy-8); ctx.lineTo(cx+8,cy+8); ctx.moveTo(cx+8,cy-8); ctx.lineTo(cx-8,cy+8); ctx.stroke();
+  }
   function draw(){
     ctx.clearRect(0,0,W,H);
     // sky
     ctx.fillStyle='rgba(10,122,58,0.05)'; ctx.fillRect(0,0,W,H);
     ctx.strokeStyle=GREEN; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,H-14); ctx.lineTo(W,H-14); ctx.stroke();
     for(const d of ducks){
-      if(d.alive){ ctx.save(); if(d.vx<0){ ctx.translate(d.x+d.w,d.y); ctx.scale(-1,1); emoji('🦆',0,d.h,d.h+6); ctx.restore(); } else { emoji('🦆',d.x,d.y+d.h,d.h+6); } }
-      else if(d.flash>0){ emoji('💥',d.x,d.y+d.h,d.h+8); }
+      if(d.alive) drawDuck(d);
+      else if(d.flash>0) drawHit(d);
     }
     // HUD
     ctx.fillStyle=GREEN2; ctx.font='20px "VT323",monospace'; ctx.textBaseline='alphabetic'; ctx.textAlign='right';
