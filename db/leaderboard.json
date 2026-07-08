@@ -8,6 +8,15 @@
       "batch": "25",
       "highScore": 257,
       "achievedAt": "2026-07-08T21:56:59.739Z"
+    },
+    "25I-0984": {
+      "nuid": "25I-0984",
+      "name": "Fahad Nasir",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 35,
+      "achievedAt": "2026-07-08T21:58:36.344Z"
     }
   },
   "leaderboard": [
@@ -19,6 +28,15 @@
       "batch": "25",
       "highScore": 257,
       "achievedAt": "2026-07-08T21:56:59.739Z"
+    },
+    {
+      "nuid": "25I-0984",
+      "name": "Fahad Nasir",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 35,
+      "achievedAt": "2026-07-08T21:58:36.344Z"
     }
   ]
 }
