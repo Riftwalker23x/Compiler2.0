@@ -702,6 +702,11 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
         <div class="game-pick-name">DUCK HUNTER</div>
         <div class="game-pick-desc">Shoot the ducks, don't miss</div>
       </button>
+      <button class="game-pick-card" type="button" onclick="closeGamePicker();openFlappy()">
+        <div class="game-pick-emoji">&#128038;</div>
+        <div class="game-pick-name">FLAPPY BYTE</div>
+        <div class="game-pick-desc">Tap to fly through the pipes</div>
+      </button>
       <button class="game-pick-card" type="button" onclick="showComingSoon()">
         <div class="game-pick-emoji">&#9819;</div>
         <div class="game-pick-name">COMPILER CHESS</div>
@@ -735,6 +740,34 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
           <tr><th>Rank</th><th>Name</th><th>Section</th><th style="text-align:right">Score</th></tr>
         </thead>
         <tbody id="dh-lb-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Flappy Byte game -->
+<div class="cr-overlay" id="fb-overlay">
+  <div class="cr-modal">
+    <div class="cr-head">
+      <div>
+        <div class="cr-title">&#128038; FLAPPY BYTE</div>
+        <div class="cr-sub">TAP / SPACE TO FLY &nbsp;·&nbsp; MIND THE PIPES</div>
+      </div>
+      <button class="cr-close" onclick="closeFlappy()">&#10005; ESC</button>
+    </div>
+    <div class="cr-canvas-wrap">
+      <canvas id="fb-canvas" width="720" height="220"></canvas>
+    </div>
+    <div class="cr-lb" id="fb-lb">
+      <div class="cr-lb-head">
+        <div class="cr-lb-title">&#127942; FLAPPY BYTE LEADERBOARD</div>
+        <div class="cr-lb-status" id="fb-lb-status">Loading...</div>
+      </div>
+      <table class="cr-lb-table">
+        <thead>
+          <tr><th>Rank</th><th>Name</th><th>Section</th><th style="text-align:right">Score</th></tr>
+        </thead>
+        <tbody id="fb-lb-body"></tbody>
       </table>
     </div>
   </div>
@@ -1712,11 +1745,13 @@ function hideFloatingOverlays(){
   const profileBackdrop=document.getElementById('profile-modal-backdrop');
   const compilerOverlay=document.getElementById('cr-overlay');
   const duckOverlay=document.getElementById('dh-overlay');
+  const flappyOverlay=document.getElementById('fb-overlay');
   const gamePicker=document.getElementById('game-picker');
   if(iosSheet) iosSheet.hidden=true;
   if(profileBackdrop) profileBackdrop.hidden=true;
   if(compilerOverlay) compilerOverlay.classList.remove('on');
   if(duckOverlay) duckOverlay.classList.remove('on');
+  if(flappyOverlay) flappyOverlay.classList.remove('on');
   if(gamePicker) gamePicker.classList.remove('on');
 }
 function showInstallBar(){
@@ -5025,5 +5060,131 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     LB_LOADED_ONCE=false; loadLB(); clearInterval(lbPollId); lbPollId=setInterval(loadLB,15000);
   };
   window.closeDuckHunter=function(){ overlay.classList.remove('on'); cancelAnimationFrame(rafId); clearInterval(lbPollId); lbPollId=null; };
+})();
+
+// ══════════════════════════════════════════
+//   FLAPPY BYTE — tap to fly through the pipes
+// ══════════════════════════════════════════
+(function FlappyByte(){
+  const overlay=document.getElementById('fb-overlay');
+  const canvas=document.getElementById('fb-canvas');
+  if(!overlay||!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const HI_KEY='flappy_byte_hi';
+  const GREEN='#0a7a3a', GREEN2='#2d8a50', RED='#b3261e';
+  let hi=parseInt(localStorage.getItem(HI_KEY)||'0',10)||0;
+  const GAP=78, PIPE_W=46, GROUND=H-16;
+  let bird, pipes, score, state, rafId, spawnTimer;
+  // state: 'ready' | 'run' | 'over'
+
+  function reset(){ bird={x:120,y:H/2,vy:0,r:12}; pipes=[]; score=0; spawnTimer=0; state='ready'; }
+  function flap(){
+    if(state==='ready'){ state='run'; bird.vy=-4.6; return; }
+    if(state==='over'){ reset(); state='run'; bird.vy=-4.6; return; }
+    if(state==='run') bird.vy=-4.6;
+  }
+  function spawnPipe(){
+    const margin=34;
+    const gapY=margin+GAP/2+Math.random()*(GROUND-GAP-margin*2);
+    pipes.push({ x:W+10, gapY, passed:false });
+  }
+  function update(){
+    if(state!=='run') return;
+    bird.vy+=0.32; bird.y+=bird.vy;
+    if(--spawnTimer<=0){ spawnPipe(); spawnTimer=110; }
+    for(const p of pipes) p.x-=2.4;
+    pipes=pipes.filter(p=>p.x+PIPE_W>-4);
+    // score + collision
+    for(const p of pipes){
+      if(!p.passed && p.x+PIPE_W<bird.x){ p.passed=true; score++; hi=Math.max(hi,score); }
+      const inX=bird.x+bird.r>p.x && bird.x-bird.r<p.x+PIPE_W;
+      const inGap=bird.y-bird.r>p.gapY-GAP/2 && bird.y+bird.r<p.gapY+GAP/2;
+      if(inX && !inGap){ gameOver(); return; }
+    }
+    if(bird.y+bird.r>=GROUND || bird.y-bird.r<=0){ gameOver(); }
+  }
+  function gameOver(){ if(state==='over')return; state='over'; if(bird.y+bird.r>GROUND) bird.y=GROUND-bird.r; localStorage.setItem(HI_KEY,String(hi)); submitScore(score); }
+
+  // ── leaderboard (its own JSON via ?game=flappy_bird) ──
+  let LB_STATUS='', LB_LOADED_ONCE=false, lbPollId=null;
+  function esc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function renderLB(entries){
+    const body=document.getElementById('fb-lb-body'); const status=document.getElementById('fb-lb-status');
+    if(!body) return; if(status) status.textContent=LB_STATUS;
+    const profile=(typeof getProfileCookie==='function')?getProfileCookie():null;
+    const myNuid=profile&&profile.nuid?String(profile.nuid).toUpperCase():null;
+    if(!myNuid){ body.innerHTML='<tr><td colspan="4" class="cr-lb-cta" onclick="closeFlappy();openProfileModal()">&#9888; Make your profile to join the leaderboard &mdash; tap here</td></tr>'; return; }
+    if(!entries||entries.length===0){ body.innerHTML='<tr><td colspan="4" class="cr-lb-empty">No scores yet &mdash; be the first!</td></tr>'; return; }
+    body.innerHTML=entries.map((row,i)=>{
+      const isMe=myNuid&&row.nuid&&String(row.nuid).toUpperCase()===myNuid;
+      return `<tr class="${isMe?'cr-lb-row-me':''}"><td class="cr-rank">${i+1}</td><td>${esc(row.name||'Unknown')}</td><td>${esc(row.section||'-')}</td><td class="cr-score">${row.highScore}</td></tr>`;
+    }).join('');
+  }
+  async function loadLB(){
+    if(!LB_LOADED_ONCE){ LB_STATUS='Loading...'; renderLB(null); }
+    try{
+      const res=await fetch('/api/leaderboard?game=flappy_bird');
+      if(!res.ok) throw new Error('bad status');
+      const data=await res.json(); LB_STATUS=''; LB_LOADED_ONCE=true; renderLB(data.leaderboard||[]);
+    }catch(err){ LB_STATUS='Could not load leaderboard.'; renderLB([]); }
+  }
+  async function submitScore(finalScore){
+    const profile=(typeof getProfileCookie==='function')?getProfileCookie():null;
+    if(!profile||!profile.nuid) return;
+    try{
+      const res=await fetch('/api/leaderboard',{ method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ game:'flappy_bird', nuid:profile.nuid, name:profile.name, section:profile.section, department:profile.department, batch:profile.batch, score:finalScore }) });
+      if(!res.ok) throw new Error('bad status');
+      const data=await res.json(); LB_STATUS=''; renderLB(data.leaderboard||[]);
+    }catch(err){ LB_STATUS='Could not submit score.'; }
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='rgba(10,122,58,0.05)'; ctx.fillRect(0,0,W,H);
+    // pipes
+    for(const p of pipes){
+      ctx.fillStyle='#1e7d34'; ctx.strokeStyle='#0a4a20'; ctx.lineWidth=2;
+      ctx.fillRect(p.x,0,PIPE_W,p.gapY-GAP/2); ctx.strokeRect(p.x,0,PIPE_W,p.gapY-GAP/2);
+      ctx.fillRect(p.x,p.gapY+GAP/2,PIPE_W,GROUND-(p.gapY+GAP/2)); ctx.strokeRect(p.x,p.gapY+GAP/2,PIPE_W,GROUND-(p.gapY+GAP/2));
+    }
+    // ground
+    ctx.strokeStyle=GREEN; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,GROUND); ctx.lineTo(W,GROUND); ctx.stroke();
+    // bird
+    ctx.save(); ctx.translate(bird.x,bird.y); ctx.rotate(Math.max(-0.5,Math.min(0.9,bird.vy*0.08)));
+    ctx.fillStyle='#f4c20a'; ctx.strokeStyle='#7a5a00'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(0,0,bird.r,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#f4a200'; ctx.beginPath(); ctx.moveTo(bird.r-2,-2); ctx.lineTo(bird.r+7,1); ctx.lineTo(bird.r-2,4); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(4,-4,3.5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#000'; ctx.beginPath(); ctx.arc(5,-4,1.8,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+    // score
+    ctx.fillStyle=GREEN2; ctx.font='20px "VT323",monospace'; ctx.textBaseline='alphabetic'; ctx.textAlign='right';
+    ctx.fillText('HI '+String(hi).padStart(4,'0')+'   '+String(score).padStart(4,'0'), W-12, 24); ctx.textAlign='left';
+    if(state==='ready') centerText('TAP / SPACE TO FLY', GREEN);
+    if(state==='over'){
+      centerText('CRASHED! TAP TO RETRY', RED, -14);
+      ctx.fillStyle=GREEN; ctx.font='18px "VT323",monospace'; ctx.textAlign='center';
+      ctx.fillText('SCORE '+score+'   ·   BEST '+hi, W/2, H/2+16); ctx.textAlign='left';
+    }
+  }
+  function centerText(t,color,dy){ ctx.fillStyle=color; ctx.font='22px "VT323",monospace'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(t,W/2,H/2+(dy||0)); ctx.textAlign='left'; ctx.textBaseline='alphabetic'; }
+  function loop(){ if(!overlay.classList.contains('on')) return; update(); draw(); rafId=requestAnimationFrame(loop); }
+
+  canvas.addEventListener('pointerdown',e=>{ e.preventDefault(); flap(); });
+  document.addEventListener('keydown',e=>{
+    if(!overlay.classList.contains('on')) return;
+    if(e.code==='Space'||e.code==='ArrowUp'){ e.preventDefault(); flap(); }
+    else if(e.key==='Escape'){ window.closeFlappy(); }
+  });
+  overlay.addEventListener('pointerdown',e=>{ if(e.target===overlay) window.closeFlappy(); });
+
+  window.openFlappy=function(){
+    reset(); overlay.classList.add('on');
+    cancelAnimationFrame(rafId); rafId=requestAnimationFrame(loop);
+    LB_LOADED_ONCE=false; loadLB(); clearInterval(lbPollId); lbPollId=setInterval(loadLB,15000);
+  };
+  window.closeFlappy=function(){ overlay.classList.remove('on'); cancelAnimationFrame(rafId); clearInterval(lbPollId); lbPollId=null; };
 })();
 </script>

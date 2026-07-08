@@ -15,6 +15,7 @@ const MAX_ENTRIES = 10;
 const LB_FILES = {
   compiler_run: 'db/leaderboard.json',
   duck_hunter: 'db/leaderboard-duck-hunter.json',
+  flappy_bird: 'db/leaderboard-flappy-bird.json',
 };
 
 function gameOf(req, body) {
