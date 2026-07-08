@@ -24,8 +24,8 @@
       "section": "G",
       "department": "BS CS",
       "batch": "25",
-      "highScore": 934,
-      "achievedAt": "2026-07-08T22:09:40.118Z"
+      "highScore": 1298,
+      "achievedAt": "2026-07-08T22:43:02.144Z"
     },
     "25I-0665": {
       "nuid": "25I-0665",
@@ -48,6 +48,15 @@
   },
   "leaderboard": [
     {
+      "nuid": "25I-0816",
+      "name": "Hammad Rehan",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 1298,
+      "achievedAt": "2026-07-08T22:43:02.144Z"
+    },
+    {
       "nuid": "25I-0656",
       "name": "Ali Raza",
       "section": "G",
@@ -64,15 +73,6 @@
       "batch": "25",
       "highScore": 1086,
       "achievedAt": "2026-07-08T22:39:37.687Z"
-    },
-    {
-      "nuid": "25I-0816",
-      "name": "Hammad Rehan",
-      "section": "G",
-      "department": "BS CS",
-      "batch": "25",
-      "highScore": 934,
-      "achievedAt": "2026-07-08T22:09:40.118Z"
     },
     {
       "nuid": "25I-0984",
