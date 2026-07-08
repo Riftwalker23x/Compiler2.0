@@ -12,8 +12,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=VT323&display=swap');
 :root{--font-sans:'Inter','Segoe UI',Arial,sans-serif;--font-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;--font-display:'VT323','Courier New',monospace;--accent:#0f6b3b;--accent-strong:#0b522d;--text:#163524;--muted:#3d5a4a;--muted-light:#6b8f78;--surface:#f7fcf7;--surface-strong:#ffffff;--border:rgba(15,107,59,0.18);--success:#0e8f42;--warning:#b86c00;--danger:#c93322;--info:#1a4a8a}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#eef7ef;color:var(--text);font-family:var(--font-sans)}body::after{content:'';display:block;height:72px}
-#app{background:var(--surface);font-family:var(--font-sans);color:var(--text);border-radius:14px;overflow:hidden;position:relative;min-height:760px;padding-bottom:60px;box-shadow:0 16px 48px rgba(11,82,45,0.08)}
+body{background:#eef7ef;color:var(--text);font-family:var(--font-sans);padding-bottom:80px}
+#app{background:var(--surface);font-family:var(--font-sans);color:var(--text);border-radius:14px;overflow:hidden;position:relative;min-height:100vh;box-shadow:0 16px 48px rgba(11,82,45,0.08)}
 canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .shell{position:relative;z-index:10}
 .hdr{text-align:center;padding:16px 16px 10px;border-bottom:2px solid var(--border);background:rgba(255,255,255,0.84)}
@@ -38,7 +38,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .nav-card.active .nav-indicator{background:#0a7a3a}
 .nav-badge{font-family:var(--font-sans);font-size:9px;letter-spacing:.02em;padding:2px 7px;border-radius:3px;border:1px solid rgba(0,120,60,0.25);color:#27553a;display:inline-block;margin-bottom:7px;background:rgba(0,120,60,0.05);font-weight:700}
 .nav-card.active .nav-badge{color:#0a7a3a;border-color:#0a7a3a;background:rgba(10,122,58,0.09)}
-.nav-icon{font-family:var(--font-display);font-size:30px;color:#2d6a45;line-height:1;margin-bottom:3px}
+.nav-icon{width:28px;height:28px;color:#2d6a45;display:block;margin:0 auto 4px}
 .nav-card.active .nav-icon{color:#0a7a3a}
 .nav-title{font-family:var(--font-display);font-size:21px;letter-spacing:2px;color:#1f5c3c;word-break:keep-all;text-transform:none}
 .nav-card.active .nav-title{color:#0a7a3a}
@@ -61,7 +61,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .tt-kicker{font-family:var(--font-sans);font-size:10px;letter-spacing:.06em;color:#27553a;margin-bottom:6px;font-weight:700;text-transform:none}
 .tt-title{font-family:var(--font-display);font-size:38px;letter-spacing:2px;color:#0a7a3a;line-height:1}
 .tt-copy{font-family:var(--font-sans);font-size:13px;line-height:1.6;color:#234f3b;max-width:54ch;margin-top:8px;font-weight:500;letter-spacing:0;text-transform:none}
-.tt-live-badge{font-family:var(--font-mono);font-size:14px;letter-spacing:.02em;padding:8px 12px;border-radius:999px;border:1px solid rgba(0,120,60,0.2);background:#fff;color:#0a7a3a;white-space:nowrap;flex-shrink:0}
+.tt-live-badge{font-family:var(--font-mono);font-size:14px;letter-spacing:.02em;padding:8px 12px;border-radius:999px;border:1px solid rgba(0,120,60,0.2);background:#fff;color:var(--success);white-space:nowrap;flex-shrink:0}
 .tt-form{padding:16px 18px;border:1.5px solid rgba(0,120,60,0.16);border-radius:12px;background:#fff;margin-bottom:14px}
 .tt-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 .tt-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
@@ -96,7 +96,7 @@ canvas#bg3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-e
 .tt-time{font-family:var(--font-mono);font-size:11px;letter-spacing:0;color:var(--accent-strong);font-weight:600}
 .tt-empty-card{text-align:center;padding:34px 16px;color:#3d7a55;font-size:12px;letter-spacing:.02em;border:1.5px dashed rgba(10,122,58,0.24);border-radius:12px;background:linear-gradient(180deg,#fcfffc 0%,#f4fbf4 100%)}
 .tt-empty-card .empty{padding:0}
-.tt-empty-icon{font-family:var(--font-display);font-size:42px;color:#0a7a3a;display:block;margin:0 auto 10px;padding:8px 12px;border-radius:999px;background:#e9f7eb;border:1px solid rgba(10,122,58,0.16);width:max-content}
+.tt-empty-icon{color:#0a7a3a;display:block;margin:0 auto 10px;padding:10px;border-radius:999px;background:#e9f7eb;border:1px solid rgba(10,122,58,0.16)}
 .tt-empty-title{font-family:var(--font-display);font-size:22px;letter-spacing:2px;color:#0a7a3a;margin-bottom:6px}
 .tt-empty-copy{font-family:var(--font-sans);font-size:11px;line-height:1.6;color:#2f5a3f;max-width:46ch;margin:0 auto}
 
@@ -395,7 +395,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
   .nav{grid-template-columns:repeat(3,1fr);gap:5px;margin:12px 10px 0}
   .nav-card{padding:10px 8px}
   .nav-badge{font-size:7px;letter-spacing:.5px;padding:1px 5px;margin-bottom:4px}
-  .nav-icon{font-size:20px;margin-bottom:2px}
+  .nav-icon{width:20px;height:20px;margin-bottom:2px}
   .nav-title{font-size:13px;letter-spacing:1px}
   .nav-desc{font-size:7px;letter-spacing:.5px;margin-top:2px}
   .nav-indicator{height:2px}
@@ -404,16 +404,16 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
   .hdr{padding:10px 8px 8px;transition:transform .3s ease,opacity .3s ease}
   .hdr{padding:8px 8px 6px}
   .hdr.hidden{transform:translateY(-100%);opacity:0;pointer-events:none}
-  .hdr-logo{font-size:18px;letter-spacing:3px}
-  .hdr-org{font-size:10px;letter-spacing:2px}
+  .hdr-logo{font-size:16px;letter-spacing:2px}
+  .hdr-org{font-size:9px;letter-spacing:1px}
   .hdr-sub{font-size:7px;letter-spacing:2px}
-  .live-bar{gap:4px;font-size:8px;letter-spacing:1px}
-  .header-top{gap:6px;flex-wrap:wrap}
-  .header-logo{height:auto;max-height:60px;width:auto;max-width:100%}
-  .header-x{font-size:20px}
-  .header-vtable{font-size:32px;letter-spacing:2px}
-  .header-campus{font-size:14px;letter-spacing:1px}
-  .header-live{font-size:9px}
+  .live-bar{gap:4px;font-size:8px;letter-spacing:1px;margin-top:3px}
+  .header-top{gap:5px;flex-wrap:wrap}
+  .header-logo{height:auto;max-height:48px;width:auto;max-width:100%}
+  .header-x{font-size:18px}
+  .header-vtable{font-size:26px;letter-spacing:1px}
+  .header-campus{font-size:12px;letter-spacing:1px;margin-top:4px}
+  .header-live{font-size:8px;margin-top:4px;gap:4px}
   .header-live-sep{display:none}
 
   .tt-grid{grid-template-columns:1fr 1fr;gap:8px}
@@ -460,23 +460,21 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
   .nav-title{font-size:11px;letter-spacing:0}
   .nav-badge{display:none}
   .nav-desc{display:none}
-  .nav-icon{font-size:18px;margin-bottom:0}
+  .nav-icon{width:18px;height:18px;margin-bottom:0}
   .tt-grid{grid-template-columns:1fr;gap:6px}
   .content{padding:8px;margin:0 4px 8px}
-  .hdr{padding:6px 6px 4px}
-  .hdr-logo{font-size:15px;letter-spacing:2px}
-  .live-bar{font-size:7px}
-  .header-top{gap:4px}
+  .hdr{padding:4px 4px 2px}
+  .hdr-logo{font-size:13px;letter-spacing:1px}
+  .live-bar{font-size:7px;margin-top:2px}
+  .header-top{gap:3px;margin-top:2px}
   .pwa-install-bar{flex-direction:row;align-items:center;gap:10px;padding:10px 12px}
   .pwa-install-btn{width:auto;white-space:nowrap}
-  #app{padding-bottom:52px}
 
-  .header-logo{max-height:48px}
-  .header-x{font-size:16px}
-  .header-vtable{font-size:24px;letter-spacing:1px}
-  .header-campus{font-size:12px;letter-spacing:1px}
-  .header-live{font-size:8px}
-  .header-live-sep{display:none}
+  .header-logo{max-height:36px}
+  .header-x{font-size:13px}
+  .header-vtable{font-size:20px;letter-spacing:0}
+  .header-campus{font-size:10px;letter-spacing:.5px;margin-top:3px}
+  .header-live{font-size:7px;margin-top:3px;gap:3px}
   .rooms-grid{grid-template-columns:1fr}
   .rsel{font-size:11px;padding:8px 8px}
   .flabel{font-size:8px;letter-spacing:2px}
@@ -555,8 +553,8 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
 .profile-input:focus{border-color:#0a7a3a;box-shadow:0 0 0 2px rgba(10,122,58,0.12)}
 .profile-sync-btn{background:#0a7a3a;border:none;border-radius:8px;padding:10px 14px;color:#fff;font-family:'VT323',monospace;font-size:18px;letter-spacing:1px;cursor:pointer}
 .profile-sync-btn:hover{background:#0d9a4a}
-.profile-status{font-size:11px;letter-spacing:.3px;color:#4a8a60;min-height:16px;margin-bottom:12px}
-.profile-status.is-error{color:#c02626;font-weight:600}
+.profile-status{font-size:11px;letter-spacing:.3px;color:var(--muted);min-height:16px;margin-bottom:12px}
+.profile-status.is-error{color:var(--danger);font-weight:600}
 .profile-form{border:1.5px solid rgba(10,122,58,0.18);border-radius:10px;padding:12px;background:#f9fffa;margin-top:8px}
 .profile-form-title{font-family:'VT323',monospace;font-size:20px;letter-spacing:1px;color:#0a7a3a;margin-bottom:8px}
 .profile-form-grid{display:grid;gap:8px}
@@ -762,44 +760,44 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
   <nav class="nav" aria-label="Primary tools" role="tablist">
     <button class="nav-card active" id="nc0" onclick="sw(0)" role="tab" aria-selected="true" tabindex="0" aria-controls="p0">
       <div class="nav-badge">TIMETABLE</div>
-      <div class="nav-icon" aria-hidden="true">◷</div>
+      <svg class="nav-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
       <div class="nav-title">Class timetable</div>
-      <div class="nav-desc">Dept / batch / section / day</div>
+      <div class="nav-desc">Schedule by dept / batch / day</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc1" onclick="sw(1)" role="tab" aria-selected="false" tabindex="-1" aria-controls="p1">
       <div class="nav-badge">FREE ROOMS</div>
-      <div class="nav-icon" aria-hidden="true">▣</div>
+      <svg class="nav-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <div class="nav-title">Free rooms</div>
       <div class="nav-desc">Block / floor — slot timeline</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc5" onclick="sw(5)" role="tab" aria-selected="false" tabindex="-1" aria-controls="p5">
       <div class="nav-badge">FACULTY</div>
-      <div class="nav-icon" aria-hidden="true">◭</div>
+      <svg class="nav-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       <div class="nav-title">Faculty</div>
       <div class="nav-desc">Directory</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc3" onclick="sw(3)" role="tab" aria-selected="false" tabindex="-1" aria-controls="p3">
       <div class="nav-badge">EXAMS</div>
-      <div class="nav-icon" aria-hidden="true">✎</div>
+      <svg class="nav-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       <div class="nav-title">Exam schedule</div>
       <div class="nav-desc">S1 / S2 / final exams</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc4" onclick="sw(4)" role="tab" aria-selected="false" tabindex="-1" aria-controls="p4">
       <div class="nav-badge">SEATING</div>
-      <div class="nav-icon" aria-hidden="true">◨</div>
+      <svg class="nav-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
       <div class="nav-title">Seating plan</div>
       <div class="nav-desc">Exam seat lookup</div>
       <div class="nav-indicator"></div>
     </button>
     <button class="nav-card" id="nc2" onclick="sw(2)" role="tab" aria-selected="false" tabindex="-1" aria-controls="p2">
       <div class="nav-badge">SHOW UP</div>
-      <div class="nav-icon" aria-hidden="true">◫</div>
+      <svg class="nav-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
       <div class="nav-title">Show up schedule</div>
-      <div class="nav-desc">Dept / batch / section</div>
+      <div class="nav-desc">Attendance roster / in-person days</div>
       <div class="nav-indicator"></div>
     </button>
   </nav>
@@ -831,6 +829,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
             <div>
               <label class="flabel">DEPARTMENT</label>
               <select class="rsel" id="dept"><option value="">Select Department</option></select>
+              <label class="flabel" id="repeat-course-label" style="display:none">REPEAT COURSE</label>
             </div>
             <div>
               <label class="flabel" id="batch-label">BATCH YEAR</label>
@@ -853,7 +852,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
         </div>
 
         <div class="tt-out" id="tt-out">
-          <div class="tt-empty-card"><div class="tt-empty-icon" aria-hidden="true">◻</div><div class="tt-empty-title">Ready for your timetable</div><div class="tt-empty-copy">Choose school, department, batch, day, and section to load the current schedule.</div></div>
+          <div class="tt-empty-card"><svg class="tt-empty-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div class="tt-empty-title">Ready for your timetable</div><div class="tt-empty-copy">Choose school, department, batch, day, and section to load the current schedule.</div></div>
         </div>
       </div>
     </div>
@@ -880,7 +879,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
           <div class="step-num">STEP 01 — BLOCK</div>
           <label class="flabel" style="margin-top:6px">SELECT BLOCK</label>
           <select class="rsel" id="r-block" onchange="onBlockChange()">
-            <option value="">-- Choose --</option>
+            <option value="">Select Block</option>
             <option value="A">Block A</option>
             <option value="B">Block B</option>
             <option value="C">Block C</option>
@@ -892,7 +891,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
           <div class="step-num">STEP 02 — FLOOR</div>
           <label class="flabel" style="margin-top:6px">SELECT FLOOR</label>
           <select class="rsel" id="r-floor" onchange="onFloorChange()" disabled>
-            <option value="">-- Choose Block First --</option>
+            <option value="">Select Block First</option>
           </select>
         </div>
         <div class="divider"></div>
@@ -900,7 +899,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
           <div class="step-num">STEP 03 — DAY</div>
           <label class="flabel" style="margin-top:6px">SELECT DAY</label>
           <select class="rsel" id="r-day-sel" onchange="onDayChange()" disabled>
-            <option value="">-- Choose Floor First --</option>
+            <option value="">Select Floor First</option>
           </select>
         </div>
       </div>
@@ -915,7 +914,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
         <div>
           <label class="flabel">DEPARTMENT</label>
           <select class="rsel" id="su-dept" onchange="onShowupDeptChange()">
-            <option value="">-- Department --</option>
+            <option value="">Select Department</option>
             <option value="CS">BS CS</option>
             <option value="AI">BS AI</option>
             <option value="DS">BS DS</option>
@@ -926,14 +925,14 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
         <div>
           <label class="flabel">BATCH YEAR</label>
           <select class="rsel" id="su-batch" onchange="onShowupBatchChange()">
-            <option value="">-- Batch --</option>
+            <option value="">Select Batch Year</option>
             <option>2022</option><option>2023</option><option>2024</option><option>2025</option>
           </select>
         </div>
         <div>
           <label class="flabel">SECTION</label>
           <select class="rsel" id="su-sec" onchange="renderShowupSchedule()">
-            <option value="">-- Any Section --</option>
+            <option value="">Select Section</option>
           </select>
         </div>
       </div>
@@ -948,7 +947,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
         <div>
           <label class="flabel">DEPARTMENT</label>
           <select class="rsel" id="ex-dept" onchange="onExamDeptChange()">
-            <option value="">-- Department --</option>
+            <option value="">Select Department</option>
             <option value="CS">BS CS</option>
             <option value="AI">BS AI</option>
             <option value="DS">BS DS</option>
@@ -959,7 +958,7 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
         <div>
           <label class="flabel">BATCH YEAR</label>
           <select class="rsel" id="ex-batch" onchange="onExamBatchChange()">
-            <option value="">-- Batch --</option>
+            <option value="">Select Batch Year</option>
             <option>2022</option><option>2023</option><option>2024</option><option>2025</option>
           </select>
         </div>
@@ -1834,7 +1833,7 @@ function setSheetStatus(msg,ok=true){
   if(!el) return;
   el.textContent=msg;
   el.title=msg;
-  el.style.color=ok?'var(--success)':'var(--warning)';
+  el.style.color=ok?'var(--success)':'var(--danger)';
 }
 function updateFooterSyncTime(){
   const el=document.getElementById('footer-last-sync');
@@ -2347,16 +2346,17 @@ function isRepeatMode(){
 // department; restore Batch otherwise. In repeat mode the Section dropdown lists
 // the full dept+section the course is offered to (e.g. CS-C, CY-A).
 function applyRepeatModeUI(){
-  const batchSel=document.getElementById('batch'),courseSel=document.getElementById('repeat-course'),batchLabel=document.getElementById('batch-label'),secCell=document.getElementById('sec-cell'),secSel=document.getElementById('sec');
+  const batchSel=document.getElementById('batch'),courseSel=document.getElementById('repeat-course'),batchLabel=document.getElementById('batch-label'),secCell=document.getElementById('sec-cell'),secSel=document.getElementById('sec'),repeatLabel=document.getElementById('repeat-course-label');
   if(!batchSel||!courseSel||!batchLabel) return;
   const repeat=isRepeatMode();
   batchSel.style.display=repeat?'none':'';
   courseSel.style.display=repeat?'':'none';
+  if(repeatLabel) repeatLabel.style.display=repeat?'':'none';
   batchLabel.textContent=repeat?'COURSE':'BATCH YEAR';
   if(secCell) secCell.style.display=repeat?'none':'';
   if(!repeat) return;
   const prefs=readTTPrefs();
-  fillSelectOptions(courseSel,repeatCourseNames(buildRepeatIndex()),null,'-- Course --');
+  fillSelectOptions(courseSel,repeatCourseNames(buildRepeatIndex()),null,'Select Course');
   if(prefs.course&&[...courseSel.options].some(o=>o.value===prefs.course)) courseSel.value=prefs.course;
   refreshRepeatSections();
   if(prefs.sec&&secSel&&[...secSel.options].some(o=>o.value===prefs.sec)) secSel.value=prefs.sec;
@@ -2373,7 +2373,7 @@ function refreshRepeatSections(){
     `${r.dept}~~${r.section}`, `${r.dept.replace(/^BS\s+/,'')}-${r.section}`
   ])).entries()].sort((a,b)=>a[1].localeCompare(b[1]));
   const prev=secSel.value;
-  secSel.innerHTML='<option value="">-- Section --</option>';
+  secSel.innerHTML='<option value="">Select Section</option>';
   combos.forEach(([val,label])=>{const o=document.createElement('option');o.value=val;o.textContent=label;secSel.appendChild(o);});
   if(combos.some(([v])=>v===prev)) secSel.value=prev;
 }
@@ -2384,7 +2384,7 @@ function refreshTTFilters(){
   const prefs=readTTPrefs();
   if(prefs.school&&[...schoolSel.options].some(o=>o.value===prefs.school)) schoolSel.value=prefs.school;
   const depts=Object.keys(TT).filter(d=>d!==REPEAT_DEPT).sort(sortDeptCodes);
-  fillSelectOptions(deptSel,depts,formatDeptLabel,'-- Department --');
+  fillSelectOptions(deptSel,depts,formatDeptLabel,'Select Department');
   // Surface repeat (yellow) courses as a virtual department, if any exist.
   if(buildRepeatIndex().length){
     const opt=document.createElement('option');
@@ -3029,8 +3029,8 @@ function onDayChange(){
   setRoomsFreeBadge(freeNowCount,allRooms.length);
 }
 
-/* ── Tab switch ── */
-function sw(i){
+/* ── Tab switch with hash routing ── */
+function sw(i, pushHash=true){
   ['nc0','nc1','nc2','nc3','nc4','nc5'].forEach((id,j)=>{
     const el=document.getElementById(id);
     if(!el) return;
@@ -3044,6 +3044,10 @@ function sw(i){
     panel.className='panel'+(j===i?' on':'');
     panel.setAttribute('aria-hidden',j===i?'false':'true');
   });
+  if(pushHash){
+    const slugs=['timetable','freerooms','showup','exams','seating','faculty'];
+    if(location.hash!=='#'+slugs[i]) history.replaceState(null,'','#'+slugs[i]);
+  }
   if(i===1){
     // Re-check the moment the user opens Free Rooms: recompute against the
     // current time with the data in hand, then pull the latest timetables
@@ -3085,7 +3089,7 @@ function loadRepeatTT(){
   const secVal=document.getElementById('sec')?.value||'';
   const currentSlot=getCurrentSlot();
   if(!course){
-      out.innerHTML='<div class="tt-empty-card"><div class="tt-empty-icon" aria-hidden="true">◻</div><div class="tt-empty-title">Choose a repeat course</div><div class="tt-empty-copy">Pick a repeat course to view its full schedule for the selected day.</div></div>';
+      out.innerHTML='<div class="tt-empty-card"><svg class="tt-empty-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div class="tt-empty-title">Choose a repeat course</div><div class="tt-empty-copy">Pick a repeat course to view its full schedule for the selected day.</div></div>';
     return;
   }
   saveTTPrefs();
@@ -3146,7 +3150,7 @@ function loadTT(){
   const out=document.getElementById('tt-out');
   if(out){
     if(!dep||!bat||!sec||!day){
-      out.innerHTML='<div class="tt-empty-card"><div class="tt-empty-icon" aria-hidden="true">◻</div><div class="tt-empty-title">Select your timetable</div><div class="tt-empty-copy">Choose the school, department, batch, day, and section to view your classes.</div></div>';
+      out.innerHTML='<div class="tt-empty-card"><svg class="tt-empty-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div class="tt-empty-title">Select your timetable</div><div class="tt-empty-copy">Choose the school, department, batch, day, and section to view your classes.</div></div>';
       return;
     }
     saveTTPrefs();
@@ -3213,6 +3217,19 @@ tickBanner();
 syncBlockLabsSections(DEFAULT_BLOCK_FLOORS);
 syncBlockLabsSections(BLOCK_FLOORS);
 initLiveSheetSync();
+
+// Hash-based routing: open panel from URL hash on load
+(function initHashRouting(){
+  const hash=location.hash.replace('#','');
+  const slugs=['timetable','freerooms','showup','exams','seating','faculty'];
+  const idx=slugs.indexOf(hash);
+  if(idx>=0) sw(idx,false);
+  window.addEventListener('hashchange',()=>{
+    const h=location.hash.replace('#','');
+    const i=slugs.indexOf(h);
+    if(i>=0) sw(i,false);
+  });
+})();
 
 /* ══════════════════════════════════════════
    SHOW UP SCHEDULE
