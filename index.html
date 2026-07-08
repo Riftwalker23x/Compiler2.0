@@ -639,6 +639,14 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
 .cr-lb-table td.cr-lb-cta{padding:16px 12px;text-align:center;font-size:12px;font-weight:700;color:#c02626;cursor:pointer;letter-spacing:.5px}
 .cr-lb-table td.cr-lb-cta:hover{text-decoration:underline}
 @media(max-width:560px){ .cr-title{font-size:26px} .cr-lb-table{font-size:11px} .cr-lb-table th,.cr-lb-table td{padding:5px 8px} }
+/* ── Game picker ── */
+.game-pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.game-pick-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:22px 14px;background:#fbfffc;border:2px solid rgba(10,122,58,0.22);border-radius:12px;cursor:pointer;font-family:'Share Tech Mono',monospace;transition:transform .15s,box-shadow .15s,border-color .15s}
+.game-pick-card:hover{transform:translateY(-2px);border-color:#0a7a3a;box-shadow:0 8px 22px rgba(10,122,58,0.2)}
+.game-pick-emoji{font-size:44px;line-height:1}
+.game-pick-name{font-family:'VT323',monospace;font-size:24px;letter-spacing:2px;color:#0a7a3a}
+.game-pick-desc{font-size:11px;color:#4a8a60;text-align:center}
+@media(max-width:560px){ .game-pick-grid{grid-template-columns:1fr} }
 </style>
 
 <div id="app">
@@ -667,6 +675,58 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
           <tr><th>Rank</th><th>Name</th><th>Section</th><th style="text-align:right">Score</th></tr>
         </thead>
         <tbody id="cr-lb-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- Game picker (double-click the logo) -->
+<div class="cr-overlay" id="game-picker">
+  <div class="cr-modal" style="max-width:520px">
+    <div class="cr-head">
+      <div>
+        <div class="cr-title">&#127918; ARCADE</div>
+        <div class="cr-sub">PICK A GAME</div>
+      </div>
+      <button class="cr-close" onclick="closeGamePicker()">&#10005; ESC</button>
+    </div>
+    <div class="game-pick-grid">
+      <button class="game-pick-card" type="button" onclick="closeGamePicker();openCompilerRun()">
+        <div class="game-pick-emoji">&#128421;</div>
+        <div class="game-pick-name">COMPILER RUN</div>
+        <div class="game-pick-desc">Jump the virus, duck the AI</div>
+      </button>
+      <button class="game-pick-card" type="button" onclick="closeGamePicker();openDuckHunter()">
+        <div class="game-pick-emoji">&#129414;</div>
+        <div class="game-pick-name">DUCK HUNTER</div>
+        <div class="game-pick-desc">Shoot the ducks, don't miss</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Duck Hunter game -->
+<div class="cr-overlay" id="dh-overlay">
+  <div class="cr-modal">
+    <div class="cr-head">
+      <div>
+        <div class="cr-title">&#129414; DUCK HUNTER</div>
+        <div class="cr-sub">CLICK / TAP THE DUCKS &nbsp;·&nbsp; DON'T LET THEM ESCAPE</div>
+      </div>
+      <button class="cr-close" onclick="closeDuckHunter()">&#10005; ESC</button>
+    </div>
+    <div class="cr-canvas-wrap">
+      <canvas id="dh-canvas" width="720" height="220"></canvas>
+    </div>
+    <div class="cr-lb" id="dh-lb">
+      <div class="cr-lb-head">
+        <div class="cr-lb-title">&#127942; DUCK HUNTER LEADERBOARD</div>
+        <div class="cr-lb-status" id="dh-lb-status">Loading...</div>
+      </div>
+      <table class="cr-lb-table">
+        <thead>
+          <tr><th>Rank</th><th>Name</th><th>Section</th><th style="text-align:right">Score</th></tr>
+        </thead>
+        <tbody id="dh-lb-body"></tbody>
       </table>
     </div>
   </div>
@@ -1643,9 +1703,13 @@ function hideFloatingOverlays(){
   const iosSheet=document.getElementById('pwa-ios-sheet');
   const profileBackdrop=document.getElementById('profile-modal-backdrop');
   const compilerOverlay=document.getElementById('cr-overlay');
+  const duckOverlay=document.getElementById('dh-overlay');
+  const gamePicker=document.getElementById('game-picker');
   if(iosSheet) iosSheet.hidden=true;
   if(profileBackdrop) profileBackdrop.hidden=true;
   if(compilerOverlay) compilerOverlay.classList.remove('on');
+  if(duckOverlay) duckOverlay.classList.remove('on');
+  if(gamePicker) gamePicker.classList.remove('on');
 }
 function showInstallBar(){
   const bar=document.getElementById('pwa-install-bar');
@@ -4765,8 +4829,142 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
   };
 
   overlay.addEventListener('pointerdown',e=>{ if(e.target===overlay) closeCompilerRun(); });
+})();
 
+// ── Game picker: double-click the logo -> choose a game ──
+(function GamePicker(){
+  const picker=document.getElementById('game-picker');
+  window.openGamePicker=function(){ if(picker) picker.classList.add('on'); };
+  window.closeGamePicker=function(){ if(picker) picker.classList.remove('on'); };
+  picker&&picker.addEventListener('pointerdown',e=>{ if(e.target===picker) window.closeGamePicker(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&picker&&picker.classList.contains('on')) window.closeGamePicker(); });
   const logo=document.getElementById('header-logo');
-  if(logo) logo.addEventListener('dblclick', ()=>window.openCompilerRun());
+  if(logo) logo.addEventListener('dblclick', ()=>window.openGamePicker());
+})();
+
+// ══════════════════════════════════════════
+//   DUCK HUNTER — click the ducks before they escape
+// ══════════════════════════════════════════
+(function DuckHunter(){
+  const overlay=document.getElementById('dh-overlay');
+  const canvas=document.getElementById('dh-canvas');
+  if(!overlay||!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const HI_KEY='duck_hunter_hi';
+  const GREEN='#0a7a3a', GREEN2='#2d8a50', RED='#b3261e';
+  let hi=parseInt(localStorage.getItem(HI_KEY)||'0',10)||0;
+  let ducks, score, lives, state, rafId, spawnTimer;
+  // state: 'ready' | 'run' | 'over'
+
+  function reset(){ ducks=[]; score=0; lives=3; spawnTimer=24; state='ready'; }
+
+  function spawn(){
+    const fromLeft=Math.random()<0.5;
+    const y=26+Math.random()*(H-90);
+    const spd=1.7+Math.random()*1.5+score*0.03;
+    ducks.push({ x:fromLeft?-26:W+26, y, vx:spd*(fromLeft?1:-1), vy:(Math.random()-0.5)*1.4, w:30, h:26, alive:true, flash:0 });
+  }
+
+  function update(){
+    if(state!=='run') return;
+    if(--spawnTimer<=0){ spawn(); spawnTimer=Math.max(22, 58-score); }
+    for(const d of ducks){ d.x+=d.vx; d.y+=d.vy; if(d.y<18||d.y>H-42) d.vy*=-1; if(d.flash>0) d.flash--; }
+    ducks=ducks.filter(d=>{
+      if(!d.alive) return d.flash>0;                 // keep a moment for the hit splash
+      const escaped=(d.vx>0&&d.x>W+30)||(d.vx<0&&d.x<-30);
+      if(escaped){ lives--; if(lives<=0) gameOver(); return false; }
+      return true;
+    });
+  }
+
+  function shoot(mx,my){
+    if(state==='ready'){ state='run'; return; }
+    if(state==='over'){ reset(); state='run'; return; }
+    if(state!=='run') return;
+    for(let i=ducks.length-1;i>=0;i--){
+      const d=ducks[i];
+      if(d.alive && mx>=d.x-4 && mx<=d.x+d.w+4 && my>=d.y-4 && my<=d.y+d.h+4){
+        d.alive=false; d.flash=10; score++; hi=Math.max(hi,score); return;
+      }
+    }
+  }
+
+  function gameOver(){ state='over'; localStorage.setItem(HI_KEY,String(hi)); submitScore(score); }
+
+  // ── leaderboard (its own JSON via ?game=duck_hunter) ──
+  let LB_STATUS='', LB_LOADED_ONCE=false, lbPollId=null;
+  function esc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function renderLB(entries){
+    const body=document.getElementById('dh-lb-body'); const status=document.getElementById('dh-lb-status');
+    if(!body) return; if(status) status.textContent=LB_STATUS;
+    const profile=(typeof getProfileCookie==='function')?getProfileCookie():null;
+    const myNuid=profile&&profile.nuid?String(profile.nuid).toUpperCase():null;
+    if(!myNuid){ body.innerHTML='<tr><td colspan="4" class="cr-lb-cta" onclick="closeDuckHunter();openProfileModal()">&#9888; Make your profile to join the leaderboard &mdash; tap here</td></tr>'; return; }
+    if(!entries||entries.length===0){ body.innerHTML='<tr><td colspan="4" class="cr-lb-empty">No scores yet &mdash; be the first!</td></tr>'; return; }
+    body.innerHTML=entries.map((row,i)=>{
+      const isMe=myNuid&&row.nuid&&String(row.nuid).toUpperCase()===myNuid;
+      return `<tr class="${isMe?'cr-lb-row-me':''}"><td class="cr-rank">${i+1}</td><td>${esc(row.name||'Unknown')}</td><td>${esc(row.section||'-')}</td><td class="cr-score">${row.highScore}</td></tr>`;
+    }).join('');
+  }
+  async function loadLB(){
+    if(!LB_LOADED_ONCE){ LB_STATUS='Loading...'; renderLB(null); }
+    try{
+      const res=await fetch('/api/leaderboard?game=duck_hunter');
+      if(!res.ok) throw new Error('bad status');
+      const data=await res.json(); LB_STATUS=''; LB_LOADED_ONCE=true; renderLB(data.leaderboard||[]);
+    }catch(err){ LB_STATUS='Could not load leaderboard.'; renderLB([]); }
+  }
+  async function submitScore(finalScore){
+    const profile=(typeof getProfileCookie==='function')?getProfileCookie():null;
+    if(!profile||!profile.nuid) return;
+    try{
+      const res=await fetch('/api/leaderboard',{ method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ game:'duck_hunter', nuid:profile.nuid, name:profile.name, section:profile.section, department:profile.department, batch:profile.batch, score:finalScore }) });
+      if(!res.ok) throw new Error('bad status');
+      const data=await res.json(); LB_STATUS=''; renderLB(data.leaderboard||[]);
+    }catch(err){ LB_STATUS='Could not submit score.'; }
+  }
+
+  // ── drawing ──
+  function emoji(ch,x,y,size){ ctx.font=size+'px "Segoe UI Emoji","Noto Color Emoji",serif'; ctx.textBaseline='alphabetic'; ctx.fillText(ch,x,y); }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // sky
+    ctx.fillStyle='rgba(10,122,58,0.05)'; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle=GREEN; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,H-14); ctx.lineTo(W,H-14); ctx.stroke();
+    for(const d of ducks){
+      if(d.alive){ ctx.save(); if(d.vx<0){ ctx.translate(d.x+d.w,d.y); ctx.scale(-1,1); emoji('🦆',0,d.h,d.h+6); ctx.restore(); } else { emoji('🦆',d.x,d.y+d.h,d.h+6); } }
+      else if(d.flash>0){ emoji('💥',d.x,d.y+d.h,d.h+8); }
+    }
+    // HUD
+    ctx.fillStyle=GREEN2; ctx.font='20px "VT323",monospace'; ctx.textBaseline='alphabetic'; ctx.textAlign='right';
+    ctx.fillText('HI '+String(hi).padStart(4,'0')+'   '+String(score).padStart(4,'0'), W-12, 24); ctx.textAlign='left';
+    ctx.fillText('LIVES '+'❤'.repeat(Math.max(0,lives)), 12, 24);
+    if(state==='ready') centerText('CLICK / TAP TO START', GREEN);
+    if(state==='over'){
+      centerText('OUT OF LIVES! CLICK TO RETRY', RED, -14);
+      ctx.fillStyle=GREEN; ctx.font='18px "VT323",monospace'; ctx.textAlign='center';
+      ctx.fillText('DUCKS '+score+'   ·   BEST '+hi, W/2, H/2+16); ctx.textAlign='left';
+    }
+  }
+  function centerText(t,color,dy){ ctx.fillStyle=color; ctx.font='22px "VT323",monospace'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(t,W/2,H/2+(dy||0)); ctx.textAlign='left'; ctx.textBaseline='alphabetic'; }
+
+  function loop(){ if(!overlay.classList.contains('on')) return; update(); draw(); rafId=requestAnimationFrame(loop); }
+
+  canvas.addEventListener('pointerdown',e=>{
+    e.preventDefault();
+    const r=canvas.getBoundingClientRect();
+    shoot((e.clientX-r.left)*(W/r.width), (e.clientY-r.top)*(H/r.height));
+  });
+  document.addEventListener('keydown',e=>{ if(overlay.classList.contains('on')&&e.key==='Escape') window.closeDuckHunter(); });
+  overlay.addEventListener('pointerdown',e=>{ if(e.target===overlay) window.closeDuckHunter(); });
+
+  window.openDuckHunter=function(){
+    reset(); overlay.classList.add('on');
+    cancelAnimationFrame(rafId); rafId=requestAnimationFrame(loop);
+    LB_LOADED_ONCE=false; loadLB(); clearInterval(lbPollId); lbPollId=setInterval(loadLB,15000);
+  };
+  window.closeDuckHunter=function(){ overlay.classList.remove('on'); cancelAnimationFrame(rafId); clearInterval(lbPollId); lbPollId=null; };
 })();
 </script>

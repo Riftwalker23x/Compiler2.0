@@ -10,14 +10,23 @@
 // Env (already configured for subscriptions): GH_TOKEN, optional GH_REPO /
 // GH_BRANCH.
 
-const LB_PATH = 'db/leaderboard.json';
 const MAX_ENTRIES = 10;
+// Each game has its OWN leaderboard JSON file in the repo.
+const LB_FILES = {
+  compiler_run: 'db/leaderboard.json',
+  duck_hunter: 'db/leaderboard-duck-hunter.json',
+};
+
+function gameOf(req, body) {
+  const raw = String((body && body.game) || (req.query && req.query.game) || 'compiler_run').toLowerCase();
+  return LB_FILES[raw] ? raw : 'compiler_run';
+}
 
 function repo() { return process.env.GH_REPO || 'Riftwalker23x/Compiler2.0'; }
 function branch() { return process.env.GH_BRANCH || 'main'; }
 
-async function ghGet(token) {
-  const url = `https://api.github.com/repos/${repo()}/contents/${LB_PATH}?ref=${branch()}`;
+async function ghGet(token, file) {
+  const url = `https://api.github.com/repos/${repo()}/contents/${file}?ref=${branch()}`;
   const res = await fetch(url, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -35,8 +44,8 @@ async function ghGet(token) {
   return { db, sha: data.sha };
 }
 
-async function ghPut(token, db, sha) {
-  const url = `https://api.github.com/repos/${repo()}/contents/${LB_PATH}`;
+async function ghPut(token, file, db, sha) {
+  const url = `https://api.github.com/repos/${repo()}/contents/${file}`;
   const body = {
     message: 'Update Compiler Run leaderboard',
     content: Buffer.from(JSON.stringify(db, null, 2) + '\n').toString('base64'),
@@ -91,7 +100,8 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'GET') {
-      const { db } = await ghGet(token);
+      const file = LB_FILES[gameOf(req, null)];
+      const { db } = await ghGet(token, file);
       return res.status(200).json({ leaderboard: db.leaderboard });
     }
 
@@ -100,6 +110,7 @@ export default async function handler(req, res) {
       if (typeof body === 'string') {
         try { body = JSON.parse(body); } catch { body = {}; }
       }
+      const file = LB_FILES[gameOf(req, body)];
       const { nuid, name, section, department, batch, score } = body || {};
 
       if (!nuid || typeof nuid !== 'string') {
@@ -113,7 +124,7 @@ export default async function handler(req, res) {
       // Retry a few times: concurrent submissions change the file sha.
       let lastErr;
       for (let attempt = 0; attempt < 3; attempt++) {
-        const { db, sha } = await ghGet(token);
+        const { db, sha } = await ghGet(token, file);
         const key = nuid.trim().toUpperCase();
         const existing = db.players[key];
 
@@ -134,7 +145,7 @@ export default async function handler(req, res) {
         db.leaderboard = rebuildLeaderboard(db.players);
 
         try {
-          await ghPut(token, db, sha);
+          await ghPut(token, file, db, sha);
           return res.status(200).json({ leaderboard: db.leaderboard, improved: true });
         } catch (e) {
           lastErr = e;
