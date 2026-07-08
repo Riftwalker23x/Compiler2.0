@@ -647,6 +647,8 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
 .game-pick-name{font-family:'VT323',monospace;font-size:24px;letter-spacing:2px;color:#0a7a3a}
 .game-pick-desc{font-size:11px;color:#4a8a60;text-align:center}
 @media(max-width:560px){ .game-pick-grid{grid-template-columns:1fr} }
+.game-soon-msg{margin-top:12px;text-align:center;font-family:'VT323',monospace;font-size:20px;letter-spacing:1px;color:#b3261e;background:rgba(179,38,30,0.08);border:1px solid rgba(179,38,30,0.3);border-radius:10px;padding:10px 12px}
+.game-soon-msg[hidden]{display:none}
 </style>
 
 <div id="app">
@@ -700,7 +702,13 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
         <div class="game-pick-name">DUCK HUNTER</div>
         <div class="game-pick-desc">Shoot the ducks, don't miss</div>
       </button>
+      <button class="game-pick-card" type="button" onclick="showComingSoon()">
+        <div class="game-pick-emoji">&#9819;</div>
+        <div class="game-pick-name">COMPILER CHESS</div>
+        <div class="game-pick-desc">Coming soon</div>
+      </button>
     </div>
+    <div class="game-soon-msg" id="game-soon-msg" hidden>&#128679; Compiler Chess &mdash; stay tuned, coming soon!</div>
   </div>
 </div>
 
@@ -4834,8 +4842,10 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
 // ── Game picker: double-click the logo -> choose a game ──
 (function GamePicker(){
   const picker=document.getElementById('game-picker');
-  window.openGamePicker=function(){ if(picker) picker.classList.add('on'); };
+  const soonMsg=()=>document.getElementById('game-soon-msg');
+  window.openGamePicker=function(){ if(picker) picker.classList.add('on'); const m=soonMsg(); if(m) m.hidden=true; };
   window.closeGamePicker=function(){ if(picker) picker.classList.remove('on'); };
+  window.showComingSoon=function(){ const m=soonMsg(); if(m) m.hidden=false; };
   picker&&picker.addEventListener('pointerdown',e=>{ if(e.target===picker) window.closeGamePicker(); });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&picker&&picker.classList.contains('on')) window.closeGamePicker(); });
   const logo=document.getElementById('header-logo');
