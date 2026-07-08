@@ -1312,53 +1312,32 @@ async function syncProfile(){
     PROFILE_SYNC_IN_PROGRESS=false;
   }
 }
-async function registerProfile(){
-  const nuid=(document.getElementById('profile-nuid')?.value||'').trim().toUpperCase();
-  const name=(document.getElementById('profile-name')?.value||'').trim();
-  const section=(document.getElementById('profile-section-input')?.value||'').trim();
-  const department=(document.getElementById('profile-department-input')?.value||'').trim();
-  const batch=getBatchFromNuid(nuid);
+function registerProfile(){
   const status=document.getElementById('profile-status');
-  const card=document.getElementById('profile-card');
-  const registration=document.getElementById('profile-registration');
-  if(!nuid||!name||!section||!department||!batch){
-    if(status) status.textContent='Please fill in your name, section, department, and NU ID.';
+  const nuid=formatNuid(document.getElementById('profile-nuid')?.value||'');
+  const validationError=validateNuid(nuid);
+  if(validationError){
+    if(status){ status.textContent=validationError; status.classList.add('is-error'); }
     return;
   }
-  if(status) status.textContent='Saving profile...';
-  try{
-    const payload={nuid,name,section,department,batch};
-    const urls=[
-      '/api/profile',
-      './api/profile',
-      'http://127.0.0.1:8000/api/profile',
-      'http://localhost:8000/api/profile'
-    ];
-    let lastError=null;
-    let data={};
-    let response=null;
-    for(const url of urls){
-      try{
-        response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-        data=await response.json().catch(()=>({}));
-        if(response.ok){ break; }
-        throw new Error(data.error||`HTTP ${response.status}`);
-      }catch(err){
-        lastError=err;
-      }
-    }
-    if(!response||!response.ok){ throw lastError||new Error('Failed to save profile'); }
-    const studentData=data.student||payload;
-    PROFILE_STUDENTS_CACHE={cacheKey:`profile:${nuid}`,students:[...(PROFILE_STUDENTS_CACHE?.students||[]),studentData]};
-    renderProfileCard({name:studentData.name||'Student',section:studentData.section||'-',batch:studentData.batch||'-',department:studentData.department||'-'});
-    showProfileActions(true,false);
-    if(card) card.hidden=false;
-    if(registration) registration.hidden=true;
-    if(status) status.textContent='Profile saved to the matching year file. Save it locally to keep it on this browser.';
-  }catch(err){
-    console.warn('Profile register failed:', err);
-    if(status) status.textContent=`Profile could not be saved right now. ${err.message || err}`;
+  const name=(document.getElementById('profile-name')?.value||'').trim();
+  const section=(document.getElementById('profile-section-input')?.value||'').trim().toUpperCase();
+  const departmentRaw=(document.getElementById('profile-department-input')?.value||'').trim();
+  const batch=getBatchFromNuid(nuid);
+  if(!name||!section||!departmentRaw){
+    if(status){ status.textContent='Please fill in your name, section, and department.'; status.classList.add('is-error'); }
+    return;
   }
+  if(status) status.classList.remove('is-error');
+  // Profile lives only in this browser (works on any static host, e.g. Vercel).
+  const profile={ nuid, name, section, batch, department: deptCodeToLabel(departmentRaw) };
+  setProfileCookie(profile);
+  renderProfileCard(profile);
+  showProfileActions(false,true);
+  setProfileSyncVisible(false);
+  showProfileSuccessToast('Your profile has been saved');
+  if(status) status.textContent='Profile saved locally on this browser.';
+  closeProfileModal();
 }
 window.openProfileModal=openProfileModal;
 window.closeProfileModal=closeProfileModal;
