@@ -4867,7 +4867,7 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
   let ducks, score, lives, state, rafId, spawnTimer;
   // state: 'ready' | 'run' | 'over'
 
-  function reset(){ ducks=[]; score=0; lives=3; spawnTimer=24; state='ready'; }
+  function reset(){ ducks=[]; score=0; lives=3; spawnTimer=70; state='ready'; }
 
   function spawn(){
     const fromLeft=Math.random()<0.5;
@@ -4878,7 +4878,13 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
 
   function update(){
     if(state!=='run') return;
-    if(--spawnTimer<=0){ spawn(); spawnTimer=Math.max(22, 58-score); }
+    // Start slow with only 3-4 ducks on screen, ramp up as the score climbs.
+    const aliveCount=ducks.reduce((n,d)=>n+(d.alive?1:0),0);
+    const cap=Math.min(7, 3+Math.floor(score/6));
+    if(--spawnTimer<=0){
+      if(aliveCount<cap) spawn();
+      spawnTimer=Math.max(28, 105-score*1.4);
+    }
     for(const d of ducks){ d.x+=d.vx; d.y+=d.vy; if(d.y<18||d.y>H-42) d.vy*=-1; if(d.flash>0) d.flash--; }
     ducks=ducks.filter(d=>{
       if(!d.alive) return d.flash>0;                 // keep a moment for the hit splash
