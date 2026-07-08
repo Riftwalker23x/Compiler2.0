@@ -1,4 +1,24 @@
 {
-  "players": {},
-  "leaderboard": []
+  "players": {
+    "25I-0632": {
+      "nuid": "25I-0632",
+      "name": "Wajeeh Imran",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 84,
+      "achievedAt": "2026-07-08T21:56:47.436Z"
+    }
+  },
+  "leaderboard": [
+    {
+      "nuid": "25I-0632",
+      "name": "Wajeeh Imran",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 84,
+      "achievedAt": "2026-07-08T21:56:47.436Z"
+    }
+  ]
 }
