@@ -2,19 +2,6 @@
   {
     "nuid": "25I-0632",
     "name": "Wajeeh Imran",
-    "subscription": {
-      "endpoint": "https://fcm.googleapis.com/fcm/send/e_IqK8ryhws:APA91bECP0dt7NRUglHwhGYNazS3TJza_4cAQa5p5YQVjyB-ecultACmobOMgZKEim6bGPZVSwco4fMmnPtvwYLt_XfyW5laNUkv8E07xeXvB7KjGZ0-k8Dxm9rCIR_qnNLJTTFuev5o",
-      "expirationTime": null,
-      "keys": {
-        "p256dh": "BJoKzM3OSAIyAf3WY6S-YuJU8Op_hvtjiokWnDNvSLgevdzFtDcJ2xJBmkmtVKbTZ82QAMVZ9R6cRpWyg9feaEk",
-        "auth": "Qk_y21cmlo0DxIPozjS8JA"
-      }
-    },
-    "updated_at": 1783523836705
-  },
-  {
-    "nuid": "25I-0632",
-    "name": "Wajeeh Imran",
     "department": "BS CS",
     "batch": "25",
     "section": "G",
@@ -27,5 +14,21 @@
       }
     },
     "updated_at": 1783527353424
+  },
+  {
+    "nuid": "25I-0632",
+    "name": "Wajeeh Imran",
+    "department": "BS CS",
+    "batch": "25",
+    "section": "G",
+    "subscription": {
+      "endpoint": "https://fcm.googleapis.com/fcm/send/e_IqK8ryhws:APA91bECP0dt7NRUglHwhGYNazS3TJza_4cAQa5p5YQVjyB-ecultACmobOMgZKEim6bGPZVSwco4fMmnPtvwYLt_XfyW5laNUkv8E07xeXvB7KjGZ0-k8Dxm9rCIR_qnNLJTTFuev5o",
+      "expirationTime": null,
+      "keys": {
+        "p256dh": "BJoKzM3OSAIyAf3WY6S-YuJU8Op_hvtjiokWnDNvSLgevdzFtDcJ2xJBmkmtVKbTZ82QAMVZ9R6cRpWyg9feaEk",
+        "auth": "Qk_y21cmlo0DxIPozjS8JA"
+      }
+    },
+    "updated_at": 1783527545741
   }
 ]
