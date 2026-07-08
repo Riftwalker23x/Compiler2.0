@@ -26,6 +26,15 @@
       "batch": "25",
       "highScore": 934,
       "achievedAt": "2026-07-08T22:09:40.118Z"
+    },
+    "25I-0665": {
+      "nuid": "25I-0665",
+      "name": "Shahzaib Ali",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 81,
+      "achievedAt": "2026-07-08T22:38:28.730Z"
     }
   },
   "leaderboard": [
@@ -55,6 +64,15 @@
       "batch": "25",
       "highScore": 210,
       "achievedAt": "2026-07-08T21:58:50.569Z"
+    },
+    {
+      "nuid": "25I-0665",
+      "name": "Shahzaib Ali",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 81,
+      "achievedAt": "2026-07-08T22:38:28.730Z"
     }
   ]
 }
