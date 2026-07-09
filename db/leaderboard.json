@@ -15,8 +15,8 @@
       "section": "G",
       "department": "BS CS",
       "batch": "25",
-      "highScore": 210,
-      "achievedAt": "2026-07-08T21:58:50.569Z"
+      "highScore": 1791,
+      "achievedAt": "2026-07-09T09:12:12.814Z"
     },
     "25I-0816": {
       "nuid": "25I-0816",
@@ -84,6 +84,15 @@
       "achievedAt": "2026-07-08T22:48:30.222Z"
     },
     {
+      "nuid": "25I-0984",
+      "name": "Fahad Nasir",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 1791,
+      "achievedAt": "2026-07-09T09:12:12.814Z"
+    },
+    {
       "nuid": "25I-0656",
       "name": "Ali Raza",
       "section": "G",
@@ -100,15 +109,6 @@
       "batch": "25",
       "highScore": 1086,
       "achievedAt": "2026-07-08T22:39:37.687Z"
-    },
-    {
-      "nuid": "25I-0984",
-      "name": "Fahad Nasir",
-      "section": "G",
-      "department": "BS CS",
-      "batch": "25",
-      "highScore": 210,
-      "achievedAt": "2026-07-08T21:58:50.569Z"
     }
   ]
 }
