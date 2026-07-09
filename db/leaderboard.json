@@ -44,9 +44,27 @@
       "batch": "25",
       "highScore": 1265,
       "achievedAt": "2026-07-08T22:41:07.739Z"
+    },
+    "25I-0789": {
+      "nuid": "25I-0789",
+      "name": "Aazan Mustafa",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 5646,
+      "achievedAt": "2026-07-09T07:27:51.879Z"
     }
   },
   "leaderboard": [
+    {
+      "nuid": "25I-0789",
+      "name": "Aazan Mustafa",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 5646,
+      "achievedAt": "2026-07-09T07:27:51.879Z"
+    },
     {
       "nuid": "25I-0665",
       "name": "Shahzaib Ali",
