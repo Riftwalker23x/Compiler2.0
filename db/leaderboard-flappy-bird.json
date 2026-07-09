@@ -17,6 +17,15 @@
       "batch": "25",
       "highScore": 0,
       "achievedAt": "2026-07-08T22:59:12.552Z"
+    },
+    "25I-0789": {
+      "nuid": "25I-0789",
+      "name": "Aazan Mustafa",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 0,
+      "achievedAt": "2026-07-09T07:29:21.544Z"
     }
   },
   "leaderboard": [
@@ -37,6 +46,15 @@
       "batch": "25",
       "highScore": 0,
       "achievedAt": "2026-07-08T22:59:12.552Z"
+    },
+    {
+      "nuid": "25I-0789",
+      "name": "Aazan Mustafa",
+      "section": "G",
+      "department": "BS CS",
+      "batch": "25",
+      "highScore": 0,
+      "achievedAt": "2026-07-09T07:29:21.544Z"
     }
   ]
 }
