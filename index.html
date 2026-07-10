@@ -707,13 +707,44 @@ h2.fv-top-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight
         <div class="game-pick-name">FLAPPY BYTE</div>
         <div class="game-pick-desc">Tap to fly through the pipes</div>
       </button>
-      <button class="game-pick-card" type="button" onclick="showComingSoon()">
+      <button class="game-pick-card" type="button" onclick="closeGamePicker();openChessModePicker()">
         <div class="game-pick-emoji">&#9819;</div>
         <div class="game-pick-name">COMPILER CHESS</div>
-        <div class="game-pick-desc">Coming soon</div>
+        <div class="game-pick-desc">Choose how to play</div>
       </button>
     </div>
     <div class="game-soon-msg" id="game-soon-msg" hidden>&#128679; Compiler Chess &mdash; stay tuned, coming soon!</div>
+  </div>
+</div>
+
+<!-- Compiler Chess: mode picker -->
+<div class="cr-overlay" id="chess-mode-picker">
+  <div class="cr-modal" style="max-width:520px">
+    <div class="cr-head">
+      <div>
+        <div class="cr-title">&#9819; COMPILER CHESS</div>
+        <div class="cr-sub">CHOOSE HOW TO PLAY</div>
+      </div>
+      <button class="cr-close" onclick="closeChessModePicker()">&#10005; ESC</button>
+    </div>
+    <div class="game-pick-grid" style="grid-template-columns:1fr">
+      <button class="game-pick-card" type="button" onclick="showChessComingSoon('1v1 on this device')">
+        <div class="game-pick-emoji">&#9823;</div>
+        <div class="game-pick-name">1V1</div>
+        <div class="game-pick-desc">Two players, one device</div>
+      </button>
+      <button class="game-pick-card" type="button" onclick="showChessComingSoon('Play with a friend')">
+        <div class="game-pick-emoji">&#129309;</div>
+        <div class="game-pick-name">PLAY WITH FRIEND</div>
+        <div class="game-pick-desc">Invite a friend to a match</div>
+      </button>
+      <button class="game-pick-card" type="button" onclick="showChessComingSoon('the Compiler Chess Engine')">
+        <div class="game-pick-emoji">&#129302;</div>
+        <div class="game-pick-name">VS COMPILER ENGINE</div>
+        <div class="game-pick-desc">Play against the computer</div>
+      </button>
+    </div>
+    <div class="game-soon-msg" id="chess-soon-msg" hidden></div>
   </div>
 </div>
 
@@ -1747,12 +1778,14 @@ function hideFloatingOverlays(){
   const duckOverlay=document.getElementById('dh-overlay');
   const flappyOverlay=document.getElementById('fb-overlay');
   const gamePicker=document.getElementById('game-picker');
+  const chessPicker=document.getElementById('chess-mode-picker');
   if(iosSheet) iosSheet.hidden=true;
   if(profileBackdrop) profileBackdrop.hidden=true;
   if(compilerOverlay) compilerOverlay.classList.remove('on');
   if(duckOverlay) duckOverlay.classList.remove('on');
   if(flappyOverlay) flappyOverlay.classList.remove('on');
   if(gamePicker) gamePicker.classList.remove('on');
+  if(chessPicker) chessPicker.classList.remove('on');
 }
 function showInstallBar(){
   const bar=document.getElementById('pwa-install-bar');
@@ -4895,6 +4928,21 @@ _facultySheetTimer=setInterval(()=>refreshFacultySheetData(true),FACULTY_SHEET_R
     });
     logo.style.touchAction='manipulation'; // avoid the browser's tap-to-zoom delay
   }
+})();
+
+// ── Compiler Chess: mode picker (1v1 / friend / engine) ──
+(function ChessModePicker(){
+  const picker=document.getElementById('chess-mode-picker');
+  const msg=()=>document.getElementById('chess-soon-msg');
+  window.openChessModePicker=function(){ if(picker) picker.classList.add('on'); const m=msg(); if(m) m.hidden=true; };
+  window.closeChessModePicker=function(){ if(picker) picker.classList.remove('on'); };
+  window.showChessComingSoon=function(modeLabel){
+    const m=msg(); if(!m) return;
+    m.innerHTML='&#128679; '+modeLabel+' &mdash; stay tuned, coming soon!';
+    m.hidden=false;
+  };
+  picker&&picker.addEventListener('pointerdown',e=>{ if(e.target===picker) window.closeChessModePicker(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&picker&&picker.classList.contains('on')) window.closeChessModePicker(); });
 })();
 
 // ══════════════════════════════════════════
