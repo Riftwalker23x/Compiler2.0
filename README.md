@@ -75,7 +75,7 @@ The faculty section works like a searchable dictionary of teaching faculty at FA
 FreeRooms tells you which rooms are free for a given block, day, and floor. It is built for the very real campus problem of needing a place to sit, study, work on a project, or hold a quick meeting. Instead of walking around and checking rooms manually, students can filter the view and see availability from the app. The block and floor filters make the search practical because students usually care about where they already are, not every room on campus. The day selection helps the room list stay tied to the current academic schedule. This makes the tool useful both for quick decisions and for planning ahead between classes. FreeRooms is meant to turn the empty-room hunt into a simple lookup.
 
 ### Compiler Run
-
+    
 ![Compiler Run](Visuals/CompilerRun.png)
 
 Compiler Run is a small computer-themed version of the Chrome dinosaur game. It is hidden inside the VTable experience as a playful break from the more practical tools. The runner keeps the same simple idea: avoid obstacles, survive longer, and chase a better score. Instead of the classic dinosaur theme, the visuals are styled around computers and the Compiler Society identity. It gives the project a little personality without getting in the way of the timetable, faculty, or room tools. The game is intentionally lightweight, quick to understand, and easy to replay. It is there because a campus utility can still have a bit of fun tucked inside it.
